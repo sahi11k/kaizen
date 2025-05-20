@@ -1,4 +1,4 @@
-# Pomodoro Timer
+# ZenTen 
 
 A clean and intuitive Pomodoro Timer application built with HTML, CSS, and JavaScript. This application helps users manage their time effectively using the Pomodoro Technique.
 
