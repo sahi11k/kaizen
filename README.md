@@ -1,4 +1,4 @@
-# ZenTen 
+# ZenTen - A Pomodoro App
 
 A clean and intuitive Pomodoro Timer application built with HTML, CSS, and JavaScript. This application helps users manage their time effectively using the Pomodoro Technique.
 
@@ -23,13 +23,13 @@ A clean and intuitive Pomodoro Timer application built with HTML, CSS, and JavaS
 1. Clone the repository
 
 ```bash
-git clone https://github.com/sahi11k/pomodoro
+git clone https://github.com/sahi11k/zenten
 ```
 
 2. Navigate to the project directory
 
 ```bash
-cd pomodoro
+cd zenten
 ```
 
 3. Open index.html in your browser
