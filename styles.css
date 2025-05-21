@@ -145,7 +145,7 @@ body {
   display: grid;
   gap: calc(var(--padding) * 2);
   grid-template-columns: 1fr;
-  grid-template-rows: auto 70vh;
+  grid-template-rows: auto 500px;
 
   & > * {
     min-height: 0;
@@ -188,7 +188,8 @@ body {
 }
 
 .task-list-container {
-  min-height: 250px !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .task-list {
@@ -306,7 +307,8 @@ body {
   display: none;
   justify-content: center;
   align-items: center;
-  min-height: 100%;
+  border: 1px solid var(--blue);
+  height: 100%;
 
   &.show {
     display: flex;
@@ -428,7 +430,6 @@ body {
 }
 
 .tab__panel {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -540,7 +541,6 @@ body {
   border: 2px solid var(--grey-secondary);
   border-radius: calc(var(--padding) * 2);
   padding: 16px 20px;
-  width: min(500px, 90vw);
   color: var(--white);
 }
 
@@ -567,6 +567,7 @@ body {
   border: none;
   font-weight: 600;
   font-size: 1rem;
+  padding: 2px 0;
 }
 
 .form__item textarea {
@@ -615,14 +616,12 @@ body {
   }
 
   .category-list__item-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 2vw, 1.5rem);
     padding-bottom: 4px;
   }
 
   .category-list__item-label {
-    font-size: 0.75rem;
+    font-size: clamp(0.6rem, 1vw, 0.8rem);
     color: var(--light-grey);
   }
 }
@@ -736,8 +735,10 @@ body {
 }
 
 .about__list {
-  padding: 0 0 0 calc(var(--padding) * 3);
   margin: 0;
+  list-style-position: inside;
+  padding: 0;
+  text-align: left;
 }
 
 .about__list li {
