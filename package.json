@@ -1,0 +1,29 @@
+{
+  "name": "pomodoro",
+  "version": "1.0.0",
+  "description": "A clean and intuitive Pomodoro Timer application built with HTML, CSS, and JavaScript. This application helps users manage their time effectively using the Pomodoro Technique.",
+  "main": "addTaskModal.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahi11k/pomodoro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sahi11k/pomodoro/issues"
+  },
+  "homepage": "https://github.com/sahi11k/pomodoro#readme",
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router": "^7.6.1",
+    "vite": "^6.3.5"
+  }
+}

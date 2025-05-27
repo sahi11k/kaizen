@@ -1,3 +1,5 @@
+@import "./reset.css";
+
 :root {
   /* Colors */
   --grey-primary: #1f2123;
@@ -15,14 +17,27 @@
 
   /* Variables */
   --padding: 6px;
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+.poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.inter {
+  font-family: "Inter", sans-serif;
 }
 
 body {
+  font-family: var(--font-body);
+}
+
+/* body {
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--white);
-}
+  color: var(--dark-blue);
+} */
 
 .btn {
   --__svg-fill: var(--svg-fill, var(--white));
@@ -728,7 +743,6 @@ body {
 }
 
 .about__description {
-  font-weight: 400;
   text-align: justify;
   line-height: 1.8;
 }
