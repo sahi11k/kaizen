@@ -1,0 +1,21 @@
+.banner {
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.banner__title {
+  font-size: 8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.banner__description {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
