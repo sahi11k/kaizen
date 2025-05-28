@@ -1,0 +1,5 @@
+.timer {
+  border: 1px solid red;
+  width: min(100%, 600px);
+  margin-inline: auto;
+}

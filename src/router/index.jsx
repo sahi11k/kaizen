@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 import Home from "@/pages/Home";
 import Pomodoro from "@/pages/Pomodoro";
 import Journal from "@/pages/Journal";
-
+import Profile from "@/pages/Profile";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/journal",
         element: <Journal />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },

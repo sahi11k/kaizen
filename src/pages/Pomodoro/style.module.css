@@ -1,0 +1,11 @@
+.pomodoro {
+  border: 1px solid red;
+  min-height: 100vh;
+  background-color: var(--secondary-color);
+  padding-top: 100px;
+  margin: 0 auto;
+  width: min(90%, 1200px);
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
