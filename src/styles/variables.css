@@ -1,0 +1,19 @@
+:root {
+  /* Color palette */
+  --black: #000;
+  --black-900: #171717;
+  --black-800: #212121;
+  --black-300: #888;
+  --white: #fff;
+
+  /* Semantic colors */
+  --surface: var(--black-800);
+  --container: var(--black-900);
+
+  --text-base: var(--white);
+  --text-muted: var(--black-300);
+
+  /* Typography */
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Inter", sans-serif;
+}

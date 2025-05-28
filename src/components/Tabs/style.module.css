@@ -1,0 +1,25 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid red;
+}
+
+.tabs__header {
+  display: flex;
+  gap: 0.5em;
+}
+
+.tabs__button {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  background-color: transparent;
+  border: none;
+  padding: 0.5em 1em;
+}
+
+.tabs__button--active {
+  border: 1px solid red;
+  background-color: var(--black-800);
+}

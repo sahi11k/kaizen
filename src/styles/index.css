@@ -1,43 +1,37 @@
 @import "./reset.css";
-
-:root {
-  /* Colors */
-  --grey-primary: #1f2123;
-  --grey-secondary: #232629;
-  --grey-tertiary: #2c3135;
-  --white: #fff;
-  --light-grey: #b3bbc4;
-  --green: #0bb463;
-  --red: #ff6054;
-  --blue: #297afe;
-  --purple: #725dff;
-  --dark-blue: #10151f;
-  --faded-black: rgba(0, 0, 0, 0.5);
-  /* --faded-white: rgba(255, 255, 255, 0.05); */
-
-  /* Variables */
-  --padding: 6px;
-  --font-heading: "Poppins", sans-serif;
-  --font-body: "Inter", sans-serif;
-}
-
-.poppins {
-  font-family: "Poppins", sans-serif;
-}
-
-.inter {
-  font-family: "Inter", sans-serif;
-}
+@import "./variables.css";
 
 body {
   font-family: var(--font-body);
+  color: var(--text-base);
+  background-color: var(--surface);
 }
 
-/* body {
-  margin: 0;
-  padding: 0;
-  color: var(--dark-blue);
-} */
+.card {
+  background-color: var(--container);
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5em;
+}
+
+.card__header {
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding-bottom: 1em;
+}
+
+.card__body {
+  flex: 1;
+  min-height: 0;
+}
+
+.card__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1em;
+}
 
 .btn {
   --__svg-fill: var(--svg-fill, var(--white));
@@ -166,35 +160,6 @@ body {
     min-height: 0;
     min-width: 0;
   }
-}
-
-.card {
-  background-color: var(--faded-black);
-  border-radius: calc(var(--padding) * 2);
-  display: flex;
-  flex-direction: column;
-  padding: calc(var(--padding) * 3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: none;
-}
-
-.card__header {
-  font-weight: 600;
-  font-size: 1.15rem;
-  padding-bottom: calc(var(--padding) * 2);
-}
-
-.card__body {
-  flex: 1;
-  min-height: 0;
-}
-
-.card__footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: calc(var(--padding) * 2);
 }
 
 .card--daily-progress {

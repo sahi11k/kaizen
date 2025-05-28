@@ -50,3 +50,9 @@ h5,
 h6 {
   text-wrap: balance;
 }
+
+a,
+a:visited {
+  text-decoration: none;
+  color: inherit;
+}
