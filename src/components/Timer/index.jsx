@@ -24,9 +24,9 @@ const Timer = () => {
             tabKey="ongoing"
             key="ongoing"
           >
-            <div className="timer">
-              <div className="timer__value">25:00</div>
-              <div className="timer__progress-bar"></div>
+            <div className={styles.timer__display}>
+              <div className={styles.timer__value}>25:00</div>
+              <div className={styles.timer__progressBar}></div>
             </div>
           </Tabs.Tab>
           <Tabs.Tab
@@ -41,35 +41,31 @@ const Timer = () => {
             tabKey="break"
             key="break"
           >
-            <div className="timer">
-              <div className="timer__value">05:00</div>
-              <div className="timer__progress-bar"></div>
+            <div className={styles.timer__display}>
+              <div className={styles.timer__value}>05:00</div>
+              <div className={styles.timer__progressBar}></div>
             </div>
           </Tabs.Tab>
         </Tabs>
-        <div className="current-task">
-          <span className="current-task__category">Coding</span>
-          <span className="current-task__current-session">Session 1</span>
-          <span className="current-task__name">Implementing a new feature</span>
+        <div className={styles.currentTask}>
+          <span className={styles.currentTask__category}>Reading</span>
+          <span className={styles.currentTask__currentSession}>Session 1</span>
+          <span className={styles.currentTask__name}>
+            Implementing a new feature
+          </span>
         </div>
         <div className="card__footer">
-          <div className="timer-controls">
-            <button
-              className="btn btn--icon timer-controls__item"
-              data-action="reset"
-            >
+          <div className={styles.timerControls}>
+            <button className={`btn btn--icon ${styles.timerControls__item}`}>
               <ResetIcon />
             </button>
-            <button className="btn timer-controls__item" data-action="start">
+            <button className={`btn ${styles.timerControls__item}`}>
               <span className="btn__icon">
                 <PlayIcon />
               </span>
               <span className="btn__label">Start</span>
             </button>
-            <button
-              className="btn btn--icon timer-controls__item"
-              data-action="next"
-            >
+            <button className={`btn btn--icon ${styles.timerControls__item}`}>
               <NextIcon />
             </button>
           </div>

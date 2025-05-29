@@ -19,13 +19,13 @@ const Tabs = ({ children, defaultTab = 0, onTabChange }) => {
 
   return (
     <div className={styles.tabs}>
-      <div className={styles.tabs__header}>
+      <div className={styles.tab__nav}>
         {tabs.map((tab) => (
           <button
             key={tab.props.tabKey}
-            className={`${styles.tabs__button} ${
+            className={`${styles.tab__nav__item} ${
               activeTab === tab.props.tabKey
-                ? `${styles.tabs__button}--active`
+                ? `${styles["tab__nav__item--active"]}`
                 : ""
             }`}
             onClick={() => handleTabClick(tab.props.tabKey)}
@@ -34,13 +34,13 @@ const Tabs = ({ children, defaultTab = 0, onTabChange }) => {
           </button>
         ))}
       </div>
-      <div className={styles.tabs__content}>{tabs[index]}</div>
+      <div className={styles.tabs__panel}>{tabs[index]}</div>
     </div>
   );
 };
 
 const Tab = ({ children }) => {
-  return <div className={styles.tabs__panel}>{children}</div>;
+  return <React.Fragment>{children}</React.Fragment>;
 };
 
 Tabs.Tab = Tab;
