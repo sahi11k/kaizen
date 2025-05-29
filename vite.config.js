@@ -5,8 +5,6 @@ import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [react(), svgr()],
-  root: ".",
-
   build: {
     outDir: "dist",
   },
@@ -14,5 +12,10 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  server: {
+    open: true,
+    port: 3000,
+    host: "localhost",
   },
 });
