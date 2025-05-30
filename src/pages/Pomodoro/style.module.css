@@ -1,10 +1,7 @@
 .pomodoro {
-  background-color: var(--secondary-color);
-  padding-top: 100px;
-  margin: 0 auto;
-  width: min(90%, 1200px);
+  margin: 100px auto;
+  width: min(90%, 540px);
   display: flex;
   flex-direction: column;
-  gap: 2em;
-  border: 1px solid red;
+  gap: 3em;
 }
