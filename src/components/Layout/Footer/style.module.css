@@ -1,6 +1,6 @@
 .footer {
-  background-color: var(--container-color);
-  color: var(--primary-text-color);
+  background-color: var(--container);
+  color: var(--text-base);
   padding: 20px 0;
   min-height: 400px;
 }

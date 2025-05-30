@@ -1,0 +1,54 @@
+.taskListContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 350px !important;
+}
+
+.taskList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  max-height: 100%;
+  scrollbar-width: thin;
+}
+
+.taskListEmpty {
+  /* display: none; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  &.show {
+    display: flex;
+  }
+}
+
+.taskListEmptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.taskListEmptyIcon {
+  font-size: 3rem;
+}
+
+.taskListEmptyMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+
+  & > strong {
+    font-size: 0.9rem;
+  }
+}
+
+.addTaskBtn {
+  --font-size: 0.9rem;
+  --icon-size: 1rem;
+  --padding: 0.25rem 0.75rem;
+}

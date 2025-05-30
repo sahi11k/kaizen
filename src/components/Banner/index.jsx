@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "@/components/Banner/style.module.css";
 import bannerImg from "@/assets/images/banner.jpg";
+import { Link } from "react-router";
 
 const Banner = () => {
   return (
@@ -16,7 +17,11 @@ const Banner = () => {
           Get in your Zen mode and become UNSTOPPABLE.
         </p>
         <div className={styles.banner__buttons}>
-          <button className={styles.banner__button__primary}>Focus Now</button>
+          <Link to="/pomodoro">
+            <button className={`btn ${styles.banner__button}`}>
+              Focus Now
+            </button>
+          </Link>
         </div>
       </div>
     </div>

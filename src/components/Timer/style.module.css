@@ -1,9 +1,3 @@
-.timer {
-  border: 1px solid red;
-  margin-inline: auto;
-  width: min(100%, 500px);
-}
-
 .timer__display {
   display: flex;
   flex-direction: column;
@@ -71,18 +65,20 @@
   justify-content: center;
   gap: 1.5em;
   padding: 1em 0;
-  border: 1px solid blue;
 }
 
-/* .timerControls__item.btn.btn--icon {
-  --background-color: var(--accent-primary);
-  --btn-size: var(--size);
-  --svg-size: calc(var(--size) * 0.5);
+.timerControls__item {
+  --border-radius: 100%;
+  --padding: 0.75em;
 }
 
-.timerControls__item.btn:not(.btn--icon) {
-  background-color: var(--accent-secondary);
-  border-radius: 24px;
-  min-width: 120px;
-  height: var(--size);
-} */
+.timerControls__item--play {
+  --bg: var(--accent-secondary);
+  --border-radius: 2em;
+  --padding: 0.75em 2em;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--accent-secondary) !important;
+  }
+}

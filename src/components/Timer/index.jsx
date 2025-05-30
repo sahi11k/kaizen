@@ -9,13 +9,13 @@ import CupIcon from "@/assets/icons/cup.svg?react";
 
 const Timer = () => {
   return (
-    <div className={`card ${styles.timer}`}>
+    <div className={`card`}>
       <div className="card__body">
         <Tabs defaultTab="ongoing">
           <Tabs.Tab
             label={
               <>
-                <span>
+                <span className="btn__icon">
                   <ClockIcon />
                 </span>
                 <span>Ongoing</span>
@@ -33,7 +33,7 @@ const Timer = () => {
             label={
               <>
                 <span>Break</span>
-                <span>
+                <span className="btn__icon">
                   <CupIcon />
                 </span>
               </>
@@ -56,16 +56,16 @@ const Timer = () => {
         </div>
         <div className="card__footer">
           <div className={styles.timerControls}>
-            <button className={`btn btn--icon ${styles.timerControls__item}`}>
+            <button className={`btn ${styles.timerControls__item}`}>
               <ResetIcon />
             </button>
-            <button className={`btn ${styles.timerControls__item}`}>
+            <button className={`btn  ${styles["timerControls__item--play"]}`}>
               <span className="btn__icon">
                 <PlayIcon />
               </span>
               <span className="btn__label">Start</span>
             </button>
-            <button className={`btn btn--icon ${styles.timerControls__item}`}>
+            <button className={`btn ${styles.timerControls__item}`}>
               <NextIcon />
             </button>
           </div>

@@ -23,7 +23,7 @@ const Tabs = ({ children, defaultTab = 0, onTabChange }) => {
         {tabs.map((tab) => (
           <button
             key={tab.props.tabKey}
-            className={`${styles.tab__nav__item} ${
+            className={`btn ${styles.tab__nav__item} ${
               activeTab === tab.props.tabKey
                 ? `${styles["tab__nav__item--active"]}`
                 : ""

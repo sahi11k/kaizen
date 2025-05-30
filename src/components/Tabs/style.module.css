@@ -6,32 +6,19 @@
 
 .tab__nav {
   display: flex;
-}
 
-.tab__nav__item {
-  flex: 1;
-  display: flex;
-  border: none;
-  background-color: transparent;
-  color: inherit;
-  padding: 1em;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-  cursor: pointer;
-  border-radius: 0.5em;
-
-  &:hover {
-    background-color: var(--black-800);
+  .tab__nav__item {
+    --padding: 1em;
+    flex: 1;
+    font-family: var(--font-heading);
   }
-}
 
-.tab__nav__item--active {
-  background-color: var(--accent-primary);
-  font-weight: 600;
-  color: var(--text-base);
+  .tab__nav__item--active {
+    --bg: var(--accent-primary);
+    --__icon-fill: var(--accent-secondary);
 
-  &:hover {
-    background-color: var(--accent-primary);
+    &:hover {
+      background-color: var(--bg) !important;
+    }
   }
 }
