@@ -18,7 +18,9 @@ const Banner = () => {
         </p>
         <div className={styles.banner__buttons}>
           <Link to="/pomodoro">
-            <button className={`btn ${styles.banner__button}`}>
+            <button
+              className={`btn underlineAnimation ${styles.banner__button}`}
+            >
               Focus Now
             </button>
           </Link>

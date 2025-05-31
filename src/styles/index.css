@@ -63,10 +63,34 @@ body {
     background-color: var(--black-800);
   }
 
-  .btn__icon svg {
+  svg {
     fill: var(--__icon-fill);
     width: var(--__icon-size);
     height: var(--__icon-size);
+  }
+}
+
+.underlineAnimation {
+  --bg: transparent;
+  --color: var(--text-base);
+
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color);
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    &::after {
+      width: 100%;
+    }
   }
 }
 
