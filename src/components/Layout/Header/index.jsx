@@ -8,17 +8,23 @@ const Header = () => {
       <Link to="/">
         <div className={styles.header__logo}>Z</div>
       </Link>
-      <div className={styles.header__nav}>
+      <ul className={styles.header__nav}>
         <Link to="/pomodoro">
-          <div className={styles.header__nav__item}>Pomodoro</div>
+          <li className={`${styles.header__nav__item} underlineAnimation`}>
+            Pomodoro
+          </li>
         </Link>
         <Link to="/journal">
-          <div className={styles.header__nav__item}>Journal</div>
+          <li className={`${styles.header__nav__item} underlineAnimation`}>
+            Journal
+          </li>
         </Link>
         <Link to="/profile">
-          <div className={styles.header__nav__item}>Profile</div>
+          <li className={`${styles.header__nav__item} underlineAnimation`}>
+            Profile
+          </li>
         </Link>
-      </div>
+      </ul>
     </header>
   );
 };

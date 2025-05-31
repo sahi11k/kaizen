@@ -1,7 +1,8 @@
 .taskListContainer {
   display: flex;
   flex-direction: column;
-  min-height: 350px !important;
+  min-height: 300px !important;
+  max-height: 600px !important;
 }
 
 .taskList {
@@ -14,15 +15,10 @@
 }
 
 .taskListEmpty {
-  /* display: none; */
   display: flex;
   justify-content: center;
   align-items: center;
   flex: 1;
-
-  &.show {
-    display: flex;
-  }
 }
 
 .taskListEmptyContent {
@@ -40,15 +36,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 
   & > strong {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 }
 
 .addTaskBtn {
   --font-size: 0.9rem;
   --icon-size: 1rem;
-  --padding: 0.25rem 0.75rem;
+  --padding: 0.5rem 0.75rem;
 }

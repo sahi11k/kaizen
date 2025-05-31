@@ -1,101 +1,74 @@
-.task-item {
+.taskItem {
   display: flex;
-  gap: calc(var(--padding) * 2);
-  box-sizing: border-box;
-  padding: calc(var(--padding) * 2) var(--padding);
-  border-bottom: 1px solid var(--grey-tertiary);
-  cursor: pointer;
   align-items: center;
+  gap: 0.8em;
+
+  padding: 1em 0.5em 1em 0;
+  border-bottom: 1px solid var(--surface);
 
   &:first-of-type {
     padding-top: 0;
   }
 
-  &.hovered {
-    .task-item__actions {
-      --display: flex;
+  .taskItem__category {
+    font-size: 1.75rem;
+    margin-bottom: 2px;
+  }
+
+  .taskItem__details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    .taskItem__title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .taskItem__progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .taskItem__sessions {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+  }
+
+  .taskItem__actions {
+    display: none;
+    gap: 0.25em;
+  }
+
+  .taskItem__actionItem {
+    --padding: 0.5em;
+    --icon-size: 1.25rem;
+  }
+
+  &:hover {
+    .taskItem__actions {
+      display: flex;
     }
   }
 
   &.active {
-    .task-item__status {
-      .btn--icon {
-        --svg-fill: var(--green);
-        opacity: 1;
+    .taskItem__status {
+      .taskItem__actionItem {
+        --icon-fill: var(--accent-secondary);
       }
     }
 
-    .task-item__details--name {
+    .taskItem__title {
       text-decoration: line-through;
-      color: var(--light-grey);
+      color: var(--text-muted);
     }
   }
-}
-
-.task-item__actions {
-  --display: none;
-  gap: var(--padding);
-  display: var(--display);
-
-  .btn--icon[data-action="delete"] {
-    &:hover {
-      --svg-fill: var(--red);
-    }
-  }
-
-  .btn--icon[data-action="edit"] {
-    &:hover {
-      --svg-fill: var(--blue);
-    }
-  }
-
-  .btn--icon[data-action="drag"] {
-    cursor: grab;
-
-    &:active {
-      cursor: grabbing;
-    }
-  }
-}
-
-.task-item .btn--icon {
-  --btn-size: 28px;
-  --svg-fill: var(--white);
-}
-
-.task-item__status .btn--icon {
-  margin-top: 2px;
-}
-
-.task-item__category {
-  font-size: 1.5rem;
-  margin-bottom: 6px;
-}
-
-.task-item__details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.task-item__details--name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.task-item__details--progress-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.task-item__details--sessions {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--light-grey);
 }
