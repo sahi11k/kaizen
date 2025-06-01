@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./style.module.css";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import TaskItem from "@/components/Tasks/TaskItem";
-import AddModal from "@/components/Tasks/AddModal";
 import AddForm from "@/components/Tasks/AddForm";
 
 const Tasks = () => {
@@ -31,6 +30,7 @@ const Tasks = () => {
               </div>
             </div>
           )}
+          <AddForm visible={showModal} setVisible={setShowModal} />
         </div>
         <div className="card__footer">
           <button
@@ -44,7 +44,6 @@ const Tasks = () => {
           </button>
         </div>
       </div>
-      {showModal && <AddForm visible={showModal} setVisible={setShowModal} />}
     </>
   );
 };
