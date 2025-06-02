@@ -4,7 +4,7 @@ import {
   MAX_SESSIONS,
   CREATE,
   EDIT,
-} from "./src/utils/constants.js";
+} from "./constants.js";
 import store from "./store.js";
 import { getTemplate } from "./utils.js";
 import { renderTaskList } from "./tasks.js";

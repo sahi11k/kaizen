@@ -1,5 +1,5 @@
 import { showModal } from "./addTaskModal.js";
-import { CREATE, EDIT, taskCategoryIcons } from "./src/utils/constants.js";
+import { CREATE, EDIT, taskCategoryIcons } from "./constants.js";
 import { renderDailyProgress } from "./dailyProgress.js";
 import store from "./store.js";
 import { resetTimer, updateCurrentTask } from "./timer.js";

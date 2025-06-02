@@ -1,4 +1,4 @@
-import store from "./store.js";
+import store from "../../store.js";
 import { initDailyProgress } from "./dailyProgress.js";
 import { initTasks } from "./tasks.js";
 import { initTimer } from "./timer.js";

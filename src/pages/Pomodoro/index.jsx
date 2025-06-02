@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Tasks from "@/components/Tasks";
 import Timer from "@/components/Timer";
 import styles from "./style.module.css";

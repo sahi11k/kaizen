@@ -22,12 +22,17 @@ const AddForm = ({ visible, setVisible }) => {
           />
         </div>
         <div className={styles.formItem} data-field="total-sessions">
-          <label htmlFor="total-sessions">Total Sessions</label>
+          <label htmlFor="total-sessions">Total Sessions (Max 15)</label>
           <div className={styles.sessionControls}>
             <button className="btn" type="button">
               &#x2012;
             </button>
-            <input type="text" name="total-sessions" id="total-sessions" />
+            <input
+              type="text"
+              name="total-sessions"
+              id="total-sessions"
+              defaultValue={0}
+            />
             <button className="btn" type="button">
               &#43;
             </button>
