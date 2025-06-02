@@ -5,21 +5,35 @@ import TaskItem from "@/components/Tasks/TaskItem";
 import AddForm from "@/components/Tasks/AddForm";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    totalSessions: 0,
+  });
+
+  const handleSave = (task) => {
+    setTasks([...tasks, task]);
+    setShowModal(false);
+  };
+
+  const handleFormChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   return (
     <>
       <div className="card">
         <div className="card__header">Task List</div>
         <div className={`card__body ${styles.taskListContainer}`}>
-          {tasks.length ? (
-            <ul className={styles.taskList}>
-              {tasks.map((task) => (
-                <TaskItem key={task.id} task={task} />
-              ))}
-            </ul>
-          ) : (
+          <ul className={styles.taskList}>
+            {tasks.map((task) => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </ul>
+          {tasks.length === 0 && !showModal && (
             <div className={styles.taskListEmpty}>
               <div className={styles.taskListEmptyContent}>
                 <span className={styles.taskListEmptyIcon}> 🗂️ </span>
@@ -30,65 +44,39 @@ const Tasks = () => {
               </div>
             </div>
           )}
-          <AddForm visible={showModal} setVisible={setShowModal} />
+          {showModal && <AddForm form={form} />}
         </div>
-        <div className="card__footer">
-          <button
-            className={`btn ${styles.addTaskBtn}`}
-            onClick={() => setShowModal(true)}
-          >
-            <span className="btn__icon">
-              <PlusIcon />
-            </span>
-            <span className="btn__label">Add Task</span>
-          </button>
+        <div className={`card__footer ${styles.formFooter}`}>
+          {showModal ? (
+            <>
+              <button
+                className={`btn ${styles.addTaskBtn}`}
+                onClick={() => setShowModal(false)}
+              >
+                <span className="btn__label">Cancel</span>
+              </button>
+              <button
+                className={`btn btn--primary ${styles.addTaskBtn}`}
+                onClick={handleSave}
+              >
+                <span className="btn__label">Save</span>
+              </button>
+            </>
+          ) : (
+            <button
+              className={`btn ${styles.addTaskBtn}`}
+              onClick={() => setShowModal(true)}
+            >
+              <span className="btn__icon">
+                <PlusIcon />
+              </span>
+              <span className="btn__label">Add Task</span>
+            </button>
+          )}
         </div>
       </div>
     </>
   );
 };
-
-const TASKS = [
-  {
-    id: "task-1",
-    name: "Complete JavaScript Course",
-    category: "study",
-    sessions: 8,
-    completedSessions: 3,
-    completed: false,
-  },
-  {
-    id: "task-2",
-    name: "Morning Workout Routine",
-    category: "health",
-    sessions: 5,
-    completedSessions: 4,
-    completed: false,
-  },
-  {
-    id: "task-3",
-    name: "Write Blog Post",
-    category: "writing",
-    sessions: 3,
-    completedSessions: 3,
-    completed: true,
-  },
-  {
-    id: "task-4",
-    name: "Read Design Patterns Book - Devils wear Prada",
-    category: "study",
-    sessions: 6,
-    completedSessions: 2,
-    completed: false,
-  },
-  {
-    id: "task-5",
-    name: "Practice Piano",
-    category: "music",
-    sessions: 10,
-    completedSessions: 7,
-    completed: false,
-  },
-];
 
 export default Tasks;

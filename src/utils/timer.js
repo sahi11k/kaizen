@@ -1,8 +1,4 @@
-import {
-  ICON_STOP,
-  ICON_PLAY,
-  taskCategoryIcons,
-} from "./src/utils/constants.js";
+import { ICON_STOP, ICON_PLAY, taskCategoryIcons } from "./constants.js";
 import store from "./store.js";
 import { finishSession } from "./tasks.js";
 

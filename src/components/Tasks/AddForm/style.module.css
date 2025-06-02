@@ -1,10 +1,15 @@
 .formContainer {
-  border: 2px solid var(--surface);
-  border-radius: 0.5em;
-  padding: 1em;
-  font-size: 0.9rem;
+  padding-top: 1em;
+
+  form {
+    border: 2px solid var(--surface);
+    border-radius: 0.5em;
+    font-size: 0.9rem;
+    padding: 1em;
+  }
 
   .formItem {
+    --height: 40px;
     display: flex;
     align-items: center;
     gap: 1em;
@@ -20,7 +25,7 @@
       background-color: transparent;
       color: var(--text-base);
       border-radius: 0.25em;
-      height: 40px;
+      height: var(--height);
 
       &:focus {
         border-color: var(--accent-primary);
@@ -30,6 +35,11 @@
 
   select {
     width: 80px !important;
+
+    option {
+      background-color: var(--surface);
+      color: var(--text-base);
+    }
   }
 
   label {
@@ -44,13 +54,20 @@
     }
 
     .sessionControls {
-      flex: 1;
       display: flex;
       align-items: center;
+      justify-content: right;
       border: 2px solid var(--surface);
 
+      :global(.btn) {
+        border-radius: 0 !important;
+      }
+
       input {
-        border: none;
+        border-top-width: 0;
+        border-bottom-width: 0;
+        width: 60px;
+        text-align: center;
       }
     }
   }
