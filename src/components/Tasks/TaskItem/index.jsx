@@ -6,7 +6,7 @@ import DeleteIcon from "@/assets/icons/delete.svg?react";
 import DragIcon from "@/assets/icons/drag.svg?react";
 import { taskCategoryIcons } from "@/utils/constants";
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, onEdit, onRemove, onDrag }) => {
   return (
     <li className={`${styles.taskItem} ${task.completed ? styles.active : ""}`}>
       <div className={styles.taskItem__status}>
@@ -20,21 +20,32 @@ const TaskItem = ({ task }) => {
         </div>
       </div>
       <div className={styles.taskItem__details}>
-        <div className={styles.taskItem__title}>{task.name}</div>
+        <div className={styles.taskItem__title}>{task.title}</div>
         <div className={styles.taskItem__progress}>
           <div className={styles.taskItem__sessions}>
-            Sessions : {task.completedSessions}/{task.sessions}
+            {task.completed
+              ? "Done"
+              : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
           </div>
         </div>
       </div>
       <div className={styles.taskItem__actions}>
-        <button className={`btn ${styles.taskItem__actionItem}`}>
+        <button
+          className={`btn ${styles.taskItem__actionItem}`}
+          onClick={onEdit}
+        >
           <EditIcon />
         </button>
-        <button className={`btn ${styles.taskItem__actionItem}`}>
+        <button
+          className={`btn ${styles.taskItem__actionItem}`}
+          onClick={onRemove}
+        >
           <DeleteIcon />
         </button>
-        <button className={`btn ${styles.taskItem__actionItem}`}>
+        <button
+          className={`btn ${styles.taskItem__actionItem}`}
+          onClick={onDrag}
+        >
           <DragIcon />
         </button>
       </div>
