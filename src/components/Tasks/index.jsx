@@ -3,7 +3,11 @@ import styles from "./style.module.css";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import TaskItem from "@/components/Tasks/TaskItem";
 import AddForm from "@/components/Tasks/AddForm";
-import { CREATE, EDIT, MIN_SESSIONS } from "@/utils/constants";
+import { MIN_SESSIONS } from "@/utils/constants";
+import { useTasksContext } from "@/contexts/TasksContext";
+
+const EDIT = "edit";
+const CREATE = "create";
 
 const DEFAULT_FORM_VALUES = {
   title: "",
@@ -12,23 +16,32 @@ const DEFAULT_FORM_VALUES = {
   category: "others",
 };
 
+const DEFAULT_TITLE = "Untitled Task";
+
 const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
+  const { tasks, setTasks } = useTasksContext();
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
 
-  const handleSave = () => {
-    const task = {
-      ...formValues,
-      ...(mode === CREATE
+  const formSubmitHandler = () => {
+    const defaultProps =
+      mode === CREATE
         ? {
             id: crypto.randomUUID(),
             completed: false,
             completedSessions: 0,
           }
-        : {}),
+        : {};
+
+    const { title, ...rest } = formValues;
+
+    const task = {
+      ...defaultProps,
+      ...rest,
+      title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     };
+
     if (mode === CREATE) {
       setTasks((prevTasks) => [...prevTasks, task]);
     } else if (mode === EDIT) {
@@ -45,8 +58,22 @@ const Tasks = () => {
     setMode(CREATE);
   };
 
-  const handleRemove = (taskId) => {
+  const taskRemoveHandler = (taskId) => {
     setTasks((prevTasks) => prevTasks.filter((t) => t.id !== taskId));
+  };
+
+  const taskCompleteHandler = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((t) =>
+        t.id === taskId ? { ...t, completed: !t.completed } : t
+      )
+    );
+  };
+
+  const taskEditHandler = (task) => {
+    setShowModal(true);
+    setFormValues(task);
+    setMode(EDIT);
   };
 
   // function onDragStart(e) {
@@ -83,33 +110,23 @@ const Tasks = () => {
   //   renderTaskList(tasks);
   // }
 
-  // const onTaskComplete = ($taskItem) => {
-  //   const taskId = $taskItem.dataset.id;
-  //   const task = store.getTaskById(taskId);
-  //   task.completed = !task.completed;
-  //   task.completedSessions = task.completed ? task.sessions : 0;
-  //   store.updateTask(task);
-  //   const tasks = store.getTasks();
-  //   renderTaskList(tasks);
-  // };
-
   return (
     <>
       <div className="card">
-        <div className="card__header">Task List</div>
+        <div className="card__header">
+          Task List
+          {/* {tasks.length > 0 && <span>{0 / tasks.length}</span>} */}
+        </div>
         <div className={`card__body ${styles.taskListContainer}`}>
           <ul className={styles.taskList}>
             {tasks.map((task) => (
               <TaskItem
                 key={task.id}
                 task={task}
-                onEdit={() => {
-                  setShowModal(true);
-                  setFormValues(task);
-                  setMode(EDIT);
-                }}
-                onRemove={() => handleRemove(task.id)}
+                onEdit={() => taskEditHandler(task)}
+                onRemove={() => taskRemoveHandler(task.id)}
                 onDrag={() => {}}
+                onComplete={() => taskCompleteHandler(task.id)}
               />
             ))}
           </ul>
@@ -139,7 +156,7 @@ const Tasks = () => {
               </button>
               <button
                 className={`btn btn--primary ${styles.addTaskBtn}`}
-                onClick={handleSave}
+                onClick={formSubmitHandler}
               >
                 <span className="btn__label">Save</span>
               </button>

@@ -1,4 +1,4 @@
-export const taskCategoryIcons = {
+export const TASK_CATEGORY_ICONS = {
   work: "💼",
   play: "🎮",
   learn: "📚",
@@ -11,37 +11,34 @@ export const TASK_CATEGORIES = [
   {
     key: "work",
     name: "Work",
-    icon: taskCategoryIcons.work,
+    icon: TASK_CATEGORY_ICONS.work,
   },
   {
     key: "learn",
     name: "Learn",
-    icon: taskCategoryIcons.learn,
+    icon: TASK_CATEGORY_ICONS.learn,
   },
   {
     key: "fitness",
     name: "Fitness",
-    icon: taskCategoryIcons.fitness,
+    icon: TASK_CATEGORY_ICONS.fitness,
   },
   {
     key: "play",
     name: "Play",
-    icon: taskCategoryIcons.play,
+    icon: TASK_CATEGORY_ICONS.play,
   },
   {
     key: "read",
     name: "Read",
-    icon: taskCategoryIcons.read,
+    icon: TASK_CATEGORY_ICONS.read,
   },
   {
     key: "others",
     name: "Others",
-    icon: taskCategoryIcons.others,
+    icon: TASK_CATEGORY_ICONS.others,
   },
 ];
 
-export const MAX_SESSIONS = 15;
+export const MAX_SESSIONS = 10;
 export const MIN_SESSIONS = 1;
-
-export const EDIT = "edit";
-export const CREATE = "create";

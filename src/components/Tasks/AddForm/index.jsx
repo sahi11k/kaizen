@@ -7,40 +7,6 @@ const AddForm = ({ formValues, setFormValues }) => {
     setFormValues((prev) => ({ ...prev, [key]: value }));
   };
 
-  // function validateTask(task) {
-  //   if (!task.name || task.name.trim() === "") {
-  //     addError("Please enter valid task name", "task-name");
-  //     return false;
-  //   }
-  //   if (!task.category) {
-  //     addError("Please select a category", "task-category");
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  // function addError(errorMessage, field) {
-  //   const $target = document
-  //     .querySelector(`[data-field="${field}"]`)
-  //     .closest(".form__item");
-
-  //   if ($target.querySelector(".error")) {
-  //     return;
-  //   }
-
-  //   const $error = document.createElement("div");
-  //   $error.classList.add("error");
-  //   $error.textContent = errorMessage;
-  //   $target.appendChild($error);
-  // }
-
-  // function removeErrors() {
-  //   const $errors = document.querySelectorAll(".error");
-  //   $errors.forEach((error) => {
-  //     error.remove();
-  //   });
-  // }
-
   return (
     <div className={styles.formContainer}>
       <form className={styles.form}>
@@ -68,8 +34,11 @@ const AddForm = ({ formValues, setFormValues }) => {
             onChange={(e) => handleChange("title", e.target.value)}
           />
         </div>
+
         <div className={styles.formItem} data-field="total-sessions">
-          <label htmlFor="total-sessions">Total Sessions (Max 15)</label>
+          <label htmlFor="total-sessions">
+            Total Sessions (Max {MAX_SESSIONS})
+          </label>
           <div className={styles.sessionControls}>
             <button
               className="btn"
@@ -88,7 +57,7 @@ const AddForm = ({ formValues, setFormValues }) => {
               name="total-sessions"
               id="total-sessions"
               value={formValues.totalSessions}
-              onChange={(e) => handleChange("totalSessions", e.target.value)}
+              disabled
             />
             <button
               className="btn"
