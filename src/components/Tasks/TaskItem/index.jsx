@@ -4,19 +4,22 @@ import CheckIcon from "@/assets/icons/check.svg?react";
 import EditIcon from "@/assets/icons/edit.svg?react";
 import DeleteIcon from "@/assets/icons/delete.svg?react";
 import DragIcon from "@/assets/icons/drag.svg?react";
-import { taskCategoryIcons } from "@/utils/constants";
+import { TASK_CATEGORY_ICONS } from "@/utils/constants";
 
-const TaskItem = ({ task, onEdit, onRemove, onDrag }) => {
+const TaskItem = ({ task, onEdit, onRemove, onDrag, onComplete }) => {
   return (
     <li className={`${styles.taskItem} ${task.completed ? styles.active : ""}`}>
       <div className={styles.taskItem__status}>
-        <button className={`btn ${styles.taskItem__actionItem}`}>
+        <button
+          className={`btn ${styles.taskItem__actionItem}`}
+          onClick={onComplete}
+        >
           <CheckIcon />
         </button>
       </div>
       <div className={styles.taskItem__category}>
         <div className={styles.taskItem__categoryIcon}>
-          {taskCategoryIcons[task.category] || taskCategoryIcons.others}
+          {TASK_CATEGORY_ICONS[task.category] || TASK_CATEGORY_ICONS.others}
         </div>
       </div>
       <div className={styles.taskItem__details}>

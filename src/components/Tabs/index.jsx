@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
 
-const Tabs = ({ children, defaultTab = 0, onTabChange }) => {
-  const [activeTab, setActiveTab] = useState(defaultTab);
-
+const Tabs = ({
+  children,
+  defaultTab = 0,
+  onTabChange,
+  activeTab = defaultTab,
+}) => {
   const tabs = React.Children.toArray(children).filter(
     (child) => child.type.name === "Tab"
   );
@@ -14,7 +17,6 @@ const Tabs = ({ children, defaultTab = 0, onTabChange }) => {
     if (onTabChange && typeof onTabChange === "function") {
       onTabChange(key);
     }
-    setActiveTab(key);
   };
 
   return (

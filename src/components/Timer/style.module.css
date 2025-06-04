@@ -49,11 +49,11 @@
   margin-top: -4px;
 }
 
-.currentTask__id {
+.currentTask__currentSession {
   flex-shrink: 0;
 }
 
-.currentTask__name {
+.currentTask__title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
