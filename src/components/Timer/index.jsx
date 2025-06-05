@@ -8,14 +8,11 @@ import Tabs from "@/components/Tabs";
 import ClockIcon from "@/assets/icons/clock.svg?react";
 import CupIcon from "@/assets/icons/cup.svg?react";
 import { useTasksContext } from "@/contexts/TasksContext";
-import { TASK_CATEGORY_ICONS } from "@/utils/constants";
+import { TASK_CATEGORY_ICONS, TIMER_CONSTANTS } from "@/utils/constants";
+import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 
-const ONGOING_TAB = "ongoing";
-const BREAK_TAB = "break";
-
-const TASK_TIME = 1 * 10;
-const SHORT_BREAK_TIME = 1 * 5;
-const LONG_BREAK_TIME = 1 * 8;
+const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
+  TIMER_CONSTANTS;
 
 const Timer = () => {
   const { tasks } = useTasksContext();
@@ -27,8 +24,14 @@ const Timer = () => {
   });
 
   const [timerStarted, setTimerStarted] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(TASK_TIME);
+  const [pomodoroCount, setPomodoroCount] = useState(0);
+  const [isLongBreak, setIsLongBreak] = useState(false);
   const intervalRef = useRef(null);
+
+  const [timerValue, setTimerValue] = useGetTimerValue({
+    activeTab: currentTab,
+    isLongBreak,
+  });
 
   useEffect(() => {
     const getCurrentTaskDetails = () => {
@@ -61,12 +64,22 @@ const Timer = () => {
   const startTimer = () => {
     if (timerStarted) return;
     intervalRef.current = setInterval(() => {
-      setRemainingTime((prev) => prev - 1);
+      setTimerValue((prev) => {
+        if (prev <= 0) {
+          handleTimerComplete();
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
     setTimerStarted(true);
   };
 
   const stopTimer = () => {
+    clearTimerInterval();
+  };
+
+  const clearTimerInterval = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -75,148 +88,43 @@ const Timer = () => {
   };
 
   const resetTimer = () => {
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-    setRemainingTime(TASK_TIME);
-    setTimerStarted(false);
+    clearTimerInterval();
+    setTimerValue(getCurrentTime(currentTab, isLongBreak));
   };
 
   const skipTimer = () => {
-    const nextTab = currentTab === ONGOING_TAB ? BREAK_TAB : ONGOING_TAB;
-    handleTabChange(nextTab);
+    if (currentTab === ONGOING_TAB) {
+      setPomodoroCount(pomodoroCount + 1);
+    }
+    handleTabChange(currentTab === ONGOING_TAB ? BREAK_TAB : ONGOING_TAB);
   };
 
   const handleTabChange = (key) => {
     setCurrentTab(key);
-    resetTimer();
-    setRemainingTime(key === ONGOING_TAB ? TASK_TIME : SHORT_BREAK_TIME);
+    clearTimerInterval();
   };
 
   const handleTimerComplete = () => {
-    console.info("timer complete");
+    if (currentTab === ONGOING_TAB) {
+      setPomodoroCount(pomodoroCount + 1);
+    }
+    skipTimer();
   };
 
-  // function startTimer() {
-  //   if (!timerStarted) {
-  //     remainingTime = duration;
-  //   }
+  useEffect(() => {
+    if (pomodoroCount > 0 && pomodoroCount % 4 === 0) {
+      setIsLongBreak(true);
+    } else {
+      setIsLongBreak(false);
+    }
+  }, [pomodoroCount]);
 
-  //   intervalId = setInterval(() => {
-  //     remainingTime--;
-  //     updateTimer(remainingTime);
-  //   }, 1000);
-
-  //   timerStarted = true;
-  //   timerStartAudio.play();
-  //   $timerStartBtn.querySelector(".btn__icon").innerHTML = ICON_STOP;
-  //   $timerStartBtn.querySelector(".btn__label").textContent = "Stop";
-  //   $timerStartBtn.dataset.action = "stop";
-  // }
-
-  // function stopTimer() {
-  //   clearInterval(intervalId);
-  //   $timerStartBtn.querySelector(".btn__icon").innerHTML = ICON_PLAY;
-  //   $timerStartBtn.querySelector(".btn__label").textContent = "Start";
-  //   $timerStartBtn.dataset.action = "start";
-  //   timerStartAudio.pause();
-  //   timerStartAudio.currentTime = 0;
-  // }
-
-  // export function resetTimer() {
-  //   if (!timerStarted) return;
-  //   stopTimer();
-  //   updateTimer(duration);
-  //   timerStarted = false;
-  // }
-
-  // function skipTimer() {
-  //   const inActiveEl = getInactiveTab();
-  //   onTabChange({ target: inActiveEl });
-  // }
-
-  // function onTabChange(e) {
-  //   const $target = e.target.closest(".tab-nav__item");
-  //   if ($target) {
-  //     clearInterval(intervalId);
-  //     activeTab = $target.dataset.tab;
-  //     duration =
-  //       activeTab === ONGOING_TAB
-  //         ? TASK_TIME
-  //         : isLongBreak
-  //         ? LONG_BREAK_TIME
-  //         : SHORT_BREAK_TIME;
-  //     changeActiveTab(activeTab);
-  //     updateTimer(duration);
-  //     updateCurrentTask(store.getTasks());
-  //     resetTimer();
-  //   }
-  // }
-
-  // function changeActiveTab(activeTab) {
-  //   for (const $tab of $tabNav.children) {
-  //     $tab.classList.toggle("active", $tab.dataset.tab === activeTab);
-  //   }
-  // }
-
-  // function updateTimer(remainingTime) {
-  //   if (remainingTime < 0) {
-  //     clearInterval(intervalId);
-  //     timerStartAudio.pause();
-  //     timerStartAudio.currentTime = 0;
-  //     timerFinishedAudio.play();
-  //     finishSession(currentTaskId);
-  //     if (activeTab === ONGOING_TAB) {
-  //       pomodoroCount++;
-  //       if (pomodoroCount % 4 === 0) {
-  //         isLongBreak = true;
-  //       } else {
-  //         isLongBreak = false;
-  //       }
-  //     }
-  //     const inActiveEl = getInactiveTab();
-  //     onTabChange({ target: inActiveEl });
-  //     return;
-  //   }
-
-  //   const $timerValue = document.querySelector(".timer__value");
-  //   const $timerProgressBar = document.querySelector(".timer__progress-bar");
-
-  //   const formattedTime = getFormattedTime(remainingTime);
-  //   $timerValue.textContent = formattedTime;
-  //   $timerProgressBar.style.setProperty(
-  //     "--progress",
-  //     getProgressPercentage(remainingTime)
-  //   );
-  //   document.title = `ZenTen | ${
-  //     activeTab === ONGOING_TAB ? "🍅" : "💤"
-  //   } : ${formattedTime}`;
-  // }
-
-  // function getProgressPercentage(remainingTime) {
-  //   return ((duration - remainingTime) / duration) * 100;
-  // }
-
-  // export function updateCurrentTask(tasks) {
-  //   const currentTask = tasks.find((task) => !task.completed);
-  //   const $currentTask = document.querySelector(".current-task");
-  //   currentTaskId = currentTask?.id;
-  //   let textContent = "";
-  //   let category = "";
-  //   let currentSession = "";
-
-  //   $currentTask.querySelector(".current-task__name").textContent = textContent;
-  //   $currentTask.querySelector(".current-task__current-session").textContent =
-  //     currentSession;
-  //   $currentTask.querySelector(".current-task__category").textContent =
-  //     taskCategoryIcons[category];
-  // }
-
-  const getFormattedTime = (seconds) => {
-    const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
-    const remainingSeconds = String(seconds % 60).padStart(2, "0");
-
-    return `${minutes}:${remainingSeconds}`;
-  };
+  useEffect(() => {
+    document.title =
+      currentTab === ONGOING_TAB
+        ? `🍅 Pomodoro : ${getFormattedTime(timerValue)}`
+        : `💤 Break : ${getFormattedTime(timerValue)}`;
+  }, [currentTab, timerValue]);
 
   return (
     <div className={`card`}>
@@ -238,12 +146,7 @@ const Timer = () => {
             tabKey={ONGOING_TAB}
             key={ONGOING_TAB}
           >
-            <div className={styles.timer__display}>
-              <div className={styles.timer__value}>
-                {getFormattedTime(remainingTime)}
-              </div>
-              <div className={styles.timer__progressBar}></div>
-            </div>
+            <TabContent timerValue={timerValue} duration={TASK_TIME} />
           </Tabs.Tab>
           <Tabs.Tab
             label={
@@ -257,12 +160,10 @@ const Timer = () => {
             tabKey={BREAK_TAB}
             key={BREAK_TAB}
           >
-            <div className={styles.timer__display}>
-              <div className={styles.timer__value}>
-                {getFormattedTime(remainingTime)}
-              </div>
-              <div className={styles.timer__progressBar}></div>
-            </div>
+            <TabContent
+              timerValue={timerValue}
+              duration={isLongBreak ? LONG_BREAK_TIME : SHORT_BREAK_TIME}
+            />
           </Tabs.Tab>
         </Tabs>
         <div className={styles.currentTask}>
@@ -304,6 +205,32 @@ const Timer = () => {
       </div>
     </div>
   );
+};
+
+const TabContent = ({ timerValue, duration }) => {
+  console.info(timerValue, duration);
+
+  const getProgressPercentage = () => {
+    return ((duration - timerValue) / duration) * 100;
+  };
+
+  return (
+    <div className={styles.timer__display}>
+      <div className={styles.timer__value}>{getFormattedTime(timerValue)}</div>
+      <div
+        className={styles.timer__progressBar}
+        style={{
+          "--progress": getProgressPercentage(),
+        }}
+      ></div>
+    </div>
+  );
+};
+
+const getFormattedTime = (seconds) => {
+  const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const remainingSeconds = String(seconds % 60).padStart(2, "0");
+  return `${minutes}:${remainingSeconds}`;
 };
 
 export default Timer;
