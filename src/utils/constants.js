@@ -42,3 +42,11 @@ export const TASK_CATEGORIES = [
 
 export const MAX_SESSIONS = 10;
 export const MIN_SESSIONS = 1;
+
+export const TIMER_CONSTANTS = {
+  ONGOING_TAB: "ongoing",
+  BREAK_TAB: "break",
+  TASK_TIME: 1 * 2,
+  SHORT_BREAK_TIME: 1 * 5,
+  LONG_BREAK_TIME: 1 * 8,
+};
