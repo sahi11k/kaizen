@@ -15,12 +15,13 @@ const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
   TIMER_CONSTANTS;
 
 const Timer = () => {
-  const { tasks } = useTasksContext();
+  const { tasks, setTasks } = useTasksContext();
   const [currentTab, setCurrentTab] = useState(ONGOING_TAB);
   const [currentTask, setCurrentTask] = useState({
     category: "",
     title: "",
     currentSession: "",
+    taskId: "",
   });
 
   const [timerStarted, setTimerStarted] = useState(false);
@@ -32,6 +33,18 @@ const Timer = () => {
     activeTab: currentTab,
     isLongBreak,
   });
+
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    setDuration(
+      currentTab === ONGOING_TAB
+        ? TASK_TIME
+        : isLongBreak
+        ? LONG_BREAK_TIME
+        : SHORT_BREAK_TIME
+    );
+  }, [currentTab, isLongBreak]);
 
   useEffect(() => {
     const getCurrentTaskDetails = () => {
@@ -56,10 +69,26 @@ const Timer = () => {
         title: firstIncompleteTask.title,
         category: firstIncompleteTask.category,
         currentSession: `#${firstIncompleteTask.completedSessions + 1} -`,
+        taskId: firstIncompleteTask.id,
       };
     };
     setCurrentTask(getCurrentTaskDetails());
   }, [tasks, currentTab]);
+
+  useEffect(() => {
+    if (pomodoroCount > 0 && pomodoroCount % 4 === 0) {
+      setIsLongBreak(true);
+    } else {
+      setIsLongBreak(false);
+    }
+  }, [pomodoroCount]);
+
+  useEffect(() => {
+    document.title =
+      currentTab === ONGOING_TAB
+        ? `🍅 Pomodoro : ${getFormattedTime(timerValue)}`
+        : `💤 Break : ${getFormattedTime(timerValue)}`;
+  }, [currentTab, timerValue]);
 
   const startTimer = () => {
     if (timerStarted) return;
@@ -93,9 +122,7 @@ const Timer = () => {
   };
 
   const skipTimer = () => {
-    if (currentTab === ONGOING_TAB) {
-      setPomodoroCount(pomodoroCount + 1);
-    }
+    finishSession();
     handleTabChange(currentTab === ONGOING_TAB ? BREAK_TAB : ONGOING_TAB);
   };
 
@@ -105,26 +132,27 @@ const Timer = () => {
   };
 
   const handleTimerComplete = () => {
-    if (currentTab === ONGOING_TAB) {
-      setPomodoroCount(pomodoroCount + 1);
-    }
+    finishSession();
     skipTimer();
   };
 
-  useEffect(() => {
-    if (pomodoroCount > 0 && pomodoroCount % 4 === 0) {
-      setIsLongBreak(true);
-    } else {
-      setIsLongBreak(false);
+  const finishSession = () => {
+    if (currentTab === ONGOING_TAB) {
+      setPomodoroCount(pomodoroCount + 1);
+      const updatedTasks = tasks.map((task) => {
+        if (task.id === currentTask.taskId) {
+          const updatedSession = task.completedSessions + 1;
+          return {
+            ...task,
+            completedSessions: updatedSession,
+            completed: updatedSession === task.totalSessions,
+          };
+        }
+        return task;
+      });
+      setTasks(updatedTasks);
     }
-  }, [pomodoroCount]);
-
-  useEffect(() => {
-    document.title =
-      currentTab === ONGOING_TAB
-        ? `🍅 Pomodoro : ${getFormattedTime(timerValue)}`
-        : `💤 Break : ${getFormattedTime(timerValue)}`;
-  }, [currentTab, timerValue]);
+  };
 
   return (
     <div className={`card`}>
@@ -146,7 +174,7 @@ const Timer = () => {
             tabKey={ONGOING_TAB}
             key={ONGOING_TAB}
           >
-            <TabContent timerValue={timerValue} duration={TASK_TIME} />
+            <TabContent timerValue={timerValue} duration={duration} />
           </Tabs.Tab>
           <Tabs.Tab
             label={
@@ -160,10 +188,7 @@ const Timer = () => {
             tabKey={BREAK_TAB}
             key={BREAK_TAB}
           >
-            <TabContent
-              timerValue={timerValue}
-              duration={isLongBreak ? LONG_BREAK_TIME : SHORT_BREAK_TIME}
-            />
+            <TabContent timerValue={timerValue} duration={duration} />
           </Tabs.Tab>
         </Tabs>
         <div className={styles.currentTask}>
@@ -186,6 +211,7 @@ const Timer = () => {
             <button
               className={`btn  ${styles["timerControls__item--play"]}`}
               onClick={timerStarted ? stopTimer : startTimer}
+              style={{ outline: timerStarted ? "2px solid white" : "" }}
             >
               <span className="btn__icon">
                 {timerStarted ? <StopIcon /> : <PlayIcon />}
@@ -208,8 +234,6 @@ const Timer = () => {
 };
 
 const TabContent = ({ timerValue, duration }) => {
-  console.info(timerValue, duration);
-
   const getProgressPercentage = () => {
     return ((duration - timerValue) / duration) * 100;
   };
