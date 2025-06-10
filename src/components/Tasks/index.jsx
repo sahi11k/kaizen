@@ -5,6 +5,8 @@ import TaskItem from "@/components/Tasks/TaskItem";
 import AddForm from "@/components/Tasks/AddForm";
 import { MIN_SESSIONS } from "@/utils/constants";
 import { useTasksContext } from "@/contexts/TasksContext";
+import SortableContainer from "@/components/Tasks/SortableContainer";
+import { deepCopy } from "@/utils/utils";
 
 const EDIT = "edit";
 const CREATE = "create";
@@ -20,6 +22,7 @@ const DEFAULT_TITLE = "Untitled Task";
 
 const Tasks = () => {
   const { tasks, setTasks } = useTasksContext();
+
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
@@ -76,39 +79,10 @@ const Tasks = () => {
     setMode(EDIT);
   };
 
-  // function onDragStart(e) {
-  //   const $dragHandle = e.target.closest('[data-action="drag"]');
-  //   if (!$dragHandle) return;
-  //   const $taskItem = $dragHandle.closest(".task-item");
-  //   e.dataTransfer.setData("text/plain", $taskItem.dataset.id);
-  //   e.dataTransfer.setDragImage($taskItem, $taskItem.clientWidth, 0);
-  // }
-
-  // function onDragOver(e) {
-  //   e.preventDefault();
-  // }
-
-  // function onDrop(e) {
-  //   e.preventDefault();
-  //   const draggedTaskId = e.dataTransfer.getData("text/plain");
-  //   const $dropTarget = e.target.closest(".task-item");
-
-  //   if (!$dropTarget || draggedTaskId === $dropTarget.dataset.id) return;
-
-  //   const tasks = store.getTasks();
-  //   const draggedTaskIndex = tasks.findIndex(
-  //     (task) => task.id === draggedTaskId
-  //   );
-  //   const dropTargetIndex = tasks.findIndex(
-  //     (task) => task.id === $dropTarget.dataset.id
-  //   );
-
-  //   const [draggedTask] = tasks.splice(draggedTaskIndex, 1);
-  //   tasks.splice(dropTargetIndex, 0, draggedTask);
-
-  //   store.updateTasks(tasks);
-  //   renderTaskList(tasks);
-  // }
+  const taskDragHandler = (updatedTasks) => {
+    console.log(updatedTasks);
+    setTasks(updatedTasks);
+  };
 
   return (
     <>
@@ -119,16 +93,20 @@ const Tasks = () => {
         </div>
         <div className={`card__body ${styles.taskListContainer}`}>
           <ul className={styles.taskList}>
-            {tasks.map((task) => (
-              <TaskItem
-                key={task.id}
-                task={task}
-                onEdit={() => taskEditHandler(task)}
-                onRemove={() => taskRemoveHandler(task.id)}
-                onDrag={() => {}}
-                onComplete={() => taskCompleteHandler(task.id)}
-              />
-            ))}
+            <SortableContainer
+              tasks={deepCopy(tasks)}
+              onDragEnd={taskDragHandler}
+            >
+              {tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  onEdit={() => taskEditHandler(task)}
+                  onRemove={() => taskRemoveHandler(task.id)}
+                  onComplete={() => taskCompleteHandler(task.id)}
+                />
+              ))}
+            </SortableContainer>
           </ul>
           {tasks.length === 0 && !showModal && (
             <div className={styles.taskListEmpty}>

@@ -46,7 +46,7 @@ export const MIN_SESSIONS = 1;
 export const TIMER_CONSTANTS = {
   ONGOING_TAB: "ongoing",
   BREAK_TAB: "break",
-  TASK_TIME: 1 * 2,
-  SHORT_BREAK_TIME: 1 * 5,
-  LONG_BREAK_TIME: 1 * 8,
+  TASK_TIME: 25 * 60,
+  SHORT_BREAK_TIME: 5 * 60,
+  LONG_BREAK_TIME: 15 * 60,
 };

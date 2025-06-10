@@ -5,10 +5,24 @@ import EditIcon from "@/assets/icons/edit.svg?react";
 import DeleteIcon from "@/assets/icons/delete.svg?react";
 import DragIcon from "@/assets/icons/drag.svg?react";
 import { TASK_CATEGORY_ICONS } from "@/utils/constants";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-const TaskItem = ({ task, onEdit, onRemove, onDrag, onComplete }) => {
+const TaskItem = ({ task, onEdit, onRemove, onComplete }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: task.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
-    <li className={`${styles.taskItem} ${task.completed ? styles.active : ""}`}>
+    <li
+      ref={setNodeRef}
+      className={`${styles.taskItem} ${task.completed ? styles.active : ""}`}
+      style={style}
+    >
       <div className={styles.taskItem__status}>
         <button
           className={`btn ${styles.taskItem__actionItem}`}
@@ -47,7 +61,8 @@ const TaskItem = ({ task, onEdit, onRemove, onDrag, onComplete }) => {
         </button>
         <button
           className={`btn ${styles.taskItem__actionItem}`}
-          onClick={onDrag}
+          {...attributes}
+          {...listeners}
         >
           <DragIcon />
         </button>
