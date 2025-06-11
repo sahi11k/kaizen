@@ -60,7 +60,7 @@ const TaskItem = ({ task, onEdit, onRemove, onComplete }) => {
           <DeleteIcon />
         </button>
         <button
-          className={`btn ${styles.taskItem__actionItem}`}
+          className={`btn ${styles.taskItem__actionItem} ${styles.taskItem__actionItemDrag}`}
           {...attributes}
           {...listeners}
         >

@@ -84,12 +84,20 @@ const Tasks = () => {
     setTasks(updatedTasks);
   };
 
+  const getCompletedTasks = () => {
+    return tasks.filter((task) => task.completed).length;
+  };
+
   return (
     <>
       <div className="card">
-        <div className="card__header">
+        <div className={`card__header ${styles.taskListHeader}`}>
           Task List
-          {/* {tasks.length > 0 && <span>{0 / tasks.length}</span>} */}
+          {tasks.length > 0 && (
+            <span className={styles.taskListHeader__completed}>
+              ({getCompletedTasks()}/{tasks.length})
+            </span>
+          )}
         </div>
         <div className={`card__body ${styles.taskListContainer}`}>
           <ul className={styles.taskList}>
