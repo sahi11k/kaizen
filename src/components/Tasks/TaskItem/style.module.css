@@ -2,13 +2,9 @@
   display: flex;
   align-items: center;
   gap: 0.8em;
-
+  background-color: var(--container);
   padding: 1em 0.5em 1em 0;
   border-bottom: 1px solid var(--surface);
-
-  &:first-of-type {
-    padding-top: 0;
-  }
 
   .taskItem__category {
     font-size: 1.75rem;
@@ -51,6 +47,13 @@
   .taskItem__actionItem {
     --padding: 0.5em;
     --icon-size: 1.25rem;
+  }
+
+  .taskItem__actionItemDrag {
+    cursor: grab;
+    &:active {
+      cursor: grabbing;
+    }
   }
 
   &:hover {

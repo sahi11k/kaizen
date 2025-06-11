@@ -1,7 +1,7 @@
 .taskListContainer {
   display: flex;
   flex-direction: column;
-  min-height: 300px !important;
+  min-height: 275px !important;
   max-height: 600px !important;
 }
 
@@ -12,6 +12,16 @@
   overflow: auto;
   max-height: 100%;
   scrollbar-width: thin;
+}
+
+.taskListHeader {
+  padding-bottom: 0 !important;
+}
+
+.taskListHeader__completed {
+  margin-left: 0.75em;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 .taskListEmpty {

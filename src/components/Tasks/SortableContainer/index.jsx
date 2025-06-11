@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   DndContext,
@@ -7,12 +7,12 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragOverlay,
 } from "@dnd-kit/core";
 
 import {
   restrictToFirstScrollableAncestor,
   restrictToVerticalAxis,
-  restrictToWindowEdges,
 } from "@dnd-kit/modifiers";
 
 import {
@@ -21,8 +21,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import TaskItem from "@/components/Tasks/TaskItem";
 
 const SortableContainer = ({ tasks, children, onDragEnd }) => {
+  const [activeTask, setActiveTask] = useState(null);
   const items = tasks.map((task) => task.id);
 
   const sensors = useSensors(
@@ -43,24 +45,39 @@ const SortableContainer = ({ tasks, children, onDragEnd }) => {
 
       onDragEnd(updatedTasks(tasks));
     }
+    setActiveTask(null);
+  };
+
+  const handleDragStart = (event) => {
+    const activeTask = tasks.find((task) => task.id === event.active.id);
+    setActiveTask(activeTask);
   };
 
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
+      modifiers={[restrictToVerticalAxis, restrictToFirstScrollableAncestor]}
       onDragEnd={handleDragEnd}
-      modifiers={[
-        restrictToVerticalAxis,
-        restrictToWindowEdges,
-        restrictToFirstScrollableAncestor,
-      ]}
+      onDragStart={handleDragStart}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
         {children}
       </SortableContext>
+      <DragOverlay>
+        {activeTask ? (
+          <TaskItem
+            task={activeTask}
+            onComplete={DUMMY_FN}
+            onEdit={DUMMY_FN}
+            onRemove={DUMMY_FN}
+          />
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 };
+
+const DUMMY_FN = () => {};
 
 export default SortableContainer;
