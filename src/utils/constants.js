@@ -50,3 +50,7 @@ export const TIMER_CONSTANTS = {
   SHORT_BREAK_TIME: 5 * 60,
   LONG_BREAK_TIME: 15 * 60,
 };
+
+export const SUPABASE_TABLES = {
+  TASKS: "tasks_master",
+};
