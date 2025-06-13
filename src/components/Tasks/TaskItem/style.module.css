@@ -5,6 +5,7 @@
   background-color: var(--container);
   padding: 1em 0.5em 1em 0;
   border-bottom: 1px solid var(--surface);
+  cursor: pointer;
 
   .taskItem__category {
     font-size: 1.75rem;
@@ -57,6 +58,7 @@
   }
 
   &:hover {
+    border-right: 4px solid var(--accent-primary);
     .taskItem__actions {
       display: flex;
     }
