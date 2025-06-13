@@ -7,15 +7,17 @@ import StopIcon from "@/assets/icons/stop.svg?react";
 import Tabs from "@/components/Tabs";
 import ClockIcon from "@/assets/icons/clock.svg?react";
 import CupIcon from "@/assets/icons/cup.svg?react";
-import { useTasksContext } from "@/contexts/TasksContext";
 import { TASK_CATEGORY_ICONS, TIMER_CONSTANTS } from "@/utils/constants";
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
+import useTasksStore from "@/store/tasks";
 
 const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
   TIMER_CONSTANTS;
 
 const Timer = () => {
-  const { tasks, setTasks } = useTasksContext();
+  const tasks = useTasksStore((state) => state.tasks);
+  const setTasks = useTasksStore((state) => state.setTasks);
+
   const [currentTab, setCurrentTab] = useState(ONGOING_TAB);
   const [currentTask, setCurrentTask] = useState({
     category: "",

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./style.module.css";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import TaskItem from "@/components/Tasks/TaskItem";
 import AddForm from "@/components/Tasks/AddForm";
 import { MIN_SESSIONS } from "@/utils/constants";
-import { useTasksContext } from "@/contexts/TasksContext";
 import SortableContainer from "@/components/Tasks/SortableContainer";
 import { deepCopy } from "@/utils/utils";
+import useTasksStore from "@/store/tasks";
 
 const EDIT = "edit";
 const CREATE = "create";
@@ -21,7 +21,8 @@ const DEFAULT_FORM_VALUES = {
 const DEFAULT_TITLE = "Untitled Task";
 
 const Tasks = () => {
-  const { tasks, setTasks } = useTasksContext();
+  const tasks = useTasksStore((state) => state.tasks);
+  const setTasks = useTasksStore((state) => state.setTasks);
 
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
@@ -46,11 +47,10 @@ const Tasks = () => {
     };
 
     if (mode === CREATE) {
-      setTasks((prevTasks) => [...prevTasks, task]);
+      setTasks([...tasks, task]);
     } else if (mode === EDIT) {
-      setTasks((prevTasks) =>
-        prevTasks.map((t) => (t.id === task.id ? task : t))
-      );
+      const updatedTasks = tasks.map((t) => (t.id === task.id ? task : t));
+      setTasks(updatedTasks);
     }
     handleCancel();
   };
@@ -62,15 +62,18 @@ const Tasks = () => {
   };
 
   const taskRemoveHandler = (taskId) => {
-    setTasks((prevTasks) => prevTasks.filter((t) => t.id !== taskId));
+    const updatedTasks = tasks.filter((t) => t.id !== taskId);
+    setTasks(updatedTasks);
   };
 
   const taskCompleteHandler = (taskId) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((t) =>
-        t.id === taskId ? { ...t, completed: !t.completed } : t
-      )
-    );
+    const updatedTasks = tasks.map((t) => {
+      if (t.id === taskId) {
+        return { ...t, completed: !t.completed };
+      }
+      return t;
+    });
+    setTasks(updatedTasks);
   };
 
   const taskEditHandler = (task) => {
@@ -80,7 +83,6 @@ const Tasks = () => {
   };
 
   const taskDragHandler = (updatedTasks) => {
-    console.log(updatedTasks);
     setTasks(updatedTasks);
   };
 
