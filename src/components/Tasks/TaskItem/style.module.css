@@ -3,10 +3,10 @@
   align-items: center;
   gap: 0.8em;
   background-color: var(--container);
-  padding: 1em 0.5em 1em 0;
+  padding: 1em 0.5em 1em 0.5em;
   border-bottom: 1px solid var(--surface);
   cursor: pointer;
-  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
 
   .taskItem__category {
     font-size: 1.75rem;
@@ -59,7 +59,7 @@
   }
 
   &:hover {
-    border-right-color: var(--accent-primary);
+    border-left-color: var(--accent-primary);
     .taskItem__actions {
       display: flex;
     }
@@ -79,6 +79,6 @@
   }
 
   &.active {
-    border-right-color: var(--accent-secondary);
+    border-left-color: var(--accent-secondary);
   }
 }

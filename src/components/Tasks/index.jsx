@@ -8,6 +8,14 @@ import SortableContainer from "@/components/Tasks/SortableContainer";
 import { deepCopy } from "@/utils/utils";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
+import {
+  createTask,
+  deleteTask,
+  fetchTasks,
+  sortTasks,
+  updateTask,
+} from "@/db/apis/tasks";
+import Skeleton from "@/utils/components/Skeleton";
 
 const EDIT = "edit";
 const CREATE = "create";
@@ -22,44 +30,73 @@ const DEFAULT_FORM_VALUES = {
 const DEFAULT_TITLE = "Untitled Task";
 
 const Tasks = () => {
-  const { tasks, setTasks, setCurrentTask, currentTask } = useTasksStore(
-    useShallow((state) => ({
-      tasks: state.tasks,
-      setTasks: state.setTasks,
-      setCurrentTask: state.setCurrentTask,
-      currentTask: state.currentTask,
-    }))
-  );
-
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { tasks, setTasks, setCurrentTask, currentTask, updateTaskInStore } =
+    useTasksStore(
+      useShallow((state) => ({
+        tasks: state.tasks,
+        setTasks: state.setTasks,
+        setCurrentTask: state.setCurrentTask,
+        currentTask: state.currentTask,
+        updateTaskInStore: state.updateTask,
+      }))
+    );
+
+  useEffect(() => {
+    const loadTasks = async () => {
+      setIsLoading(true);
+      const tasks = await fetchTasks();
+      setTasks(tasks);
+      setIsLoading(false);
+    };
+
+    loadTasks();
+  }, []);
 
   const formSubmitHandler = () => {
-    const defaultProps =
-      mode === CREATE
-        ? {
-            id: crypto.randomUUID(),
-            completed: false,
-            completedSessions: 0,
-          }
-        : {};
+    if (mode === CREATE) {
+      addTask();
+    } else if (mode === EDIT) {
+      editTask();
+    }
+    handleCancel();
+  };
 
+  const addTask = async () => {
     const { title, ...rest } = formValues;
 
     const task = {
-      ...defaultProps,
       ...rest,
+      completed: false,
+      completedSessions: 0,
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     };
 
-    if (mode === CREATE) {
-      setTasks([...tasks, task]);
-    } else if (mode === EDIT) {
-      const updatedTasks = tasks.map((t) => (t.id === task.id ? task : t));
-      setTasks(updatedTasks);
+    const res = await createTask(task);
+    if (res.error) {
+      // TODO: show error message
+      return;
     }
-    handleCancel();
+    setTasks([...tasks, ...res.data]);
+  };
+
+  const editTask = async () => {
+    const { title } = formValues;
+    const task = {
+      ...formValues,
+      title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
+    };
+
+    const res = await updateTask(task);
+    if (res.error) {
+      // TODO: show error message
+      return;
+    }
+    updateTaskInStore(res.data[0]);
   };
 
   const handleCancel = () => {
@@ -68,7 +105,12 @@ const Tasks = () => {
     setMode(CREATE);
   };
 
-  const taskRemoveHandler = (taskId) => {
+  const taskRemoveHandler = async (taskId) => {
+    const res = await deleteTask(taskId);
+    if (res.error) {
+      // TODO: show error message
+      return;
+    }
     const updatedTasks = tasks.filter((t) => t.id !== taskId);
     setTasks(updatedTasks);
     if (currentTask?.id === taskId) {
@@ -76,14 +118,17 @@ const Tasks = () => {
     }
   };
 
-  const taskCompleteHandler = (taskId) => {
-    const updatedTasks = tasks.map((t) => {
-      if (t.id === taskId) {
-        return { ...t, completed: !t.completed };
-      }
-      return t;
+  const taskCompleteHandler = async (taskId) => {
+    const task = tasks.find((t) => t.id === taskId);
+    const res = await updateTask({
+      id: taskId,
+      completed: !task.completed,
     });
-    setTasks(updatedTasks);
+    if (res.error) {
+      // TODO: show error message
+      return;
+    }
+    updateTaskInStore(res.data[0]);
   };
 
   const taskEditHandler = (task) => {
@@ -92,7 +137,9 @@ const Tasks = () => {
     setMode(EDIT);
   };
 
-  const taskDragHandler = (updatedTasks) => {
+  const taskDragHandler = async (updatedTasks) => {
+    // TODO: update tasks in local storage
+    // Also update the order in the database, and load items in sorted order
     setTasks(updatedTasks);
   };
 
@@ -105,95 +152,94 @@ const Tasks = () => {
   };
 
   return (
-    <>
-      <div className="card">
-        <div className={`card__header ${styles.taskListHeader}`}>
-          Task List
-          {tasks.length > 0 && (
-            <span className={styles.taskListHeader__completed}>
-              ({getCompletedTasks()}/{tasks.length})
-            </span>
-          )}
-        </div>
-        <div className={`card__body ${styles.taskListContainer}`}>
-          <ul className={styles.taskList}>
-            <SortableContainer
-              tasks={deepCopy(tasks)}
-              onDragEnd={taskDragHandler}
-            >
-              {tasks.map((task) => (
-                <TaskItem
-                  key={task.id}
-                  task={task}
-                  isActive={currentTask?.id === task.id}
-                  onEdit={(e) => {
-                    e.stopPropagation();
-                    taskEditHandler(task);
-                  }}
-                  onRemove={(e) => {
-                    e.stopPropagation();
-                    taskRemoveHandler(task.id);
-                  }}
-                  onComplete={(e) => {
-                    e.stopPropagation();
-                    taskCompleteHandler(task.id);
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleTaskClick(task);
-                  }}
-                />
-              ))}
-            </SortableContainer>
-          </ul>
-          {tasks.length === 0 && !showModal && (
-            <div className={styles.taskListEmpty}>
-              <div className={styles.taskListEmptyContent}>
-                <span className={styles.taskListEmptyIcon}> 🗂️ </span>
-                <span className={styles.taskListEmptyMessage}>
-                  <strong>No Tasks</strong>
-                  <span>Add a task to get started.</span>
-                </span>
-              </div>
+    <div className="card">
+      <div className="card__header">
+        Task List
+        {tasks.length > 0 && (
+          <span className={styles.taskListHeader__completed}>
+            ({getCompletedTasks()}/{tasks.length})
+          </span>
+        )}
+      </div>
+      <div className={`card__body ${styles.taskListContainer}`}>
+        <ul className={styles.taskList}>
+          <SortableContainer
+            tasks={deepCopy(tasks)}
+            onDragEnd={taskDragHandler}
+            currentTask={currentTask}
+          >
+            {tasks.map((task) => (
+              <TaskItem
+                key={task.id}
+                task={task}
+                isActive={currentTask?.id === task.id}
+                onEdit={(e) => {
+                  e.stopPropagation();
+                  taskEditHandler(task);
+                }}
+                onRemove={(e) => {
+                  e.stopPropagation();
+                  taskRemoveHandler(task.id);
+                }}
+                onComplete={(e) => {
+                  e.stopPropagation();
+                  taskCompleteHandler(task.id);
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTaskClick(task);
+                }}
+              />
+            ))}
+          </SortableContainer>
+        </ul>
+        {tasks.length === 0 && !showModal && (
+          <div className={styles.taskListEmpty}>
+            <div className={styles.taskListEmptyContent}>
+              <span className={styles.taskListEmptyIcon}> 🗂️ </span>
+              <span className={styles.taskListEmptyMessage}>
+                <strong>No Tasks</strong>
+                <span>Add a task to get started.</span>
+              </span>
             </div>
-          )}
-          {showModal && (
-            <AddForm formValues={formValues} setFormValues={setFormValues} />
-          )}
-        </div>
-        <div className={`card__footer ${styles.formFooter}`}>
-          {showModal ? (
-            <>
-              <button
-                className={`btn ${styles.addTaskBtn}`}
-                onClick={handleCancel}
-              >
-                <span className="btn__label">Cancel</span>
-              </button>
-              <button
-                className={`btn btn--primary ${styles.addTaskBtn}`}
-                onClick={formSubmitHandler}
-              >
-                <span className="btn__label">Save</span>
-              </button>
-            </>
-          ) : (
+          </div>
+        )}
+        {showModal && (
+          <AddForm formValues={formValues} setFormValues={setFormValues} />
+        )}
+      </div>
+      <div className={`card__footer ${styles.formFooter}`}>
+        {showModal ? (
+          <>
             <button
               className={`btn ${styles.addTaskBtn}`}
-              onClick={() => {
-                setShowModal(true);
-                setMode(CREATE);
-              }}
+              onClick={handleCancel}
             >
-              <span className="btn__icon">
-                <PlusIcon />
-              </span>
-              <span className="btn__label">Add Task</span>
+              <span className="btn__label">Cancel</span>
             </button>
-          )}
-        </div>
+            <button
+              className={`btn btn--primary ${styles.addTaskBtn}`}
+              onClick={formSubmitHandler}
+            >
+              <span className="btn__label">Save</span>
+            </button>
+          </>
+        ) : (
+          <button
+            className={`btn ${styles.addTaskBtn}`}
+            onClick={() => {
+              setShowModal(true);
+              setMode(CREATE);
+            }}
+          >
+            <span className="btn__icon">
+              <PlusIcon />
+            </span>
+            <span className="btn__label">Add Task</span>
+          </button>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

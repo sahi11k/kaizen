@@ -54,3 +54,5 @@ export const TIMER_CONSTANTS = {
 export const SUPABASE_TABLES = {
   TASKS: "tasks_master",
 };
+
+export const SUCCESS_STATUS_CODES = [200, 201, 202, 204];
