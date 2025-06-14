@@ -10,21 +10,21 @@ import CupIcon from "@/assets/icons/cup.svg?react";
 import { TASK_CATEGORY_ICONS, TIMER_CONSTANTS } from "@/utils/constants";
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
+import { useShallow } from "zustand/react/shallow";
 
 const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
   TIMER_CONSTANTS;
 
 const Timer = () => {
-  const tasks = useTasksStore((state) => state.tasks);
-  const setTasks = useTasksStore((state) => state.setTasks);
+  const { tasks, setTasks, currentTask } = useTasksStore(
+    useShallow((state) => ({
+      tasks: state.tasks,
+      setTasks: state.setTasks,
+      currentTask: state.currentTask,
+    }))
+  );
 
   const [currentTab, setCurrentTab] = useState(ONGOING_TAB);
-  const [currentTask, setCurrentTask] = useState({
-    category: "",
-    title: "",
-    currentSession: "",
-    taskId: "",
-  });
 
   const [timerStarted, setTimerStarted] = useState(false);
   const [pomodoroCount, setPomodoroCount] = useState(0);
@@ -47,35 +47,6 @@ const Timer = () => {
         : SHORT_BREAK_TIME
     );
   }, [currentTab, isLongBreak]);
-
-  useEffect(() => {
-    const getCurrentTaskDetails = () => {
-      const firstIncompleteTask = tasks.find((task) => !task.completed);
-      if (currentTab === BREAK_TAB) {
-        return {
-          title: "Yay! Break Time",
-          category: "",
-          currentSession: "",
-        };
-      }
-
-      if (!firstIncompleteTask || tasks.length === 0) {
-        return {
-          title: "Time to Focus",
-          category: "",
-          currentSession: "",
-        };
-      }
-
-      return {
-        title: firstIncompleteTask.title,
-        category: firstIncompleteTask.category,
-        currentSession: `#${firstIncompleteTask.completedSessions + 1} -`,
-        taskId: firstIncompleteTask.id,
-      };
-    };
-    setCurrentTask(getCurrentTaskDetails());
-  }, [tasks, currentTab]);
 
   useEffect(() => {
     if (pomodoroCount > 0 && pomodoroCount % 4 === 0) {
@@ -142,7 +113,7 @@ const Timer = () => {
     if (currentTab === ONGOING_TAB) {
       setPomodoroCount(pomodoroCount + 1);
       const updatedTasks = tasks.map((task) => {
-        if (task.id === currentTask.taskId) {
+        if (task.id === currentTask.id) {
           const updatedSession = task.completedSessions + 1;
           return {
             ...task,
@@ -194,13 +165,7 @@ const Timer = () => {
           </Tabs.Tab>
         </Tabs>
         <div className={styles.currentTask}>
-          <span className={styles.currentTask__category}>
-            {TASK_CATEGORY_ICONS[currentTask.category]}
-          </span>
-          <span className={styles.currentTask__currentSession}>
-            {currentTask.currentSession}
-          </span>
-          <span className={styles.currentTask__title}>{currentTask.title}</span>
+          <CurrentTask activeTab={currentTab} currentTask={currentTask} />
         </div>
         <div className="card__footer">
           <div className={styles.timerControls}>
@@ -259,4 +224,23 @@ const getFormattedTime = (seconds) => {
   return `${minutes}:${remainingSeconds}`;
 };
 
+const CurrentTask = ({ activeTab, currentTask }) => {
+  if (activeTab === BREAK_TAB) {
+    return "Yay! Break Time";
+  }
+
+  if (!currentTask) return "Time to Focus";
+
+  return (
+    <>
+      <span className={styles.currentTask__category}>
+        {TASK_CATEGORY_ICONS[currentTask.category]}
+      </span>
+      <span className={styles.currentTask__currentSession}>
+        #{currentTask.completedSessions + 1}
+      </span>
+      <span className={styles.currentTask__title}>{currentTask.title}</span>
+    </>
+  );
+};
 export default Timer;
