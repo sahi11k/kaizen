@@ -6,6 +6,7 @@
   padding: 1em 0.5em 1em 0;
   border-bottom: 1px solid var(--surface);
   cursor: pointer;
+  border-right: 4px solid transparent;
 
   .taskItem__category {
     font-size: 1.75rem;
@@ -58,13 +59,13 @@
   }
 
   &:hover {
-    border-right: 4px solid var(--accent-primary);
+    border-right-color: var(--accent-primary);
     .taskItem__actions {
       display: flex;
     }
   }
 
-  &.active {
+  &.completed {
     .taskItem__status {
       .taskItem__actionItem {
         --icon-fill: var(--accent-secondary);
@@ -75,5 +76,9 @@
       text-decoration: line-through;
       color: var(--text-muted);
     }
+  }
+
+  &.active {
+    border-right-color: var(--accent-secondary);
   }
 }

@@ -7,6 +7,7 @@ import { MIN_SESSIONS } from "@/utils/constants";
 import SortableContainer from "@/components/Tasks/SortableContainer";
 import { deepCopy } from "@/utils/utils";
 import useTasksStore from "@/store/tasks";
+import { useShallow } from "zustand/react/shallow";
 
 const EDIT = "edit";
 const CREATE = "create";
@@ -21,8 +22,14 @@ const DEFAULT_FORM_VALUES = {
 const DEFAULT_TITLE = "Untitled Task";
 
 const Tasks = () => {
-  const tasks = useTasksStore((state) => state.tasks);
-  const setTasks = useTasksStore((state) => state.setTasks);
+  const { tasks, setTasks, setCurrentTask, currentTask } = useTasksStore(
+    useShallow((state) => ({
+      tasks: state.tasks,
+      setTasks: state.setTasks,
+      setCurrentTask: state.setCurrentTask,
+      currentTask: state.currentTask,
+    }))
+  );
 
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
@@ -64,6 +71,9 @@ const Tasks = () => {
   const taskRemoveHandler = (taskId) => {
     const updatedTasks = tasks.filter((t) => t.id !== taskId);
     setTasks(updatedTasks);
+    if (currentTask?.id === taskId) {
+      setCurrentTask(null);
+    }
   };
 
   const taskCompleteHandler = (taskId) => {
@@ -90,6 +100,10 @@ const Tasks = () => {
     return tasks.filter((task) => task.completed).length;
   };
 
+  const handleTaskClick = (task) => {
+    setCurrentTask(task);
+  };
+
   return (
     <>
       <div className="card">
@@ -111,9 +125,23 @@ const Tasks = () => {
                 <TaskItem
                   key={task.id}
                   task={task}
-                  onEdit={() => taskEditHandler(task)}
-                  onRemove={() => taskRemoveHandler(task.id)}
-                  onComplete={() => taskCompleteHandler(task.id)}
+                  isActive={currentTask?.id === task.id}
+                  onEdit={(e) => {
+                    e.stopPropagation();
+                    taskEditHandler(task);
+                  }}
+                  onRemove={(e) => {
+                    e.stopPropagation();
+                    taskRemoveHandler(task.id);
+                  }}
+                  onComplete={(e) => {
+                    e.stopPropagation();
+                    taskCompleteHandler(task.id);
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTaskClick(task);
+                  }}
                 />
               ))}
             </SortableContainer>

@@ -45,10 +45,6 @@
   margin-top: 1.5em;
 }
 
-.currentTask__category {
-  margin-top: -4px;
-}
-
 .currentTask__currentSession {
   flex-shrink: 0;
 }

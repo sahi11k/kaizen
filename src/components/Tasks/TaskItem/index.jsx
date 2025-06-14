@@ -8,7 +8,14 @@ import { TASK_CATEGORY_ICONS } from "@/utils/constants";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const TaskItem = ({ task, onEdit, onRemove, onComplete }) => {
+const TaskItem = ({
+  task,
+  onEdit,
+  onRemove,
+  onComplete,
+  onClick,
+  isActive,
+}) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id });
 
@@ -20,8 +27,11 @@ const TaskItem = ({ task, onEdit, onRemove, onComplete }) => {
   return (
     <li
       ref={setNodeRef}
-      className={`${styles.taskItem} ${task.completed ? styles.active : ""}`}
+      className={`${styles.taskItem} ${
+        task.completed ? styles.completed : ""
+      } ${isActive ? styles.active : ""}`}
       style={style}
+      onClick={onClick}
     >
       <div className={styles.taskItem__status}>
         <button
