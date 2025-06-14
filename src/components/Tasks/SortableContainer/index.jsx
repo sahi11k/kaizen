@@ -23,7 +23,7 @@ import {
 } from "@dnd-kit/sortable";
 import TaskItem from "@/components/Tasks/TaskItem";
 
-const SortableContainer = ({ tasks, children, onDragEnd }) => {
+const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
   const [activeTask, setActiveTask] = useState(null);
   const items = tasks.map((task) => task.id);
 
@@ -71,6 +71,7 @@ const SortableContainer = ({ tasks, children, onDragEnd }) => {
             onComplete={DUMMY_FN}
             onEdit={DUMMY_FN}
             onRemove={DUMMY_FN}
+            isActive={currentTask?.id === activeTask?.id}
           />
         ) : null}
       </DragOverlay>

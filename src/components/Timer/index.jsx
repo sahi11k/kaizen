@@ -11,16 +11,17 @@ import { TASK_CATEGORY_ICONS, TIMER_CONSTANTS } from "@/utils/constants";
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
+import { updateTask } from "@/db/apis/tasks";
 
 const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
   TIMER_CONSTANTS;
 
 const Timer = () => {
-  const { tasks, setTasks, currentTask } = useTasksStore(
+  const { currentTask, updateTaskInStore, setCurrentTask } = useTasksStore(
     useShallow((state) => ({
-      tasks: state.tasks,
-      setTasks: state.setTasks,
       currentTask: state.currentTask,
+      updateTaskInStore: state.updateTask,
+      setCurrentTask: state.setCurrentTask,
     }))
   );
 
@@ -109,21 +110,23 @@ const Timer = () => {
     skipTimer();
   };
 
-  const finishSession = () => {
+  const finishSession = async () => {
     if (currentTab === ONGOING_TAB) {
       setPomodoroCount(pomodoroCount + 1);
-      const updatedTasks = tasks.map((task) => {
-        if (task.id === currentTask.id) {
-          const updatedSession = task.completedSessions + 1;
-          return {
-            ...task,
-            completedSessions: updatedSession,
-            completed: updatedSession === task.totalSessions,
-          };
+      if (currentTask) {
+        const completedSessions = currentTask.completedSessions + 1;
+        const res = await updateTask({
+          id: currentTask.id,
+          completedSessions,
+          completed: completedSessions === currentTask.totalSessions,
+        });
+        if (res.error) {
+          // TODO: show error message
+          return;
         }
-        return task;
-      });
-      setTasks(updatedTasks);
+        updateTaskInStore(res.data[0]);
+        setCurrentTask(res.data[0]);
+      }
     }
   };
 

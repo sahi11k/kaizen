@@ -1,34 +1,59 @@
-import { supabase } from "@/store/supabase";
+import { supabase } from "@/db/supabase";
 import { SUPABASE_TABLES } from "@/utils/constants";
+import {
+  transformTasksFromDb,
+  transformTasksToDb,
+} from "@/utils/transformers/tasks";
+import { handleResponse } from "@/utils/utils";
 
-export const getTasks = async (payload = {}) => {
-  const res = await supabase.from(SUPABASE_TABLES.TASKS).select("*");
+export const fetchTasks = async (payload = {}) => {
+  let res = await supabase.from(SUPABASE_TABLES.TASKS).select("*");
+  res = handleResponse(res);
   if (res.status === 200) {
-    return res.data;
+    return transformTasksFromDb(res.data);
   }
   return [];
 };
 
 export const createTask = async (payload = {}) => {
-  const res = await supabase.from(SUPABASE_TABLES.TASKS).insert(payload);
-  if (res.status === 200) {
-    return res.data;
-  }
-  return [];
+  const payloadToInsert = transformTasksToDb([payload]);
+  let res = await supabase
+    .from(SUPABASE_TABLES.TASKS)
+    .insert(payloadToInsert)
+    .select();
+  res = handleResponse(res, "Task creation failed");
+  res.data = transformTasksFromDb(res.data);
+  return res;
 };
 
 export const updateTask = async (payload = {}) => {
-  const res = await supabase.from(SUPABASE_TABLES.TASKS).update(payload);
-  if (res.status === 200) {
-    return res.data;
-  }
-  return [];
+  const payloadToUpdate = transformTasksToDb([payload]);
+  let res = await supabase
+    .from(SUPABASE_TABLES.TASKS)
+    .update(payloadToUpdate)
+    .eq("id", payload.id)
+    .select();
+  res = handleResponse(res, "Task update failed");
+  res.data = transformTasksFromDb(res.data);
+  return res;
 };
 
-export const deleteTask = async (payload = {}) => {
-  const res = await supabase.from(SUPABASE_TABLES.TASKS).delete(payload);
-  if (res.status === 200) {
-    return res.data;
-  }
-  return [];
+export const deleteTask = async (taskId) => {
+  let res = await supabase
+    .from(SUPABASE_TABLES.TASKS)
+    .delete()
+    .eq("id", taskId);
+  res = handleResponse(res, "Task deletion failed");
+  return res;
+};
+
+export const sortTasks = async (payload = []) => {
+  // const payloadToUpdate = transformTasksToDb(payload);
+  // let res = await supabase
+  //   .from(SUPABASE_TABLES.TASKS)
+  //   .upsert(payloadToUpdate)
+  //   .select();
+  // res = handleResponse(res, "Task update failed");
+  // res.data = transformTasksFromDb(res.data);
+  // return res;
 };
