@@ -16,6 +16,9 @@ import {
   updateTask,
 } from "@/db/apis/tasks";
 import Skeleton from "@/utils/components/Skeleton";
+import { Toast } from "@/utils/components/Toast";
+
+const { toast } = Toast;
 
 const EDIT = "edit";
 const CREATE = "create";
@@ -78,10 +81,11 @@ const Tasks = () => {
 
     const res = await createTask(task);
     if (res.error) {
-      // TODO: show error message
-      return;
+      return toast.error(res.error);
     }
+
     setTasks([...tasks, ...res.data]);
+    toast.success("Task created successfully");
   };
 
   const editTask = async () => {
@@ -93,10 +97,11 @@ const Tasks = () => {
 
     const res = await updateTask(task);
     if (res.error) {
-      // TODO: show error message
-      return;
+      return toast.error(res.error);
     }
+
     updateTaskInStore(res.data[0]);
+    toast.success("Task updated successfully");
   };
 
   const handleCancel = () => {
@@ -108,14 +113,14 @@ const Tasks = () => {
   const taskRemoveHandler = async (taskId) => {
     const res = await deleteTask(taskId);
     if (res.error) {
-      // TODO: show error message
-      return;
+      return toast.error(res.error);
     }
     const updatedTasks = tasks.filter((t) => t.id !== taskId);
     setTasks(updatedTasks);
     if (currentTask?.id === taskId) {
       setCurrentTask(null);
     }
+    toast.success("Task deleted successfully");
   };
 
   const taskCompleteHandler = async (taskId) => {
@@ -125,10 +130,10 @@ const Tasks = () => {
       completed: !task.completed,
     });
     if (res.error) {
-      // TODO: show error message
-      return;
+      return toast.error(res.error);
     }
     updateTaskInStore(res.data[0]);
+    toast.success("Task updated successfully");
   };
 
   const taskEditHandler = (task) => {
@@ -152,94 +157,98 @@ const Tasks = () => {
   };
 
   return (
-    <div className="card">
-      <div className="card__header">
-        Task List
-        {tasks.length > 0 && (
-          <span className={styles.taskListHeader__completed}>
-            ({getCompletedTasks()}/{tasks.length})
-          </span>
-        )}
-      </div>
-      <div className={`card__body ${styles.taskListContainer}`}>
-        <ul className={styles.taskList}>
-          <SortableContainer
-            tasks={deepCopy(tasks)}
-            onDragEnd={taskDragHandler}
-            currentTask={currentTask}
-          >
-            {tasks.map((task) => (
-              <TaskItem
-                key={task.id}
-                task={task}
-                isActive={currentTask?.id === task.id}
-                onEdit={(e) => {
-                  e.stopPropagation();
-                  taskEditHandler(task);
-                }}
-                onRemove={(e) => {
-                  e.stopPropagation();
-                  taskRemoveHandler(task.id);
-                }}
-                onComplete={(e) => {
-                  e.stopPropagation();
-                  taskCompleteHandler(task.id);
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleTaskClick(task);
-                }}
-              />
-            ))}
-          </SortableContainer>
-        </ul>
-        {tasks.length === 0 && !showModal && (
-          <div className={styles.taskListEmpty}>
-            <div className={styles.taskListEmptyContent}>
-              <span className={styles.taskListEmptyIcon}> 🗂️ </span>
-              <span className={styles.taskListEmptyMessage}>
-                <strong>No Tasks</strong>
-                <span>Add a task to get started.</span>
-              </span>
+    <>
+      <div className="card">
+        <div className="card__header">
+          Task List
+          {tasks.length > 0 && (
+            <span className={styles.taskListHeader__completed}>
+              ({getCompletedTasks()}/{tasks.length})
+            </span>
+          )}
+        </div>
+        <div className={`card__body ${styles.taskListContainer}`}>
+          <ul className={styles.taskList}>
+            <SortableContainer
+              tasks={deepCopy(tasks)}
+              onDragEnd={taskDragHandler}
+              currentTask={currentTask}
+            >
+              {tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  isActive={currentTask?.id === task.id}
+                  onEdit={(e) => {
+                    e.stopPropagation();
+                    taskEditHandler(task);
+                  }}
+                  onRemove={(e) => {
+                    e.stopPropagation();
+                    taskRemoveHandler(task.id);
+                  }}
+                  onComplete={(e) => {
+                    e.stopPropagation();
+                    taskCompleteHandler(task.id);
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTaskClick(task);
+                  }}
+                />
+              ))}
+            </SortableContainer>
+          </ul>
+          {isLoading && <Skeleton count={3} height={80} />}
+          {tasks.length === 0 && !showModal && !isLoading && (
+            <div className={styles.taskListEmpty}>
+              <div className={styles.taskListEmptyContent}>
+                <span className={styles.taskListEmptyIcon}> 🗂️ </span>
+                <span className={styles.taskListEmptyMessage}>
+                  <strong>No Tasks</strong>
+                  <span>Add a task to get started.</span>
+                </span>
+              </div>
             </div>
-          </div>
-        )}
-        {showModal && (
-          <AddForm formValues={formValues} setFormValues={setFormValues} />
-        )}
-      </div>
-      <div className={`card__footer ${styles.formFooter}`}>
-        {showModal ? (
-          <>
+          )}
+          {showModal && (
+            <AddForm formValues={formValues} setFormValues={setFormValues} />
+          )}
+        </div>
+        <div className={`card__footer ${styles.formFooter}`}>
+          {showModal ? (
+            <>
+              <button
+                className={`btn ${styles.addTaskBtn}`}
+                onClick={handleCancel}
+              >
+                <span className="btn__label">Cancel</span>
+              </button>
+              <button
+                className={`btn btn--primary ${styles.addTaskBtn}`}
+                onClick={formSubmitHandler}
+              >
+                <span className="btn__label">Save</span>
+              </button>
+            </>
+          ) : (
             <button
               className={`btn ${styles.addTaskBtn}`}
-              onClick={handleCancel}
+              onClick={() => {
+                setShowModal(true);
+                setMode(CREATE);
+              }}
             >
-              <span className="btn__label">Cancel</span>
+              <span className="btn__icon">
+                <PlusIcon />
+              </span>
+              <span className="btn__label">Add Task</span>
             </button>
-            <button
-              className={`btn btn--primary ${styles.addTaskBtn}`}
-              onClick={formSubmitHandler}
-            >
-              <span className="btn__label">Save</span>
-            </button>
-          </>
-        ) : (
-          <button
-            className={`btn ${styles.addTaskBtn}`}
-            onClick={() => {
-              setShowModal(true);
-              setMode(CREATE);
-            }}
-          >
-            <span className="btn__icon">
-              <PlusIcon />
-            </span>
-            <span className="btn__label">Add Task</span>
-          </button>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+      <Toast />
+    </>
   );
 };
 
