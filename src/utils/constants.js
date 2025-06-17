@@ -9,33 +9,33 @@ export const TASK_CATEGORY_ICONS = {
 
 export const TASK_CATEGORIES = [
   {
-    key: "work",
-    name: "Work",
+    value: "work",
+    label: "Work",
     icon: TASK_CATEGORY_ICONS.work,
   },
   {
-    key: "learn",
-    name: "Learn",
+    value: "learn",
+    label: "Learn",
     icon: TASK_CATEGORY_ICONS.learn,
   },
   {
-    key: "fitness",
-    name: "Fitness",
+    value: "fitness",
+    label: "Fitness",
     icon: TASK_CATEGORY_ICONS.fitness,
   },
   {
-    key: "play",
-    name: "Play",
+    value: "play",
+    label: "Play",
     icon: TASK_CATEGORY_ICONS.play,
   },
   {
-    key: "read",
-    name: "Read",
+    value: "read",
+    label: "Read",
     icon: TASK_CATEGORY_ICONS.read,
   },
   {
-    key: "others",
-    name: "Others",
+    value: "others",
+    label: "Others",
     icon: TASK_CATEGORY_ICONS.others,
   },
 ];
