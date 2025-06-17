@@ -1,28 +1,53 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./style.module.css";
-import { MAX_SESSIONS, MIN_SESSIONS, TASK_CATEGORIES } from "@/utils/constants";
+import {
+  MAX_SESSIONS,
+  MIN_SESSIONS,
+  TASK_CATEGORIES,
+  TASK_CATEGORY_ICONS,
+} from "@/utils/constants";
+import Dropdown from "@/utils/components/Dropdown";
 
 const AddForm = ({ formValues, setFormValues }) => {
   const handleChange = (key, value) => {
     setFormValues((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleSelectCategory = (option) => {
+    handleChange("category", option.value);
+  };
+
   return (
     <div className={styles.formContainer}>
       <form className={styles.form}>
         <div className={styles.formItem}>
-          <select
-            name="task-category"
-            id="task-category"
-            value={formValues.category}
-            onChange={(e) => handleChange("category", e.target.value)}
-          >
-            {TASK_CATEGORIES.map((category) => (
-              <option key={category.key} value={category.key}>
-                {category.icon} {category.name}
-              </option>
-            ))}
-          </select>
+          <Dropdown
+            trigger={
+              <span>
+                {TASK_CATEGORY_ICONS[formValues.category || "others"]}
+              </span>
+            }
+            options={TASK_CATEGORIES}
+            onSelect={handleSelectCategory}
+            className={styles.iconDropdown}
+            customStyles={{
+              dropdown: {
+                width: "max-content",
+                padding: 0,
+                height: 40,
+                fontSize: "1rem",
+              },
+              trigger: {
+                height: "100%",
+                minHeight: 40,
+                border: "2px solid var(--surface)",
+                backgroundColor: "transparent",
+              },
+              menu: {
+                width: 200,
+              },
+            }}
+          />
           <input
             type="text"
             name="task-title"

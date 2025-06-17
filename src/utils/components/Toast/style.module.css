@@ -1,0 +1,18 @@
+.toast {
+  background-color: var(--container) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--container) !important;
+  border-radius: 0.5em !important;
+  padding: 1em !important;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2) !important;
+  font-size: 1rem !important;
+  width: 0 !important;
+  min-width: 250px;
+}
+
+.toastIconWrapper {
+  svg {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+}
