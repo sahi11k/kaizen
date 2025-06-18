@@ -7,7 +7,11 @@ import {
 import { handleResponse } from "@/utils/utils";
 
 export const fetchTasks = async (payload = {}) => {
-  let res = await supabase.from(SUPABASE_TABLES.TASKS).select("*");
+  let res = await supabase
+    .from(SUPABASE_TABLES.TASKS)
+    .select("*")
+    .order("rank", { ascending: true });
+
   res = handleResponse(res);
   if (res.status === 200) {
     return transformTasksFromDb(res.data);
@@ -48,12 +52,12 @@ export const deleteTask = async (taskId) => {
 };
 
 export const sortTasks = async (payload = []) => {
-  // const payloadToUpdate = transformTasksToDb(payload);
-  // let res = await supabase
-  //   .from(SUPABASE_TABLES.TASKS)
-  //   .upsert(payloadToUpdate)
-  //   .select();
-  // res = handleResponse(res, "Task update failed");
-  // res.data = transformTasksFromDb(res.data);
-  // return res;
+  const payloadToUpdate = transformTasksToDb(payload);
+  let res = await supabase
+    .from(SUPABASE_TABLES.TASKS)
+    .upsert(payloadToUpdate)
+    .select();
+  res = handleResponse(res, "Task order update failed");
+  res.data = transformTasksFromDb(res.data);
+  return res;
 };

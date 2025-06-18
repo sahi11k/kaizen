@@ -56,3 +56,6 @@ export const SUPABASE_TABLES = {
 };
 
 export const SUCCESS_STATUS_CODES = [200, 201, 202, 204];
+
+export const EDIT = "edit";
+export const CREATE = "create";
