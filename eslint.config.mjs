@@ -29,6 +29,7 @@ export default defineConfig([
       // ✅ Custom rules
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
+      "no-undef": "error",
       "no-unused-vars": [
         "warn",
         {

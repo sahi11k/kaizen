@@ -120,10 +120,6 @@ const Timer = () => {
           completedSessions,
           completed: completedSessions === currentTask.totalSessions,
         });
-        if (res.error) {
-          // TODO: show error message
-          return;
-        }
         updateTaskInStore(res.data[0]);
         setCurrentTask(res.data[0]);
       }

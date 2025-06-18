@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./style.module.css";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import TaskItem from "@/components/Tasks/TaskItem";
 import AddForm from "@/components/Tasks/AddForm";
-import { MIN_SESSIONS } from "@/utils/constants";
+import { CREATE, EDIT, MIN_SESSIONS } from "@/utils/constants";
 import SortableContainer from "@/components/Tasks/SortableContainer";
-import { deepCopy } from "@/utils/utils";
+import { arraysEqual, deepCopy } from "@/utils/utils";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
 import {
@@ -19,9 +19,6 @@ import Skeleton from "@/utils/components/Skeleton";
 import { Toast } from "@/utils/components/Toast";
 
 const { toast } = Toast;
-
-const EDIT = "edit";
-const CREATE = "create";
 
 const DEFAULT_FORM_VALUES = {
   title: "",
@@ -37,6 +34,9 @@ const Tasks = () => {
   const [mode, setMode] = useState(CREATE);
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
   const [isLoading, setIsLoading] = useState(false);
+  const [orderChanged, setOrderChanged] = useState(false);
+
+  const currentOrder = useRef([]);
 
   const { tasks, setTasks, setCurrentTask, currentTask, updateTaskInStore } =
     useTasksStore(
@@ -54,11 +54,12 @@ const Tasks = () => {
       setIsLoading(true);
       const tasks = await fetchTasks();
       setTasks(tasks);
+      currentOrder.current = tasks.map((task) => task.id);
       setIsLoading(false);
     };
 
     loadTasks();
-  }, []);
+  }, [setTasks]);
 
   const formSubmitHandler = () => {
     if (mode === CREATE) {
@@ -71,11 +72,12 @@ const Tasks = () => {
 
   const addTask = async () => {
     const { title, ...rest } = formValues;
-
+    const maxRank = Math.max(...tasks.map((task) => task.rank));
     const task = {
       ...rest,
       completed: false,
       completedSessions: 0,
+      rank: maxRank + 1,
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     };
 
@@ -143,9 +145,37 @@ const Tasks = () => {
   };
 
   const taskDragHandler = async (updatedTasks) => {
-    // TODO: update tasks in local storage
-    // Also update the order in the database, and load items in sorted order
+    const newOrder = updatedTasks.map((task) => task.id);
+    const flag = !arraysEqual(newOrder, currentOrder.current);
+    setOrderChanged(flag);
     setTasks(updatedTasks);
+  };
+
+  const updateTaskOrder = async () => {
+    const payload = tasks.map((task, index) => ({
+      id: task.id,
+      rank: index + 1,
+    }));
+    const res = await sortTasks(payload);
+    if (res.error) {
+      return toast.error(res.error);
+    }
+    const newTasks = res.data?.slice() || [];
+    currentOrder.current = newTasks.map((task) => task.id);
+    toast.success("Task order updated successfully");
+    setOrderChanged(false);
+    setTasks(newTasks);
+  };
+
+  const resetTaskOrder = () => {
+    const taskMap = new Map(tasks.map((task) => [task.id, task]));
+
+    const reorderedTasks = currentOrder.current
+      .map((id) => taskMap.get(id))
+      .filter(Boolean);
+
+    setTasks(reorderedTasks);
+    setOrderChanged(false);
   };
 
   const getCompletedTasks = () => {
@@ -154,6 +184,42 @@ const Tasks = () => {
 
   const handleTaskClick = (task) => {
     setCurrentTask(task);
+  };
+
+  const renderCardFooter = () => {
+    if (showModal || orderChanged) {
+      const onSave = showModal ? formSubmitHandler : updateTaskOrder;
+      const onCancel = showModal ? handleCancel : resetTaskOrder;
+      const btnLabel = showModal ? "Save" : "Update Order";
+      return (
+        <>
+          <button className={`btn ${styles.addTaskBtn}`} onClick={onCancel}>
+            <span className="btn__label">Cancel</span>
+          </button>
+          <button
+            className={`btn btn--primary ${styles.addTaskBtn}`}
+            onClick={onSave}
+          >
+            <span className="btn__label">{btnLabel}</span>
+          </button>
+        </>
+      );
+    }
+
+    return (
+      <button
+        className={`btn ${styles.addTaskBtn}`}
+        onClick={() => {
+          setShowModal(true);
+          setMode(CREATE);
+        }}
+      >
+        <span className="btn__icon">
+          <PlusIcon />
+        </span>
+        <span className="btn__label">Add Task</span>
+      </button>
+    );
   };
 
   return (
@@ -195,6 +261,7 @@ const Tasks = () => {
                     e.stopPropagation();
                     handleTaskClick(task);
                   }}
+                  mode={mode}
                 />
               ))}
             </SortableContainer>
@@ -216,35 +283,7 @@ const Tasks = () => {
           )}
         </div>
         <div className={`card__footer ${styles.formFooter}`}>
-          {showModal ? (
-            <>
-              <button
-                className={`btn ${styles.addTaskBtn}`}
-                onClick={handleCancel}
-              >
-                <span className="btn__label">Cancel</span>
-              </button>
-              <button
-                className={`btn btn--primary ${styles.addTaskBtn}`}
-                onClick={formSubmitHandler}
-              >
-                <span className="btn__label">Save</span>
-              </button>
-            </>
-          ) : (
-            <button
-              className={`btn ${styles.addTaskBtn}`}
-              onClick={() => {
-                setShowModal(true);
-                setMode(CREATE);
-              }}
-            >
-              <span className="btn__icon">
-                <PlusIcon />
-              </span>
-              <span className="btn__label">Add Task</span>
-            </button>
-          )}
+          {renderCardFooter()}
         </div>
       </div>
       <Toast />

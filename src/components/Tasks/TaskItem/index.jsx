@@ -4,7 +4,7 @@ import CheckIcon from "@/assets/icons/check.svg?react";
 import EditIcon from "@/assets/icons/edit.svg?react";
 import DeleteIcon from "@/assets/icons/delete.svg?react";
 import DragIcon from "@/assets/icons/drag.svg?react";
-import { TASK_CATEGORY_ICONS } from "@/utils/constants";
+import { CREATE, TASK_CATEGORY_ICONS } from "@/utils/constants";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -15,6 +15,7 @@ const TaskItem = ({
   onComplete,
   onClick,
   isActive,
+  mode,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id });
@@ -63,19 +64,23 @@ const TaskItem = ({
         >
           <EditIcon />
         </button>
-        <button
-          className={`btn ${styles.taskItem__actionItem}`}
-          onClick={onRemove}
-        >
-          <DeleteIcon />
-        </button>
-        <button
-          className={`btn ${styles.taskItem__actionItem} ${styles.taskItem__actionItemDrag}`}
-          {...attributes}
-          {...listeners}
-        >
-          <DragIcon />
-        </button>
+        {mode === CREATE && (
+          <>
+            <button
+              className={`btn ${styles.taskItem__actionItem}`}
+              onClick={onRemove}
+            >
+              <DeleteIcon />
+            </button>
+            <button
+              className={`btn ${styles.taskItem__actionItem} ${styles.taskItem__actionItemDrag}`}
+              {...attributes}
+              {...listeners}
+            >
+              <DragIcon />
+            </button>
+          </>
+        )}
       </div>
     </li>
   );

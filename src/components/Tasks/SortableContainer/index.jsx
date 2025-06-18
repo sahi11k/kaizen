@@ -22,6 +22,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import TaskItem from "@/components/Tasks/TaskItem";
+import { CREATE } from "@/utils/constants";
 
 const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
   const [activeTask, setActiveTask] = useState(null);
@@ -72,6 +73,7 @@ const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
             onEdit={DUMMY_FN}
             onRemove={DUMMY_FN}
             isActive={currentTask?.id === activeTask?.id}
+            mode={CREATE}
           />
         ) : null}
       </DragOverlay>
