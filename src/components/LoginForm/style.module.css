@@ -1,0 +1,95 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.formWrapper {
+  background-color: var(--container);
+  padding: 3rem !important;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: var(--font-heading);
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.form {
+  margin-bottom: 1.5em;
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.input {
+  padding: 1rem;
+  outline: none;
+  border: 2px solid var(--surface);
+  background-color: transparent;
+  color: var(--text-base);
+
+  &:focus {
+    border-color: var(--accent-primary);
+  }
+}
+
+.loginButton {
+  --bg: var(--accent-secondary);
+  --padding: 0.75em 2em;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--accent-secondary) !important;
+  }
+}
+
+.footer {
+  text-align: center;
+  margin-top: 1.5em;
+}
+
+.footerButton {
+  --bg: var(--accent-primary);
+  --padding: 0.75em 2em;
+  width: 100%;
+
+  &:hover {
+    background-color: var(--black-800);
+    border-color: var(--black-800);
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+
+  hr {
+    flex: 1;
+    color: var(--accent-primary);
+  }
+}
