@@ -4,7 +4,9 @@ import Home from "@/pages/Home";
 import Pomodoro from "@/pages/Pomodoro";
 import Journal from "@/pages/Journal";
 import Profile from "@/pages/Profile";
-import Login from "@/pages/Login";
+import Auth from "@/pages/Auth";
+import LoginForm from "@/components/Auth/LoginForm";
+import SignupForm from "@/components/Auth/SignupForm";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +32,18 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: "/",
+    element: <Auth />,
+    children: [
+      {
+        path: "auth/login",
+        element: <LoginForm />,
+      },
+      {
+        path: "auth/signup",
+        element: <SignupForm />,
+      },
+    ],
   },
 ]);
 

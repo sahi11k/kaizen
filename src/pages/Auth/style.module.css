@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.formWrapper {
+  background-color: var(--container);
+  padding: 2em !important;
+  min-width: 450px !important;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin: 1em 0;
+
+  hr {
+    flex: 1;
+    color: var(--accent-primary);
+  }
+}
+
+.googleSignin {
+  button {
+    width: 100%;
+    border: 2px solid var(--accent-primary);
+    padding: 1em;
+
+    &:hover {
+      background-color: var(--accent-primary);
+    }
+  }
+}
