@@ -1,0 +1,22 @@
+.formItem {
+  --height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+
+  input,
+  textarea {
+    width: 100%;
+    outline: none;
+    border: 2px solid var(--surface);
+    padding: 0.5em 1em;
+    background-color: transparent;
+    color: var(--text-base);
+    border-radius: 0.25em;
+    height: var(--height);
+
+    &:focus {
+      border-color: var(--accent-primary);
+    }
+  }
+}
