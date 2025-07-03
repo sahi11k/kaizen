@@ -7,6 +7,7 @@ import Profile from "@/pages/Profile";
 import Auth from "@/pages/Auth";
 import LoginForm from "@/components/Auth/LoginForm";
 import SignupForm from "@/components/Auth/SignupForm";
+import AuthCallback from "@/components/Auth/AuthCallback";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         element: <SignupForm />,
       },
     ],
+  },
+  {
+    path: "/auth/callback",
+    element: <AuthCallback />,
   },
 ]);
 
