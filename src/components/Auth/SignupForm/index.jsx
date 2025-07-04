@@ -4,6 +4,13 @@ import { Link } from "react-router";
 import FormItem from "@/utils/components/FormItem";
 import { ErrorText } from "@/components/Auth/ErrorText";
 import { signUpNewUser } from "@/db/apis/auth";
+import Spinner from "@/utils/components/Spinner";
+import { Toast } from "@/utils/components/Toast";
+import OTPVerification from "@/components/Auth/OtpVerification";
+import GoogleLogin from "@/components/Auth/GoogleLogin";
+import OrDivider from "@/components/Auth/OrDivider";
+
+const { toast } = Toast;
 
 const SignupForm = () => {
   const [formValues, setFormValues] = useState({
@@ -18,12 +25,21 @@ const SignupForm = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [showOtpScreen, setShowOtpScreen] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const hasErrors = Object.values(errors).some((error) => error !== "");
     if (hasErrors) return;
+    setLoading(true);
     const response = await signUpNewUser(formValues);
-    console.info({ response });
+    setLoading(false);
+    if (response.error) {
+      toast.error(response.error);
+      return;
+    }
+    setShowOtpScreen(true);
   };
 
   const handleChange = (field, value) => {
@@ -51,8 +67,19 @@ const SignupForm = () => {
     }
   };
 
+  if (showOtpScreen) {
+    return (
+      <OTPVerification
+        email={formValues.email}
+        onBack={() => setShowOtpScreen(false)}
+      />
+    );
+  }
+
   return (
-    <div className={styles.loginForm}>
+    <>
+      <GoogleLogin />
+      <OrDivider />
       <form onSubmit={handleSubmit}>
         <FormItem.Input
           type="text"
@@ -82,6 +109,11 @@ const SignupForm = () => {
         />
         {errors.password && <ErrorText error={errors.password} />}
         <button type="submit" className={`btn ${styles.submitButton}`}>
+          {loading && (
+            <span className="btn__icon">
+              <Spinner />
+            </span>
+          )}
           Sign Up
         </button>
       </form>
@@ -93,7 +125,7 @@ const SignupForm = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

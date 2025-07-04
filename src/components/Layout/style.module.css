@@ -1,0 +1,16 @@
+.main {
+  min-height: 100vh;
+}
+
+.authContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  .formWrapper {
+    background-color: var(--container);
+    padding: 2em !important;
+    width: 500px !important;
+  }
+}

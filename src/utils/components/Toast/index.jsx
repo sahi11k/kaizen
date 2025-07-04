@@ -29,7 +29,7 @@ export const Toast = () => {
 };
 
 const IconWrapper = ({ children }) => {
-  return <div className={styles.toastIconWrapper}>{children}</div>;
+  return <span className={styles.toastIconWrapper}>{children}</span>;
 };
 
 Toast.toast = toast;

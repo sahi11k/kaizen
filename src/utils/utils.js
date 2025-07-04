@@ -9,15 +9,17 @@ export function deepCopy(obj) {
   return window.structuredClone(obj);
 }
 
-export const handleResponse = (
+export const handleResponse = ({
   response = {},
-  errorMessage = "API request failed"
-) => {
-  if (SUCCESS_STATUS_CODES.includes(response.status)) {
+  errorMessage = "API request failed",
+  successMessage = "API request successful",
+}) => {
+  if (SUCCESS_STATUS_CODES.includes(response?.status)) {
     return {
       status: 200,
       data: response.data,
       error: null,
+      message: successMessage,
     };
   }
 
@@ -25,6 +27,7 @@ export const handleResponse = (
     status: response.status,
     data: null,
     error: errorMessage,
+    message: errorMessage,
   };
 };
 
