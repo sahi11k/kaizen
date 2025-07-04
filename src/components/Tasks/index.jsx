@@ -286,7 +286,6 @@ const Tasks = () => {
           {renderCardFooter()}
         </div>
       </div>
-      <Toast />
     </>
   );
 };

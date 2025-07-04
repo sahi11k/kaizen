@@ -4,10 +4,8 @@ import Home from "@/pages/Home";
 import Pomodoro from "@/pages/Pomodoro";
 import Journal from "@/pages/Journal";
 import Profile from "@/pages/Profile";
-import Auth from "@/pages/Auth";
-import LoginForm from "@/components/Auth/LoginForm";
-import SignupForm from "@/components/Auth/SignupForm";
-import AuthCallback from "@/components/Auth/AuthCallback";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -34,21 +32,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Auth />,
+    element: <Layout.Auth />,
     children: [
       {
         path: "auth/login",
-        element: <LoginForm />,
+        element: <Login />,
       },
       {
         path: "auth/signup",
-        element: <SignupForm />,
+        element: <Signup />,
       },
     ],
-  },
-  {
-    path: "/auth/callback",
-    element: <AuthCallback />,
   },
 ]);
 

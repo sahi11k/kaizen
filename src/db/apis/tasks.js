@@ -12,7 +12,9 @@ export const fetchTasks = async (payload = {}) => {
     .select("*")
     .order("rank", { ascending: true });
 
-  res = handleResponse(res);
+  res = handleResponse({
+    response: res,
+  });
   if (res.status === 200) {
     return transformTasksFromDb(res.data);
   }
@@ -25,7 +27,10 @@ export const createTask = async (payload = {}) => {
     .from(SUPABASE_TABLES.TASKS)
     .insert(payloadToInsert)
     .select();
-  res = handleResponse(res, "Task creation failed");
+  res = handleResponse({
+    response: res,
+    errorMessage: "Task creation failed",
+  });
   res.data = transformTasksFromDb(res.data);
   return res;
 };
@@ -47,7 +52,10 @@ export const deleteTask = async (taskId) => {
     .from(SUPABASE_TABLES.TASKS)
     .delete()
     .eq("id", taskId);
-  res = handleResponse(res, "Task deletion failed");
+  res = handleResponse({
+    response: res,
+    errorMessage: "Task deletion failed",
+  });
   return res;
 };
 
@@ -57,7 +65,10 @@ export const sortTasks = async (payload = []) => {
     .from(SUPABASE_TABLES.TASKS)
     .upsert(payloadToUpdate)
     .select();
-  res = handleResponse(res, "Task order update failed");
+  res = handleResponse({
+    response: res,
+    errorMessage: "Task order update failed",
+  });
   res.data = transformTasksFromDb(res.data);
   return res;
 };

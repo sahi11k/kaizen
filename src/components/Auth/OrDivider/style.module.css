@@ -1,0 +1,12 @@
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin: 1em 0;
+
+  hr {
+    flex: 1;
+    color: var(--accent-primary);
+  }
+}

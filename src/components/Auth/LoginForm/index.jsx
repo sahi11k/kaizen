@@ -17,7 +17,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={styles.loginForm}>
+    <>
       <form onSubmit={handleLoginSubmit}>
         <FormItem.Input
           type="email"
@@ -51,7 +51,7 @@ const LoginForm = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

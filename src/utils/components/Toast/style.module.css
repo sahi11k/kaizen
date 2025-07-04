@@ -6,7 +6,7 @@
   padding: 1em !important;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2) !important;
   font-size: 1rem !important;
-  width: max-content !important;
+  width: 200px;
 }
 
 .toastIconWrapper {
