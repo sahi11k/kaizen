@@ -12,33 +12,47 @@ import OrDivider from "@/components/Auth/OrDivider";
 
 const { toast } = Toast;
 
+const DEFAULT_FORM_VALUES = {
+  name: "",
+  email: "",
+  password: "",
+};
+
+const DEFAULT_ERRORS = {
+  name: "",
+  email: "",
+  password: "",
+};
+
 const SignupForm = () => {
-  const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const [errors, setErrors] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
+  const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
+  const [errors, setErrors] = useState(DEFAULT_ERRORS);
   const [loading, setLoading] = useState(false);
   const [showOtpScreen, setShowOtpScreen] = useState(false);
+
+  const resetForm = () => {
+    setFormValues(DEFAULT_FORM_VALUES);
+    setErrors(DEFAULT_ERRORS);
+    setLoading(false);
+    setShowOtpScreen(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const hasErrors = Object.values(errors).some((error) => error !== "");
     if (hasErrors) return;
+
     setLoading(true);
     const response = await signUpNewUser(formValues);
     setLoading(false);
+
     if (response.error) {
       toast.error(response.error);
       return;
     }
+
+    // Clear form data after successful signup
+    toast.success("Account created successfully! Please verify your email.");
     setShowOtpScreen(true);
   };
 

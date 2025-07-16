@@ -76,7 +76,11 @@ const Tasks = () => {
 
   const addTask = async () => {
     const { title, ...rest } = formValues;
-    const maxRank = Math.max(...tasks.map((task) => task.rank));
+
+    // Handle case when no tasks exist - start rank from 1
+    const maxRank =
+      tasks.length > 0 ? Math.max(...tasks.map((task) => task.rank)) : 0;
+
     const task = {
       ...rest,
       completed: false,
