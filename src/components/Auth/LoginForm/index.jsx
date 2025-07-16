@@ -11,15 +11,23 @@ import useAuthStore from "@/store/auth";
 
 const { toast } = Toast;
 
+const DEFAULT_FORM_VALUES = {
+  email: "",
+  password: "",
+};
+
 const LoginForm = () => {
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-  });
+  const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
   const [showOtpScreen, setShowOtpScreen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
+
+  const resetForm = () => {
+    setFormValues(DEFAULT_FORM_VALUES);
+    setShowOtpScreen(false);
+    setIsLoading(false);
+  };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +47,7 @@ const LoginForm = () => {
     if (response.data.user) {
       setUser(response.data.user);
       setIsLoading(false);
+      resetForm(); // Reset form before navigation
       navigate("/", { replace: true });
     }
   };

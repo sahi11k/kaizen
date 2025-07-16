@@ -29,6 +29,12 @@ const OTPVerification = ({ onBack, email, backBtnText }) => {
     }
   }, [resendTimer]);
 
+  const resetForm = () => {
+    setOtp("");
+    setIsLoading(false);
+    setResendTimer(RESEND_OTP_TIME);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -36,27 +42,36 @@ const OTPVerification = ({ onBack, email, backBtnText }) => {
       email,
       token: otp,
     });
+
     if (res.error) {
       toast.error(res.error);
-    } else if (res.data.user) {
+      setIsLoading(false);
+      return;
+    }
+
+    if (res.data.user) {
       toast.success("Email verified successfully!");
       setUser(res.data.user);
+      resetForm(); // Reset form before navigation
       setTimeout(() => {
         navigate("/", { replace: true });
-      }, 2000);
+      }, 500);
     }
-    setOtp("");
-    setIsLoading(false);
   };
 
   const handleResendOTP = async () => {
     if (resendTimer > 0) return;
+
+    setIsLoading(true);
     const res = await resendOTP({ email });
+    setIsLoading(false);
+
     if (res.error) {
       toast.error(res.error);
     } else {
       toast.success("OTP sent successfully! Check your email.");
       setResendTimer(RESEND_OTP_TIME);
+      setOtp(""); // Clear OTP input after resend
     }
   };
 
@@ -81,7 +96,7 @@ const OTPVerification = ({ onBack, email, backBtnText }) => {
           className={`btn ${
             otp.length === 6 ? authStyles.submitButton : authStyles.disabled
           }`}
-          disabled={otp.length !== 6}
+          disabled={otp.length !== 6 || isLoading}
         >
           {isLoading ? (
             <span className="btn__icon">
@@ -101,6 +116,7 @@ const OTPVerification = ({ onBack, email, backBtnText }) => {
               type="button"
               className={`${styles.resendButton}`}
               onClick={handleResendOTP}
+              disabled={resendTimer > 0 || isLoading}
             >
               Resend OTP{" "}
               {resendTimer > 0
