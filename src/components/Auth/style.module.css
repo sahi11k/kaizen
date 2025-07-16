@@ -29,3 +29,11 @@ form {
     color: var(--accent-secondary);
   }
 }
+
+.disabled {
+  --padding: 0.5em;
+  margin-top: 1em;
+  background-color: var(--accent-primary) !important;
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+}

@@ -6,10 +6,15 @@ import {
 } from "@/utils/transformers/tasks";
 import { handleResponse } from "@/utils/utils";
 
-export const fetchTasks = async (payload = {}) => {
+export const fetchTasks = async (userId) => {
+  if (!userId) {
+    return [];
+  }
+
   let res = await supabase
     .from(SUPABASE_TABLES.TASKS)
     .select("*")
+    .eq("created_by", userId)
     .order("rank", { ascending: true });
 
   res = handleResponse({
@@ -21,12 +26,19 @@ export const fetchTasks = async (payload = {}) => {
   return [];
 };
 
-export const createTask = async (payload = {}) => {
-  const payloadToInsert = transformTasksToDb([payload]);
+export const createTask = async (payload = {}, userId) => {
+  if (!userId) {
+    return { error: "User authentication required" };
+  }
+
+  const taskWithUser = { ...payload, created_by: userId };
+  const payloadToInsert = transformTasksToDb([taskWithUser]);
+
   let res = await supabase
     .from(SUPABASE_TABLES.TASKS)
     .insert(payloadToInsert)
     .select();
+
   res = handleResponse({
     response: res,
     errorMessage: "Task creation failed",
@@ -35,36 +47,77 @@ export const createTask = async (payload = {}) => {
   return res;
 };
 
-export const updateTask = async (payload = {}) => {
+export const updateTask = async (payload = {}, userId) => {
+  if (!userId) {
+    return { error: "User authentication required" };
+  }
+
   const payloadToUpdate = transformTasksToDb([payload]);
   let res = await supabase
     .from(SUPABASE_TABLES.TASKS)
     .update(payloadToUpdate)
     .eq("id", payload.id)
+    .eq("created_by", userId)
     .select();
-  res = handleResponse(res, "Task update failed");
+
+  res = handleResponse({
+    response: res,
+    errorMessage: "Task update failed",
+  });
+
+  if (res.status === 200 && res.data.length === 0) {
+    return {
+      error: "Task not found or you don't have permission to update it",
+    };
+  }
+
   res.data = transformTasksFromDb(res.data);
   return res;
 };
 
-export const deleteTask = async (taskId) => {
+export const deleteTask = async (taskId, userId) => {
+  if (!userId) {
+    return { error: "User authentication required" };
+  }
+
   let res = await supabase
     .from(SUPABASE_TABLES.TASKS)
     .delete()
-    .eq("id", taskId);
+    .eq("id", taskId)
+    .eq("created_by", userId);
+
   res = handleResponse({
     response: res,
     errorMessage: "Task deletion failed",
   });
+
+  if (res.status === 200 && res.count === 0) {
+    return {
+      error: "Task not found or you don't have permission to delete it",
+    };
+  }
+
   return res;
 };
 
-export const sortTasks = async (payload = []) => {
-  const payloadToUpdate = transformTasksToDb(payload);
+export const sortTasks = async (payload = [], userId) => {
+  if (!userId) {
+    return { error: "User authentication required" };
+  }
+
+  // Add created_by to each task in the payload
+  const payloadWithUser = payload.map((task) => ({
+    ...task,
+    created_by: userId,
+  }));
+  const payloadToUpdate = transformTasksToDb(payloadWithUser);
+
   let res = await supabase
     .from(SUPABASE_TABLES.TASKS)
     .upsert(payloadToUpdate)
+    .eq("created_by", userId)
     .select();
+
   res = handleResponse({
     response: res,
     errorMessage: "Task order update failed",

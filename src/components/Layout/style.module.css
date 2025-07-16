@@ -14,3 +14,9 @@
     width: 500px !important;
   }
 }
+
+.logo {
+  font-size: 2em !important;
+  padding-bottom: 0.5em !important;
+  text-align: center;
+}

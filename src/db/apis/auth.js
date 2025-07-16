@@ -1,4 +1,5 @@
 import { supabase } from "@/db/supabase";
+import { EMAIL_NOT_VERIFIED_ERROR } from "@/utils/constants";
 import { handleResponse } from "@/utils/utils";
 
 export async function signUpNewUser(payload) {
@@ -24,36 +25,85 @@ export async function signUpNewUser(payload) {
 }
 
 export async function verifyOTP(payload) {
-  // const response = await supabase.auth.verifyOtp({
-  //   email: payload.email,
-  //   token: payload.token,
-  //   type: "email",
-  // });
-  // return response;
+  let res = await supabase.auth.verifyOtp({
+    email: payload.email,
+    token: payload.token,
+    type: "email",
+  });
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: res.error?.message,
+    successMessage: null,
+  });
+  return res;
 }
 
 export async function resendOTP(payload) {
-  // const response = await supabase.auth.resend({
-  //   email: payload.email,
-  //   type: "email",
-  // });
-  // return response;
+  let res = await supabase.auth.resend({
+    type: "signup",
+    email: payload.email,
+  });
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: res.error?.message,
+    successMessage: null,
+  });
+  return res;
 }
 
-export async function signInWithEmail(payload) {
-  const response = await supabase.auth.signInWithPassword({
+export async function loginWithEmail(payload) {
+  let res = await supabase.auth.signInWithPassword({
     email: payload.email,
     password: payload.password,
   });
-  return response;
+
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage:
+      res.error?.code === EMAIL_NOT_VERIFIED_ERROR // handle specific error for unverified email while login
+        ? EMAIL_NOT_VERIFIED_ERROR
+        : res.error?.message,
+    successMessage: null,
+  });
+  return res;
 }
 
-// export async function signOut() {
-//   const response = await supabase.auth.signOut();
-//   return response;
-// }
+export async function signOut() {
+  let res = await supabase.auth.signOut();
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: res.error?.message || "Something went wrong",
+    successMessage: null,
+  });
+  return res;
+}
 
 export async function getUserSession() {
-  const response = await supabase.auth.getSession();
-  return response;
+  let res = await supabase.auth.getSession();
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: res.error?.message,
+    successMessage: null,
+  });
+  return res;
 }

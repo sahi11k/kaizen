@@ -6,8 +6,8 @@ import OrDivider from "@/components/Auth/OrDivider";
 const Login = () => {
   return (
     <>
-      <GoogleLogin />
-      <OrDivider />
+      {/* <GoogleLogin />
+      <OrDivider /> */}
       <LoginForm />
     </>
   );

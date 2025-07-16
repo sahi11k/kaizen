@@ -72,14 +72,15 @@ const SignupForm = () => {
       <OTPVerification
         email={formValues.email}
         onBack={() => setShowOtpScreen(false)}
+        backBtnText="Back to Sign Up"
       />
     );
   }
 
   return (
     <>
-      <GoogleLogin />
-      <OrDivider />
+      {/* <GoogleLogin />
+      <OrDivider /> */}
       <form onSubmit={handleSubmit}>
         <FormItem.Input
           type="text"
@@ -99,7 +100,7 @@ const SignupForm = () => {
           placeholder="Enter email"
         />
         {errors.email && <ErrorText error={errors.email} />}
-        <FormItem.Input
+        <FormItem.Password
           type="password"
           id="signupPassword"
           value={formValues.password}
