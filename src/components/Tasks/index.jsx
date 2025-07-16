@@ -7,6 +7,7 @@ import { CREATE, EDIT, MIN_SESSIONS } from "@/utils/constants";
 import SortableContainer from "@/components/Tasks/SortableContainer";
 import { arraysEqual, deepCopy } from "@/utils/utils";
 import useTasksStore from "@/store/tasks";
+import useAuthStore from "@/store/auth";
 import { useShallow } from "zustand/react/shallow";
 import {
   createTask,
@@ -38,6 +39,7 @@ const Tasks = () => {
 
   const currentOrder = useRef([]);
 
+  const { user } = useAuthStore();
   const { tasks, setTasks, setCurrentTask, currentTask, updateTaskInStore } =
     useTasksStore(
       useShallow((state) => ({
@@ -51,15 +53,17 @@ const Tasks = () => {
 
   useEffect(() => {
     const loadTasks = async () => {
+      if (!user?.id) return;
+
       setIsLoading(true);
-      const tasks = await fetchTasks();
+      const tasks = await fetchTasks(user.id);
       setTasks(tasks);
       currentOrder.current = tasks.map((task) => task.id);
       setIsLoading(false);
     };
 
     loadTasks();
-  }, [setTasks]);
+  }, [setTasks, user?.id]);
 
   const formSubmitHandler = () => {
     if (mode === CREATE) {
@@ -81,7 +85,7 @@ const Tasks = () => {
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     };
 
-    const res = await createTask(task);
+    const res = await createTask(task, user.id);
     if (res.error) {
       return toast.error(res.error);
     }
@@ -97,7 +101,7 @@ const Tasks = () => {
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     };
 
-    const res = await updateTask(task);
+    const res = await updateTask(task, user.id);
     if (res.error) {
       return toast.error(res.error);
     }
@@ -113,7 +117,7 @@ const Tasks = () => {
   };
 
   const taskRemoveHandler = async (taskId) => {
-    const res = await deleteTask(taskId);
+    const res = await deleteTask(taskId, user.id);
     if (res.error) {
       return toast.error(res.error);
     }
@@ -127,10 +131,13 @@ const Tasks = () => {
 
   const taskCompleteHandler = async (taskId) => {
     const task = tasks.find((t) => t.id === taskId);
-    const res = await updateTask({
-      id: taskId,
-      completed: !task.completed,
-    });
+    const res = await updateTask(
+      {
+        id: taskId,
+        completed: !task.completed,
+      },
+      user.id
+    );
     if (res.error) {
       return toast.error(res.error);
     }
@@ -156,7 +163,7 @@ const Tasks = () => {
       id: task.id,
       rank: index + 1,
     }));
-    const res = await sortTasks(payload);
+    const res = await sortTasks(payload, user.id);
     if (res.error) {
       return toast.error(res.error);
     }
@@ -210,6 +217,9 @@ const Tasks = () => {
       <button
         className={`btn ${styles.addTaskBtn}`}
         onClick={() => {
+          if (!user?.id) {
+            return toast.error("Please log in to add tasks");
+          }
           setShowModal(true);
           setMode(CREATE);
         }}

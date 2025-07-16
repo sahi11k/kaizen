@@ -11,10 +11,12 @@ export const transformTaskFromDb = (task) => {
     ...task,
     completedSessions: task.completed_sessions,
     totalSessions: task.total_sessions,
+    createdBy: task.created_by,
   };
 
   delete transformedTask.completed_sessions;
   delete transformedTask.total_sessions;
+  delete transformedTask.created_by;
 
   return transformedTask;
 };
@@ -39,6 +41,11 @@ export const transformTaskToDb = (task = {}) => {
   if (Number.isInteger(task.totalSessions)) {
     transformedTask.total_sessions = task.totalSessions;
     delete transformedTask.totalSessions;
+  }
+
+  if (task.createdBy) {
+    transformedTask.created_by = task.createdBy;
+    delete transformedTask.createdBy;
   }
 
   return transformedTask;

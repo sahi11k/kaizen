@@ -6,6 +6,8 @@ import Journal from "@/pages/Journal";
 import Profile from "@/pages/Profile";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
+import NotFound from "@/pages/NotFound";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -18,15 +20,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/pomodoro",
-        element: <Pomodoro />,
+        element: (
+          <ProtectedRoute>
+            <Pomodoro />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/journal",
-        element: <Journal />,
+        element: (
+          <ProtectedRoute>
+            <Journal />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -43,6 +57,10 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

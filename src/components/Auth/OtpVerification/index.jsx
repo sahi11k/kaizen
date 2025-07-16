@@ -3,19 +3,21 @@ import { useNavigate } from "react-router";
 import styles from "@/components/Auth/OtpVerification/style.module.css";
 import authStyles from "@/components/Auth/style.module.css";
 import FormItem from "@/utils/components/FormItem";
-import { ErrorText } from "@/components/Auth/ErrorText";
 import { verifyOTP, resendOTP } from "@/db/apis/auth";
 import { Toast } from "@/utils/components/Toast";
+import Spinner from "@/utils/components/Spinner";
+import useAuthStore from "@/store/auth";
 
 const { toast } = Toast;
 
-const OTPVerification = ({ onBack, email }) => {
+const RESEND_OTP_TIME = 60;
+
+const OTPVerification = ({ onBack, email, backBtnText }) => {
   const [otp, setOtp] = useState("");
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isResending, setIsResending] = useState(false);
-  const [resendTimer, setResendTimer] = useState(0);
+  const [resendTimer, setResendTimer] = useState(RESEND_OTP_TIME);
   const navigate = useNavigate();
+  const { setUser } = useAuthStore();
 
   // Countdown timer for resend OTP
   useEffect(() => {
@@ -29,94 +31,68 @@ const OTPVerification = ({ onBack, email }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!otp || otp.length !== 6) {
-      setError("Please enter a valid 6-digit OTP");
-      return;
-    }
-
     setIsLoading(true);
-    setError("");
-
-    try {
-      const response = await verifyOTP({ email, token: otp });
-
-      if (response.error) {
-        setError(response.error.message || "Invalid OTP. Please try again.");
-        setIsLoading(false);
-        return;
-      }
-
-      if (response.data.user) {
-        toast.success("Email verified successfully! Welcome!");
+    const res = await verifyOTP({
+      email,
+      token: otp,
+    });
+    if (res.error) {
+      toast.error(res.error);
+    } else if (res.data.user) {
+      toast.success("Email verified successfully!");
+      setUser(res.data.user);
+      setTimeout(() => {
         navigate("/", { replace: true });
-      }
-    } catch (error) {
-      console.error("OTP verification error:", error);
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setIsLoading(false);
+      }, 2000);
     }
+    setOtp("");
+    setIsLoading(false);
   };
 
   const handleResendOTP = async () => {
-    setIsResending(true);
-    setError("");
-
-    try {
-      const response = await resendOTP({ email });
-
-      if (response.error) {
-        setError(response.error.message || "Failed to resend OTP");
-        setIsResending(false);
-        return;
-      }
-
+    if (resendTimer > 0) return;
+    const res = await resendOTP({ email });
+    if (res.error) {
+      toast.error(res.error);
+    } else {
       toast.success("OTP sent successfully! Check your email.");
-      setResendTimer(60); // 60 seconds countdown
-    } catch (error) {
-      console.error("Resend OTP error:", error);
-      setError("Failed to resend OTP. Please try again.");
-    } finally {
-      setIsResending(false);
+      setResendTimer(RESEND_OTP_TIME);
     }
-  };
-
-  const handleOTPChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "").slice(0, 6);
-    setOtp(value);
-    if (error) setError("");
   };
 
   return (
     <>
       <div className={styles.otpHeader}>
         <h2>Verify Your Email</h2>
-        <p>
-          Enter the 6-digit verification code sent to your email. This code is
-          valid for the next 10 minutes.
-        </p>
+        <p>Enter the 6-digit verification code sent to your email.</p>
       </div>
       <form onSubmit={handleSubmit}>
         <FormItem.Input
           type="text"
           id="otp"
           value={otp}
-          onChange={handleOTPChange}
+          onChange={(e) => setOtp(e.target.value)}
           required
           placeholder="Enter 6-digit OTP"
           maxLength="6"
         />
-        {error && <ErrorText error={error} />}
-
         <button
           type="submit"
-          className={`btn ${authStyles.submitButton}`}
-          disabled={isLoading || otp.length !== 6}
+          className={`btn ${
+            otp.length === 6 ? authStyles.submitButton : authStyles.disabled
+          }`}
+          disabled={otp.length !== 6}
         >
-          {isLoading ? "Verifying..." : "Verify Email"}
+          {isLoading ? (
+            <span className="btn__icon">
+              <Spinner />
+            </span>
+          ) : (
+            ""
+          )}
+          Verify Email
         </button>
       </form>
-
       <div className={styles.footer}>
         <div className={styles.resendSection}>
           <p>
@@ -126,7 +102,10 @@ const OTPVerification = ({ onBack, email }) => {
               className={`${styles.resendButton}`}
               onClick={handleResendOTP}
             >
-              Resend OTP
+              Resend OTP{" "}
+              {resendTimer > 0
+                ? `${String(resendTimer).padStart(2, "0")} secs`
+                : ""}
             </button>
           </p>
         </div>
@@ -137,7 +116,7 @@ const OTPVerification = ({ onBack, email }) => {
             onClick={onBack}
           >
             <span className="btn__icon">←</span>
-            Back to Sign Up
+            {backBtnText}
           </button>
         </div>
       </div>

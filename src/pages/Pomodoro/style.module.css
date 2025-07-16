@@ -3,5 +3,5 @@
   width: min(90%, 540px);
   display: flex;
   flex-direction: column;
-  gap: 3em;
+  gap: 2em;
 }

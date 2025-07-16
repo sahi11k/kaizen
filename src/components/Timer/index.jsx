@@ -12,11 +12,13 @@ import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
 import { updateTask } from "@/db/apis/tasks";
+import useAuthStore from "@/store/auth";
 
 const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
   TIMER_CONSTANTS;
 
 const Timer = () => {
+  const { user } = useAuthStore();
   const { currentTask, updateTaskInStore, setCurrentTask } = useTasksStore(
     useShallow((state) => ({
       currentTask: state.currentTask,
@@ -113,15 +115,23 @@ const Timer = () => {
   const finishSession = async () => {
     if (currentTab === ONGOING_TAB) {
       setPomodoroCount(pomodoroCount + 1);
-      if (currentTask) {
+      if (currentTask && user?.id) {
         const completedSessions = currentTask.completedSessions + 1;
-        const res = await updateTask({
-          id: currentTask.id,
-          completedSessions,
-          completed: completedSessions === currentTask.totalSessions,
-        });
-        updateTaskInStore(res.data[0]);
-        setCurrentTask(res.data[0]);
+        const res = await updateTask(
+          {
+            id: currentTask.id,
+            completedSessions,
+            completed: completedSessions === currentTask.totalSessions,
+          },
+          user.id
+        );
+        if (res.error) {
+          // Handle error silently for now or show notification
+          console.error("Failed to update task:", res.error);
+        } else {
+          updateTaskInStore(res.data[0]);
+          setCurrentTask(res.data[0]);
+        }
       }
     }
   };

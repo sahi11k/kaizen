@@ -20,3 +20,20 @@
     }
   }
 }
+
+.passwordInput {
+  --height: 60px;
+  border: 2px solid var(--surface);
+  padding-right: 1em;
+  gap: 0 !important;
+  height: var(--height);
+  border-radius: 0.25em;
+
+  input {
+    border: none !important;
+  }
+
+  &:focus-within {
+    border-color: var(--accent-primary);
+  }
+}
