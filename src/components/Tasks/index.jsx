@@ -194,7 +194,11 @@ const Tasks = () => {
   };
 
   const handleTaskClick = (task) => {
-    setCurrentTask(task);
+    if (currentTask?.id === task.id) {
+      setCurrentTask(null);
+    } else {
+      setCurrentTask(task);
+    }
   };
 
   const renderCardFooter = () => {
