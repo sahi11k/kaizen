@@ -1,5 +1,5 @@
 import { supabase } from "@/db/supabase";
-import { SUPABASE_TABLES } from "@/utils/constants";
+import { SUCCESS_STATUS_CODES, SUPABASE_TABLES } from "@/utils/constants";
 import {
   transformTasksFromDb,
   transformTasksToDb,
@@ -60,17 +60,14 @@ export const updateTask = async (payload = {}, userId) => {
     .eq("created_by", userId)
     .select();
 
+  const status = res.status === 200 && res.data.length === 0 ? 404 : res.status;
   res = handleResponse({
-    response: res,
+    response: {
+      ...res,
+      status,
+    },
     errorMessage: "Task update failed",
   });
-
-  if (res.status === 200 && res.data.length === 0) {
-    return {
-      error: "Task not found or you don't have permission to update it",
-    };
-  }
-
   res.data = transformTasksFromDb(res.data);
   return res;
 };
@@ -84,18 +81,17 @@ export const deleteTask = async (taskId, userId) => {
     .from(SUPABASE_TABLES.TASKS)
     .delete()
     .eq("id", taskId)
-    .eq("created_by", userId);
+    .eq("created_by", userId)
+    .select();
 
+  const status = res.status === 200 && res.data.length === 0 ? 404 : res.status;
   res = handleResponse({
-    response: res,
-    errorMessage: "Task deletion failed",
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: "Task not found or you don't have permission to delete it",
   });
-
-  if (res.status === 200 && res.count === 0) {
-    return {
-      error: "Task not found or you don't have permission to delete it",
-    };
-  }
 
   return res;
 };
