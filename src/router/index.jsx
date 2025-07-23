@@ -8,6 +8,7 @@ import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
+import UpdatePassword from "@/pages/UpdatePassword";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "auth/signup",
         element: <Signup />,
+      },
+      {
+        path: "auth/update-password",
+        element: <UpdatePassword />,
       },
     ],
   },

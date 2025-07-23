@@ -24,10 +24,19 @@
 .passwordInput {
   --height: 60px;
   border: 2px solid var(--surface);
-  padding-right: 1em;
   gap: 0 !important;
   height: var(--height);
   border-radius: 0.25em;
+  position: relative;
+
+  .passwordToggle {
+    position: absolute;
+    right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 100;
+  }
 
   input {
     border: none !important;
@@ -35,5 +44,11 @@
 
   &:focus-within {
     border-color: var(--accent-primary);
+  }
+
+  &:has(input:-webkit-autofill) {
+    svg {
+      fill: var(--accent-primary) !important;
+    }
   }
 }

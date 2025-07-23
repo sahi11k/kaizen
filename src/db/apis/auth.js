@@ -107,3 +107,36 @@ export async function getUserSession() {
   });
   return res;
 }
+
+export async function resetPassword(payload) {
+  let res = await supabase.auth.resetPasswordForEmail(payload.email, {
+    redirectTo: `${import.meta.env.VITE_APP_URL}/auth/update-password`,
+  });
+
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: res.error?.message,
+    successMessage: null,
+  });
+  return res;
+}
+
+export async function updatePassword(payload) {
+  let res = await supabase.auth.updateUser({
+    password: payload.password,
+  });
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: res.error?.message,
+    successMessage: "Password updated successfully",
+  });
+  return res;
+}
