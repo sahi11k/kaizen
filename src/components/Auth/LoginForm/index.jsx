@@ -8,6 +8,7 @@ import { EMAIL_NOT_VERIFIED_ERROR } from "@/utils/constants";
 import OtpVerification from "@/components/Auth/OtpVerification";
 import Spinner from "@/utils/components/Spinner";
 import useAuthStore from "@/store/auth";
+import ResetPasswordForm from "@/components/Auth/ResetPasswordForm";
 
 const { toast } = Toast;
 
@@ -19,6 +20,7 @@ const DEFAULT_FORM_VALUES = {
 const LoginForm = () => {
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
   const [showOtpScreen, setShowOtpScreen] = useState(false);
+  const [showResetPasswordScreen, setShowResetPasswordScreen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
@@ -72,6 +74,15 @@ const LoginForm = () => {
     );
   }
 
+  if (showResetPasswordScreen) {
+    return (
+      <ResetPasswordForm
+        onBack={() => setShowResetPasswordScreen(false)}
+        defaultEmail={formValues.email}
+      />
+    );
+  }
+
   return (
     <>
       <form onSubmit={handleLoginSubmit}>
@@ -95,6 +106,13 @@ const LoginForm = () => {
           required
           placeholder="Enter password"
         />
+        <button
+          type="button"
+          className={`btn ${styles.forgotPasswordLink}`}
+          onClick={() => setShowResetPasswordScreen(true)}
+        >
+          Forgot password?
+        </button>
         <button type="submit" className={`btn ${styles.submitButton}`}>
           {isLoading && (
             <span className="btn__icon">

@@ -9,6 +9,7 @@ import { Toast } from "@/utils/components/Toast";
 import OTPVerification from "@/components/Auth/OtpVerification";
 import GoogleLogin from "@/components/Auth/GoogleLogin";
 import OrDivider from "@/components/Auth/OrDivider";
+import { validateField } from "@/utils/utils";
 
 const { toast } = Toast;
 
@@ -29,13 +30,6 @@ const SignupForm = () => {
   const [errors, setErrors] = useState(DEFAULT_ERRORS);
   const [loading, setLoading] = useState(false);
   const [showOtpScreen, setShowOtpScreen] = useState(false);
-
-  const resetForm = () => {
-    setFormValues(DEFAULT_FORM_VALUES);
-    setErrors(DEFAULT_ERRORS);
-    setLoading(false);
-    setShowOtpScreen(false);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,25 +54,6 @@ const SignupForm = () => {
     const error = validateField(field, value);
     setErrors({ ...errors, [field]: error });
     setFormValues({ ...formValues, [field]: value });
-  };
-
-  const validateField = (field, value) => {
-    const trimmedValue = value?.trim();
-    switch (field) {
-      case "name":
-        if (!trimmedValue || !trimmedValue?.length)
-          return "Please enter a valid name";
-        if (trimmedValue?.length > 50)
-          return "Name must be less than 50 characters";
-        return "";
-      case "email":
-        if (trimmedValue?.includes("@") && trimmedValue?.includes("."))
-          return "";
-        return "Please enter a valid email";
-      case "password":
-        if (trimmedValue?.length >= 6 && trimmedValue?.length <= 32) return "";
-        return "Password must be between 6 and 32 characters";
-    }
   };
 
   if (showOtpScreen) {

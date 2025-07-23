@@ -30,6 +30,19 @@ form {
   }
 }
 
+.forgotPasswordLink {
+  --font-size: 0.9rem;
+  --color: var(--text-muted);
+  --padding: 0 0.5rem;
+  margin-top: -0.5em;
+  width: fit-content;
+
+  &:hover {
+    background-color: transparent !important;
+    color: var(--text-muted) !important;
+  }
+}
+
 .disabled {
   --padding: 0.5em;
   margin-top: 1em;
