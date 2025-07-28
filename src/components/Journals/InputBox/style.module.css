@@ -1,0 +1,28 @@
+.inputBox {
+  gap: 1em;
+}
+
+.inputBox__textarea {
+  overflow-y: auto;
+  transition: height 0.2s ease;
+  resize: none;
+  field-sizing: content;
+}
+
+.inputBox__textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.inputBox__textarea::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 3px;
+}
+
+.inputBox__textarea::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+
+.inputBox__textarea::-webkit-scrollbar-thumb:hover {
+  background: var(--text-base);
+}

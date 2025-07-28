@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import JournalList from "@/components/Journals/JournalList";
+import Header from "@/components/Journals/Header";
+import styles from "./style.module.css";
 
 const Journal = () => {
-  return <div>Journal</div>;
+  const [isInputBoxOpen, setIsInputBoxOpen] = useState(false);
+  return (
+    <div className={styles.journalContainer}>
+      <Header setIsInputBoxOpen={setIsInputBoxOpen} />
+      <JournalList isInputBoxOpen={isInputBoxOpen} />
+    </div>
+  );
 };
 
 export default Journal;

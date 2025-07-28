@@ -1,0 +1,12 @@
+.readMoreBtn {
+  display: inline-block !important;
+  --__padding: 0 0.5em !important;
+  --__color: var(--text-muted) !important;
+  --__bg: transparent !important;
+  --__font-size: 0.9rem !important;
+
+  &:hover {
+    background-color: transparent !important;
+    opacity: 0.75 !important;
+  }
+}
