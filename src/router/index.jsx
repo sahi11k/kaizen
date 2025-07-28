@@ -9,6 +9,7 @@ import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import UpdatePassword from "@/pages/UpdatePassword";
+import DashboardLayout from "@/components/Layout/DashboardLayout";
 
 const router = createBrowserRouter([
   {
@@ -27,14 +28,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      {
-        path: "/journal",
-        element: (
-          <ProtectedRoute>
-            <Journal />
-          </ProtectedRoute>
-        ),
-      },
+
       {
         path: "/profile",
         element: (
@@ -60,6 +54,20 @@ const router = createBrowserRouter([
       {
         path: "auth/update-password",
         element: <UpdatePassword />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/dashboard/journal",
+        element: (
+          <ProtectedRoute>
+            <Journal />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

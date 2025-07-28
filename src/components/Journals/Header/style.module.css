@@ -1,0 +1,20 @@
+.journalHeader {
+  border-bottom: 1px solid var(--accent-primary);
+  padding: 1em 2em 1em 1em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.addJournalBtn {
+  --bg: var(--accent-secondary);
+  --padding: 0.5em 1.5em;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--accent-secondary) !important;
+  }
+}
