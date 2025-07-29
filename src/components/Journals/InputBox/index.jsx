@@ -1,8 +1,24 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styles from "./style.module.css";
 import FormItem from "@/utils/components/FormItem";
+import { createJournal } from "@/db/apis/journals";
+import useAuthStore from "@/store/auth";
+import { Toast } from "@/utils/components/Toast";
+import Spinner from "@/utils/components/Spinner";
 
-const InputBox = () => {
+const { toast } = Toast;
+
+const DEFAULT_STATE = {
+  title: "Untitled Journal",
+  content: "",
+};
+
+const InputBox = ({ setIsInputBoxOpen }) => {
+  const { user } = useAuthStore();
+  const [formValues, setFormValues] = useState(DEFAULT_STATE);
+  const [isLoading, setIsLoading] = useState(false);
+  const disabled = !formValues.content.trim().length;
+
   const textareaRef = useRef(null);
 
   const autoResize = (textarea) => {
@@ -36,17 +52,68 @@ const InputBox = () => {
     }
   }, []);
 
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const res = await createJournal(
+      {
+        ...formValues,
+        date: new Date().toISOString(),
+      },
+      user.id
+    );
+    setIsLoading(false);
+    if (res.error) {
+      return toast.error(res.error);
+    }
+    setIsInputBoxOpen(false);
+    toast.success("Journal created successfully");
+  };
+
+  const handleCancel = () => {
+    setFormValues(DEFAULT_STATE);
+    setIsInputBoxOpen(false);
+  };
+
   return (
     <div className={`card ${styles.inputBox}`}>
-      <FormItem.Textarea
-        ref={textareaRef}
-        className={styles.inputBox__textarea}
-        placeholder="How was your day?"
-        rows={6}
-        onKeyDown={handleKeyDown}
-        onInput={handleInput}
-      />
-      <button className={styles.inputBox__button}>Add</button>
+      <form onSubmit={handleSave}>
+        <FormItem.Input
+          label="Title"
+          placeholder="Enter title"
+          className={styles.inputBox__input}
+          value={formValues.title}
+          onChange={(e) =>
+            setFormValues({ ...formValues, title: e.target.value })
+          }
+          maxLength={50}
+        />
+        <FormItem.Textarea
+          ref={textareaRef}
+          className={styles.inputBox__textarea}
+          placeholder="How was your day?"
+          rows={6}
+          onKeyDown={handleKeyDown}
+          onInput={handleInput}
+          value={formValues.content}
+          onChange={(e) =>
+            setFormValues({ ...formValues, content: e.target.value })
+          }
+        />
+        <div className={styles.inputBox__buttons}>
+          <button className="btn" onClick={handleCancel}>
+            Cancel
+          </button>
+          <button
+            className={`btn btn--primary ${disabled ? styles.disabled : ""}`}
+            type="submit"
+            disabled={disabled}
+          >
+            <span className="btn__icon">{isLoading ? <Spinner /> : ""}</span>
+            <span className="btn__label">Save</span>
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

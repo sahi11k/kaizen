@@ -1,4 +1,5 @@
-import { SUCCESS_STATUS_CODES } from "./constants";
+import dayjs from "dayjs";
+import { DATE_FORMAT, SUCCESS_STATUS_CODES } from "./constants";
 
 export function deepCopy(obj) {
   if (!obj) return obj;
@@ -59,4 +60,8 @@ export const validateField = (field, value) => {
       if (trimmedValue?.length >= 6 && trimmedValue?.length <= 32) return "";
       return "Password must be between 6 and 32 characters";
   }
+};
+
+export const formatDate = (dateInput) => {
+  return dayjs(dateInput).format(DATE_FORMAT);
 };

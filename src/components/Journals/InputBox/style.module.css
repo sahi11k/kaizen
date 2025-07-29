@@ -2,6 +2,13 @@
   gap: 1em;
 }
 
+.inputBox__input {
+  border-width: 0 0 2px 0 !important;
+  border-radius: 0 !important;
+  font-size: 1.2rem !important;
+  padding: 0.5em !important;
+}
+
 .inputBox__textarea {
   overflow-y: auto;
   transition: height 0.2s ease;
@@ -25,4 +32,19 @@
 
 .inputBox__textarea::-webkit-scrollbar-thumb:hover {
   background: var(--text-base);
+}
+
+.inputBox__buttons {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
+
+.inputBox__buttons button {
+  min-width: 100px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
 }

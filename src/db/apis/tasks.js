@@ -1,5 +1,5 @@
 import { supabase } from "@/db/supabase";
-import { SUCCESS_STATUS_CODES, SUPABASE_TABLES } from "@/utils/constants";
+import { SUPABASE_TABLES } from "@/utils/constants";
 import {
   transformTasksFromDb,
   transformTasksToDb,

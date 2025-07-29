@@ -1,5 +1,4 @@
 .journalHeader {
-  border-bottom: 1px solid var(--accent-primary);
   padding: 1em 2em 1em 1em;
   display: flex;
   justify-content: flex-end;

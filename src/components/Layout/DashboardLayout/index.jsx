@@ -5,6 +5,7 @@ import useAuthStore from "@/store/auth";
 import { STATUS } from "@/utils/constants";
 import Fallback from "@/utils/components/Fallback";
 import SideNav from "@/components/Layout/SideNav";
+import { Toast } from "@/utils/components/Toast";
 
 const DashboardLayout = () => {
   const { userFetchStatus, loadUser } = useAuthStore();
@@ -21,6 +22,7 @@ const DashboardLayout = () => {
 
   return (
     <>
+      <Toast />
       <div className={styles.dashboardLayout}>
         <aside className={styles.sideNav}>
           <SideNav />
