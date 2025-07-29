@@ -8,7 +8,10 @@ const Journal = () => {
   return (
     <div className={styles.journalContainer}>
       <Header setIsInputBoxOpen={setIsInputBoxOpen} />
-      <JournalList isInputBoxOpen={isInputBoxOpen} />
+      <JournalList
+        isInputBoxOpen={isInputBoxOpen}
+        setIsInputBoxOpen={setIsInputBoxOpen}
+      />
     </div>
   );
 };
