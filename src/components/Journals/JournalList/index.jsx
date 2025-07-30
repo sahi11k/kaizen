@@ -5,13 +5,18 @@ import InputBox from "@/components/Journals/InputBox";
 import useJournalsStore from "@/store/journals";
 import NoDataView from "@/utils/components/NoDataView";
 import useAuthStore from "@/store/auth";
-import { fetchJournals } from "@/db/apis/journals";
+import { deleteJournal, fetchJournals } from "@/db/apis/journals";
 import Skeleton from "@/utils/components/Skeleton";
+import { Toast } from "@/utils/components/Toast";
+import { CREATE, EDIT } from "@/utils/constants";
 
-const JournalList = ({ isInputBoxOpen, setIsInputBoxOpen }) => {
+const { toast } = Toast;
+
+const JournalList = ({ isInputBoxOpen, setIsInputBoxOpen, mode, setMode }) => {
   const [isLoading, setIsLoading] = useState(true);
-
   const { journals, setJournals } = useJournalsStore();
+
+  const [currentJournal, setCurrentJournal] = useState(null);
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -26,15 +31,53 @@ const JournalList = ({ isInputBoxOpen, setIsInputBoxOpen }) => {
     loadJournals();
   }, [setJournals, user?.id]);
 
+  const removeJournal = async (journalId) => {
+    const res = await deleteJournal(journalId, user.id);
+    if (res.error) {
+      return toast.error(res.error);
+    }
+    const updatedJournals = journals.filter((j) => j.id !== journalId);
+    setJournals(updatedJournals);
+    toast.success("Journal deleted successfully");
+  };
+
+  const onResetFormCallback = () => {
+    setIsInputBoxOpen(false);
+    setMode(CREATE);
+    setCurrentJournal(null);
+  };
+
   return (
     <div className={` ${styles.journalListContainer}`}>
-      {isInputBoxOpen && <InputBox setIsInputBoxOpen={setIsInputBoxOpen} />}
+      {isInputBoxOpen && mode === CREATE && (
+        <InputBox mode={mode} onResetFormCallback={onResetFormCallback} />
+      )}
       {isLoading && <Skeleton count={3} height={200} />}
-      {journals.length === 0 && !isLoading && <NoDataView />}
+      {journals?.length === 0 && !isLoading && <NoDataView />}
       {!isLoading &&
-        journals.map((journal) => (
-          <JournalCard key={journal.id} journal={journal} />
-        ))}
+        journals?.map((journal) => {
+          if (mode === EDIT && currentJournal?.id === journal.id) {
+            return (
+              <InputBox
+                key={journal.id}
+                mode={EDIT}
+                currentJournal={currentJournal}
+                onResetFormCallback={onResetFormCallback}
+              />
+            );
+          }
+          return (
+            <JournalCard
+              key={journal.id}
+              journal={journal}
+              removeJournal={removeJournal}
+              editJournal={(selectedJournal) => {
+                setMode(EDIT);
+                setCurrentJournal(selectedJournal);
+              }}
+            />
+          );
+        })}
     </div>
   );
 };

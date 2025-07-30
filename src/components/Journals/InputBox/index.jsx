@@ -1,25 +1,46 @@
 import React, { useRef, useEffect, useState } from "react";
 import styles from "./style.module.css";
 import FormItem from "@/utils/components/FormItem";
-import { createJournal } from "@/db/apis/journals";
+import { createJournal, updateJournal } from "@/db/apis/journals";
 import useAuthStore from "@/store/auth";
 import { Toast } from "@/utils/components/Toast";
 import Spinner from "@/utils/components/Spinner";
+import useJournalsStore from "@/store/journals";
+import { CREATE, EDIT } from "@/utils/constants";
+import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
+import "react-datepicker/dist/react-datepicker.css";
 
 const { toast } = Toast;
 
 const DEFAULT_STATE = {
   title: "Untitled Journal",
   content: "",
+  date: new Date(),
 };
 
-const InputBox = ({ setIsInputBoxOpen }) => {
+const InputBox = ({ mode, currentJournal, onResetFormCallback }) => {
   const { user } = useAuthStore();
+  const {
+    journals,
+    setJournals,
+    updateJournal: updateJournalInStore,
+  } = useJournalsStore();
   const [formValues, setFormValues] = useState(DEFAULT_STATE);
   const [isLoading, setIsLoading] = useState(false);
   const disabled = !formValues.content.trim().length;
 
   const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (mode === EDIT && currentJournal) {
+      setFormValues({
+        title: currentJournal.title,
+        content: currentJournal.content,
+        date: new Date(currentJournal.date),
+      });
+    }
+  }, [mode, currentJournal]);
 
   const autoResize = (textarea) => {
     textarea.style.height = "auto";
@@ -52,13 +73,24 @@ const InputBox = ({ setIsInputBoxOpen }) => {
     }
   }, []);
 
-  const handleSave = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const res = await createJournal(
+    if (mode === CREATE) {
+      await handleCreate();
+    } else {
+      await handleUpdate();
+    }
+
+    onResetFormCallback();
+  };
+
+  const handleUpdate = async () => {
+    const res = await updateJournal(
       {
+        ...currentJournal,
         ...formValues,
-        date: new Date().toISOString(),
+        date: dayjs(formValues.date).format("YYYY-MM-DD"),
       },
       user.id
     );
@@ -66,33 +98,66 @@ const InputBox = ({ setIsInputBoxOpen }) => {
     if (res.error) {
       return toast.error(res.error);
     }
-    setIsInputBoxOpen(false);
+    updateJournalInStore(res.data[0]);
+    toast.success("Journal updated successfully");
+  };
+
+  const handleCreate = async () => {
+    const res = await createJournal(
+      {
+        ...formValues,
+        date: dayjs(formValues.date).format("YYYY-MM-DD"),
+      },
+      user.id
+    );
+    setIsLoading(false);
+    if (res.error) {
+      return toast.error(res.error);
+    }
+    setJournals([...res.data, ...journals]);
     toast.success("Journal created successfully");
   };
 
   const handleCancel = () => {
     setFormValues(DEFAULT_STATE);
-    setIsInputBoxOpen(false);
+    onResetFormCallback();
   };
 
   return (
     <div className={`card ${styles.inputBox}`}>
-      <form onSubmit={handleSave}>
-        <FormItem.Input
-          label="Title"
-          placeholder="Enter title"
-          className={styles.inputBox__input}
-          value={formValues.title}
-          onChange={(e) =>
-            setFormValues({ ...formValues, title: e.target.value })
-          }
-          maxLength={50}
-        />
+      <form onSubmit={handleSubmit}>
+        <div className={styles.inputBox__header}>
+          <FormItem.Input
+            label="Title"
+            placeholder="Enter title"
+            className={styles.inputBox__input}
+            value={formValues.title}
+            onChange={(e) =>
+              setFormValues({ ...formValues, title: e.target.value })
+            }
+            maxLength={50}
+          />
+          <DatePicker
+            showIcon
+            className={styles.inputBox__date}
+            popperClassName={styles.inputBox__datePopper}
+            toggleCalendarOnIconClick
+            selected={formValues.date}
+            onChange={(date) => setFormValues({ ...formValues, date })}
+            onSelect={(date) => setFormValues({ ...formValues, date })}
+            popperContainer={({ children }) => (
+              <div style={{ position: "relative" }}>{children}</div>
+            )}
+            showPopperArrow={false}
+            popperPlacement="bottom-start"
+            dateFormat="dd/MM/yyyy"
+          />
+        </div>
         <FormItem.Textarea
           ref={textareaRef}
           className={styles.inputBox__textarea}
           placeholder="How was your day?"
-          rows={6}
+          rows={5}
           onKeyDown={handleKeyDown}
           onInput={handleInput}
           value={formValues.content}

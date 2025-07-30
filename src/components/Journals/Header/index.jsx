@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "./style.module.css";
 
-const Header = ({ setIsInputBoxOpen }) => {
+const Header = ({ showInputHandler }) => {
   return (
     <div className={styles.journalHeader}>
       <button
         className={`btn ${styles.addJournalBtn}`}
-        onClick={() => setIsInputBoxOpen(true)}
+        onClick={showInputHandler}
       >
         Add Journal
       </button>
