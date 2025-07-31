@@ -71,7 +71,6 @@ const Tasks = () => {
     } else if (mode === EDIT) {
       editTask();
     }
-    handleCancel();
   };
 
   const addTask = async () => {
@@ -96,6 +95,7 @@ const Tasks = () => {
 
     setTasks([...tasks, ...res.data]);
     toast.success("Task created successfully");
+    handleCancel();
   };
 
   const editTask = async () => {
@@ -112,6 +112,7 @@ const Tasks = () => {
 
     updateTaskInStore(res.data[0]);
     toast.success("Task updated successfully");
+    handleCancel();
   };
 
   const handleCancel = () => {

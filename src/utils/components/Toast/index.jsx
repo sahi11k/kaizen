@@ -7,9 +7,11 @@ export const Toast = () => {
   return (
     <Toaster
       position="top-right"
+      closeButton
       toastOptions={{
         classNames: {
           toast: styles.toast,
+          closeButton: styles.closeButton,
         },
       }}
       icons={{

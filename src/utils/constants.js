@@ -46,9 +46,9 @@ export const MIN_SESSIONS = 1;
 export const TIMER_CONSTANTS = {
   ONGOING_TAB: "ongoing",
   BREAK_TAB: "break",
-  TASK_TIME: 25 * 60,
-  SHORT_BREAK_TIME: 5 * 60,
-  LONG_BREAK_TIME: 15 * 60,
+  TASK_TIME: 1500,
+  SHORT_BREAK_TIME: 300,
+  LONG_BREAK_TIME: 900,
 };
 
 export const SUPABASE_TABLES = {
@@ -69,3 +69,7 @@ export const STATUS = {
 };
 
 export const DATE_FORMAT = "dddd, DD MMM YYYY";
+
+export const PAGINATION = {
+  JOURNALS_PAGE_SIZE: 10,
+};
