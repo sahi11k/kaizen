@@ -21,12 +21,17 @@
   outline: none;
   border-radius: 4px !important;
   border: none;
-  width: 150px;
   text-align: center;
+  height: 40px;
+  width: 150px;
+  padding-left: 32px !important;
 }
 
 :global(.react-datepicker__calendar-icon) {
   fill: var(--text-base) !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  left: 8px;
 }
 
 .inputBox__datePopper {

@@ -81,8 +81,6 @@ const InputBox = ({ mode, currentJournal, onResetFormCallback }) => {
     } else {
       await handleUpdate();
     }
-
-    onResetFormCallback();
   };
 
   const handleUpdate = async () => {
@@ -100,6 +98,7 @@ const InputBox = ({ mode, currentJournal, onResetFormCallback }) => {
     }
     updateJournalInStore(res.data[0]);
     toast.success("Journal updated successfully");
+    onResetFormCallback();
   };
 
   const handleCreate = async () => {
@@ -116,6 +115,7 @@ const InputBox = ({ mode, currentJournal, onResetFormCallback }) => {
     }
     setJournals([...res.data, ...journals]);
     toast.success("Journal created successfully");
+    onResetFormCallback();
   };
 
   const handleCancel = () => {

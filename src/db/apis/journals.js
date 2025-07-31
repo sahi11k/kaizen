@@ -1,5 +1,5 @@
 import { supabase } from "@/db/supabase";
-import { SUPABASE_TABLES } from "@/utils/constants";
+import { PAGINATION, SUPABASE_TABLES } from "@/utils/constants";
 import { handleResponse } from "@/utils/utils";
 
 export const createJournal = async (payload = {}, userId) => {
@@ -18,7 +18,11 @@ export const createJournal = async (payload = {}, userId) => {
   return res;
 };
 
-export const fetchJournals = async (userId) => {
+export const fetchJournals = async (
+  userId,
+  offset = 0,
+  pageSize = PAGINATION.JOURNALS_PAGE_SIZE
+) => {
   if (!userId) {
     return [];
   }
@@ -27,7 +31,8 @@ export const fetchJournals = async (userId) => {
     .from(SUPABASE_TABLES.JOURNALS)
     .select("*")
     .eq("created_by", userId)
-    .order("date", { ascending: false });
+    .order("date", { ascending: false })
+    .range(offset, offset + pageSize - 1);
 
   res = handleResponse({
     response: res,

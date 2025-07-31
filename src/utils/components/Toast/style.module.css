@@ -7,11 +7,32 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2) !important;
   font-size: 1rem !important;
   width: max-content !important;
+  padding-right: 3.5rem !important;
 }
 
 .toastIconWrapper {
   svg {
     width: 1.25rem !important;
     height: 1.25rem !important;
+  }
+}
+
+.closeButton {
+  top: calc(50% + 2px) !important;
+  transform: translateY(-50%) !important;
+  left: auto !important;
+  right: 0.75rem !important;
+  background-color: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: var(--text-base) !important;
+
+  &:hover {
+    background-color: var(--accent-primary) !important;
+  }
+
+  svg {
+    width: 14px !important;
+    height: 14px !important;
   }
 }
