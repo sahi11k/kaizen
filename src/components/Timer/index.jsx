@@ -62,8 +62,8 @@ const Timer = () => {
   useEffect(() => {
     document.title =
       currentTab === ONGOING_TAB
-        ? `🍅 Pomodoro : ${getFormattedTime(timerValue)}`
-        : `💤 Break : ${getFormattedTime(timerValue)}`;
+        ? `Pomodoro : ${getFormattedTime(timerValue)}`
+        : `Break : ${getFormattedTime(timerValue)}`;
   }, [currentTab, timerValue]);
 
   const startTimer = () => {
@@ -137,7 +137,7 @@ const Timer = () => {
   };
 
   return (
-    <div className={`card`}>
+    <div className={`card ${styles.timerContainer}`}>
       <div className="card__body">
         <Tabs
           defaultTab={ONGOING_TAB}

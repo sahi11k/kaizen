@@ -3,6 +3,6 @@
   display: grid;
   grid-auto-flow: row;
   grid-template-rows: auto 1fr;
-  margin: 100px auto;
-  row-gap: 2em;
+  padding: 1em;
+  row-gap: 1em;
 }

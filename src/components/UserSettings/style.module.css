@@ -1,9 +1,8 @@
-.userAnalytics {
-  margin: 0 3em;
+.userSettings {
   background-color: var(--container);
 }
 
-.userAnalytics__header__title {
+.userSettings__header__title {
   border-left: 5px solid var(--accent-secondary);
   padding-left: 0.5em;
 }

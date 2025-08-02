@@ -41,7 +41,8 @@
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
+  min-width: 200px;
+  width: max-content;
   z-index: 1000;
   background: var(--surface);
   border: 1px solid var(--accent-primary);

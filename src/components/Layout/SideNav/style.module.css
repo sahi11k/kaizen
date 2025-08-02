@@ -1,0 +1,134 @@
+.sideNav {
+  display: grid;
+  grid-template-rows: 75px auto 75px;
+  height: 100%;
+}
+
+:global(.menu) {
+  --dropdown-width: 200px;
+}
+
+.sideNav_collapsed {
+  transition: all 0.2s ease-in-out;
+
+  .sideNav_collapseBtn {
+    display: none;
+  }
+
+  &:hover {
+    .sideNav_collapseBtn {
+      display: block;
+    }
+
+    .sideNav__logo {
+      display: none;
+    }
+  }
+}
+
+.sideNav__header,
+.sideNav__footer {
+  display: flex;
+  align-items: center;
+}
+
+.sideNav__header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--black-800);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .sideNav_collapseBtn {
+    --padding: 0.25em;
+    --icon-size: 1.5em;
+    --border-radius: 0.5em;
+  }
+}
+
+.sideNav__content {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  list-style: none;
+  padding: 1em 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideNav__navItem {
+  padding: 0.75em;
+  border-radius: 0.5em;
+  margin: 0 0.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &:hover {
+    background-color: var(--black-800);
+  }
+}
+
+.sideNav__navIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.sideNav__navItemActive {
+  background-color: var(--accent-primary);
+  &:hover {
+    background-color: var(--accent-primary);
+  }
+}
+
+.sideNav__footer {
+  padding: 0.5em 0;
+  border-top: 1px solid var(--black-800);
+}
+
+.sideNav__profileLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.sideNav__profileAvatar {
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+  border-radius: 50%;
+  background-color: var(--accent-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.sideNav__profileInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sideNav__profileName {
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sideNav__profileEmail {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

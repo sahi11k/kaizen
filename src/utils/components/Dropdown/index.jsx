@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./style.module.css";
-import { TASK_CATEGORIES } from "@/utils/constants";
 import EmptyIcon from "@/assets/icons/empty.svg?react";
 
 const Dropdown = ({
@@ -88,7 +87,6 @@ const Dropdown = ({
           <span className={styles.placeholder}>{value || placeholder}</span>
         )}
       </div>
-
       {/* Dropdown Menu */}
       {isOpen && (
         <div
@@ -106,9 +104,12 @@ const Dropdown = ({
             options.map((option, index) => {
               const isObject = typeof option === "object" && option !== null;
               const label = isObject ? option.label : option;
-              const value = isObject ? option.value : option;
+              // const value = isObject ? option.value : option;
               const disabled = isObject ? option.disabled : false;
               const icon = isObject ? option.icon : null;
+
+              const labelStyles = isObject ? option.styles?.label : {};
+              const iconStyles = isObject ? option.styles?.icon : {};
 
               return (
                 <div
@@ -126,8 +127,14 @@ const Dropdown = ({
                     }
                   }}
                 >
-                  {icon && <span className={styles.optionIcon}>{icon}</span>}
-                  <span className={styles.optionLabel}>{label}</span>
+                  {icon && (
+                    <span className={styles.optionIcon} style={iconStyles}>
+                      {icon}
+                    </span>
+                  )}
+                  <span className={styles.optionLabel} style={labelStyles}>
+                    {label}
+                  </span>
                 </div>
               );
             })

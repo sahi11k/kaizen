@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import JournalList from "@/components/Journals/JournalList";
-import Header from "@/components/Journals/Header";
-import styles from "./style.module.css";
+
 import { CREATE } from "@/utils/constants";
+import AddJournal from "@/components/Journals/AddJournal";
 
 const Journal = () => {
   const [isInputBoxOpen, setIsInputBoxOpen] = useState(false);
@@ -14,8 +14,8 @@ const Journal = () => {
   };
 
   return (
-    <div className={styles.journalContainer}>
-      <Header showInputHandler={showInputHandler} />
+    <div>
+      <AddJournal showInputHandler={showInputHandler} />
       <JournalList
         isInputBoxOpen={isInputBoxOpen}
         setIsInputBoxOpen={setIsInputBoxOpen}
