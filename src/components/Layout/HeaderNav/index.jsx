@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "@/components/Layout/Header/style.module.css";
 import { Link } from "react-router";
 import useAuthStore from "@/store/auth";
+import styles from "./style.module.css";
 
-const Header = () => {
+const HeaderNav = () => {
   const { user } = useAuthStore();
 
   return (
@@ -14,17 +14,17 @@ const Header = () => {
       <ul className={styles.header__nav}>
         {user ? (
           <>
-            <Link to="/pomodoro">
+            <Link to="/dashboard/pomodoro">
               <li className={`${styles.header__nav__item} underlineAnimation`}>
                 Pomodoro
               </li>
             </Link>
-            <Link to="/journal">
+            <Link to="/dashboard/journals">
               <li className={`${styles.header__nav__item} underlineAnimation`}>
                 Journal
               </li>
             </Link>
-            <Link to="/profile">
+            <Link to="/dashboard/profile">
               <li className={`${styles.header__nav__item} underlineAnimation`}>
                 Profile
               </li>
@@ -44,4 +44,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderNav;

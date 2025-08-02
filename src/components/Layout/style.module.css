@@ -1,5 +1,27 @@
-.main {
+.baseLayoutContainer {
   min-height: 100vh;
+}
+
+.baseLayout_collapsed {
+  --side-nav-width: 320px;
+}
+
+.baseLayout_expanded {
+  --side-nav-width: 68px;
+}
+
+.sidePanel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--side-nav-width);
+  height: 100%;
+  background-color: var(--container);
+}
+
+.dashboardContainer {
+  margin-left: var(--side-nav-width);
+  width: calc(100% - var(--side-nav-width));
 }
 
 .authContainer {
@@ -13,10 +35,4 @@
     padding: 2em !important;
     width: 500px !important;
   }
-}
-
-.logo {
-  font-size: 2em !important;
-  padding-bottom: 0.5em !important;
-  text-align: center;
 }

@@ -1,0 +1,33 @@
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-base);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  .logo__icon {
+    fill: var(--accent-secondary);
+    flex-shrink: 0;
+    transition: fill 0.3s ease;
+  }
+
+  .logo__text {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+.logo--medium {
+  gap: 0.75rem;
+  .logo__icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 2px;
+  }
+
+  .logo__text {
+    font-size: 1.5rem;
+  }
+}

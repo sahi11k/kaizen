@@ -1,58 +1,20 @@
-import React, { useState } from "react";
-import styles from "./style.module.css";
 import useAuthStore from "@/store/auth";
-import { signOut } from "@/db/apis/auth";
-import { Toast } from "@/utils/components/Toast";
-import { useNavigate } from "react-router";
-import { STATUS } from "@/utils/constants";
-import Spinner from "@/utils/components/Spinner";
-
-const { toast } = Toast;
+import { getUserDisplayName } from "@/utils/utils";
+import styles from "./style.module.css";
 
 const UserProfile = () => {
-  const navigate = useNavigate();
-  const { user, setUser, setUserFetchStatus } = useAuthStore();
+  const { user } = useAuthStore();
 
-  const [loading, setLoading] = useState(false);
-
-  const displayName = user?.user_metadata?.display_name;
+  const displayName = getUserDisplayName(user);
   const email = user?.email || "Not Available";
   const phoneNumber = user?.phone || "Not Available";
   const dateOfBirth = user?.user_metadata?.date_of_birth || "Not Available"; // TODO: Add date of birth
 
-  const logout = async () => {
-    setLoading(true);
-    const res = await signOut();
-    if (res.error) {
-      toast.error(res.error);
-    } else {
-      setUser(null);
-      setUserFetchStatus(STATUS.LOADING);
-      navigate("/", { replace: true });
-    }
-    setLoading(false);
-  };
-
   return (
     <section className={`card ${styles.userProfile}`}>
       <div className={`card__header ${styles.userProfile__header}`}>
-        <div className={styles.userProfile__header__title}>User Details</div>
-        <div>
-          {/* <button className={`btn ${styles.userProfile__btn}`}>
-            <span>Edit</span>
-          </button> */}
-          <button
-            className={`btn ${styles.userProfile__btn__logout}`}
-            onClick={logout}
-          >
-            {loading && (
-              <span className="btn__icon">
-                <Spinner />
-              </span>
-            )}
-            Logout
-          </button>
-        </div>
+        <div className={styles.userProfile__header__title}>Account Details</div>
+        <div></div>
       </div>
       <div className={`card__body ${styles.userProfile__body}`}>
         <div className={`${styles.userProfile__avatar}`}>

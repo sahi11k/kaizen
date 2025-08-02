@@ -1,5 +1,6 @@
 .pomodoro {
-  margin: 100px auto;
+  padding: 1em;
+  margin: auto;
   width: min(90%, 540px);
   display: flex;
   flex-direction: column;

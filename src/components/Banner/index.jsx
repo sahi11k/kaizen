@@ -17,7 +17,7 @@ const Banner = () => {
           Get in your Zen mode and become UNSTOPPABLE.
         </p>
         <div className={styles.banner__buttons}>
-          <Link to="/pomodoro">
+          <Link to="/dashboard/pomodoro">
             <button
               className={`btn underlineAnimation ${styles.banner__button}`}
             >
