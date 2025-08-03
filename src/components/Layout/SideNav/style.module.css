@@ -4,10 +4,6 @@
   height: 100%;
 }
 
-:global(.menu) {
-  --dropdown-width: 200px;
-}
-
 .sideNav_collapsed {
   transition: all 0.2s ease-in-out;
 

@@ -1,6 +1,6 @@
 import React from "react";
-import Tasks from "@/components/Tasks";
-import Timer from "@/components/Timer";
+import Timer from "@/components/Pomodoro/Timer";
+import Tasks from "@/components/Pomodoro/Tasks";
 import styles from "./style.module.css";
 
 const Pomodoro = () => {

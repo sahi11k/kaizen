@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./style.module.css";
 
 const Tabs = ({
@@ -6,6 +6,9 @@ const Tabs = ({
   defaultTab = 0,
   onTabChange,
   activeTab = defaultTab,
+  tabsClassName = "",
+  tabNavClassName = "",
+  tabPanelClassName = "",
 }) => {
   const tabs = React.Children.toArray(children).filter(
     (child) => child.type.name === "Tab"
@@ -20,8 +23,8 @@ const Tabs = ({
   };
 
   return (
-    <div className={styles.tabs}>
-      <div className={styles.tab__nav}>
+    <div className={`${styles.tabs} ${tabsClassName}`}>
+      <div className={`${styles.tab__nav} ${tabNavClassName}`}>
         {tabs.map((tab) => (
           <button
             key={tab.props.tabKey}
@@ -36,7 +39,9 @@ const Tabs = ({
           </button>
         ))}
       </div>
-      <div className={styles.tabs__panel}>{tabs[index]}</div>
+      <div className={`${styles.tabs__panel} ${tabPanelClassName || ""}`}>
+        {tabs[index]}
+      </div>
     </div>
   );
 };

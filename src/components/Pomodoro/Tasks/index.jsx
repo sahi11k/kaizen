@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./style.module.css";
 import PlusIcon from "@/assets/icons/plus.svg?react";
-import TaskItem from "@/components/Tasks/TaskItem";
-import AddForm from "@/components/Tasks/AddForm";
+import TaskItem from "@/components/Pomodoro/Tasks/TaskItem";
+import AddForm from "@/components/Pomodoro/Tasks/AddForm";
 import { CREATE, EDIT, MIN_SESSIONS } from "@/utils/constants";
-import SortableContainer from "@/components/Tasks/SortableContainer";
+import SortableContainer from "@/components/Pomodoro/Tasks/SortableContainer";
 import { arraysEqual, deepCopy } from "@/utils/utils";
 import useTasksStore from "@/store/tasks";
 import useAuthStore from "@/store/auth";

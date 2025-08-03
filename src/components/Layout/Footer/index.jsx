@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.footer__socials}>
-        <p className={styles.footer__socialsTitle}>Keep Zening.</p>
+        <p className={styles.footer__socialsTitle}>Keep Hustling.</p>
         <p className={styles.footer__socialLinks}>
           <a
             href="mailto:sahil511kumar@gmail.com"
@@ -42,7 +42,7 @@ const Footer = () => {
         </p>
       </div>
       <div className={styles.footer__copyright}>
-        <div> &copy; {new Date().getFullYear()} Zenten</div>
+        <div> &copy; {new Date().getFullYear()} Kaizen, Inc.</div>
       </div>
     </footer>
   );
