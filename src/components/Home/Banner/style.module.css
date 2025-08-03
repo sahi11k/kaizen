@@ -1,3 +1,11 @@
+.banner {
+  min-height: 700px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .banner__img {
   position: absolute;
   inset: 0;
@@ -9,32 +17,20 @@
   }
 }
 
-.banner {
-  min-height: 100vh;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .banner__content {
   width: min(90%, 800px);
   text-align: center;
 }
 
 .banner__title {
-  font-size: clamp(4rem, 10vw, 10rem);
+  font-size: clamp(3rem, 10vw, 8rem);
   font-family: var(--font-heading);
-
-  &::after {
-    content: ".";
-  }
+  line-height: 1.25;
 }
 
 .banner__description {
   font-size: clamp(1rem, 2vw, 1.25rem);
   font-weight: 300;
-  font-style: italic;
 }
 
 .banner__buttons {

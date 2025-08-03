@@ -36,3 +36,10 @@
     width: 500px !important;
   }
 }
+
+.authLogoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5em;
+}

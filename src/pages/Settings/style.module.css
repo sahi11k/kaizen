@@ -1,8 +1,4 @@
-.profile {
-  height: 100%;
-  display: grid;
-  grid-auto-flow: row;
-  grid-template-rows: auto 1fr;
+.settingsPage {
+  min-height: calc(100vh - 2rem);
   padding: 1em;
-  row-gap: 1em;
 }

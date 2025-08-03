@@ -52,3 +52,9 @@
     }
   }
 }
+
+input:disabled {
+  color: var(--text-muted) !important;
+  background-color: var(--black-800) !important;
+  cursor: not-allowed;
+}

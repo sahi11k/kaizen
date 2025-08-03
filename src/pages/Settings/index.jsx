@@ -1,15 +1,13 @@
 import React from "react";
-import UserProfile from "@/components/UserProfile";
-import PomodoroSettings from "@/components/PomodoroSettings";
+import Settings from "@/components/Settings";
 import styles from "./style.module.css";
 
-const Settings = () => {
+const SettingsPage = () => {
   return (
-    <div className={styles.profile}>
-      <UserProfile />
-      <PomodoroSettings />
+    <div className={styles.settingsPage}>
+      <Settings />
     </div>
   );
 };
 
-export default Settings;
+export default SettingsPage;

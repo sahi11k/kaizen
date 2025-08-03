@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "./style.module.css";
 import PlayIcon from "@/assets/icons/play.svg?react";
 import NextIcon from "@/assets/icons/next.svg?react";
 import ResetIcon from "@/assets/icons/reset.svg?react";
 import StopIcon from "@/assets/icons/stop.svg?react";
-import Tabs from "@/components/Tabs";
+import Tabs from "@/utils/components/Tabs";
 import ClockIcon from "@/assets/icons/clock.svg?react";
 import CupIcon from "@/assets/icons/cup.svg?react";
 import { TASK_CATEGORY_ICONS, TIMER_CONSTANTS } from "@/utils/constants";
@@ -13,6 +12,7 @@ import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
 import { updateTask } from "@/db/apis/tasks";
 import useAuthStore from "@/store/auth";
+import styles from "./style.module.css";
 
 const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
   TIMER_CONSTANTS;

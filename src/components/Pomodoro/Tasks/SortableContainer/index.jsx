@@ -21,7 +21,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import TaskItem from "@/components/Tasks/TaskItem";
+import TaskItem from "@/components/Pomodoro/Tasks/TaskItem";
 import { CREATE } from "@/utils/constants";
 
 const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {

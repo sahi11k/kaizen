@@ -3,27 +3,27 @@ import styles from "./style.module.css";
 import VisibilityOffIcon from "@/assets/icons/visibilityOff.svg?react";
 import VisibilityIcon from "@/assets/icons/visibility.svg?react";
 
-const FormItem = ({ children, className = "" }) => {
+export const FormItemWrapper = ({ children, className = "" }) => {
   return <div className={`${styles.formItem} ${className}`}>{children}</div>;
 };
 
 const Input = ({ type = "text", ...props }) => (
-  <FormItem>
+  <FormItemWrapper>
     <input type={type} {...props} />
-  </FormItem>
+  </FormItemWrapper>
 );
 
 const Textarea = ({ rows = 4, ...props }) => (
-  <FormItem>
+  <FormItemWrapper>
     <textarea rows={rows} {...props} />
-  </FormItem>
+  </FormItemWrapper>
 );
 
 const Password = ({ ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <FormItem className={styles.passwordInput}>
+    <FormItemWrapper className={styles.passwordInput}>
       <input {...props} type={showPassword ? "text" : "password"} />
       <span
         className={styles.passwordToggle}
@@ -31,7 +31,7 @@ const Password = ({ ...props }) => {
       >
         {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
       </span>
-    </FormItem>
+    </FormItemWrapper>
   );
 };
 

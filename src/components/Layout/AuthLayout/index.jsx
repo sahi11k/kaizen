@@ -9,7 +9,7 @@ const AuthLayout = () => {
       <main className={styles.main}>
         <div className={styles.authContainer}>
           <div className={`card ${styles.formWrapper}`}>
-            <div className={styles.logo}>
+            <div className={styles.authLogoHeader}>
               <Logo size="medium" showText />
             </div>
             <div className="card__body">
