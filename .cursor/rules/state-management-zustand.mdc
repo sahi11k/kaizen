@@ -1,0 +1,103 @@
+---
+alwaysApply: false
+description: Zustand state management patterns
+---
+
+# Zustand State Management Patterns
+
+## Store Structure
+
+```javascript
+import { create } from "zustand";
+import { STATUS } from "@/utils/constants";
+
+const useAuthStore = create((set, get) => ({
+  // State properties
+  user: null,
+  userFetchStatus: STATUS.LOADING,
+
+  // Synchronous actions
+  setUser: (user) => set(() => ({ user })),
+  setUserFetchStatus: (status) => set(() => ({ userFetchStatus: status })),
+
+  // Async actions with error handling
+  loadUser: async () => {
+    if (get().user) return; // Prevent unnecessary calls
+    const response = await getUserSession();
+    if (response.error || !response.data.session) {
+      set(() => ({ user: null }));
+    } else {
+      set(() => ({ user: response.data.session.user }));
+    }
+    set(() => ({ userFetchStatus: STATUS.FETCHED }));
+  },
+}));
+```
+
+## Component Integration
+
+```javascript
+// Use useShallow for multiple selections to prevent unnecessary re-renders
+import { useShallow } from "zustand/react/shallow";
+
+const { tasks, setTasks, updateTaskInStore } = useTasksStore(
+  useShallow((state) => ({
+    tasks: state.tasks,
+    setTasks: state.setTasks,
+    updateTaskInStore: state.updateTask,
+  }))
+);
+```
+
+## Store Actions Patterns
+
+```javascript
+// Optimistic updates
+const updateTask = (updatedTask) => {
+  set((state) => ({
+    tasks: state.tasks.map((task) =>
+      task.id === updatedTask.id ? updatedTask : task
+    ),
+  }));
+};
+
+// Array operations
+const setTasks = (tasks) => set(() => ({ tasks }));
+const addTask = (newTask) =>
+  set((state) => ({
+    tasks: [...state.tasks, newTask],
+  }));
+```
+
+## Best Practices
+
+- Use status constants for loading states (`STATUS.LOADING`, `STATUS.FETCHED`)
+- Implement optimistic updates where appropriate
+- Check existing state before API calls (`if (get().user) return`)
+- Use descriptive action names that indicate what they do
+- Keep stores focused on single domains (auth, tasks, journals)
+- Use get() function to access current state within actions
+- Return meaningful data from async actions
+
+## Loading State Management
+
+```javascript
+// Use consistent loading state patterns
+const [isLoading, setIsLoading] = useState(false);
+
+const loadData = async () => {
+  setIsLoading(true);
+  try {
+    const data = await fetchData();
+    setData(data);
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+description:
+globs:
+alwaysApply: false
+
+---

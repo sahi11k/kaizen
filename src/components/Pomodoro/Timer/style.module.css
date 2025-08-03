@@ -1,0 +1,80 @@
+.timer__display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.timer__value {
+  font-size: clamp(5rem, 20vw, 8rem);
+  font-weight: 600;
+  text-align: center;
+  font-family: monospace;
+}
+
+.timer__progressBar {
+  --progress: 10;
+  --size: 12px;
+
+  width: 90%;
+  height: var(--size);
+  border-radius: calc(var(--size) / 2);
+  background-color: var(--accent-primary);
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: calc(var(--progress) * 1%);
+    height: 100%;
+    background-color: var(--accent-secondary);
+    border-radius: calc(var(--size) / 2);
+  }
+}
+
+.currentTask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 1em;
+  border-radius: 0.5em;
+  background-color: var(--accent-primary);
+  margin-top: 1.5em;
+}
+
+.currentTask__currentSession {
+  flex-shrink: 0;
+}
+
+.currentTask__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timerControls {
+  --size: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 1.5em;
+  padding: 1em 0;
+}
+
+.timerControls__item {
+  --border-radius: 100%;
+  --padding: 0.75em;
+}
+
+.timerControls__item--play {
+  --bg: var(--accent-secondary);
+  --border-radius: 2em;
+  --padding: 0.75em 2em;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--accent-secondary) !important;
+  }
+}

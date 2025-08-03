@@ -1,0 +1,45 @@
+.tabsContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.settingsTabs {
+  .settingsTabNav {
+    justify-content: flex-start;
+    border-bottom: 1px solid var(--black-800);
+    padding-bottom: 0.5em;
+
+    & > button {
+      flex: 0 !important;
+      padding: 0.5em 1.5em !important;
+    }
+  }
+
+  .settingsTabPanel {
+    margin-top: 1em;
+  }
+}
+
+.general,
+.personalization,
+.account {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .formItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: flex-start;
+    padding: 0;
+
+    label {
+      font-size: 0.9em;
+      margin-left: 0.35em;
+    }
+  }
+}

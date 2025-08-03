@@ -1,0 +1,39 @@
+.readMoreBtn {
+  display: inline-block !important;
+  --__padding: 0 0.5em !important;
+  --__color: var(--text-muted) !important;
+  --__bg: transparent !important;
+  --__font-size: 0.9rem !important;
+
+  &:hover {
+    background-color: transparent !important;
+    opacity: 0.75 !important;
+  }
+}
+
+.journalCard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.journalCard__footer {
+  --font-size: 0.9rem;
+  font-weight: 600;
+  justify-content: space-between !important;
+
+  .journalCard__date {
+    color: var(--text-muted);
+    font-size: var(--font-size);
+  }
+
+  .journalCard__actions {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      --padding: 0.5em 1em;
+      --color: var(--text-muted);
+    }
+  }
+}
