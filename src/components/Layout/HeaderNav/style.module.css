@@ -1,0 +1,18 @@
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: var(--primary-text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  padding: 1rem 3rem;
+}
+
+.header__nav__item {
+  svg {
+    fill: var(--text-base) !important;
+  }
+}

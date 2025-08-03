@@ -1,0 +1,35 @@
+.addJournalBtn {
+  --bg: var(--accent-secondary);
+  --border-radius: 2rem;
+  --icon-size: 1.5rem;
+  --font-size: 1.1rem;
+
+  position: fixed;
+  bottom: 3rem;
+  right: 4rem;
+  height: 4rem;
+  width: 4rem;
+
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+
+  .addJournalIcon {
+    flex-shrink: 0;
+  }
+
+  .addJournalText {
+    display: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    background-color: var(--accent-secondary) !important;
+    width: 180px;
+    .addJournalText {
+      display: block;
+      opacity: 1;
+    }
+  }
+}

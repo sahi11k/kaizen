@@ -1,0 +1,38 @@
+.journalListContainer {
+  flex: 1;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar styling */
+.journalListContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.journalListContainer::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 4px;
+}
+
+.journalListContainer::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+.journalListContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+.loadMoreContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1.5em 0;
+}
+
+.loadMoreButton {
+  --padding: 0.75em 2em;
+  border-radius: 24px !important;
+}
