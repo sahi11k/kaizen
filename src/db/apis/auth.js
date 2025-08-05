@@ -140,3 +140,20 @@ export async function updatePassword(payload) {
   });
   return res;
 }
+
+export async function updateUserMetadata(payload) {
+  let res = await supabase.auth.updateUser({
+    data: payload,
+  });
+
+  const status = res.error ? 400 : 200;
+  res = handleResponse({
+    response: {
+      ...res,
+      status,
+    },
+    errorMessage: res.error?.message,
+    successMessage: "Profile updated successfully",
+  });
+  return res;
+}

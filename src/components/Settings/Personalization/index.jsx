@@ -1,28 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../style.module.css";
-import { FormItemWrapper } from "@/utils/components/FormItem";
+import PomodoroSettings from "@/components/Settings/PomodoroSettings";
+import SettingsFooter from "@/components/Settings/SettingsFooter";
+
+const DEFAULT_POMODORO_FORM_VALUES = {
+  pomodoroDuration: 25,
+  shortBreakDuration: 5,
+  longBreakDuration: 15,
+  longBreakInterval: 4,
+};
 
 const Personalization = () => {
+  const [pomodoroFormValues, setPomodoroFormValues] = useState(
+    DEFAULT_POMODORO_FORM_VALUES
+  );
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    console.info("pomodoroFormValues", pomodoroFormValues);
+  };
+
+  const handleFormCancel = () => {
+    setPomodoroFormValues(DEFAULT_POMODORO_FORM_VALUES);
+  };
+
   return (
     <div className={styles.personalization}>
-      <form>
-        <FormItemWrapper className={styles.formItem}>
-          <label>Pomodoro Timer Duration</label>
-          <input type="number" name="pomodoroDuration" value="25" />
-        </FormItemWrapper>
-        <FormItemWrapper className={styles.formItem}>
-          <label>Short Break Duration</label>
-          <input type="number" name="shortBreakDuration" value="5" />
-        </FormItemWrapper>
-        <FormItemWrapper className={styles.formItem}>
-          <label>Long Break Duration</label>
-          <input type="number" name="longBreakDuration" value="15" />
-        </FormItemWrapper>
-        <FormItemWrapper className={styles.formItem}>
-          <label>Long Break Interval</label>
-          <input type="number" name="longBreakInterval" value="4" />
-        </FormItemWrapper>
-      </form>
+      <PomodoroSettings
+        formValues={pomodoroFormValues}
+        setFormValues={setPomodoroFormValues}
+      />
+      <SettingsFooter onCancel={handleFormCancel} onSave={handleFormSubmit} />
     </div>
   );
 };
