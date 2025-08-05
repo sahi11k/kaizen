@@ -1,10 +1,13 @@
 .tabsContainer {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - 2rem);
+  position: relative;
 }
 
 .settingsTabs {
+  min-height: 0;
+
   .settingsTabNav {
     justify-content: flex-start;
     border-bottom: 1px solid var(--black-800);
@@ -17,7 +20,8 @@
   }
 
   .settingsTabPanel {
-    margin-top: 1em;
+    padding-top: 1em;
+    overflow-y: auto;
   }
 }
 
@@ -28,12 +32,13 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    padding: 0;
   }
 
   .formItem {
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
+    gap: 10px;
     align-items: flex-start;
     padding: 0;
 
@@ -41,5 +46,38 @@
       font-size: 0.9em;
       margin-left: 0.35em;
     }
+
+    input {
+      --height: 48px;
+    }
+  }
+}
+
+.settingsFooter {
+  position: absolute;
+  padding: 1em;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--container);
+  border-top: 1px solid var(--black-800);
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  border-radius: 0 0 1rem 1rem;
+
+  .deleteBtn {
+    border: 1px solid var(--error);
+    color: var(--error);
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+      background-color: transparent;
+    }
+  }
+
+  button {
+    min-width: 120px;
   }
 }

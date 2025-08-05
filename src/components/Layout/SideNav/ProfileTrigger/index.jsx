@@ -6,7 +6,7 @@ const ProfileTrigger = ({ user, collapsed }) => {
   const displayName = getUserDisplayName(user);
   return (
     <div
-      className={`${styles.sideNav__navItem} ${styles.sideNav__profileLink}`}
+      className={`${styles.sideNav__navItem} ${styles.sideNav__profileTrigger}`}
     >
       <div className={styles.sideNav__profileAvatar}>
         {displayName?.charAt(0)}
