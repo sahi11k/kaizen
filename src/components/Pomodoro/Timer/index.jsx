@@ -143,36 +143,37 @@ const Timer = () => {
           defaultTab={ONGOING_TAB}
           activeTab={currentTab}
           onTabChange={handleTabChange}
-        >
-          <Tabs.Tab
-            label={
-              <>
-                <span className="btn__icon">
-                  <ClockIcon />
-                </span>
-                <span>Ongoing</span>
-              </>
-            }
-            tabKey={ONGOING_TAB}
-            key={ONGOING_TAB}
-          >
-            <TabContent timerValue={timerValue} duration={duration} />
-          </Tabs.Tab>
-          <Tabs.Tab
-            label={
-              <>
-                <span>Break</span>
-                <span className="btn__icon">
-                  <CupIcon />
-                </span>
-              </>
-            }
-            tabKey={BREAK_TAB}
-            key={BREAK_TAB}
-          >
-            <TabContent timerValue={timerValue} duration={duration} />
-          </Tabs.Tab>
-        </Tabs>
+          tabs={[
+            {
+              id: ONGOING_TAB,
+              label: (
+                <>
+                  <span className="btn__icon">
+                    <ClockIcon />
+                  </span>
+                  <span>Ongoing</span>
+                </>
+              ),
+              content: (
+                <TabContent timerValue={timerValue} duration={duration} />
+              ),
+            },
+            {
+              id: BREAK_TAB,
+              label: (
+                <>
+                  <span>Break</span>
+                  <span className="btn__icon">
+                    <CupIcon />
+                  </span>
+                </>
+              ),
+              content: (
+                <TabContent timerValue={timerValue} duration={duration} />
+              ),
+            },
+          ]}
+        />
         <div className={styles.currentTask}>
           <CurrentTask activeTab={currentTab} currentTask={currentTask} />
         </div>
