@@ -8,7 +8,7 @@ const HeaderNav = () => {
   const { user } = useAuthStore();
   return (
     <header className={styles.header}>
-      <Logo className={styles.header__nav__item} />
+      <Logo className={styles.header__logo} />
       {user ? (
         <Link
           to="/dashboard/pomodoro"
