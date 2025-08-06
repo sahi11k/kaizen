@@ -11,8 +11,12 @@
   padding: 1rem 3rem;
 }
 
-.header__nav__item {
+.header__logo {
   svg {
     fill: var(--text-base) !important;
   }
+}
+
+.header__nav__item {
+  padding: 0.25rem;
 }

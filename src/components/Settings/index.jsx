@@ -21,18 +21,8 @@ const Settings = () => {
         tabsClassName={styles.settingsTabs}
         tabNavClassName={styles.settingsTabNav}
         tabPanelClassName={styles.settingsTabPanel}
-      >
-        {TABS.map((tab) => (
-          <Tabs.Tab
-            key={tab.key}
-            label={tab.label}
-            tabKey={tab.key}
-            className={tab.className}
-          >
-            {tab.content}
-          </Tabs.Tab>
-        ))}
-      </Tabs>
+        tabs={TABS}
+      />
     </div>
   );
 };
