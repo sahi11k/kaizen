@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react";
 import { TIMER_CONSTANTS } from "@/utils/constants";
+import { getTimerDurations } from "@/utils/timerHelpers";
 
-const { ONGOING_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
-  TIMER_CONSTANTS;
+const { ONGOING_TAB } = TIMER_CONSTANTS;
 
-const useGetTimerValue = ({ activeTab, isLongBreak }) => {
-  const [timerValue, setTimerValue] = useState(TASK_TIME);
+const useGetTimerValue = ({ activeTab, isLongBreak, userSettings }) => {
+  const getInitialTime = () => {
+    const { taskTime } = getTimerDurations(userSettings);
+    return taskTime;
+  };
+
+  const [timerValue, setTimerValue] = useState(getInitialTime);
 
   useEffect(() => {
-    setTimerValue(getCurrentTime(activeTab, isLongBreak));
-  }, [activeTab, isLongBreak]);
+    setTimerValue(getCurrentTime(activeTab, isLongBreak, userSettings));
+  }, [activeTab, isLongBreak, userSettings]);
 
   return [timerValue, setTimerValue];
 };
 
-const getCurrentTime = (tabKey, isLongBreak) => {
+const getCurrentTime = (tabKey, isLongBreak, userSettings) => {
+  const { taskTime, shortBreakTime, longBreakTime } =
+    getTimerDurations(userSettings);
+
   if (tabKey === ONGOING_TAB) {
-    return TASK_TIME;
-  } else {
-    return isLongBreak ? LONG_BREAK_TIME : SHORT_BREAK_TIME;
+    return taskTime;
   }
+
+  return isLongBreak ? longBreakTime : shortBreakTime;
 };
 
 export { useGetTimerValue, getCurrentTime };

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
 import Tabs from "@/utils/components/Tabs";
-import General from "@/components/Settings/General";
 import Personalization from "@/components/Settings/Personalization";
 import Account from "@/components/Settings/Account";
 
@@ -28,11 +27,6 @@ const Settings = () => {
 };
 
 const TABS = [
-  {
-    key: "general",
-    label: "General",
-    content: <General />,
-  },
   {
     key: "personalization",
     label: "Personalization",

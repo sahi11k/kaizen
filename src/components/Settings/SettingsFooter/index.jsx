@@ -10,6 +10,7 @@ const SettingsFooter = ({
   onSave,
   showDeleteBtn = false,
   isLoading = false,
+  disabled = false,
 }) => {
   return (
     <div className={styles.settingsFooter}>
@@ -18,13 +19,17 @@ const SettingsFooter = ({
           Delete Account
         </button>
       )}
-      <button className={`btn ${styles.cancelBtn}`} onClick={onCancel}>
+      <button
+        className={`btn ${styles.cancelBtn}`}
+        onClick={onCancel}
+        disabled={isLoading}
+      >
         {cancelBtnText}
       </button>
       <button
         className={`btn btn--primary ${styles.saveBtn}`}
         onClick={onSave}
-        disabled={isLoading}
+        disabled={isLoading || disabled}
       >
         {isLoading && (
           <span className="btn__icon">
