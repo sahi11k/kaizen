@@ -58,3 +58,60 @@ input:disabled {
   background-color: var(--black-800) !important;
   cursor: not-allowed;
 }
+
+/* InputNumber Component Styles */
+.inputNumberWrapper {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0.25em;
+  border: 2px solid var(--surface);
+
+  input {
+    border: none !important;
+  }
+
+  &:focus-within {
+    border-color: var(--accent-primary);
+  }
+
+  &:has(input:-webkit-autofill) {
+    svg {
+      fill: var(--accent-primary) !important;
+    }
+  }
+
+  .stepper {
+    display: flex;
+    cursor: pointer;
+
+    .stepperBtn {
+      --icon-size: 20px;
+      --padding: 0.5em;
+      width: var(--height);
+      color: var(--text-muted) !important;
+      --border-radius: 0;
+      border-left: 2px solid var(--surface);
+      svg {
+        fill: currentColor;
+      }
+    }
+
+    button:disabled {
+      background-color: var(--surface);
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.inputNumber {
+  /* Hide default browser spinner */
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.inputNumber::-webkit-outer-spin-button,
+.inputNumber::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
