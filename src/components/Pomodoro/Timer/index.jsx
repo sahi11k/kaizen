@@ -12,13 +12,16 @@ import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
 import { updateTask } from "@/db/apis/tasks";
 import useAuthStore from "@/store/auth";
+import {
+  getTimerDurations,
+  getLongBreakInterval,
+} from "../../../utils/timerHelpers";
 import styles from "./style.module.css";
 
-const { ONGOING_TAB, BREAK_TAB, TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } =
-  TIMER_CONSTANTS;
+const { ONGOING_TAB, BREAK_TAB } = TIMER_CONSTANTS;
 
 const Timer = () => {
-  const { user } = useAuthStore();
+  const { user, userSettings } = useAuthStore();
   const { currentTask, updateTaskInStore, setCurrentTask } = useTasksStore(
     useShallow((state) => ({
       currentTask: state.currentTask,
@@ -37,27 +40,32 @@ const Timer = () => {
   const [timerValue, setTimerValue] = useGetTimerValue({
     activeTab: currentTab,
     isLongBreak,
+    userSettings,
   });
 
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
+    const { taskTime, shortBreakTime, longBreakTime } =
+      getTimerDurations(userSettings);
+
     setDuration(
       currentTab === ONGOING_TAB
-        ? TASK_TIME
+        ? taskTime
         : isLongBreak
-        ? LONG_BREAK_TIME
-        : SHORT_BREAK_TIME
+        ? longBreakTime
+        : shortBreakTime
     );
-  }, [currentTab, isLongBreak]);
+  }, [currentTab, isLongBreak, userSettings]);
 
   useEffect(() => {
-    if (pomodoroCount > 0 && pomodoroCount % 4 === 0) {
+    const longBreakInterval = getLongBreakInterval(userSettings);
+    if (pomodoroCount > 0 && pomodoroCount % longBreakInterval === 0) {
       setIsLongBreak(true);
     } else {
       setIsLongBreak(false);
     }
-  }, [pomodoroCount]);
+  }, [pomodoroCount, userSettings]);
 
   useEffect(() => {
     document.title =
@@ -94,7 +102,7 @@ const Timer = () => {
 
   const resetTimer = () => {
     clearTimerInterval();
-    setTimerValue(getCurrentTime(currentTab, isLongBreak));
+    setTimerValue(getCurrentTime(currentTab, isLongBreak, userSettings));
   };
 
   const skipTimer = () => {

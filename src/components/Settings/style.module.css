@@ -36,19 +36,33 @@
   }
 
   .formItem {
+    --height: 48px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.5rem;
     align-items: flex-start;
     padding: 0;
 
     label {
+      font-weight: 500;
+      color: var(--text-base);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
       font-size: 0.9em;
       margin-left: 0.35em;
     }
 
-    input {
-      --height: 48px;
+    &.inline {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      justify-content: space-between;
+
+      input,
+      button {
+        --height: 48px;
+      }
     }
   }
 }
@@ -79,5 +93,15 @@
 
   button {
     min-width: 120px;
+  }
+
+  .saveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .cancelBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
