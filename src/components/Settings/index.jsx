@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
 import Tabs from "@/utils/components/Tabs";
-import Personalization from "@/components/Settings/Personalization";
 import Account from "@/components/Settings/Account";
+import Pomodoro from "@/components/Settings/Pomodoro";
 
 const Settings = () => {
   const [currentTab, setCurrentTab] = useState(TABS[0].key);
@@ -17,6 +17,7 @@ const Settings = () => {
         defaultTab={TABS[0].key}
         activeTab={currentTab}
         onTabChange={handleTabChange}
+        layout="horizontal"
         tabsClassName={styles.settingsTabs}
         tabNavClassName={styles.settingsTabNav}
         tabPanelClassName={styles.settingsTabPanel}
@@ -28,14 +29,14 @@ const Settings = () => {
 
 const TABS = [
   {
-    key: "personalization",
-    label: "Personalization",
-    content: <Personalization />,
-  },
-  {
     key: "account",
     label: "Account",
     content: <Account />,
+  },
+  {
+    key: "pomodoro",
+    label: "Pomodoro",
+    content: <Pomodoro />,
   },
 ];
 

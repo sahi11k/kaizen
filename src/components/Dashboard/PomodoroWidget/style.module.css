@@ -1,0 +1,101 @@
+.sessionInsights {
+  display: flex;
+}
+
+.sessionInsightItem {
+  flex: 1;
+  display: flex;
+  gap: var(--spacing-md);
+
+  .sessionInsightItemIcon {
+    --size: 60px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background-color: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .sessionInsightItemContent {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .sessionInsightItemTitle {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .sessionInsightItemValue {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+  }
+}
+
+.pomodoroWidgetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .tag {
+    background-color: var(--accent-primary);
+    font-size: 0.8rem;
+    border-radius: calc(var(--border-radius-md) * 4);
+    padding: var(--spacing-sm) calc(var(--spacing-md) + var(--spacing-sm));
+  }
+}
+
+.activePomodoroSession {
+  border-radius: var(--border-radius-md);
+  padding-top: var(--spacing-lg);
+
+  .activePomodoroSessionHeader {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .activePomodoroSessionContent {
+    display: flex;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+    border: 2px dashed var(--accent-primary);
+    align-items: center;
+  }
+
+  .taskName {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .timer {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 0 var(--spacing-md);
+  }
+
+  .timerControls {
+    button {
+      --size: 48px;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      padding: var(--spacing-sm);
+      background-color: var(--accent-secondary);
+    }
+  }
+}

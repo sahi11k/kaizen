@@ -10,6 +10,7 @@ import styles from "./style.module.css";
  * @param {string|number} props.activeTab - Currently active tab ID
  * @param {string|number} props.defaultTab - Default active tab ID
  * @param {Function} props.onTabChange - Callback when tab changes (id) => void
+ * @param {string} props.layout - Layout direction: 'vertical' (default) or 'horizontal'
  * @param {string} props.tabsClassName - Additional CSS class for container
  * @param {string} props.tabNavClassName - Additional CSS class for tab navigation
  * @param {string} props.tabPanelClassName - Additional CSS class for content panel
@@ -19,6 +20,7 @@ const Tabs = ({
   activeTab,
   defaultTab = 0,
   onTabChange,
+  layout = "vertical",
   tabsClassName = "",
   tabNavClassName = "",
   tabPanelClassName = "",
@@ -73,11 +75,19 @@ const Tabs = ({
   );
 
   // Generate CSS classes with proper concatenation
-  const containerClasses = [styles.tabs, tabsClassName]
+  const containerClasses = [
+    styles.tabs,
+    layout === "horizontal" && styles["tabs--horizontal"],
+    tabsClassName,
+  ]
     .filter(Boolean)
     .join(" ");
 
-  const navClasses = [styles.tab__nav, tabNavClassName]
+  const navClasses = [
+    styles.tab__nav,
+    layout === "horizontal" && styles["tab__nav--horizontal"],
+    tabNavClassName,
+  ]
     .filter(Boolean)
     .join(" ");
 

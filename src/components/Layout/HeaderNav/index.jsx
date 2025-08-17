@@ -11,7 +11,7 @@ const HeaderNav = () => {
       <Logo className={styles.header__logo} />
       {user ? (
         <Link
-          to="/dashboard/pomodoro"
+          to="/dashboard"
           className={`${styles.header__nav__item} underlineAnimation`}
         >
           Dashboard

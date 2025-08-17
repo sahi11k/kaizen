@@ -36,7 +36,7 @@ const UpdatePasswordForm = () => {
       setTimeout(() => {
         setFormValues(DEFAULT_FORM_VALUES);
         setErrors({});
-        navigate("/");
+        navigate("/dashboard");
       }, 1000);
     }
     setIsLoading(false);

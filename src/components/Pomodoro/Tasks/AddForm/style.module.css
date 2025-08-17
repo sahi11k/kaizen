@@ -1,5 +1,5 @@
 .formContainer {
-  padding-top: 1em;
+  width: 100%;
 
   form {
     border: 2px solid var(--surface);

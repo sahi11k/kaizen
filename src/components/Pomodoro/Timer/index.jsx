@@ -6,7 +6,7 @@ import StopIcon from "@/assets/icons/stop.svg?react";
 import Tabs from "@/utils/components/Tabs";
 import ClockIcon from "@/assets/icons/clock.svg?react";
 import CupIcon from "@/assets/icons/cup.svg?react";
-import { TASK_CATEGORY_ICONS, TIMER_CONSTANTS } from "@/utils/constants";
+import { TIMER_CONSTANTS } from "@/utils/constants";
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
@@ -17,6 +17,7 @@ import {
   getLongBreakInterval,
 } from "../../../utils/timerHelpers";
 import styles from "./style.module.css";
+import SettingsIcon from "@/assets/icons/settings.svg?react";
 
 const { ONGOING_TAB, BREAK_TAB } = TIMER_CONSTANTS;
 
@@ -31,7 +32,6 @@ const Timer = () => {
   );
 
   const [currentTab, setCurrentTab] = useState(ONGOING_TAB);
-
   const [timerStarted, setTimerStarted] = useState(false);
   const [pomodoroCount, setPomodoroCount] = useState(0);
   const [isLongBreak, setIsLongBreak] = useState(false);
@@ -68,10 +68,11 @@ const Timer = () => {
   }, [pomodoroCount, userSettings]);
 
   useEffect(() => {
+    const { minutes, seconds } = getFormattedTime(timerValue);
     document.title =
       currentTab === ONGOING_TAB
-        ? `Pomodoro : ${getFormattedTime(timerValue)}`
-        : `Break : ${getFormattedTime(timerValue)}`;
+        ? `Pomodoro : ${minutes}:${seconds}`
+        : `Break : ${minutes}:${seconds}`;
   }, [currentTab, timerValue]);
 
   const startTimer = () => {
@@ -146,11 +147,13 @@ const Timer = () => {
 
   return (
     <div className={`card ${styles.timerContainer}`}>
-      <div className="card__body">
+      <div className={`card__body ${styles.timerBody}`}>
         <Tabs
           defaultTab={ONGOING_TAB}
           activeTab={currentTab}
           onTabChange={handleTabChange}
+          tabsClassName={styles.pomodoroTabs}
+          tabNavClassName={styles.pomodoroTabNav}
           tabs={[
             {
               id: ONGOING_TAB,
@@ -163,7 +166,11 @@ const Timer = () => {
                 </>
               ),
               content: (
-                <TabContent timerValue={timerValue} duration={duration} />
+                <TabContent
+                  timerValue={timerValue}
+                  duration={duration}
+                  currentTab={currentTab}
+                />
               ),
             },
             {
@@ -177,26 +184,28 @@ const Timer = () => {
                 </>
               ),
               content: (
-                <TabContent timerValue={timerValue} duration={duration} />
+                <TabContent
+                  timerValue={timerValue}
+                  duration={duration}
+                  currentTab={currentTab}
+                />
               ),
             },
           ]}
         />
-        <div className={styles.currentTask}>
-          <CurrentTask activeTab={currentTab} currentTask={currentTask} />
-        </div>
         <div className="card__footer">
           <div className={styles.timerControls}>
             <button
-              className={`btn ${styles.timerControls__item}`}
+              className={`btn btn--primary ${styles.timerControls__item}`}
               onClick={resetTimer}
+              title="Reset Timer"
             >
               <ResetIcon />
             </button>
             <button
-              className={`btn  ${styles["timerControls__item--play"]}`}
+              className={`btn  ${styles.timerControls__item} ${styles["timerControls__item--play"]}`}
               onClick={timerStarted ? stopTimer : startTimer}
-              style={{ outline: timerStarted ? "2px solid white" : "" }}
+              title={timerStarted ? "Stop Timer" : "Start Timer"}
             >
               <span className="btn__icon">
                 {timerStarted ? <StopIcon /> : <PlayIcon />}
@@ -206,8 +215,9 @@ const Timer = () => {
               </span>
             </button>
             <button
-              className={`btn ${styles.timerControls__item}`}
+              className={`btn btn--primary ${styles.timerControls__item}`}
               onClick={skipTimer}
+              title="Skip Timer"
             >
               <NextIcon />
             </button>
@@ -218,20 +228,33 @@ const Timer = () => {
   );
 };
 
-const TabContent = ({ timerValue, duration }) => {
+const TabContent = ({ timerValue, duration, currentTab }) => {
   const getProgressPercentage = () => {
     return ((duration - timerValue) / duration) * 100;
   };
 
+  const { minutes, seconds } = getFormattedTime(timerValue);
+
   return (
     <div className={styles.timer__display}>
-      <div className={styles.timer__value}>{getFormattedTime(timerValue)}</div>
       <div
-        className={styles.timer__progressBar}
+        className={`${styles.circularTimer} ${
+          currentTab === BREAK_TAB
+            ? styles.circularTimer__break
+            : styles.circularTimer__pomodoro
+        }`}
         style={{
           "--progress": getProgressPercentage(),
+          "--progress-color":
+            currentTab === ONGOING_TAB ? "var(--accent-secondary)" : "#ffc107",
         }}
-      ></div>
+      >
+        <div className={styles.timer__value}>
+          <span>{minutes}</span>
+          <span className={styles.timer__value__colon}>:</span>
+          <span>{seconds}</span>
+        </div>
+      </div>
     </div>
   );
 };
@@ -239,26 +262,10 @@ const TabContent = ({ timerValue, duration }) => {
 const getFormattedTime = (seconds) => {
   const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
   const remainingSeconds = String(seconds % 60).padStart(2, "0");
-  return `${minutes}:${remainingSeconds}`;
+  return {
+    minutes,
+    seconds: remainingSeconds,
+  };
 };
 
-const CurrentTask = ({ activeTab, currentTask }) => {
-  if (activeTab === BREAK_TAB) {
-    return "Yay! Break Time";
-  }
-
-  if (!currentTask) return "Time to Focus";
-
-  return (
-    <>
-      <span className={styles.currentTask__category}>
-        {TASK_CATEGORY_ICONS[currentTask.category]}
-      </span>
-      <span className={styles.currentTask__currentSession}>
-        #{currentTask.completedSessions + 1}
-      </span>
-      <span className={styles.currentTask__title}>{currentTask.title}</span>
-    </>
-  );
-};
 export default Timer;

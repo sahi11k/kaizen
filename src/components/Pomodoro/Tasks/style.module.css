@@ -1,8 +1,11 @@
+.taskListWrapper {
+  width: 35%;
+}
+
 .taskListContainer {
   display: flex;
   flex-direction: column;
   min-height: 275px !important;
-  max-height: 600px !important;
 }
 
 .taskList {
@@ -50,12 +53,30 @@
   }
 }
 
-.addTaskBtn {
-  --font-size: 0.9rem;
-  --icon-size: 1rem;
-  --padding: 0.3rem 0.6rem;
-}
-
 .formFooter {
   gap: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.formFooter__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.addTaskBtn {
+  --bg: var(--accent-secondary);
+  flex: 1;
+  &:hover {
+    background-color: var(--accent-secondary) !important;
+  }
+}
+
+.formFooter__cancelBtn,
+.formFooter__saveBtn {
+  min-width: 150px;
 }

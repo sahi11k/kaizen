@@ -5,6 +5,12 @@
   gap: 1rem;
 }
 
+/* Horizontal Layout */
+.tabs--horizontal {
+  flex-direction: row;
+  gap: 0;
+}
+
 /* Tab Navigation */
 .tab__nav {
   display: flex;
@@ -17,14 +23,53 @@
     border: none;
     background: transparent;
     cursor: pointer;
-    border-bottom: 2px solid transparent;
+
+    &:hover {
+      opacity: 0.5;
+    }
   }
 
   .tab__nav__item--active {
-    --bg: var(--accent-primary);
     --__icon-fill: var(--accent-secondary);
-    border-color: var(--text-muted);
-    border-radius: 0.5rem 0.5rem 0 0;
+    color: var(--accent-secondary) !important;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+/* Horizontal Tab Navigation (Side Nav Style) */
+.tab__nav--horizontal {
+  flex-direction: column;
+  border-bottom: none;
+  border-right: 1px solid var(--black-800);
+  min-width: 200px;
+  width: 200px;
+
+  .tab__nav__item {
+    flex: none;
+    text-align: left;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--black-800);
+    transition: background-color 0.2s ease;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: var(--black-900);
+      opacity: 1;
+    }
+  }
+
+  .tab__nav__item--active {
+    background-color: var(--black-800);
+    border-right: 2px solid var(--accent-secondary);
+
+    &:hover {
+      background-color: var(--black-800);
+    }
   }
 }
 

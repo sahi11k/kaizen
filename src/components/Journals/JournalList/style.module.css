@@ -1,9 +1,8 @@
 .journalListContainer {
   flex: 1;
-  padding: 1em;
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: var(--spacing-md);
   overflow-y: auto;
 }
 

@@ -2,26 +2,25 @@
   display: flex;
   flex-direction: column;
   height: calc(100vh - 2rem);
-  position: relative;
 }
 
 .settingsTabs {
-  min-height: 0;
+  height: 100%;
 
   .settingsTabNav {
-    justify-content: flex-start;
-    border-bottom: 1px solid var(--black-800);
-    padding-bottom: 0.5em;
+    width: 15%;
 
     & > button {
-      flex: 0 !important;
-      padding: 0.5em 1.5em !important;
+      background-color: transparent !important;
+      justify-content: flex-start;
+      border: none;
+      color: var(--text-muted);
+      padding: var(--spacing-md) var(--spacing-sm);
     }
   }
 
   .settingsTabPanel {
-    padding-top: 1em;
-    overflow-y: auto;
+    position: relative;
   }
 }
 
@@ -31,8 +30,9 @@
   form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 0;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    overflow-y: auto;
   }
 
   .formItem {
@@ -69,16 +69,16 @@
 
 .settingsFooter {
   position: absolute;
-  padding: 1em;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: var(--container);
   border-top: 1px solid var(--black-800);
   display: flex;
-  justify-content: center;
-  gap: 1em;
-  border-radius: 0 0 1rem 1rem;
+  justify-content: flex-end;
+  padding: calc(var(--spacing-md) + var(--spacing-sm));
+  padding-bottom: 0;
+  padding-right: 0;
+  gap: var(--spacing-md);
 
   .deleteBtn {
     border: 1px solid var(--error);
@@ -95,6 +95,13 @@
     min-width: 120px;
   }
 
+  .saveBtn {
+    --bg: var(--accent-secondary);
+    &:hover {
+      background-color: var(--accent-secondary);
+    }
+  }
+
   .saveBtn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -103,5 +110,50 @@
   .cancelBtn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+}
+
+.divider {
+  border: 1px solid var(--black-800);
+  margin: var(--spacing-lg);
+}
+
+.deleteAccount {
+  padding: var(--spacing-md) var(--spacing-lg);
+
+  .deleteAccountTitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    padding-bottom: var(--spacing-md);
+  }
+
+  .deleteAccountConfirmText {
+    display: block;
+    padding: var(--spacing-md) 0 var(--spacing-sm) 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .deleteAccountConfirm {
+    height: 48px !important;
+    width: 100%;
+    display: flex;
+    gap: var(--spacing-lg);
+
+    input {
+      height: 100% !important;
+    }
+  }
+
+  .deleteBtn {
+    opacity: 0.9;
+    border: 1px solid var(--error);
+    color: var(--error);
+    background-color: transparent;
+
+    &:hover {
+      background-color: var(--error);
+      color: var(--white);
+    }
   }
 }

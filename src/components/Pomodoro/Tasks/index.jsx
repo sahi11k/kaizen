@@ -209,11 +209,14 @@ const Tasks = () => {
       const btnLabel = showModal ? "Save" : "Update Order";
       return (
         <>
-          <button className={`btn ${styles.addTaskBtn}`} onClick={onCancel}>
+          <button
+            className={`btn ${styles.formFooter__cancelBtn}`}
+            onClick={onCancel}
+          >
             <span className="btn__label">Cancel</span>
           </button>
           <button
-            className={`btn btn--primary ${styles.addTaskBtn}`}
+            className={`btn btn--primary ${styles.formFooter__saveBtn}`}
             onClick={onSave}
           >
             <span className="btn__label">{btnLabel}</span>
@@ -244,7 +247,7 @@ const Tasks = () => {
   return (
     <div className={`card ${styles.taskListWrapper}`}>
       <div className="card__header">
-        Task List
+        Tasks
         {tasks.length > 0 && (
           <span className={styles.taskListHeader__completed}>
             ({getCompletedTasks()}/{tasks.length})
@@ -284,7 +287,7 @@ const Tasks = () => {
             ))}
           </SortableContainer>
         </ul>
-        {isLoading && <Skeleton count={3} height={80} />}
+        {isLoading && tasks.length === 0 && <Skeleton count={3} height={80} />}
         {tasks.length === 0 && !showModal && !isLoading && (
           <div className={styles.taskListEmpty}>
             <div className={styles.taskListEmptyContent}>
@@ -296,12 +299,12 @@ const Tasks = () => {
             </div>
           </div>
         )}
+      </div>
+      <div className={`card__footer ${styles.formFooter}`}>
         {showModal && (
           <AddForm formValues={formValues} setFormValues={setFormValues} />
         )}
-      </div>
-      <div className={`card__footer ${styles.formFooter}`}>
-        {renderCardFooter()}
+        <div className={styles.formFooter__actions}>{renderCardFooter()}</div>
       </div>
     </div>
   );

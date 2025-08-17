@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styles from "../style.module.css";
-import PomodoroSettings from "@/components/Settings/PomodoroSettings";
-import SettingsFooter from "@/components/Settings/SettingsFooter";
+
 import useAuthStore from "@/store/auth";
 import { upsertUserSettings } from "@/db/apis/userSettings";
 import { getLongBreakInterval, getTimerDurations } from "@/utils/timerHelpers";
 import { Toast } from "@/utils/components/Toast";
 import { TIMER_CONSTANTS } from "@/utils/constants";
+import FormItem, { FormItemWrapper } from "@/utils/components/FormItem";
+import Slider from "@/utils/components/Slider";
 const { toast } = Toast;
 const { TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } = TIMER_CONSTANTS;
 
@@ -17,7 +18,7 @@ const DEFAULT_POMODORO_FORM_VALUES = {
   longBreakInterval: 4,
 };
 
-const Personalization = () => {
+const Pomodoro = () => {
   const { user, userSettings, setUserSettings } = useAuthStore();
   const [pomodoroFormValues, setPomodoroFormValues] = useState(
     DEFAULT_POMODORO_FORM_VALUES
@@ -72,19 +73,70 @@ const Personalization = () => {
     setPomodoroFormValues(newValues);
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPomodoroFormValues({
+      ...pomodoroFormValues,
+      [name]: parseInt(value, 10),
+    });
+  };
+
   return (
     <div className={styles.personalization}>
-      <PomodoroSettings
-        formValues={pomodoroFormValues}
-        setFormValues={handleFormChange}
-      />
-      <SettingsFooter
-        onCancel={handleFormCancel}
-        onSave={handleFormSubmit}
-        isLoading={isLoading}
-      />
+      <form>
+        <FormItemWrapper className={`${styles.formItem} ${styles.inline}`}>
+          <label htmlFor="pomodoroDuration">Pomodoro Timer Duration</label>
+          <Slider
+            defaultValue={[pomodoroFormValues.pomodoroDuration]}
+            min={10}
+            max={60}
+            step={1}
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </FormItemWrapper>
+        <FormItemWrapper className={`${styles.formItem} ${styles.inline}`}>
+          <label htmlFor="shortBreakDuration">Short Break Duration</label>
+          <Slider
+            defaultValue={[pomodoroFormValues.pomodoroDuration]}
+            min={10}
+            max={60}
+            step={1}
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </FormItemWrapper>
+
+        <FormItemWrapper className={`${styles.formItem} ${styles.inline}`}>
+          <label htmlFor="longBreakDuration">Long Break Duration</label>
+          <Slider
+            defaultValue={[pomodoroFormValues.pomodoroDuration]}
+            min={10}
+            max={60}
+            step={1}
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </FormItemWrapper>
+
+        <FormItemWrapper className={`${styles.formItem} ${styles.inline}`}>
+          <label htmlFor="longBreakInterval">Long Break Interval</label>
+          <Slider
+            defaultValue={[pomodoroFormValues.pomodoroDuration]}
+            min={10}
+            max={60}
+            step={1}
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </FormItemWrapper>
+      </form>
     </div>
   );
 };
 
-export default Personalization;
+export default Pomodoro;

@@ -17,7 +17,7 @@ const Banner = () => {
           productivity techniques.
         </p>
         <div className={styles.banner__buttons}>
-          <Link to="/dashboard/pomodoro">
+          <Link to="/dashboard">
             <button
               className={`btn underlineAnimation ${styles.banner__button}`}
             >

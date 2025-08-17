@@ -14,7 +14,7 @@ const Testamonials = () => {
           Kaizen.
         </p>
       </div>
-      <Link to="/dashboard/pomodoro">
+      <Link to="/dashboard">
         <button className={`btn btn--primary ${styles.testamonials__button}`}>
           Get Started
         </button>
