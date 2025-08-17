@@ -3,25 +3,30 @@
 }
 
 .baseLayout_collapsed {
-  --side-nav-width: 320px;
+  --side-nav-width: 360px;
 }
 
 .baseLayout_expanded {
-  --side-nav-width: 68px;
+  --side-nav-width: 108px;
 }
 
 .sidePanel {
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
   width: var(--side-nav-width);
-  height: 100%;
-  background-color: var(--container);
+  padding: var(--spacing-md);
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dashboardContainer {
   margin-left: var(--side-nav-width);
   width: calc(100% - var(--side-nav-width));
+  padding: var(--spacing-md);
+  padding-left: 0;
+  transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .authContainer {

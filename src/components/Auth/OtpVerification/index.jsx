@@ -54,7 +54,7 @@ const OTPVerification = ({ onBack, email, backBtnText }) => {
       setUser(res.data.user);
       resetForm(); // Reset form before navigation
       setTimeout(() => {
-        navigate("/", { replace: true });
+        navigate("/dashboard", { replace: true });
       }, 500);
     }
   };

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "../style.module.css";
-import { FormItemWrapper } from "@/utils/components/FormItem";
+import DefaultFormItem, { FormItemWrapper } from "@/utils/components/FormItem";
 import SettingsFooter from "@/components/Settings/SettingsFooter";
 import useAuthStore from "@/store/auth";
 import { toast } from "sonner"; // Assuming you're using sonner for toasts
@@ -55,6 +55,13 @@ const Account = () => {
     });
   };
 
+  const handleDeleteAccountConfirmChange = (e) => {
+    setAccountFormValues({
+      ...accountFormValues,
+      deleteAccountConfirm: e.target.value,
+    });
+  };
+
   return (
     <div className={styles.account}>
       <form>
@@ -76,11 +83,51 @@ const Account = () => {
             onChange={handleFormChange}
           />
         </FormItemWrapper>
+        {/* <FormItemWrapper className={styles.formItem}>
+          <label>Password</label>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <DefaultFormItem.Password
+              type="text"
+              name="password"
+              value={accountFormValues.password}
+              onChange={handleFormChange}
+            />
+            <DefaultFormItem.Password
+              type="text"
+              name="password"
+              value={accountFormValues.password}
+              onChange={handleFormChange}
+            />
+          </div>
+        </FormItemWrapper> */}
       </form>
+      <hr className={styles.divider} />
+      <div className={styles.deleteAccount}>
+        <h3 className={styles.deleteAccountTitle}>Delete Account</h3>
+        <p className={styles.deleteAccountDescription}>
+          Deleting your account will permanently remove all your data from the
+          system. This cannot be undone.
+        </p>
+        <span className={styles.deleteAccountConfirmText}>
+          To confirm this, please type <strong>DELETE</strong> below.
+        </span>
+        <div className={styles.deleteAccountConfirm}>
+          <DefaultFormItem.Input
+            type="text"
+            name="deleteAccountConfirm"
+            value={accountFormValues.deleteAccountConfirm}
+            onChange={handleDeleteAccountConfirmChange}
+            placeholder="DELETE"
+            style={{ width: "100%" }}
+          />
+          <button className={`btn ${styles.deleteBtn}`} onClick={() => {}}>
+            Delete Account
+          </button>
+        </div>
+      </div>
       <SettingsFooter
         onCancel={handleFormCancel}
         onSave={handleFormSubmit}
-        // showDeleteBtn
         isLoading={isLoading}
       />
     </div>

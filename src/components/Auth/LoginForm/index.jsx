@@ -50,7 +50,7 @@ const LoginForm = () => {
       setUser(response.data.user);
       setIsLoading(false);
       resetForm(); // Reset form before navigation
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   };
 

@@ -2,7 +2,7 @@ import React from "react";
 
 const Analytics = () => {
   return (
-    <div className="card" style={{ margin: "1em" }}>
+    <div className="card">
       Coming Soon
     </div>
   );

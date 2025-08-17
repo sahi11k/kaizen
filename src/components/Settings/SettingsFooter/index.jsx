@@ -5,20 +5,13 @@ import Spinner from "@/utils/components/Spinner";
 const SettingsFooter = ({
   cancelBtnText = "Cancel",
   saveBtnText = "Save",
-  onDelete,
   onCancel,
   onSave,
-  showDeleteBtn = false,
   isLoading = false,
   disabled = false,
 }) => {
   return (
     <div className={styles.settingsFooter}>
-      {showDeleteBtn && (
-        <button className={`btn ${styles.deleteBtn}`} onClick={onDelete}>
-          Delete Account
-        </button>
-      )}
       <button
         className={`btn ${styles.cancelBtn}`}
         onClick={onCancel}
@@ -27,7 +20,7 @@ const SettingsFooter = ({
         {cancelBtnText}
       </button>
       <button
-        className={`btn btn--primary ${styles.saveBtn}`}
+        className={`btn ${styles.saveBtn}`}
         onClick={onSave}
         disabled={isLoading || disabled}
       >

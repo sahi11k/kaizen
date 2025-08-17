@@ -1,8 +1,5 @@
 .pomodoro {
-  padding: 1em;
-  margin: auto;
-  width: min(90%, 540px);
   display: flex;
-  flex-direction: column;
-  gap: 2em;
+  gap: var(--spacing-md);
+  height: calc(100vh - var(--spacing-lg));
 }

@@ -4,6 +4,7 @@ import Pomodoro from "@/pages/Pomodoro";
 import Journal from "@/pages/Journal";
 import Settings from "@/pages/Settings";
 import Analytics from "@/pages/Analytics";
+import Dashboard from "@/pages/Dashboard";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <DashboardLayout />,
     children: [
+      {
+        path: "/dashboard",
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: "/dashboard/journals",
         element: (

@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import useAuthStore from "@/store/auth";
 import styles from "./style.module.css";
 import Logo from "@/utils/components/Logo";
-import Dropdown from "@/utils/components/Dropdown";
 import ChevronBack from "@/assets/icons/chevronbackward.svg?react";
 import ChevronForward from "@/assets/icons/chevronforward.svg?react";
 import { signOut } from "@/db/apis/auth";
 import { Toast } from "@/utils/components/Toast";
 import { STATUS } from "@/utils/constants";
-import { getProfileDropdownOptions, navigationLinks } from "./data";
-import ProfileTrigger from "@/components/Layout/SideNav/ProfileTrigger";
+import { navigationLinks } from "./data";
+import LogoutIcon from "@/assets/icons/logout.svg?react";
+import SettingsIcon from "@/assets/icons/settings.svg?react";
 
 const { toast } = Toast;
 
 const SideNav = ({ isCollapsed, setIsCollapsed }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, setUser, setUserFetchStatus } = useAuthStore();
+  const { setUser, setUserFetchStatus } = useAuthStore();
+  const sideNavRef = useRef(null);
 
   const isActiveLink = (path) => {
     return location.pathname === path;
@@ -34,22 +35,20 @@ const SideNav = ({ isCollapsed, setIsCollapsed }) => {
     }
   };
 
-  const handleProfileDropdownSelect = (option) => {
-    if (option.onClick) {
-      option.onClick();
+  const handleCollapse = () => {
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    if (newState) {
+      setTimeout(() => {
+        sideNavRef.current.classList.add(styles.sideNav_collapsed);
+      }, 50);
+    } else {
+      sideNavRef.current.classList.remove(styles.sideNav_collapsed);
     }
   };
 
-  const handleSettings = () => {
-    navigate("/dashboard/settings");
-  };
-
   return (
-    <nav
-      className={`${styles.sideNav} ${
-        isCollapsed ? styles.sideNav_collapsed : ""
-      }`}
-    >
+    <nav className={`${styles.sideNav}`} ref={sideNavRef}>
       <div className={styles.sideNav__header}>
         <Logo
           to="/"
@@ -59,7 +58,7 @@ const SideNav = ({ isCollapsed, setIsCollapsed }) => {
         />
         <button
           className={`btn ${styles.sideNav_collapseBtn}`}
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={handleCollapse}
           title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
         >
           {isCollapsed ? <ChevronForward /> : <ChevronBack />}
@@ -84,40 +83,35 @@ const SideNav = ({ isCollapsed, setIsCollapsed }) => {
         ))}
       </ul>
 
-      <div className={styles.sideNav__footer}>
-        <Dropdown
-          trigger={<ProfileTrigger user={user} collapsed={isCollapsed} />}
-          options={getProfileDropdownOptions({
-            clickHandlers: {
-              settings: handleSettings,
-              logout: handleLogout,
-            },
-          })}
-          onSelect={handleProfileDropdownSelect}
-          closeOnSelect={true}
-          customStyles={DROPDOWN_STYLES}
-        />
-      </div>
+      <ul className={styles.sideNav__footer}>
+        <Link to={"/dashboard/settings"} key={"/dashboard/settings"}>
+          <li
+            className={`${styles.sideNav__navItem} ${
+              isActiveLink("/dashboard/settings")
+                ? styles.sideNav__navItemActive
+                : ""
+            }`}
+            title={"Settings"}
+          >
+            <span className={styles.sideNav__navIcon}>
+              <SettingsIcon />
+            </span>
+            {!isCollapsed && (
+              <span className={styles.sideNav__navLabel}>Settings</span>
+            )}
+          </li>
+        </Link>
+        <li className={styles.sideNav__navItem} onClick={handleLogout}>
+          <span className={styles.sideNav__navIcon}>
+            <LogoutIcon />
+          </span>
+          {!isCollapsed && (
+            <span className={styles.sideNav__navLabel}>Logout</span>
+          )}
+        </li>
+      </ul>
     </nav>
   );
-};
-
-const DROPDOWN_STYLES = {
-  dropdown: {
-    width: "100%",
-  },
-  trigger: {
-    padding: 0,
-    border: "none",
-    backgroundColor: "transparent",
-    borderRadius: 0,
-  },
-  menu: {
-    bottom: "100%",
-    top: "auto",
-    margin: "0.5rem",
-    width: "calc(100% - 1rem)",
-  },
 };
 
 export default SideNav;

@@ -9,15 +9,15 @@ body {
 
 .card {
   background-color: var(--container);
-  border-radius: 1em;
+  border-radius: var(--border-radius-lg);
   display: flex;
   flex-direction: column;
-  padding: 1.5em;
+  padding: calc(var(--spacing-md) * 1.5);
 
   .card__header {
     font-weight: 500;
     font-size: 1.15rem;
-    padding-bottom: 1em;
+    padding-bottom: var(--spacing-md);
     font-family: var(--font-heading);
   }
 
@@ -30,7 +30,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 1em;
+    padding-top: var(--spacing-md);
   }
 }
 
