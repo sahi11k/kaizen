@@ -1,3 +1,13 @@
+.pomodoroWidget {
+  height: 320px;
+}
+
+.pomodoroWidgetBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 .sessionInsights {
   display: flex;
 }
@@ -46,18 +56,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  .tag {
-    background-color: var(--accent-primary);
-    font-size: 0.8rem;
-    border-radius: calc(var(--border-radius-md) * 4);
-    padding: var(--spacing-sm) calc(var(--spacing-md) + var(--spacing-sm));
-  }
 }
 
 .activePomodoroSession {
   border-radius: var(--border-radius-md);
-  padding-top: var(--spacing-lg);
+  /* padding-top: var(--spacing-lg); */
 
   .activePomodoroSessionHeader {
     font-size: 0.9rem;

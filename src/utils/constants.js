@@ -74,3 +74,42 @@ export const DATE_FORMAT = "dddd, DD MMM YYYY";
 export const PAGINATION = {
   JOURNALS_PAGE_SIZE: 10,
 };
+
+export const RANKS = {
+  shinjin: {
+    label: "Shinjin",
+    icon: "🔥",
+    limit: 0,
+  },
+  genin: {
+    label: "Genin",
+
+    icon: "🔥",
+    limit: 10,
+  },
+  chunin: {
+    label: "Chunin",
+    icon: "🔥🔥",
+    limit: 50,
+  },
+  jounin: {
+    label: "Jounin",
+    icon: "🔥🔥🔥",
+    limit: 150,
+  },
+  anbu: {
+    label: "Anbu",
+    icon: "🔥🔥🔥🔥",
+    limit: 500,
+  },
+  hokage: {
+    label: "Hokage",
+    icon: "🔥🔥🔥🔥🔥",
+    limit: 1000,
+  },
+  sannin: {
+    label: "Sannin",
+    icon: "🔥🔥🔥🔥🔥🔥",
+    limit: 2500,
+  },
+};
