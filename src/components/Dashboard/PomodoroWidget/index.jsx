@@ -6,6 +6,7 @@ import ScheduleOutlineIcon from "@/assets/icons/schedule-outline.svg?react";
 import CupIcon from "@/assets/icons/cup.svg?react";
 import CheckCircleOutlineIcon from "@/assets/icons/checkcircle-outline.svg?react";
 import useTasksStore from "@/store/tasks";
+import widgetStyles from "../styles.module.css";
 
 const PomodoroWidget = () => {
   const { currentTask } = useTasksStore();
@@ -14,7 +15,7 @@ const PomodoroWidget = () => {
     <div className={`card ${styles.pomodoroWidget}`}>
       <div className={`card__header ${styles.pomodoroWidgetHeader}`}>
         <span> Pomodoro Activity</span>
-        <span className={styles.tag}>Today</span>
+        <span className={widgetStyles.tag}>Today</span>
       </div>
       <div className={`card__body ${styles.pomodoroWidgetBody}`}>
         <div className={styles.sessionInsights}>

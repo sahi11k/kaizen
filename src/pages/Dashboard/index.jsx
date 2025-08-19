@@ -3,9 +3,9 @@ import styles from "./style.module.css";
 import HeaderWidget from "@/components/Dashboard/HeaderWidget";
 import PomodoroWidget from "@/components/Dashboard/PomodoroWidget";
 import JournalsWidget from "@/components/Dashboard/JournalsWidget";
-import DailyStreaksWidget from "@/components/Dashboard/DailyStreaksWidget";
 import ProgressChartWidget from "@/components/Dashboard/ProgressChartWidget";
 import DailyProgressWidget from "@/components/Dashboard/DailyProgressWidget";
+import TotalHoursWidget from "@/components/Dashboard/TotalHoursWidget";
 
 const Dashboard = () => {
   return (
@@ -19,8 +19,8 @@ const Dashboard = () => {
       <section className={styles.pomodoroSection}>
         <PomodoroWidget />
       </section>
-      <section className={styles.dailyStreaksSection}>
-        <DailyStreaksWidget />
+      <section className={styles.totalHoursSection}>
+        <TotalHoursWidget />
       </section>
       <section className={styles.dailyProgressSection}>
         <DailyProgressWidget />

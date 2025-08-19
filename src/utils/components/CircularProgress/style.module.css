@@ -1,0 +1,33 @@
+.circularProgress {
+  --progress: 40;
+  --size: 50px;
+  --stroke-width: 10px;
+  --progress-color: var(--accent-secondary);
+  --progress-color-light: var(--accent-secondary-50);
+
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: conic-gradient(
+    from 0deg,
+    var(--progress-color) calc(var(--progress) * 1%),
+    var(--progress-color-light) calc(var(--progress) * 1%),
+    var(--progress-color-light) 100%
+  );
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: calc(var(--size) - var(--stroke-width) * 2);
+    height: calc(var(--size) - var(--stroke-width) * 2);
+    background-color: var(--container);
+    border-radius: 100%;
+    top: var(--stroke-width);
+    left: var(--stroke-width);
+  }
+}
