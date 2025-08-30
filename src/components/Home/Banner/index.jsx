@@ -1,32 +1,22 @@
 import React from "react";
-import bannerImg from "@/assets/images/banner.jpg";
-import styles from "./style.module.css";
 import { Link } from "react-router";
+import { Button } from "@/components/ui/button";
 
 const Banner = () => {
   return (
-    <section className={styles.banner}>
-      <div className={styles.banner__img}>
-        <img src={bannerImg} alt="banner" />
-      </div>
-      <div className={styles.banner__content}>
-        <h1 className={styles.banner__title}>kaïzen</h1>
-        <p className={styles.banner__description}>
-          Transform your life one small step at a time. Build better habits,
-          track your progress, and unlock your full potential through proven
-          productivity techniques.
-        </p>
-        <div className={styles.banner__buttons}>
-          <Link to="/dashboard">
-            <button
-              className={`btn underlineAnimation ${styles.banner__button}`}
-            >
-              Start Your Journey
-            </button>
-          </Link>
-        </div>
-      </div>
-    </section>
+    <div className="flex flex-col flex-gap items-center justify-center relative bg-primary-light rounded-2xl min-h-[80vh] p-4">
+      <h1 className="heading-1">kaïzen</h1>
+      <p className="text-center  md:max-w-2xl">
+        Transform your life one small step at a time. Build better habits, track
+        your progress, and unlock your full potential through proven
+        productivity techniques.
+      </p>
+      <Link to="/dashboard">
+        <Button variant="outline" className="rounded-full">
+          Start Your Journey
+        </Button>
+      </Link>
+    </div>
   );
 };
 

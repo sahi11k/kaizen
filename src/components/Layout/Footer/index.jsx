@@ -1,50 +1,55 @@
 import React from "react";
-import GithubIcon from "@/assets/icons/github.svg?react";
-import TwitterIcon from "@/assets/icons/twitter.svg?react";
-import MailIcon from "@/assets/icons/mail.svg?react";
-import LinkedInIcon from "@/assets/icons/linkedin.svg?react";
-import styles from "./style.module.css";
+import { FOOTER_LINKS } from "@/constants/footer";
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <footer className={styles.footer}>
-      <div className={styles.footer__socials}>
-        <p className={styles.footer__socialsTitle}>Keep Hustling.</p>
-        <p className={styles.footer__socialLinks}>
-          <a
-            href="mailto:sahil511kumar@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <MailIcon />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/sahi11k/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <LinkedInIcon />
-          </a>
-          <a
-            href="https://github.com/sahi11k/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <GithubIcon />
-          </a>
-          <a
-            href="https://x.com/sahi11k/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <TwitterIcon />
-          </a>
-        </p>
-      </div>
-      <div className={styles.footer__copyright}>
-        <div> &copy; {new Date().getFullYear()} Kaizen, Inc.</div>
+    <footer className=" min-h-50 bg-container px-6">
+      <div className="flex flex-col  xl:max-w-[80vw] mx-auto">
+        <div className="flex justify-between py-12 w-full gap-12">
+          <div className="flex flex-col gap-2">
+            <div className="text-title">kaïzen.</div>
+            <p className="text-description">
+              Bringing you the best of the best.
+            </p>
+          </div>
+          <div className="flex flex-col gap-2 items-center">
+            <span className="text-title">Navigate</span>
+            <div className="flex justify-center flex-col text-description">
+              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/dashboard/pomodoro">Pomodoro</Link>
+              <Link to="/dashboard/journals">Journals</Link>
+              <Link to="/dashboard/bookmarks">Bookmarks</Link>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-4 flex-col md:flex-row justify-between items-center border-t border-border py-6 w-full">
+          <div className="flex gap-6 text-text-muted">
+            {FOOTER_LINKS.map((link) => (
+              <FooterLink key={link.label} href={link.href}>
+                {link.icon}
+              </FooterLink>
+            ))}
+          </div>
+          <div className="text-description text-center">
+            &copy; {new Date().getFullYear()} Kaizen, All Rights Reserved.
+          </div>
+        </div>
       </div>
     </footer>
+  );
+};
+
+const FooterLink = ({ href, children }) => {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-5 h-5 xl:w-6 xl:h-6 hover:opacity-70 transition-opacity"
+    >
+      {children}
+    </a>
   );
 };
 
