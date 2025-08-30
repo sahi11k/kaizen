@@ -1,27 +1,30 @@
 import React from "react";
 import { Link } from "react-router";
 import useAuthStore from "@/store/auth";
-import styles from "./style.module.css";
-import Logo from "@/utils/components/Logo";
+import { Button } from "@/components/ui/button";
+import LogoIcon from "@/assets/icons/logo.svg?react";
 
 const HeaderNav = () => {
   const { user } = useAuthStore();
+
   return (
-    <header className={styles.header}>
-      <Logo className={styles.header__logo} />
-      {user ? (
-        <Link
-          to="/dashboard"
-          className={`${styles.header__nav__item} underlineAnimation`}
+    <header className="flex justify-between items-center p-4 xl:px-8">
+      <Link to="/">
+        <Button
+          variant="link"
+          className="text-text text-lg md:text-xl xl:text-2xl font-semibold"
         >
-          Dashboard
+          <LogoIcon className="fill-primary !w-6 !h-6 lg:!w-8 lg:!h-8" />
+          <span>kaïzen</span>
+        </Button>
+      </Link>
+      {user ? (
+        <Link to="/dashboard">
+          <Button variant="link">Dashboard</Button>
         </Link>
       ) : (
-        <Link
-          to="/auth/login"
-          className={`${styles.header__nav__item} underlineAnimation`}
-        >
-          Login
+        <Link to="/auth/login">
+          <Button variant="link">Login</Button>
         </Link>
       )}
     </header>

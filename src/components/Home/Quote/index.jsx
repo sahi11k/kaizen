@@ -1,17 +1,15 @@
 import React from "react";
-import styles from "./style.module.css";
-
 const Quote = () => {
   return (
-    <section className={styles.quoteSection}>
-      <blockquote className={styles.quote}>
+    <div className="bg-container p-6 flex flex-col justify-center gap-4 min-h-[400px] rounded-2xl">
+      <blockquote className="heading-2 font-bold text-center">
         &quot;You have power over your mind — not outside events.
         <br /> Realize this, and you will find strength.&quot;
       </blockquote>
-      <span className={styles.quote__author}>
+      <span className="text-text-muted text-center italic">
         — Marcus Aurelius, <cite>Meditations</cite>
       </span>
-    </section>
+    </div>
   );
 };
 

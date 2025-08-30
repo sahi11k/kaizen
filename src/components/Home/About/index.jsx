@@ -1,46 +1,43 @@
 import React from "react";
-import styles from "./style.module.css";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { ABOUT_CARDS } from "@/constants/aboutCards";
 
 const About = () => {
   return (
-    <section className={styles.about}>
-      <div className={styles.about__header}>
-        <h2 className={styles.about__title}>Everything You Need to Grow</h2>
-        <p className={styles.about__description}>
+    <div className="flex flex-col flex-gap text-center xl:py-6">
+      <div className="flex flex-col gap-2 items-center justify-center">
+        <h2 className="heading-2">Everything You Need to Grow</h2>
+        <p className="text-text-muted">
           Powerful tools designed to support your personal development journey
         </p>
       </div>
-      <div className={styles.about__cards}>
-        <div className={`card ${styles.about__card}`}>
-          <h4 className={styles.about__card__title}>Pomodoro</h4>
-          <p className={styles.about__card__description}>
-            Boost your focus with proven time management techniques. Work in
-            focused sprints with built-in breaks.
-          </p>
-        </div>
-        <div className={`card ${styles.about__card}`}>
-          <h4 className={styles.about__card__title}>Journals</h4>
-          <p className={styles.about__card__description}>
-            Reflect on your progress with guided journaling prompts and daily
-            reflections to track your growth.
-          </p>
-        </div>
-        <div className={`card ${styles.about__card}`}>
-          <h4 className={styles.about__card__title}>Day Planner</h4>
-          <p className={styles.about__card__description}>
-            Organize your goals and tasks with an intuitive planner that helps
-            you stay on track every day.
-          </p>
-        </div>
-        <div className={`card ${styles.about__card}`}>
-          <h4 className={styles.about__card__title}>Analytics</h4>
-          <p className={styles.about__card__description}>
-            Visualize your progress with detailed insights and metrics that show
-            your improvement over time.
-          </p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 flex-gap max-w-7xl mx-auto">
+        {ABOUT_CARDS.map((card) => (
+          <AboutCard key={card.title} {...card} />
+        ))}
       </div>
-    </section>
+    </div>
+  );
+};
+
+const AboutCard = ({ title, description }) => {
+  return (
+    <Card className="max-w-80 gap-3 bg-container">
+      <CardHeader className="text-title">
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="text-body">
+        <CardDescription className="text-description">
+          {description}
+        </CardDescription>
+      </CardContent>
+    </Card>
   );
 };
 
