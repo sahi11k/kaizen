@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import styles from "@/components/Auth/OtpVerification/style.module.css";
-import authStyles from "@/components/Auth/style.module.css";
-import FormItem from "@/utils/components/FormItem";
 import { verifyOTP, resendOTP } from "@/db/apis/auth";
 import { Toast } from "@/utils/components/Toast";
-import Spinner from "@/utils/components/Spinner";
 import useAuthStore from "@/store/auth";
+import { Button } from "@/components/ui/button";
+import { InputOTP } from "@/components/ui/input-otp";
 
 const { toast } = Toast;
 
 const RESEND_OTP_TIME = 60;
 
-const OTPVerification = ({ onBack, email, backBtnText }) => {
+const OtpVerification = ({ onBack, email, backBtnText }) => {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(RESEND_OTP_TIME);
@@ -76,68 +74,50 @@ const OTPVerification = ({ onBack, email, backBtnText }) => {
   };
 
   return (
-    <>
-      <div className={styles.otpHeader}>
-        <h2>Verify Your Email</h2>
-        <p>Enter the 6-digit verification code sent to your email.</p>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <FormItem.Input
-          type="text"
-          id="otp"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          required
-          placeholder="Enter 6-digit OTP"
-          maxLength="6"
-        />
-        <button
-          type="submit"
-          className={`btn ${
-            otp.length === 6 ? authStyles.submitButton : authStyles.disabled
-          }`}
-          disabled={otp.length !== 6 || isLoading}
-        >
-          {isLoading ? (
-            <span className="btn__icon">
-              <Spinner />
-            </span>
-          ) : (
-            ""
-          )}
-          Verify Email
-        </button>
-      </form>
-      <div className={styles.footer}>
-        <div className={styles.resendSection}>
-          <p>
+    <div className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <label className="body-description text-center">
+          Enter the 6-digit code we&apos;ve sent to your email.
+        </label>
+        <div className="flex flex-col items-center">
+          <InputOTP
+            id="otp"
+            value={otp}
+            onChange={(val) => setOtp(val)}
+            placeholder="Enter 6-digit OTP"
+            maxLength={6}
+          />
+          <div className="body-description flex flex-wrap justify-center items-center">
             Didn&apos;t receive the code?
-            <button
-              type="button"
-              className={`${styles.resendButton}`}
+            <Button
               onClick={handleResendOTP}
               disabled={resendTimer > 0 || isLoading}
+              variant="link"
+              className="!p-0 !ml-2 body-description !no-underline"
             >
               Resend OTP{" "}
               {resendTimer > 0
                 ? `${String(resendTimer).padStart(2, "0")} secs`
                 : ""}
-            </button>
-          </p>
+            </Button>
+          </div>
         </div>
-        <div className={styles.redirectLink}>
-          <button
-            type="button"
-            className={`btn ${styles.backButton}`}
-            onClick={onBack}
-          >
-            <span className="btn__icon">←</span>
-            {backBtnText}
-          </button>
-        </div>
+
+        <Button
+          type="submit"
+          loading={isLoading}
+          disabled={otp.length !== 6 || isLoading}
+        >
+          Verify Email
+        </Button>
+      </form>
+      <div className="flex justify-center flex-col items-center">
+        <Button type="button" onClick={onBack} variant="link" className="!h-5">
+          {backBtnText}
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 
-export default OTPVerification;
+export default OtpVerification;

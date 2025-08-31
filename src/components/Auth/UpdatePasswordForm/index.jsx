@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import styles from "@/components/Auth/OtpVerification/style.module.css";
-import authStyles from "@/components/Auth/style.module.css";
-import FormItem from "@/utils/components/FormItem";
 import { Toast } from "@/utils/components/Toast";
-import Spinner from "@/utils/components/Spinner";
-import { ErrorText } from "@/components/Auth/ErrorText";
-import { validateField } from "@/utils/utils";
 import { updatePassword } from "@/db/apis/auth";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { validateField } from "@/utils/utils";
+import { ErrorText } from "@/components/Auth/ErrorText";
 
 const { toast } = Toast;
 
@@ -49,13 +47,12 @@ const UpdatePasswordForm = () => {
   };
 
   return (
-    <>
-      <div className={styles.otpHeader}>
-        <h2>Update Your Password</h2>
-        <p>Enter your new password.</p>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <FormItem.Password
+    <div className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <label className="body-description px-2">
+          Secure your account by setting a new password.
+        </label>
+        <Input
           type="password"
           id="password"
           value={formValues.password}
@@ -64,25 +61,16 @@ const UpdatePasswordForm = () => {
           placeholder="Enter password"
         />
         {errors.password && <ErrorText error={errors.password} />}
-        <button type="submit" className={`btn ${authStyles.submitButton}`}>
-          {isLoading ? (
-            <span className="btn__icon">
-              <Spinner />
-            </span>
-          ) : (
-            ""
-          )}
+        <Button type="submit" loading={isLoading} className="mt-2">
           Update Password
-        </button>
+        </Button>
       </form>
-      <div className={styles.footer}>
-        <div className={styles.redirectLink}>
-          <Link to="/" className="btn">
-            Skip for now
-          </Link>
-        </div>
+      <div className="text-center">
+        <Link to="/" className="text-link underline-offset-2">
+          Skip For Now
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

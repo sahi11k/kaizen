@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import styles from "@/components/Auth/OtpVerification/style.module.css";
-import authStyles from "@/components/Auth/style.module.css";
-import FormItem from "@/utils/components/FormItem";
 import { resetPassword } from "@/db/apis/auth";
 import { Toast } from "@/utils/components/Toast";
-import Spinner from "@/utils/components/Spinner";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const { toast } = Toast;
 
@@ -27,16 +25,13 @@ const ResetPasswordForm = ({ onBack, defaultEmail = "" }) => {
   };
 
   return (
-    <>
-      <div className={styles.otpHeader}>
-        <h2>Reset Your Password</h2>
-        <p>
-          Enter the email associated with your account and we&apos;ll send you a
-          link to reset your password.
-        </p>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <FormItem.Input
+    <div className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <label className="body-description px-2">
+          Enter the email associated with your account, and we’ll send you a
+          password reset link
+        </label>
+        <Input
           type="email"
           id="email"
           value={email}
@@ -44,36 +39,21 @@ const ResetPasswordForm = ({ onBack, defaultEmail = "" }) => {
           required
           placeholder="Enter email"
         />
-        <button
+        <Button
           type="submit"
-          className={`btn ${
-            email.length > 0 ? authStyles.submitButton : authStyles.disabled
-          }`}
+          loading={isLoading}
           disabled={email.length === 0 || isLoading}
+          className="mt-2"
         >
-          {isLoading ? (
-            <span className="btn__icon">
-              <Spinner />
-            </span>
-          ) : (
-            ""
-          )}
           Send Reset Link
-        </button>
+        </Button>
       </form>
-      <div className={styles.footer}>
-        <div className={styles.redirectLink}>
-          <button
-            type="button"
-            className={`btn ${styles.backButton}`}
-            onClick={onBack}
-          >
-            <span className="btn__icon">←</span>
-            Back to Login
-          </button>
-        </div>
+      <div className="flex justify-center">
+        <Button type="button" onClick={onBack} variant="link" className="!h-5">
+          Back to Login
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,6 +1,5 @@
 import React from "react";
-import styles from "./style.module.css";
 
 export const ErrorText = ({ error }) => {
-  return <div className={styles.errorText}>{error}</div>;
+  return <div className="form-error mt-[-1rem] px-2">{error}</div>;
 };
