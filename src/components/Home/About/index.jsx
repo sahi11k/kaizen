@@ -13,7 +13,7 @@ const About = () => {
     <div className="flex flex-col flex-gap text-center xl:py-6">
       <div className="flex flex-col gap-2 items-center justify-center">
         <h2 className="heading-2">Everything You Need to Grow</h2>
-        <p className="text-text-muted">
+        <p className="body-description">
           Powerful tools designed to support your personal development journey
         </p>
       </div>
@@ -28,12 +28,12 @@ const About = () => {
 
 const AboutCard = ({ title, description }) => {
   return (
-    <Card className="max-w-80 gap-3 bg-container">
-      <CardHeader className="text-title">
+    <Card className="max-w-80 gap-3 bg-card border-border shadow-none">
+      <CardHeader className="heading-3">
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="text-body">
-        <CardDescription className="text-description">
+      <CardContent className="body-base">
+        <CardDescription className="body-description">
           {description}
         </CardDescription>
       </CardContent>
