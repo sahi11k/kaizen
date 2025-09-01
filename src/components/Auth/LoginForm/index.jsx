@@ -114,7 +114,7 @@ const LoginForm = ({
             type="button"
             variant="link"
             onClick={() => setShowResetPasswordScreen(true)}
-            className="self-end !h-5"
+            className="self-end !h-6"
           >
             Forgot password?
           </Button>
