@@ -2,7 +2,7 @@ import React from "react";
 import { FOOTER_LINKS } from "@/constants/footer";
 import { Link } from "react-router";
 
-const Footer = () => {
+const FooterMain = () => {
   return (
     <footer className=" min-h-50 bg-card px-6">
       <div className="flex flex-col  xl:max-w-[80vw] mx-auto">
@@ -46,11 +46,11 @@ const FooterLink = ({ href, children }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-5 h-5 xl:w-6 xl:h-6 hover:opacity-70 transition-opacity"
+      className="w-5 h-5 xl:w-6 xl:h-6 text-muted-foreground hover:text-foreground transition-colors"
     >
       {children}
     </a>
   );
 };
 
-export default Footer;
+export default FooterMain;

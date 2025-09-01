@@ -4,7 +4,7 @@ import { STATUS } from "@/utils/constants";
 import Fallback from "@/utils/components/Fallback";
 import { Toast } from "@/utils/components/Toast";
 
-const BaseLayout = ({ children }) => {
+const BaseLayout = ({ children, className = "" }) => {
   const { userFetchStatus, loadUser, user } = useAuthStore();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const BaseLayout = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className={`min-h-screen ${className}`}>
       {children}
       <Toast />
     </div>

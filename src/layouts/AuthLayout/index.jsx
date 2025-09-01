@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import BaseLayout from "@/components/Layout/BaseLayout";
+import BaseLayout from "@/layouts/BaseLayout";
 
 const AuthLayout = () => {
   return (

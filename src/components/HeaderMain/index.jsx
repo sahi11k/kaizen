@@ -4,7 +4,7 @@ import useAuthStore from "@/store/auth";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 
-const HeaderNav = () => {
+const HeaderMain = () => {
   const { user } = useAuthStore();
 
   return (
@@ -12,7 +12,7 @@ const HeaderNav = () => {
       <Logo size="md" />
       {user ? (
         <Link to="/dashboard">
-          <Button variant="link">Dashboard</Button>W
+          <Button variant="outline">Dashboard</Button>
         </Link>
       ) : (
         <Link to="/auth/login">
@@ -23,4 +23,4 @@ const HeaderNav = () => {
   );
 };
 
-export default HeaderNav;
+export default HeaderMain;
