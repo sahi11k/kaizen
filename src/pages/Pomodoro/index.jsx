@@ -1,13 +1,12 @@
 import React from "react";
 import Timer from "@/components/Pomodoro/Timer";
 import Tasks from "@/components/Pomodoro/Tasks";
-import styles from "./style.module.css";
 
 const Pomodoro = () => {
   return (
-    <div className={styles.pomodoro}>
-      <Timer />
+    <div className="flex h-[calc(100vh-64px)]">
       <Tasks />
+      <Timer />
     </div>
   );
 };
