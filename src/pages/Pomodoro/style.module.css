@@ -1,5 +1,0 @@
-.pomodoro {
-  display: flex;
-  gap: var(--spacing-md);
-  height: calc(100vh - var(--spacing-lg));
-}

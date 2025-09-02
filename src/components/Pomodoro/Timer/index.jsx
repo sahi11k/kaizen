@@ -146,7 +146,7 @@ const Timer = () => {
   };
 
   return (
-    <div className={`card ${styles.timerContainer}`}>
+    <div className="flex-3 px-8 py-6">
       <div className={`card__body ${styles.timerBody}`}>
         <Tabs
           defaultTab={ONGOING_TAB}

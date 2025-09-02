@@ -45,7 +45,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   };
 
   return (
-    <div className="h-16 px-4 md:px-6 lg:px-8 flex items-center justify-between border-b border-border sticky top-0 bg-background z-10">
+    <div className="h-16 px-4 md:px-6  flex items-center justify-between border-b border-border sticky top-0 bg-background z-10">
       <Button
         onClick={handleCollapse}
         variant="icon"
