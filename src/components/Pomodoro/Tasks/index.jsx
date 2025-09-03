@@ -202,111 +202,97 @@ const Tasks = () => {
     }
   };
 
-  const renderCardFooter = () => {
-    if (showModal || orderChanged) {
-      const onSave = showModal ? formSubmitHandler : updateTaskOrder;
-      const onCancel = showModal ? handleCancel : resetTaskOrder;
-      const btnLabel = showModal ? "Save" : "Update Order";
-      return (
-        <>
-          <Button variant="outline" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button onClick={onSave}>{btnLabel}</Button>
-        </>
-      );
-    }
-
-    return (
-      <Button
-        onClick={() => {
-          if (!user?.id) {
-            return toast.error("Please log in to add tasks");
-          }
-          setShowModal(true);
-          setMode(CREATE);
-        }}
-        icon={<Plus />}
-      >
-        Add Task
-      </Button>
-    );
-  };
-
   return (
-    <div className="flex-1 px-6 flex flex-col border-r border-border">
-      <div className="pt-6 pb-2">
-        <span className="heading-3 mr-1">Tasks</span>
-        <span className="body-description" hidden={tasks.length === 0}>
-          ({getCompletedTasks()}/{tasks.length})
-        </span>
-      </div>
-      <div className="h-full overflow-y-auto scrollbar-thin -mr-6">
-        <ul>
-          <SortableContainer
-            tasks={deepCopy(tasks)}
-            onDragEnd={taskDragHandler}
-            currentTask={currentTask}
-          >
-            {tasks.map((task) => {
-              return (
-                <TaskItem
-                  key={task.id}
-                  task={task}
-                  isActive={currentTask?.id === task.id}
-                  onEdit={(e) => {
-                    e.stopPropagation();
-                    taskEditHandler(task);
-                  }}
-                  onRemove={(e) => {
-                    e.stopPropagation();
-                    taskRemoveHandler(task.id);
-                  }}
-                  onComplete={(e) => {
-                    e.stopPropagation();
-                    taskCompleteHandler(task.id);
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleTaskClick(task);
-                  }}
-                  mode={mode}
-                />
-              );
-            })}
-          </SortableContainer>
-        </ul>
-        <div className="pr-6">
-          {isLoading &&
-            tasks.length !== 0 &&
-            Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton
-                key={index}
-                className="h-16 w-full bg-card mb-2 rounded-lg"
-              />
-            ))}
+    <>
+      <div className="w-sm px-6 flex flex-col border-r border-border">
+        <div className="pt-6 pb-4 flex items-center justify-between">
+          <div>
+            <span className="heading-3 mr-1">Tasks</span>
+            <span className="body-description" hidden={tasks.length === 0}>
+              ({getCompletedTasks()}/{tasks.length})
+            </span>
+          </div>
+          <Button icon={<Plus />} size="sm" onClick={() => setShowModal(true)}>
+            Add
+          </Button>
         </div>
-        {tasks.length === 0 && !showModal && !isLoading && (
-          <div className="flex justify-center items-center h-full">
-            <div className="flex flex-col items-center gap-3 text-muted-foreground">
-              <FolderOpen className="size-8" />
-              <div className="flex flex-col items-center">
-                <h3 className="heading-3">No Tasks</h3>
-                <p className="body-description">Add a task to get started.</p>
+        <div className="h-full overflow-y-auto scrollbar-thin -mr-6 -ml-2">
+          <ul className="pr-4">
+            <SortableContainer
+              tasks={deepCopy(tasks)}
+              onDragEnd={taskDragHandler}
+              currentTask={currentTask}
+            >
+              {tasks.map((task) => {
+                return (
+                  <TaskItem
+                    key={task.id}
+                    task={task}
+                    isActive={currentTask?.id === task.id}
+                    onEdit={(e) => {
+                      e.stopPropagation();
+                      taskEditHandler(task);
+                    }}
+                    onRemove={(e) => {
+                      e.stopPropagation();
+                      taskRemoveHandler(task.id);
+                    }}
+                    onComplete={(e) => {
+                      e.stopPropagation();
+                      taskCompleteHandler(task.id);
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleTaskClick(task);
+                    }}
+                    showModal={showModal}
+                  />
+                );
+              })}
+            </SortableContainer>
+          </ul>
+          <div className="pr-6">
+            {isLoading &&
+              tasks.length !== 0 &&
+              Array.from({ length: 3 }).map((_, index) => (
+                <Skeleton
+                  key={index}
+                  className="h-16 w-full bg-card mb-2 rounded-lg"
+                />
+              ))}
+          </div>
+          {tasks.length === 0 && !showModal && !isLoading && (
+            <div className="flex justify-center items-center h-full">
+              <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                <FolderOpen className="size-8" />
+                <div className="flex flex-col items-center">
+                  <h3 className="heading-3">No Tasks</h3>
+                  <p className="body-description">Add a task to get started.</p>
+                </div>
               </div>
+            </div>
+          )}
+        </div>
+        {orderChanged && (
+          <div className="border-t border-border -mx-6">
+            <div className="flex items-center justify-center h-16 gap-4">
+              <Button variant="outline" onClick={resetTaskOrder}>
+                Cancel
+              </Button>
+              <Button onClick={updateTaskOrder}>Update Order</Button>
             </div>
           </div>
         )}
       </div>
-      <div className="border-t border-border -mx-6">
-        {showModal && (
-          <AddForm formValues={formValues} setFormValues={setFormValues} />
-        )}
-        <div className="flex items-center justify-center h-16 gap-4">
-          {renderCardFooter()}
-        </div>
-      </div>
-    </div>
+      <AddForm
+        setFormValues={setFormValues}
+        formValues={formValues}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        onSave={formSubmitHandler}
+        onCancel={handleCancel}
+      />
+    </>
   );
 };
 
