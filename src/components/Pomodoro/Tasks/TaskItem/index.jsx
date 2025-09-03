@@ -1,12 +1,18 @@
 import React from "react";
-import styles from "./style.module.css";
-import CheckIcon from "@/assets/icons/check.svg?react";
-import EditIcon from "@/assets/icons/edit.svg?react";
-import DeleteIcon from "@/assets/icons/delete.svg?react";
-import DragIcon from "@/assets/icons/drag.svg?react";
-import { CREATE, TASK_CATEGORY_ICONS } from "@/utils/constants";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Button } from "@/components/ui/button";
+import {
+  Check,
+  CheckCheck,
+  CheckCircle,
+  CheckCircle2,
+  CircleCheck,
+  GripVertical,
+  Pen,
+  Trash2,
+} from "lucide-react";
+import { CREATE } from "@/utils/constants";
 
 const TaskItem = ({
   task,
@@ -15,7 +21,7 @@ const TaskItem = ({
   onComplete,
   onClick,
   isActive,
-  mode,
+  showModal,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id });
@@ -25,62 +31,77 @@ const TaskItem = ({
     transition,
   };
 
+  const getTaskClass = () => {
+    const baseClass =
+      "border-l-8 border-transparent group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors";
+    const hoverClass = "hover:border-accent";
+    const activeClass = "!border-primary/50 bg-primary/5";
+    const completedClass =
+      "!border-muted-foreground/50 bg-accent text-muted-foreground hover:!bg-accent opacity-70";
+    return `${baseClass} ${hoverClass} ${
+      isActive ? activeClass : task.completed ? completedClass : ""
+    }`;
+  };
+
   return (
     <li
       ref={setNodeRef}
-      className={`${styles.taskItem} ${
-        task.completed ? styles.completed : ""
-      } ${isActive ? styles.active : ""}`}
+      className={getTaskClass()}
       style={style}
       onClick={onClick}
     >
-      <div className={styles.taskItem__status}>
-        <button
-          className={`btn ${styles.taskItem__actionItem}`}
+      <div className="flex items-center gap-1 shrink-0">
+        <Button
           onClick={onComplete}
+          variant="icon"
+          icon={
+            task.completed ? (
+              <CheckCircle className="size-5" color="currentColor" />
+            ) : (
+              <CheckCircle2 className="size-5" color="currentColor" />
+            )
+          }
+          className="!p-0 hover:bg-transparent"
+        />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div
+          className="text-md font-medium truncate"
+          style={{ textDecoration: task.completed ? "line-through" : "none" }}
         >
-          <CheckIcon />
-        </button>
-      </div>
-      <div className={styles.taskItem__category}>
-        <div className={styles.taskItem__categoryIcon}>
-          {TASK_CATEGORY_ICONS[task.category] || TASK_CATEGORY_ICONS.others}
+          {task.title}
+        </div>
+        <div className="text-muted-foreground text-sm">
+          {task.completed
+            ? "Done"
+            : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
         </div>
       </div>
-      <div className={styles.taskItem__details}>
-        <div className={styles.taskItem__title}>{task.title}</div>
-        <div className={styles.taskItem__progress}>
-          <div className={styles.taskItem__sessions}>
-            {task.completed
-              ? "Done"
-              : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
-          </div>
-        </div>
-      </div>
-      <div className={styles.taskItem__actions}>
-        <button
-          className={`btn ${styles.taskItem__actionItem}`}
+
+      <div
+        className="hidden shrink-0 items-center gap-4 group-hover:flex"
+        hidden={showModal}
+      >
+        <Button
           onClick={onEdit}
-        >
-          <EditIcon />
-        </button>
-        {mode === CREATE && (
-          <>
-            <button
-              className={`btn ${styles.taskItem__actionItem}`}
-              onClick={onRemove}
-            >
-              <DeleteIcon />
-            </button>
-            <button
-              className={`btn ${styles.taskItem__actionItem} ${styles.taskItem__actionItemDrag}`}
-              {...attributes}
-              {...listeners}
-            >
-              <DragIcon />
-            </button>
-          </>
-        )}
+          variant="icon"
+          icon={<Pen className="size-5" />}
+          className="!p-0 hover:bg-transparent"
+        />
+        <Button
+          variant="icon"
+          icon={<Trash2 className="size-5" />}
+          onClick={onRemove}
+          className="!p-0 hover:bg-transparent"
+        />
+        <Button
+          {...attributes}
+          {...listeners}
+          variant="icon"
+          icon={<GripVertical className="size-5" />}
+          className="!p-0 hover:bg-transparent"
+        />
       </div>
     </li>
   );

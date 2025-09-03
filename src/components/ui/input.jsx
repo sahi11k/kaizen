@@ -1,13 +1,19 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Minus, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function Input({ className, type, ...props }) {
   const isPassword = type === "password";
+  const isNumber = type === "number";
 
   if (isPassword) {
     return <Password className={className} {...props} />;
+  }
+
+  if (isNumber) {
+    return <InputNumber className={className} {...props} />;
   }
 
   return (
@@ -52,5 +58,81 @@ const Password = ({ className, ...props }) => {
     </div>
   );
 };
+
+const InputNumber = ({
+  className,
+  onChange,
+  min,
+  max,
+  name,
+  value,
+  step = 1,
+  ...rest
+}) => {
+  const handleChange = (e) => {
+    const numValue = parseInt(e.target.value, 10);
+    onChange({
+      target: {
+        name,
+        value: numValue,
+      },
+    });
+  };
+
+  const handleIncrement = () => {
+    if (max === undefined || value < max) {
+      onChange({ target: { name, value: value + step } });
+    }
+  };
+
+  const handleDecrement = () => {
+    if (min === undefined || value > min) {
+      onChange({ target: { name, value: value - step } });
+    }
+  };
+
+  return (
+    <div className="relative">
+      <input
+        type="number"
+        data-slot="input"
+        className={cn(
+          "text-foreground placeholder:text-muted-foreground selection:bg-border selection:text-foreground dark:bg-input/30 border-border flex h-10 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 pr-16 text-sm transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 xl:text-base xl:h-11 xl:px-4 xl:py-2 xl:pr-20",
+          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
+          "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+          "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]",
+          className
+        )}
+        value={value}
+        onChange={handleChange}
+        {...rest}
+      />
+      <div className="absolute top-0 bottom-0 right-0 flex my-auto">
+        <Button
+          type="button"
+          aria-label="Decrement"
+          onClick={handleDecrement}
+          disabled={min !== undefined && value <= min}
+          variant="icon"
+          className="w-9 border border-border rounded-none disabled:opacity-50 disabled:bg-accent !h-full"
+        >
+          <Minus />
+        </Button>
+        <Button
+          type="button"
+          aria-label="Increment"
+          onClick={handleIncrement}
+          disabled={max !== undefined && value >= max}
+          variant="icon"
+          className="w-9 border border-border rounded-l-none border-l-0 rounded-r-md disabled:opacity-50 disabled:bg-accent !h-full"
+        >
+          <Plus />
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+InputNumber.displayName = "InputNumber";
 
 export { Input };

@@ -17,7 +17,6 @@ import {
   getLongBreakInterval,
 } from "../../../utils/timerHelpers";
 import styles from "./style.module.css";
-import SettingsIcon from "@/assets/icons/settings.svg?react";
 
 const { ONGOING_TAB, BREAK_TAB } = TIMER_CONSTANTS;
 
@@ -146,8 +145,8 @@ const Timer = () => {
   };
 
   return (
-    <div className="flex-3 px-8 py-6">
-      <div className={`card__body ${styles.timerBody}`}>
+    <div className="flex-1 px-8 py-6 border border-red-500">
+      <div className="border border-blue-500">
         <Tabs
           defaultTab={ONGOING_TAB}
           activeTab={currentTab}
@@ -193,17 +192,17 @@ const Timer = () => {
             },
           ]}
         />
-        <div className="card__footer">
-          <div className={styles.timerControls}>
+        <div className="border border-green-500">
+          <div className="border border-yellow-500">
             <button
-              className={`btn btn--primary ${styles.timerControls__item}`}
+              className={`btn btn--primary ${styles.timerControls__item} border border-purple-500`}
               onClick={resetTimer}
               title="Reset Timer"
             >
               <ResetIcon />
             </button>
             <button
-              className={`btn  ${styles.timerControls__item} ${styles["timerControls__item--play"]}`}
+              className={`btn  ${styles.timerControls__item} ${styles["timerControls__item--play"]} border border-purple-500`}
               onClick={timerStarted ? stopTimer : startTimer}
               title={timerStarted ? "Stop Timer" : "Start Timer"}
             >
@@ -236,7 +235,7 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <div className={styles.timer__display}>
+    <div className="border border-yellow-500">
       <div
         className={`${styles.circularTimer} ${
           currentTab === BREAK_TAB
