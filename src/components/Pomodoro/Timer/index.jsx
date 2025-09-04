@@ -3,10 +3,7 @@ import PlayIcon from "@/assets/icons/play.svg?react";
 import NextIcon from "@/assets/icons/next.svg?react";
 import ResetIcon from "@/assets/icons/reset.svg?react";
 import StopIcon from "@/assets/icons/stop.svg?react";
-import Tabs from "@/utils/components/Tabs";
-import ClockIcon from "@/assets/icons/clock.svg?react";
-import CupIcon from "@/assets/icons/cup.svg?react";
-import { TIMER_CONSTANTS } from "@/utils/constants";
+
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
@@ -16,9 +13,26 @@ import {
   getTimerDurations,
   getLongBreakInterval,
 } from "../../../utils/timerHelpers";
-import styles from "./style.module.css";
+import { Button } from "@/components/ui/button";
+import { TIMER_CONSTANTS } from "@/constants/pomodoro";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const { ONGOING_TAB, BREAK_TAB } = TIMER_CONSTANTS;
+const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
+
+const TABS = [
+  {
+    key: POMODORO_TAB,
+    label: "Pomodoro",
+  },
+  {
+    key: SHORT_BREAK_TAB,
+    label: "Short Break",
+  },
+  {
+    key: LONG_BREAK_TAB,
+    label: "Long Break",
+  },
+];
 
 const Timer = () => {
   const { user, userSettings } = useAuthStore();
@@ -30,15 +44,13 @@ const Timer = () => {
     }))
   );
 
-  const [currentTab, setCurrentTab] = useState(ONGOING_TAB);
+  const [currentTab, setCurrentTab] = useState(POMODORO_TAB);
   const [timerStarted, setTimerStarted] = useState(false);
   const [pomodoroCount, setPomodoroCount] = useState(0);
-  const [isLongBreak, setIsLongBreak] = useState(false);
   const intervalRef = useRef(null);
 
   const [timerValue, setTimerValue] = useGetTimerValue({
     activeTab: currentTab,
-    isLongBreak,
     userSettings,
   });
 
@@ -49,29 +61,25 @@ const Timer = () => {
       getTimerDurations(userSettings);
 
     setDuration(
-      currentTab === ONGOING_TAB
+      currentTab === POMODORO_TAB
         ? taskTime
-        : isLongBreak
-        ? longBreakTime
-        : shortBreakTime
+        : currentTab === SHORT_BREAK_TAB
+        ? shortBreakTime
+        : longBreakTime
     );
-  }, [currentTab, isLongBreak, userSettings]);
+  }, [currentTab, userSettings]);
 
-  useEffect(() => {
-    const longBreakInterval = getLongBreakInterval(userSettings);
-    if (pomodoroCount > 0 && pomodoroCount % longBreakInterval === 0) {
-      setIsLongBreak(true);
-    } else {
-      setIsLongBreak(false);
-    }
-  }, [pomodoroCount, userSettings]);
+  // No longer derive long break state here; handled when computing next tab
 
   useEffect(() => {
     const { minutes, seconds } = getFormattedTime(timerValue);
-    document.title =
-      currentTab === ONGOING_TAB
-        ? `Pomodoro : ${minutes}:${seconds}`
-        : `Break : ${minutes}:${seconds}`;
+    const titlePrefix =
+      currentTab === POMODORO_TAB
+        ? "Pomodoro"
+        : currentTab === SHORT_BREAK_TAB
+        ? "Short Break"
+        : "Long Break";
+    document.title = `${titlePrefix} : ${minutes}:${seconds}`;
   }, [currentTab, timerValue]);
 
   const startTimer = () => {
@@ -102,12 +110,11 @@ const Timer = () => {
 
   const resetTimer = () => {
     clearTimerInterval();
-    setTimerValue(getCurrentTime(currentTab, isLongBreak, userSettings));
+    setTimerValue(getCurrentTime(currentTab, userSettings));
   };
 
   const skipTimer = () => {
-    finishSession();
-    handleTabChange(currentTab === ONGOING_TAB ? BREAK_TAB : ONGOING_TAB);
+    goToNextPhase(true);
   };
 
   const handleTabChange = (key) => {
@@ -116,141 +123,142 @@ const Timer = () => {
   };
 
   const handleTimerComplete = () => {
-    finishSession();
-    skipTimer();
+    goToNextPhase(true);
+  };
+
+  const getNextTab = (tabKey) => {
+    if (tabKey === POMODORO_TAB) {
+      const nextCount = pomodoroCount + 1;
+      const longBreakInterval = getLongBreakInterval(userSettings);
+      return nextCount > 0 && nextCount % longBreakInterval === 0
+        ? LONG_BREAK_TAB
+        : SHORT_BREAK_TAB;
+    }
+    // From any break, go back to Pomodoro
+    return POMODORO_TAB;
+  };
+
+  const goToNextPhase = async (shouldFinishSession) => {
+    if (shouldFinishSession && currentTab === POMODORO_TAB) {
+      await finishSession();
+    }
+    const next = getNextTab(currentTab);
+    handleTabChange(next);
   };
 
   const finishSession = async () => {
-    if (currentTab === ONGOING_TAB) {
-      setPomodoroCount(pomodoroCount + 1);
-      if (currentTask && user?.id) {
-        const completedSessions = currentTask.completedSessions + 1;
-        const res = await updateTask(
-          {
-            id: currentTask.id,
-            completedSessions,
-            completed: completedSessions === currentTask.totalSessions,
-          },
-          user.id
-        );
-        if (res.error) {
-          // Handle error silently for now or show notification
-          console.error("Failed to update task:", res.error);
-        } else {
-          updateTaskInStore(res.data[0]);
-          setCurrentTask(res.data[0]);
-        }
+    if (currentTab !== POMODORO_TAB) return;
+
+    setPomodoroCount((prev) => prev + 1);
+
+    if (currentTask && user?.id) {
+      const completedSessions = currentTask.completedSessions + 1;
+      const res = await updateTask(
+        {
+          id: currentTask.id,
+          completedSessions,
+          completed: completedSessions === currentTask.totalSessions,
+        },
+        user.id
+      );
+      if (res.error) {
+        console.error("Failed to update task:", res.error);
+      } else {
+        updateTaskInStore(res.data[0]);
+        setCurrentTask(res.data[0]);
       }
     }
   };
 
   return (
-    <div className="flex-1 px-8 py-6 border border-red-500">
-      <div className="border border-blue-500">
+    <div className="flex-1 flex flex-col p-6 gap-8">
+      <div className="flex-1">
         <Tabs
-          defaultTab={ONGOING_TAB}
-          activeTab={currentTab}
-          onTabChange={handleTabChange}
-          tabsClassName={styles.pomodoroTabs}
-          tabNavClassName={styles.pomodoroTabNav}
-          tabs={[
-            {
-              id: ONGOING_TAB,
-              label: (
-                <>
-                  <span className="btn__icon">
-                    <ClockIcon />
-                  </span>
-                  <span>Ongoing</span>
-                </>
-              ),
-              content: (
+          defaultValue={POMODORO_TAB}
+          value={currentTab}
+          onValueChange={handleTabChange}
+          className="h-full"
+        >
+          <TabsList className="w-full h-12 cursor-pointer">
+            {TABS.map((tab) => (
+              <TabsTrigger
+                key={tab.key}
+                value={tab.key}
+                className="cursor-pointer"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <>
+            {TABS.map((tab) => (
+              <TabsContent key={tab.key} value={tab.key}>
                 <TabContent
                   timerValue={timerValue}
                   duration={duration}
                   currentTab={currentTab}
                 />
-              ),
-            },
-            {
-              id: BREAK_TAB,
-              label: (
-                <>
-                  <span>Break</span>
-                  <span className="btn__icon">
-                    <CupIcon />
-                  </span>
-                </>
-              ),
-              content: (
-                <TabContent
-                  timerValue={timerValue}
-                  duration={duration}
-                  currentTab={currentTab}
-                />
-              ),
-            },
-          ]}
+              </TabsContent>
+            ))}
+          </>
+        </Tabs>
+      </div>
+      <div className="flex justify-center items-center gap-6">
+        <Button
+          onClick={resetTimer}
+          title="Reset Timer"
+          icon={<ResetIcon className="size-6" fill="currentColor" />}
+          className="rounded-full w-12 !h-12"
+          variant="icon"
         />
-        <div className="border border-green-500">
-          <div className="border border-yellow-500">
-            <button
-              className={`btn btn--primary ${styles.timerControls__item} border border-purple-500`}
-              onClick={resetTimer}
-              title="Reset Timer"
-            >
-              <ResetIcon />
-            </button>
-            <button
-              className={`btn  ${styles.timerControls__item} ${styles["timerControls__item--play"]} border border-purple-500`}
-              onClick={timerStarted ? stopTimer : startTimer}
-              title={timerStarted ? "Stop Timer" : "Start Timer"}
-            >
-              <span className="btn__icon">
-                {timerStarted ? <StopIcon /> : <PlayIcon />}
-              </span>
-              <span className="btn__label">
-                {timerStarted ? "Stop" : "Start"}
-              </span>
-            </button>
-            <button
-              className={`btn btn--primary ${styles.timerControls__item}`}
-              onClick={skipTimer}
-              title="Skip Timer"
-            >
-              <NextIcon />
-            </button>
-          </div>
-        </div>
+        <Button
+          onClick={timerStarted ? stopTimer : startTimer}
+          title={timerStarted ? "Stop Timer" : "Start Timer"}
+          icon={
+            timerStarted ? (
+              <StopIcon className="size-6" fill="currentColor" />
+            ) : (
+              <PlayIcon className="size-6" fill="currentColor" />
+            )
+          }
+          className="rounded-full !h-14 sm:!px-10 !text-lg"
+        >
+          <span className="hidden sm:block">
+            {timerStarted ? "Stop" : "Start"}
+          </span>
+        </Button>
+        <Button
+          onClick={skipTimer}
+          title="Skip Timer"
+          icon={<NextIcon className="size-6" fill="currentColor" />}
+          variant="icon"
+          className="rounded-full w-12 !h-12"
+        />
       </div>
     </div>
   );
 };
 
 const TabContent = ({ timerValue, duration, currentTab }) => {
-  const getProgressPercentage = () => {
-    return ((duration - timerValue) / duration) * 100;
-  };
+  const percentage = ((duration - timerValue) / duration) * 100;
+  const fillColor =
+    currentTab === POMODORO_TAB ? "var(--primary)" : "var(--muted-foreground)";
 
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <div className="border border-yellow-500">
-      <div
-        className={`${styles.circularTimer} ${
-          currentTab === BREAK_TAB
-            ? styles.circularTimer__break
-            : styles.circularTimer__pomodoro
-        }`}
-        style={{
-          "--progress": getProgressPercentage(),
-          "--progress-color":
-            currentTab === ONGOING_TAB ? "var(--accent-secondary)" : "#ffc107",
-        }}
-      >
-        <div className={styles.timer__value}>
+    <div className="flex justify-center items-center h-full">
+      <div className="w-80 h-80 relative lg:w-100 lg:h-100">
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: `conic-gradient(${fillColor} ${percentage}%, var(--accent) ${percentage}% 100%)`,
+          }}
+        />
+
+        <div className="absolute inset-4 bg-white rounded-full flex justify-center items-center heading-1 font-mono">
           <span>{minutes}</span>
-          <span className={styles.timer__value__colon}>:</span>
+          <span className="mb-2">:</span>
           <span>{seconds}</span>
         </div>
       </div>
