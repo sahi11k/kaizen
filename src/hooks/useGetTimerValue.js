@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
-import { TIMER_CONSTANTS } from "@/utils/constants";
+
 import { getTimerDurations } from "@/utils/timerHelpers";
+import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 
-const { ONGOING_TAB } = TIMER_CONSTANTS;
+const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
 
-const useGetTimerValue = ({ activeTab, isLongBreak, userSettings }) => {
+const useGetTimerValue = ({ activeTab, userSettings }) => {
   const getInitialTime = () => {
-    const { taskTime } = getTimerDurations(userSettings);
-    return taskTime;
+    return getCurrentTime(activeTab, userSettings);
   };
 
   const [timerValue, setTimerValue] = useState(getInitialTime);
 
   useEffect(() => {
-    setTimerValue(getCurrentTime(activeTab, isLongBreak, userSettings));
-  }, [activeTab, isLongBreak, userSettings]);
+    setTimerValue(getCurrentTime(activeTab, userSettings));
+  }, [activeTab, userSettings]);
 
   return [timerValue, setTimerValue];
 };
 
-const getCurrentTime = (tabKey, isLongBreak, userSettings) => {
+const getCurrentTime = (tabKey, userSettings) => {
   const { taskTime, shortBreakTime, longBreakTime } =
     getTimerDurations(userSettings);
 
-  if (tabKey === ONGOING_TAB) {
-    return taskTime;
-  }
+  if (tabKey === POMODORO_TAB) return taskTime;
+  if (tabKey === SHORT_BREAK_TAB) return shortBreakTime;
+  if (tabKey === LONG_BREAK_TAB) return longBreakTime;
 
-  return isLongBreak ? longBreakTime : shortBreakTime;
+  return taskTime;
 };
 
 export { useGetTimerValue, getCurrentTime };

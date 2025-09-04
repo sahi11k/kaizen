@@ -5,9 +5,9 @@ import useAuthStore from "@/store/auth";
 import { upsertUserSettings } from "@/db/apis/userSettings";
 import { getLongBreakInterval, getTimerDurations } from "@/utils/timerHelpers";
 import { Toast } from "@/utils/components/Toast";
-import { TIMER_CONSTANTS } from "@/utils/constants";
 import FormItem, { FormItemWrapper } from "@/utils/components/FormItem";
 import Slider from "@/utils/components/Slider";
+import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 const { toast } = Toast;
 const { TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } = TIMER_CONSTANTS;
 

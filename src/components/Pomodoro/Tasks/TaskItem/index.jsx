@@ -3,16 +3,12 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import {
-  Check,
-  CheckCheck,
   CheckCircle,
   CheckCircle2,
-  CircleCheck,
   GripVertical,
   Pen,
   Trash2,
 } from "lucide-react";
-import { CREATE } from "@/utils/constants";
 
 const TaskItem = ({
   task,
@@ -33,11 +29,11 @@ const TaskItem = ({
 
   const getTaskClass = () => {
     const baseClass =
-      "border-l-8 border-transparent group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors";
-    const hoverClass = "hover:border-accent";
-    const activeClass = "!border-primary/50 bg-primary/5";
+      "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors";
+    const hoverClass = "";
+    const activeClass = "border-l-8 !border-primary/50 bg-primary/5";
     const completedClass =
-      "!border-muted-foreground/50 bg-accent text-muted-foreground hover:!bg-accent opacity-70";
+      "bg-accent text-muted-foreground hover:!bg-accent opacity-70";
     return `${baseClass} ${hoverClass} ${
       isActive ? activeClass : task.completed ? completedClass : ""
     }`;

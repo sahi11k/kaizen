@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "@/components/Pomodoro/Tasks/TaskItem";
 import AddForm from "@/components/Pomodoro/Tasks/AddForm";
-import { CREATE, EDIT, MIN_SESSIONS } from "@/utils/constants";
+import { CREATE, EDIT } from "@/utils/constants";
 import SortableContainer from "@/components/Pomodoro/Tasks/SortableContainer";
 import { arraysEqual, deepCopy } from "@/utils/utils";
 import useTasksStore from "@/store/tasks";
@@ -18,6 +18,7 @@ import { Toast } from "@/utils/components/Toast";
 import { Button } from "@/components/ui/button";
 import { FolderOpen, Plus } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MIN_SESSIONS } from "@/constants/pomodoro";
 
 const { toast } = Toast;
 
@@ -30,7 +31,7 @@ const DEFAULT_FORM_VALUES = {
 
 const DEFAULT_TITLE = "Untitled Task";
 
-const Tasks = () => {
+const TaskListContent = () => {
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
@@ -202,87 +203,100 @@ const Tasks = () => {
     }
   };
 
+  const renderFooter = () => {
+    if (orderChanged) {
+      return (
+        <>
+          <Button variant="outline" onClick={resetTaskOrder}>
+            Cancel
+          </Button>
+          <Button onClick={updateTaskOrder}>Update Order</Button>
+        </>
+      );
+    }
+
+    return (
+      <Button
+        icon={<Plus />}
+        className="w-full"
+        onClick={() => setShowModal(true)}
+      >
+        Add Task
+      </Button>
+    );
+  };
+
   return (
     <>
-      <div className="w-sm px-6 flex flex-col border-r border-border">
-        <div className="pt-6 pb-4 flex items-center justify-between">
-          <div>
-            <span className="heading-3 mr-1">Tasks</span>
-            <span className="body-description" hidden={tasks.length === 0}>
-              ({getCompletedTasks()}/{tasks.length})
-            </span>
-          </div>
-          <Button icon={<Plus />} size="sm" onClick={() => setShowModal(true)}>
-            Add
-          </Button>
+      <div className="mt-6 pb-4 flex items-center justify-between">
+        <div>
+          <span className="heading-3 mr-1">Tasks</span>
+          <span className="body-description" hidden={tasks.length === 0}>
+            ({getCompletedTasks()}/{tasks.length})
+          </span>
         </div>
-        <div className="h-full overflow-y-auto scrollbar-thin -mr-6 -ml-2">
-          <ul className="pr-4">
-            <SortableContainer
-              tasks={deepCopy(tasks)}
-              onDragEnd={taskDragHandler}
-              currentTask={currentTask}
-            >
-              {tasks.map((task) => {
-                return (
-                  <TaskItem
-                    key={task.id}
-                    task={task}
-                    isActive={currentTask?.id === task.id}
-                    onEdit={(e) => {
-                      e.stopPropagation();
-                      taskEditHandler(task);
-                    }}
-                    onRemove={(e) => {
-                      e.stopPropagation();
-                      taskRemoveHandler(task.id);
-                    }}
-                    onComplete={(e) => {
-                      e.stopPropagation();
-                      taskCompleteHandler(task.id);
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleTaskClick(task);
-                    }}
-                    showModal={showModal}
-                  />
-                );
-              })}
-            </SortableContainer>
-          </ul>
-          <div className="pr-6">
-            {isLoading &&
-              tasks.length !== 0 &&
-              Array.from({ length: 3 }).map((_, index) => (
-                <Skeleton
-                  key={index}
-                  className="h-16 w-full bg-card mb-2 rounded-lg"
+      </div>
+      <div className="h-full overflow-y-auto scrollbar-thin -mr-6 -ml-2">
+        <ul className="pr-4">
+          <SortableContainer
+            tasks={deepCopy(tasks)}
+            onDragEnd={taskDragHandler}
+            currentTask={currentTask}
+          >
+            {tasks.map((task) => {
+              return (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  isActive={currentTask?.id === task.id}
+                  onEdit={(e) => {
+                    e.stopPropagation();
+                    taskEditHandler(task);
+                  }}
+                  onRemove={(e) => {
+                    e.stopPropagation();
+                    taskRemoveHandler(task.id);
+                  }}
+                  onComplete={(e) => {
+                    e.stopPropagation();
+                    taskCompleteHandler(task.id);
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTaskClick(task);
+                  }}
+                  showModal={showModal}
                 />
-              ))}
-          </div>
-          {tasks.length === 0 && !showModal && !isLoading && (
-            <div className="flex justify-center items-center h-full">
-              <div className="flex flex-col items-center gap-3 text-muted-foreground">
-                <FolderOpen className="size-8" />
-                <div className="flex flex-col items-center">
-                  <h3 className="heading-3">No Tasks</h3>
-                  <p className="body-description">Add a task to get started.</p>
-                </div>
-              </div>
-            </div>
-          )}
+              );
+            })}
+          </SortableContainer>
+        </ul>
+        <div className="pr-6">
+          {isLoading &&
+            tasks.length === 0 &&
+            Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton
+                key={index}
+                className="h-16 w-full bg-card mb-2 rounded-lg"
+              />
+            ))}
         </div>
-        {orderChanged && (
-          <div className="border-t border-border -mx-6">
-            <div className="flex items-center justify-center h-16 gap-4">
-              <Button variant="outline" onClick={resetTaskOrder}>
-                Cancel
-              </Button>
-              <Button onClick={updateTaskOrder}>Update Order</Button>
+        {tasks.length === 0 && !showModal && !isLoading && (
+          <div className="flex justify-center items-center h-full">
+            <div className="flex flex-col items-center gap-3 text-muted-foreground">
+              <FolderOpen className="size-8" />
+              <div className="flex flex-col items-center">
+                <h3 className="heading-3">No Tasks</h3>
+                <p className="body-description">Add a task to get started.</p>
+              </div>
             </div>
           </div>
         )}
+      </div>
+      <div className="border-t border-border -mx-6">
+        <div className="flex items-center justify-center h-16 gap-4 px-6">
+          {renderFooter()}
+        </div>
       </div>
       <AddForm
         setFormValues={setFormValues}
@@ -296,4 +310,4 @@ const Tasks = () => {
   );
 };
 
-export default Tasks;
+export default TaskListContent;

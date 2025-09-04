@@ -1,5 +1,5 @@
 import React from "react";
-import { MAX_SESSIONS, MIN_SESSIONS } from "@/utils/constants";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { MAX_SESSIONS, MIN_SESSIONS } from "@/constants/pomodoro";
 
 const AddForm = ({
   formValues,

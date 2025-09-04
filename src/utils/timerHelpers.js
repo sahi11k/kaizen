@@ -1,4 +1,4 @@
-import { TIMER_CONSTANTS } from "@/utils/constants";
+import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 
 const { TASK_TIME, SHORT_BREAK_TIME, LONG_BREAK_TIME } = TIMER_CONSTANTS;
 
