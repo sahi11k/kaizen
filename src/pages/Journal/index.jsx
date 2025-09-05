@@ -1,27 +1,19 @@
 import React, { useState } from "react";
-import JournalList from "@/components/Journals/JournalList";
-
-import { CREATE } from "@/utils/constants";
-import AddJournal from "@/components/Journals/AddJournal";
+import JournalDetail from "@/components/Journals/JournalDetail";
+import JournalListLaptop from "@/components/Journals/JournalList/JournalListLaptop";
+import JournalListMobile from "@/components/Journals/JournalList/JournalListMobile";
 
 const Journal = () => {
-  const [isInputBoxOpen, setIsInputBoxOpen] = useState(false);
-  const [mode, setMode] = useState(CREATE);
-
-  const showInputHandler = () => {
-    setIsInputBoxOpen(true);
-    setMode(CREATE);
-  };
+  const [currentJournal, setCurrentJournal] = useState({});
 
   return (
-    <div>
-      <AddJournal showInputHandler={showInputHandler} />
-      <JournalList
-        isInputBoxOpen={isInputBoxOpen}
-        setIsInputBoxOpen={setIsInputBoxOpen}
-        mode={mode}
-        setMode={setMode}
+    <div className="flex h-[calc(100vh-64px)]">
+      <JournalDetail
+        currentJournal={currentJournal}
+        setCurrentJournal={setCurrentJournal}
       />
+      <JournalListLaptop />
+      <JournalListMobile />
     </div>
   );
 };
