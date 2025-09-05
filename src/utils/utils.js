@@ -66,6 +66,14 @@ export const formatDate = (dateInput) => {
   return dayjs(dateInput).format(DATE_FORMAT);
 };
 
+export const getDayOfWeek = (dateInput) => {
+  return dayjs(dateInput).format("dddd"); // e.g., "Monday"
+};
+
+export const getDayOfMonth = (dateInput) => {
+  return dayjs(dateInput).format("DD");
+};
+
 export const getUserDisplayName = (user) => {
   return user?.user_metadata?.display_name || user?.email?.split("@")[0];
 };

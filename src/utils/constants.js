@@ -19,5 +19,5 @@ export const STATUS = {
 export const DATE_FORMAT = "dddd, DD MMM YYYY";
 
 export const PAGINATION = {
-  JOURNALS_PAGE_SIZE: 10,
+  JOURNALS_PAGE_SIZE: 30,
 };
