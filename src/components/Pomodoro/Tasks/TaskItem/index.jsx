@@ -30,10 +30,10 @@ const TaskItem = ({
   const getTaskClass = () => {
     const baseClass =
       "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors";
-    const hoverClass = "";
-    const activeClass = "border-l-8 !border-primary/50 bg-primary/5";
-    const completedClass =
-      "bg-accent text-muted-foreground hover:!bg-accent opacity-70";
+    const hoverClass = "hover:bg-accent";
+    const activeClass =
+      "bg-primary/5 text-primary hover:bg-primary/5 hover:text-primary";
+    const completedClass = "text-muted-foreground opacity-50";
     return `${baseClass} ${hoverClass} ${
       isActive ? activeClass : task.completed ? completedClass : ""
     }`;
@@ -57,18 +57,24 @@ const TaskItem = ({
               <CheckCircle2 className="size-5" color="currentColor" />
             )
           }
-          className="!p-0 hover:bg-transparent"
+          className={`!p-0 hover:bg-transparent ${
+            isActive ? "text-primary" : ""
+          }`}
         />
       </div>
 
       <div className="flex-1 min-w-0">
         <div
-          className="text-md font-medium truncate"
+          className="body-base font-medium truncate"
           style={{ textDecoration: task.completed ? "line-through" : "none" }}
         >
           {task.title}
         </div>
-        <div className="text-muted-foreground text-sm">
+        <div
+          className={`text-sm ${
+            isActive ? "text-primary" : "text-muted-foreground"
+          }`}
+        >
           {task.completed
             ? "Done"
             : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
@@ -89,7 +95,7 @@ const TaskItem = ({
           variant="icon"
           icon={<Trash2 className="size-5" />}
           onClick={onRemove}
-          className="!p-0 hover:bg-transparent"
+          className="!p-0 hover:bg-transparent hover:text-destructive"
         />
         <Button
           {...attributes}

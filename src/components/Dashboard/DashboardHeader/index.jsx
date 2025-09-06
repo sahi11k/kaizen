@@ -17,9 +17,9 @@ import {
 import { Link, useNavigate } from "react-router";
 import useAuthStore from "@/store/auth";
 import { signOut } from "@/db/apis/auth";
-import { Toast } from "@/utils/components/Toast";
-import { STATUS } from "@/utils/constants";
-import { getUserDisplayName } from "@/utils/utils";
+import { Toast } from "@/components/ui/toast";
+import { STATUS } from "@/constants/db";
+import { getUserDisplayName } from "@/utils/auth";
 import { SidebarMobile } from "@/components/Dashboard/Sidebar";
 
 const { toast } = Toast;
@@ -49,28 +49,22 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
       <Button
         onClick={handleCollapse}
         variant="icon"
-        className="hidden lg:block !p-0 !h-auto"
-        icon={
-          isCollapsed ? (
-            <PanelLeftOpen className="size-6" />
-          ) : (
-            <PanelLeftClose className="size-6" />
-          )
-        }
+        className="hidden lg:flex -ml-2"
+        icon={isCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
       />
       <SidebarMobile />
       <div className="flex items-center gap-2 lg:gap-6">
         <Button variant="icon">
           {/* <Moon className="size-6" /> */}
-          <Sun className="size-6" />
+          {/* <Sun className="size-6" /> */}
         </Button>
-        <div className="border border-border hidden lg:block h-6" />
+        {/* <div className="border border-border hidden lg:block h-6" /> */}
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-3">
             <Avatar>
               <AvatarImage src="" />
-              <AvatarFallback className="uppercase bg-primary text-primary-foreground">
-                {userDisplayName.charAt(0)}
+              <AvatarFallback className="uppercase bg-secondary font-semibold">
+                {userDisplayName?.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <span className="flex items-center gap-1 hidden lg:flex">

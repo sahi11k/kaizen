@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Home from "@/pages/Home";
 import Pomodoro from "@/pages/Pomodoro";
 import Journal from "@/pages/Journal";
@@ -11,6 +11,7 @@ import NotFound from "@/pages/NotFound";
 import UpdatePassword from "@/pages/UpdatePassword";
 import { AuthLayout, HomePageLayout, DashboardLayout } from "@/layouts";
 import ProtectedRoute from "./ProtectedRoute";
+import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
 
 const router = createBrowserRouter([
   {
@@ -48,9 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: (
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
+          // <ProtectedRoute>
+          //   <Dashboard />
+          // </ProtectedRoute>
+          <Navigate to={DEFAULT_NAV_ROUTE} replace />
         ),
       },
       {

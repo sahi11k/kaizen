@@ -1,5 +1,4 @@
 import JournalListContent from "@/components/Journals/JournalList/JournalListContent";
-import TaskListContent from "@/components/Pomodoro/Tasks/TaskListContent";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,

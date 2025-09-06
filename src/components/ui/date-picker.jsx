@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import { formatDate } from "@/utils/date";
 
 const DatePicker = ({
   defautDate,
@@ -47,7 +48,7 @@ const DatePicker = ({
           )}
         >
           {showIcon && <CalendarIcon />}
-          {date ? dayjs(date).format(format) : <span>Pick a date</span>}
+          {date ? formatDate(date, format) : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className={cn("w-auto p-0", popoverClassName)}>

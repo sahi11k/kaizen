@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import useAuthStore from "@/store/auth";
-import { STATUS } from "@/utils/constants";
-import Fallback from "@/utils/components/Fallback";
-import { Toast } from "@/utils/components/Toast";
+import { STATUS } from "@/constants/db";
+
+import { Toast } from "@/components/ui/toast";
+import { Fallback } from "@/components/ui/fallback";
 
 const BaseLayout = ({ children, className = "" }) => {
   const { userFetchStatus, loadUser, user } = useAuthStore();

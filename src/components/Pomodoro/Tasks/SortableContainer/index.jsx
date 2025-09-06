@@ -22,7 +22,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import TaskItem from "@/components/Pomodoro/Tasks/TaskItem";
-import { CREATE } from "@/utils/constants";
+import { CREATE } from "@/constants/global";
 
 const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
   const [activeTask, setActiveTask] = useState(null);

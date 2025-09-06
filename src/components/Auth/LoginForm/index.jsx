@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { loginWithEmail, resendOTP } from "@/db/apis/auth";
 import { Link, useNavigate } from "react-router";
-import { Toast } from "@/utils/components/Toast";
-import { EMAIL_NOT_VERIFIED_ERROR } from "@/utils/constants";
+import { Toast } from "@/components/ui/toast";
+import { EMAIL_NOT_VERIFIED_ERROR } from "@/constants/db";
 import OtpVerification from "@/components/Auth/OtpVerification";
 import useAuthStore from "@/store/auth";
 import ResetPasswordForm from "@/components/Auth/ResetPasswordForm";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
 
 const { toast } = Toast;
 
@@ -53,7 +54,7 @@ const LoginForm = ({
       setUser(response.data.user);
       setIsLoading(false);
       resetForm(); // Reset form before navigation
-      navigate("/dashboard", { replace: true });
+      navigate(DEFAULT_NAV_ROUTE, { replace: true });
     }
   };
 

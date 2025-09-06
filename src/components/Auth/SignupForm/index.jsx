@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import { signUpNewUser } from "@/db/apis/auth";
-import { Toast } from "@/utils/components/Toast";
+import { Toast } from "@/components/ui/toast";
 import OtpVerification from "@/components/Auth/OtpVerification";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/Auth/ErrorText";
-import { validateField } from "@/utils/utils";
+import { validateField } from "@/utils/auth";
 
 const { toast } = Toast;
 

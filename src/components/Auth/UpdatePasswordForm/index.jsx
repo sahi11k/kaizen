@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Toast } from "@/utils/components/Toast";
+import { Toast } from "@/components/ui/toast";
 import { updatePassword } from "@/db/apis/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { validateField } from "@/utils/utils";
+import { validateField } from "@/utils/auth";
 import { ErrorText } from "@/components/Auth/ErrorText";
+import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
 
 const { toast } = Toast;
 
@@ -34,7 +35,7 @@ const UpdatePasswordForm = () => {
       setTimeout(() => {
         setFormValues(DEFAULT_FORM_VALUES);
         setErrors({});
-        navigate("/dashboard");
+        navigate(DEFAULT_NAV_ROUTE);
       }, 1000);
     }
     setIsLoading(false);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { resetPassword } from "@/db/apis/auth";
-import { Toast } from "@/utils/components/Toast";
+import { Toast } from "@/components/ui/toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
