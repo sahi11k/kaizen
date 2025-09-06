@@ -1,21 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import PlayIcon from "@/assets/icons/play.svg?react";
-import NextIcon from "@/assets/icons/next.svg?react";
-import ResetIcon from "@/assets/icons/reset.svg?react";
-import StopIcon from "@/assets/icons/stop.svg?react";
+// import PlayIcon from "@/assets/icons/play.svg?react";
+// import NextIcon from "@/assets/icons/next.svg?react";
+// import ResetIcon from "@/assets/icons/reset.svg?react";
+// import StopIcon from "@/assets/icons/stop.svg?react";
 
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
 import { updateTask } from "@/db/apis/tasks";
 import useAuthStore from "@/store/auth";
-import {
-  getTimerDurations,
-  getLongBreakInterval,
-} from "../../../utils/timerHelpers";
+import { getTimerDurations, getLongBreakInterval } from "../../../utils/timer";
 import { Button } from "@/components/ui/button";
 import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Forward,
+  ListTodo,
+  Play,
+  SkipForward,
+  Square,
+  TimerResetIcon,
+} from "lucide-react";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
 
@@ -171,7 +176,7 @@ const Timer = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-6 gap-8">
+    <div className="flex-1 flex flex-col p-6 gap-8 h-full">
       <div className="flex-1">
         <Tabs
           defaultValue={POMODORO_TAB}
@@ -179,12 +184,12 @@ const Timer = () => {
           onValueChange={handleTabChange}
           className="h-full"
         >
-          <TabsList className="w-full h-12 cursor-pointer">
+          <TabsList className="w-full h-10 cursor-pointer">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab.key}
                 value={tab.key}
-                className="cursor-pointer"
+                className="cursor-pointer h-9  text-base"
               >
                 {tab.label}
               </TabsTrigger>
@@ -207,7 +212,7 @@ const Timer = () => {
         <Button
           onClick={resetTimer}
           title="Reset Timer"
-          icon={<ResetIcon className="size-6" fill="currentColor" />}
+          icon={<TimerResetIcon />}
           className="rounded-full w-12 !h-12"
           variant="icon"
         />
@@ -216,21 +221,21 @@ const Timer = () => {
           title={timerStarted ? "Stop Timer" : "Start Timer"}
           icon={
             timerStarted ? (
-              <StopIcon className="size-6" fill="currentColor" />
+              <Square fill="currentColor" className="size-5" />
             ) : (
-              <PlayIcon className="size-6" fill="currentColor" />
+              <Play fill="currentColor" className="size-5" />
             )
           }
-          className="rounded-full !h-14 sm:!px-10 !text-lg"
+          className="rounded-full !h-16 !min-w-16 sm:!px-10 !text-lg"
         >
           <span className="hidden sm:block">
-            {timerStarted ? "Stop" : "Start"}
+            {timerStarted ? "Pause" : "Focus"}
           </span>
         </Button>
         <Button
           onClick={skipTimer}
           title="Skip Timer"
-          icon={<NextIcon className="size-6" fill="currentColor" />}
+          icon={<SkipForward />}
           variant="icon"
           className="rounded-full w-12 !h-12"
         />
@@ -242,7 +247,7 @@ const Timer = () => {
 const TabContent = ({ timerValue, duration, currentTab }) => {
   const percentage = ((duration - timerValue) / duration) * 100;
   const fillColor =
-    currentTab === POMODORO_TAB ? "var(--primary)" : "var(--muted-foreground)";
+    currentTab === POMODORO_TAB ? "var(--primary)" : "var(--secondary)";
 
   const { minutes, seconds } = getFormattedTime(timerValue);
 
@@ -256,9 +261,9 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
           }}
         />
 
-        <div className="absolute inset-4 bg-white rounded-full flex justify-center items-center heading-1 font-mono">
+        <div className="absolute inset-4 bg-background rounded-full flex justify-center items-center heading-1 font-mono">
           <span>{minutes}</span>
-          <span className="mb-2">:</span>
+          <span className="vertical-line">:</span>
           <span>{seconds}</span>
         </div>
       </div>

@@ -78,7 +78,7 @@ res = handleResponse({
 });
 
 // Check for success status codes
-import { SUCCESS_STATUS_CODES } from "@/utils/constants";
+import { SUCCESS_STATUS_CODES } from "@/constants/db";
 ```
 
 ## Error Handling

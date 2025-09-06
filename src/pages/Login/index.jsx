@@ -4,6 +4,7 @@ import useAuthStore from "@/store/auth";
 import { Navigate } from "react-router";
 import { AUTH_HEADER_TEXT } from "@/constants/auth";
 import AuthFormContainer from "@/components/Auth/AuthFormContainer";
+import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
 
 const Login = () => {
   const [showOtpScreen, setShowOtpScreen] = useState(false);
@@ -11,7 +12,7 @@ const Login = () => {
   const { user } = useAuthStore();
 
   if (user) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={DEFAULT_NAV_ROUTE} replace />;
   }
 
   return (

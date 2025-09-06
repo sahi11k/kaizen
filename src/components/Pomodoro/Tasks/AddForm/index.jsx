@@ -28,7 +28,7 @@ const AddForm = ({
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <form>
-        <DialogContent className="w-lg p-6 max-h-[80vh] overflow-y-auto scrollbar-thin">
+        <DialogContent className="w-lg p-6 overflow-y-auto scrollbar-thin">
           <DialogHeader>
             <DialogTitle className="heading-3">Add Task</DialogTitle>
           </DialogHeader>
@@ -75,20 +75,23 @@ const AddForm = ({
                 aria-label="task-description"
                 name="task-description"
                 id="task-description"
-                rows="4"
+                rows="8"
                 placeholder="Write more details about the task..."
                 value={formValues.description}
                 onChange={(e) => handleChange("description", e.target.value)}
+                className="max-h-80"
               ></Textarea>
             </div>
           </form>
-          <DialogFooter className="gap-4">
-            <Button variant="outline" onClick={onCancel}>
-              Cancel
-            </Button>
-            <Button type="submit" onClick={onSave}>
-              Save Changes
-            </Button>
+          <DialogFooter>
+            <div className="flex items-center gap-4 self-end">
+              <Button variant="outline" onClick={onCancel}>
+                Cancel
+              </Button>
+              <Button type="submit" onClick={onSave}>
+                Save Changes
+              </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </form>

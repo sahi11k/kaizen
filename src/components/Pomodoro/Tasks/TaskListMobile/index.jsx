@@ -32,12 +32,7 @@ const TaskListMobile = () => {
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button
-          className="flex lg:hidden fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg transition"
-          size="lg"
-        >
-          <ListTodo className="w-6 h-6" />
-        </Button>
+        <Button variant="icon" icon={<ListTodo className="size-6" />} />
       </DrawerTrigger>
       <DrawerContent className="!w-full sm:!-w-100">
         <aside className="flex lg:hidden w-full px-6 flex-col h-full">

@@ -9,7 +9,7 @@ description: Zustand state management patterns
 
 ```javascript
 import { create } from "zustand";
-import { STATUS } from "@/utils/constants";
+import { STATUS } from "@/constants/db";
 
 const useAuthStore = create((set, get) => ({
   // State properties

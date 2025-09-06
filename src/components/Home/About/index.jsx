@@ -30,9 +30,9 @@ const AboutCard = ({ title, description }) => {
   return (
     <Card className="max-w-80 gap-3 bg-card border-none shadow-none hover:shadow transition-shadow cursor-pointer">
       <CardHeader className="heading-3">
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-foreground">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="body-base">
+      <CardContent>
         <CardDescription className="body-description">
           {description}
         </CardDescription>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import TaskItem from "@/components/Pomodoro/Tasks/TaskItem";
 import AddForm from "@/components/Pomodoro/Tasks/AddForm";
-import { CREATE, EDIT } from "@/utils/constants";
+import { CREATE, EDIT } from "@/constants/global";
 import SortableContainer from "@/components/Pomodoro/Tasks/SortableContainer";
-import { arraysEqual, deepCopy } from "@/utils/utils";
+import { arraysEqual, deepCopy } from "@/utils/jsUtils";
 import useTasksStore from "@/store/tasks";
 import useAuthStore from "@/store/auth";
 import { useShallow } from "zustand/react/shallow";
@@ -14,7 +14,7 @@ import {
   sortTasks,
   updateTask,
 } from "@/db/apis/tasks";
-import { Toast } from "@/utils/components/Toast";
+import { Toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { FolderOpen, Plus } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";

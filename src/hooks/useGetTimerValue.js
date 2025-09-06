@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getTimerDurations } from "@/utils/timerHelpers";
+import { getTimerDurations } from "@/utils/timer";
 import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;

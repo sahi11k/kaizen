@@ -1,6 +1,7 @@
 import { supabase } from "@/db/supabase";
-import { EMAIL_NOT_VERIFIED_ERROR } from "@/utils/constants";
-import { handleResponse } from "@/utils/utils";
+import { EMAIL_NOT_VERIFIED_ERROR } from "@/constants/db";
+import { handleResponse } from "@/utils/db";
+import { APP_URL } from "@/constants/routes";
 
 export async function signUpNewUser(payload) {
   let res = await supabase.auth.signUp({
@@ -110,7 +111,7 @@ export async function getUserSession() {
 
 export async function resetPassword(payload) {
   let res = await supabase.auth.resetPasswordForEmail(payload.email, {
-    redirectTo: `${import.meta.env.VITE_APP_URL}/auth/update-password`,
+    redirectTo: `${APP_URL}auth/update-password`,
   });
 
   const status = res.error ? 400 : 200;

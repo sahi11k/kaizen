@@ -7,6 +7,8 @@ const useJournalsStore = create((set) => ({
     set((state) => ({
       journals: state.journals.map((j) => (j.id === journal.id ? journal : j)),
     })),
+  currentJournal: null,
+  setCurrentJournal: (journal) => set(() => ({ currentJournal: journal })),
 }));
 
 export default useJournalsStore;

@@ -4,8 +4,9 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
+/* Variants (kept mostly as you had them; tweak tokens in your theme) */
 const buttonVariants = cva(
-  "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 cursor-pointer",
   {
     variants: {
       variant: {
@@ -20,7 +21,7 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-link underline-offset-2 !p-0 h-auto",
-        icon: "text-muted-foreground hover:bg-accent !px-2",
+        icon: "text-muted-foreground hover:bg-muted hover:text-primary !px-2",
       },
       size: {
         default: "h-9 px-4 text-sm md:h-10 md:px-5 md:text-base",
@@ -35,41 +36,95 @@ const buttonVariants = cva(
   }
 );
 
-function ShadButton({ className, variant, size, asChild = false, ...props }) {
+/**
+ * ShadButton - low-level wrapper that supports asChild (Slot) or native 'button'
+ * Forward ref so consumers can focus / measure button.
+ */
+const ShadButton = React.forwardRef(function ShadButton(props, ref) {
+  const {
+    className,
+    variant,
+    size,
+    asChild = false,
+    children,
+    ...rest
+  } = props;
   const Comp = asChild ? Slot : "button";
   return (
     <Comp
-      data-slot="button"
+      ref={ref}
       className={cn(buttonVariants({ variant, size }), className)}
-      {...props}
-    />
+      {...rest}
+    >
+      {children}
+    </Comp>
   );
-}
+});
 
-const Button = ({
-  children,
-  className,
-  loading,
-  icon,
-  variant,
-  size,
-  ...props
-}) => {
+/**
+ * Button - high-level component with loading state, icon handling, accessibility
+ *
+ * Props added/changed:
+ * - loading: boolean (auto-disables button)
+ * - icon: ReactNode shown left or right
+ * - iconPosition: "left" | "right" (default "left")
+ * - asChild forwarded via ShadButton
+ */
+const Button = React.forwardRef(function Button(
+  {
+    children,
+    className,
+    loading = false,
+    icon = null,
+    iconPosition = "left",
+    variant,
+    size,
+    asChild = false,
+    type = "button", // default to button to avoid accidental form submits
+    disabled,
+    ...props
+  },
+  ref
+) {
+  const isDisabled = disabled || loading;
+
+  const iconElement = icon ? (
+    <span aria-hidden="true" className="shrink-0 flex items-center">
+      {icon}
+    </span>
+  ) : null;
+
   return (
     <ShadButton
-      {...props}
+      ref={ref}
+      asChild={asChild}
       variant={variant}
       size={size}
+      type={type}
       className={cn("rounded-md", className)}
+      disabled={isDisabled}
+      aria-busy={loading ? "true" : undefined}
+      aria-disabled={isDisabled ? "true" : undefined}
+      {...props}
     >
+      {/* Show spinner when loading; otherwise show icon (positioned) */}
       {loading ? (
-        <Loader2 className="animate-spin" />
-      ) : (
-        icon && <span className="shrink-0">{icon}</span>
-      )}
+        <Loader2
+          className="animate-spin shrink-0"
+          size={16}
+          aria-hidden="true"
+          title="Loading"
+        />
+      ) : icon && iconPosition === "left" ? (
+        iconElement
+      ) : null}
+
       {children}
+
+      {!loading && icon && iconPosition === "right" ? iconElement : null}
     </ShadButton>
   );
-};
+});
 
 export { Button, buttonVariants };
+export default Button;

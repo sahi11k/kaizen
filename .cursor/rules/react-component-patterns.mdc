@@ -24,7 +24,7 @@ import { useShallow } from "zustand/react/shallow";
 // Internal imports with @ alias
 import styles from "./style.module.css";
 import useTasksStore from "@/store/tasks";
-import { CREATE, EDIT } from "@/utils/constants";
+import { CREATE, EDIT } from "@/constants/global";
 import TaskItem from "@/components/Tasks/TaskItem";
 ```
 

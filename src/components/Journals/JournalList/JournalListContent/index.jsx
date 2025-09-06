@@ -4,7 +4,7 @@ import useJournalsStore from "@/store/journals";
 import useAuthStore from "@/store/auth";
 import { fetchJournals } from "@/db/apis/journals";
 
-import { PAGINATION } from "@/utils/constants";
+import { PAGINATION } from "@/constants/db";
 import { FileText } from "lucide-react";
 import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,9 +24,11 @@ const groupByMonth = (journals = []) => {
   }));
 };
 
-const JournalListContent = ({ setCurrentJournal }) => {
+const JournalListContent = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { journals, setJournals } = useJournalsStore();
+  const { journals, setJournals, currentJournal, setCurrentJournal } =
+    useJournalsStore();
+
   const [hasMoreJournals, setHasMoreJournals] = useState(true);
 
   const { user } = useAuthStore();
@@ -97,6 +99,7 @@ const JournalListContent = ({ setCurrentJournal }) => {
                     key={journal.id}
                     journal={journal}
                     onClick={() => setCurrentJournal(journal)}
+                    isActive={currentJournal?.id === journal.id}
                   />
                 ))}
               </ul>

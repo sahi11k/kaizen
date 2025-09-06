@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { verifyOTP, resendOTP } from "@/db/apis/auth";
-import { Toast } from "@/utils/components/Toast";
+import { Toast } from "@/components/ui/toast";
 import useAuthStore from "@/store/auth";
 import { Button } from "@/components/ui/button";
 import { InputOTP } from "@/components/ui/input-otp";
+import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
 
 const { toast } = Toast;
 
@@ -52,7 +53,7 @@ const OtpVerification = ({ onBack, email, backBtnText }) => {
       setUser(res.data.user);
       resetForm(); // Reset form before navigation
       setTimeout(() => {
-        navigate("/dashboard", { replace: true });
+        navigate(DEFAULT_NAV_ROUTE, { replace: true });
       }, 500);
     }
   };

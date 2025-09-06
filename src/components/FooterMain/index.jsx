@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 const FooterMain = () => {
   return (
-    <footer className=" min-h-50 bg-card px-6">
+    <footer className="min-h-50 bg-card px-6">
       <div className="flex flex-col  xl:max-w-[80vw] mx-auto">
         <div className="flex justify-between py-12 w-full gap-12">
           <div className="flex flex-col gap-2">
@@ -16,7 +16,7 @@ const FooterMain = () => {
           <div className="flex flex-col gap-2 items-center">
             <span className="heading-3">Navigate</span>
             <div className="flex justify-center flex-col body-description">
-              <Link to="/dashboard">Dashboard</Link>
+              {/* <Link to="/dashboard">Dashboard</Link> */}
               <Link to="/dashboard/pomodoro">Pomodoro</Link>
               <Link to="/dashboard/journals">Journals</Link>
               <Link to="/dashboard/bookmarks">Bookmarks</Link>
