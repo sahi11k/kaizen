@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../style.module.css";
-import Spinner from "@/utils/components/Spinner";
+import { Button } from "@/components/ui/button";
 
 const SettingsFooter = ({
   cancelBtnText = "Cancel",
@@ -19,18 +19,14 @@ const SettingsFooter = ({
       >
         {cancelBtnText}
       </button>
-      <button
+      <Button
         className={`btn ${styles.saveBtn}`}
         onClick={onSave}
         disabled={isLoading || disabled}
+        loading={isLoading}
       >
-        {isLoading && (
-          <span className="btn__icon">
-            <Spinner />
-          </span>
-        )}
         {saveBtnText}
-      </button>
+      </Button>
     </div>
   );
 };

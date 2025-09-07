@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "../style.module.css";
-import DefaultFormItem, { FormItemWrapper } from "@/utils/components/FormItem";
-import SettingsFooter from "@/components/Settings/SettingsFooter";
+
 import useAuthStore from "@/store/auth";
 import { toast } from "sonner"; // Assuming you're using sonner for toasts
 import { updateUserMetadata } from "@/db/apis/auth";
@@ -64,7 +63,7 @@ const Account = () => {
 
   return (
     <div className={styles.account}>
-      <form>
+      {/* <form>
         <FormItemWrapper className={styles.formItem}>
           <label>Email</label>
           <input
@@ -82,8 +81,8 @@ const Account = () => {
             value={accountFormValues.displayName}
             onChange={handleFormChange}
           />
-        </FormItemWrapper>
-        {/* <FormItemWrapper className={styles.formItem}>
+        </FormItemWrapper> */}
+      {/* <FormItemWrapper className={styles.formItem}>
           <label>Password</label>
           <div style={{ display: "flex", gap: "1rem" }}>
             <DefaultFormItem.Password
@@ -100,7 +99,7 @@ const Account = () => {
             />
           </div>
         </FormItemWrapper> */}
-      </form>
+      {/* </form>
       <hr className={styles.divider} />
       <div className={styles.deleteAccount}>
         <h3 className={styles.deleteAccountTitle}>Delete Account</h3>
@@ -129,7 +128,7 @@ const Account = () => {
         onCancel={handleFormCancel}
         onSave={handleFormSubmit}
         isLoading={isLoading}
-      />
+      /> */}
     </div>
   );
 };

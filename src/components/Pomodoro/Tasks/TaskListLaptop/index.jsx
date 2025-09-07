@@ -2,7 +2,7 @@ import TaskListContent from "@/components/Pomodoro/Tasks/TaskListContent";
 
 const TaskListLaptop = () => {
   return (
-    <div className="hidden lg:flex w-75 xl:w-100 px-6 flex-col border-l border-border">
+    <div className="flex flex-1 px-4 xl:px-6 md:flex-none md:w-72 xl:w-92 flex-col border-r border-border">
       <TaskListContent />
     </div>
   );

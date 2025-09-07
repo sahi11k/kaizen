@@ -3,7 +3,7 @@ import JournalListContent from "../JournalListContent";
 
 const JournalListLaptop = () => {
   return (
-    <div className="hidden lg:flex xl:w-100 w-75 px-6 flex-col border-l border-border h-full">
+    <div className="flex flex-1 px-4 xl:px-6 md:flex-none md:w-72 xl:w-92 flex-col border-r border-border">
       <JournalListContent />
     </div>
   );

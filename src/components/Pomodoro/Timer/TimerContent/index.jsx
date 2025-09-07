@@ -9,18 +9,21 @@ import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
 import { updateTask } from "@/db/apis/tasks";
 import useAuthStore from "@/store/auth";
-import { getTimerDurations, getLongBreakInterval } from "../../../utils/timer";
+
 import { Button } from "@/components/ui/button";
 import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Forward,
-  ListTodo,
+  Coffee,
+  Leaf,
   Play,
   SkipForward,
   Square,
+  TimerIcon,
   TimerResetIcon,
 } from "lucide-react";
+import { getLongBreakInterval, getTimerDurations } from "@/utils/timer";
+import PomoSettings from "@/components/Pomodoro/PomoSettings";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
 
@@ -28,18 +31,21 @@ const TABS = [
   {
     key: POMODORO_TAB,
     label: "Pomodoro",
+    icon: <TimerIcon className="size-5 mr-1 hidden sm:block" />,
   },
   {
     key: SHORT_BREAK_TAB,
     label: "Short Break",
+    icon: <Coffee className="size-5 mr-1 hidden sm:block" />,
   },
   {
     key: LONG_BREAK_TAB,
     label: "Long Break",
+    icon: <Leaf className="size-5 mr-1 hidden sm:block" />,
   },
 ];
 
-const Timer = () => {
+const TimerContent = () => {
   const { user, userSettings } = useAuthStore();
   const { currentTask, updateTaskInStore, setCurrentTask } = useTasksStore(
     useShallow((state) => ({
@@ -73,8 +79,6 @@ const Timer = () => {
         : longBreakTime
     );
   }, [currentTab, userSettings]);
-
-  // No longer derive long break state here; handled when computing next tab
 
   useEffect(() => {
     const { minutes, seconds } = getFormattedTime(timerValue);
@@ -176,7 +180,7 @@ const Timer = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col p-6 gap-8 h-full">
+    <>
       <div className="flex-1">
         <Tabs
           defaultValue={POMODORO_TAB}
@@ -184,13 +188,14 @@ const Timer = () => {
           onValueChange={handleTabChange}
           className="h-full"
         >
-          <TabsList className="w-full h-10 cursor-pointer">
+          <TabsList className="w-full h-12 cursor-pointer">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab.key}
                 value={tab.key}
-                className="cursor-pointer h-9  text-base"
+                className="cursor-pointer text-sm xl:text-base"
               >
+                {tab.icon}
                 {tab.label}
               </TabsTrigger>
             ))}
@@ -208,25 +213,26 @@ const Timer = () => {
           </>
         </Tabs>
       </div>
-      <div className="flex justify-center items-center gap-6">
+      <div className="flex justify-center items-center gap-6 relative">
         <Button
           onClick={resetTimer}
           title="Reset Timer"
           icon={<TimerResetIcon />}
           className="rounded-full w-12 !h-12"
           variant="icon"
+          aria-label="Reset Timer"
         />
         <Button
           onClick={timerStarted ? stopTimer : startTimer}
-          title={timerStarted ? "Stop Timer" : "Start Timer"}
+          title={timerStarted ? "Pause Timer" : "Start Timer"}
           icon={
             timerStarted ? (
-              <Square fill="currentColor" className="size-5" />
+              <Square className="size-5 text-secondary" fill="currentColor" />
             ) : (
-              <Play fill="currentColor" className="size-5" />
+              <Play className="size-5 text-secondary" fill="currentColor" />
             )
           }
-          className="rounded-full !h-16 !min-w-16 sm:!px-10 !text-lg"
+          className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base xl:text-lg"
         >
           <span className="hidden sm:block">
             {timerStarted ? "Pause" : "Focus"}
@@ -238,9 +244,13 @@ const Timer = () => {
           icon={<SkipForward />}
           variant="icon"
           className="rounded-full w-12 !h-12"
+          aria-label="Skip Timer"
         />
+        <div className="absolute right-4 xl:right-8">
+          <PomoSettings />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -253,7 +263,7 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
 
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="w-80 h-80 relative lg:w-100 lg:h-100">
+      <div className="w-80 h-80 md:w-[min(40vw,400px)] md:h-[min(40vw,400px)] relative">
         <div
           className="absolute inset-0 rounded-full"
           style={{
@@ -261,7 +271,7 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
           }}
         />
 
-        <div className="absolute inset-4 bg-background rounded-full flex justify-center items-center heading-1 font-mono">
+        <div className="absolute inset-4 bg-background rounded-full flex justify-center items-center font-mono heading-1">
           <span>{minutes}</span>
           <span className="vertical-line">:</span>
           <span>{seconds}</span>
@@ -280,4 +290,4 @@ const getFormattedTime = (seconds) => {
   };
 };
 
-export default Timer;
+export default TimerContent;

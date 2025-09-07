@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import JournalDetail from "@/components/Journals/JournalDetail";
-import {
-  JournalListLaptop,
-  JournalListMobile,
-} from "@/components/Journals/JournalList";
+import { JournalListLaptop } from "@/components/Journals/JournalList";
 
 const Journal = () => {
   return (
-    <div className="flex h-[calc(100vh-64px)]">
-      <JournalDetail />
+    <div className="flex h-[calc(100vh-64px)] overflow-hidden">
       <JournalListLaptop />
-      <JournalListMobile />
+      <JournalDetail />
     </div>
   );
 };

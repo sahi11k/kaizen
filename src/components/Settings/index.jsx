@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styles from "./style.module.css";
-import Tabs from "@/utils/components/Tabs";
+
 import Account from "@/components/Settings/Account";
-import Pomodoro from "@/components/Settings/Pomodoro";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Settings = () => {
   const [currentTab, setCurrentTab] = useState(TABS[0].key);
@@ -14,15 +15,30 @@ const Settings = () => {
   return (
     <div className={`card ${styles.tabsContainer}`}>
       <Tabs
-        defaultTab={TABS[0].key}
-        activeTab={currentTab}
-        onTabChange={handleTabChange}
-        layout="horizontal"
-        tabsClassName={styles.settingsTabs}
-        tabNavClassName={styles.settingsTabNav}
-        tabPanelClassName={styles.settingsTabPanel}
-        tabs={TABS}
-      />
+        defaultValue={TABS[0].key}
+        value={currentTab}
+        onValueChange={handleTabChange}
+        className="h-full"
+      >
+        <TabsList className="w-full h-12 cursor-pointer">
+          {TABS.map((tab) => (
+            <TabsTrigger
+              key={tab.key}
+              value={tab.key}
+              className="cursor-pointer"
+            >
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <>
+          {TABS.map((tab) => (
+            <TabsContent key={tab.key} value={tab.key}>
+              {tab.content}
+            </TabsContent>
+          ))}
+        </>
+      </Tabs>
     </div>
   );
 };
@@ -32,11 +48,6 @@ const TABS = [
     key: "account",
     label: "Account",
     content: <Account />,
-  },
-  {
-    key: "pomodoro",
-    label: "Pomodoro",
-    content: <Pomodoro />,
   },
 ];
 
