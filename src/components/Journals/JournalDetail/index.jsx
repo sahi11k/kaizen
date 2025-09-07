@@ -101,7 +101,7 @@ const JournalDetail = () => {
   };
 
   const handleReset = () => {
-    setFormValues(DEFAULT_STATE);
+    DEFAULT_STATE;
     setCurrentJournal(null);
   };
 
@@ -120,7 +120,7 @@ const JournalDetail = () => {
   };
 
   return (
-    <div className="flex-1 px-6 flex flex-col">
+    <div className="hidden xl:flex flex-1 px-6 flex flex-col">
       {/* <div className="h-16 flex items-center justify-center border-b border-border -mx-6 px-6"> */}
       {/* <div className="flex items-center justify-center gap-6">
           <Button

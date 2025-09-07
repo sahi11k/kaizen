@@ -5,9 +5,10 @@ import useAuthStore from "@/store/auth";
 import { fetchJournals } from "@/db/apis/journals";
 
 import { PAGINATION } from "@/constants/db";
-import { FileText } from "lucide-react";
+import { FileText, Pen, SquarePen } from "lucide-react";
 import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
+import Button from "@/components/ui/button";
 
 const groupByMonth = (journals = []) => {
   const byMonth = journals.reduce((acc, j) => {
@@ -29,7 +30,7 @@ const JournalListContent = () => {
   const { journals, setJournals, currentJournal, setCurrentJournal } =
     useJournalsStore();
 
-  const [hasMoreJournals, setHasMoreJournals] = useState(true);
+  const [, setHasMoreJournals] = useState(true);
 
   const { user } = useAuthStore();
 
@@ -78,22 +79,29 @@ const JournalListContent = () => {
   const grouped = useMemo(() => groupByMonth(journals), [journals]);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="mt-6 pb-4 flex items-center justify-between">
+    <>
+      <div className="mt-4 xl:mt-6 pb-2 xl:pb-4 flex items-center justify-between">
         <div>
           <span className="heading-3 mr-1">Journals</span>
         </div>
+        <Button
+          onClick={() => {}}
+          icon={<SquarePen className="size-4" />}
+          size="sm"
+        >
+          Today
+        </Button>
       </div>
-      <div className="flex-1 overflow-y-auto scrollbar-thin -mr-6 -ml-3">
-        <div className="pr-3">
+      <div className="h-full overflow-y-auto scrollbar-thin -mx-4 xl:-mx-6">
+        <div className="">
           {grouped.map(({ key, label, items }) => (
             <section key={key} className="mb-2">
-              <div className="sticky top-0 z-10 px-4 -mx-3 py-2 bg-accent">
-                <h4 className="px-2 text-xs font-semibold text-muted-foreground">
+              <div className="sticky top-0 z-10 px-4 py-2 bg-muted">
+                <h4 className="px-0 xl:px-2 text-xs font-semibold text-muted-foreground">
                   {label}
                 </h4>
               </div>
-              <ul className="mt-2 space-y-2">
+              <ul className="mt-2 space-y-2 mx-2 xl:mx-4" role="listbox">
                 {items.map((journal) => (
                   <JournalListItem
                     key={journal.id}
@@ -130,7 +138,7 @@ const JournalListContent = () => {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

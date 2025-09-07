@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { FolderOpen, Plus } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MIN_SESSIONS } from "@/constants/pomodoro";
+import { TimerMobile } from "@/components/Pomodoro/Timer";
 
 const { toast } = Toast;
 
@@ -206,38 +207,43 @@ const TaskListContent = () => {
   const renderFooter = () => {
     if (orderChanged) {
       return (
-        <>
+        <TaskListFooter>
           <Button variant="outline" onClick={resetTaskOrder}>
             Cancel
           </Button>
           <Button onClick={updateTaskOrder}>Update Order</Button>
-        </>
+        </TaskListFooter>
       );
     }
 
     return (
-      <Button
-        icon={<Plus />}
-        className="w-full"
-        onClick={() => setShowModal(true)}
-      >
-        Add Task
-      </Button>
+      <div className="md:hidden">
+        <TaskListFooter>
+          <TimerMobile />
+        </TaskListFooter>
+      </div>
     );
   };
 
   return (
     <>
-      <div className="mt-6 pb-4 flex items-center justify-between">
+      <div className="mt-4 xl:mt-6 pb-2 xl:pb-4 flex items-center justify-between">
         <div>
           <span className="heading-3 mr-1">Tasks</span>
           <span className="body-description" hidden={tasks.length === 0}>
             ({getCompletedTasks()}/{tasks.length})
           </span>
         </div>
+        <Button
+          onClick={() => setShowModal(true)}
+          icon={<Plus className="size-4" />}
+          size="sm"
+        >
+          Task
+        </Button>
       </div>
-      <div className="h-full overflow-y-auto scrollbar-thin -mr-6 -ml-2">
-        <ul className="pr-4">
+      <div className="h-full overflow-y-auto scrollbar-thin -mr-4 xl:-mr-6 -ml-2">
+        <ul className="pr-2 xl:pr-4" role="listbox">
           <SortableContainer
             tasks={deepCopy(tasks)}
             onDragEnd={taskDragHandler}
@@ -293,11 +299,7 @@ const TaskListContent = () => {
           </div>
         )}
       </div>
-      <div className="border-t border-border -mx-6">
-        <div className="flex items-center justify-center h-16 gap-4 px-6">
-          {renderFooter()}
-        </div>
-      </div>
+      <>{renderFooter()}</>
       <AddForm
         setFormValues={setFormValues}
         formValues={formValues}
@@ -307,6 +309,16 @@ const TaskListContent = () => {
         onCancel={handleCancel}
       />
     </>
+  );
+};
+
+const TaskListFooter = ({ children }) => {
+  return (
+    <div className="border-t border-border -mx-6">
+      <div className="flex items-center justify-center h-16 gap-4 px-6">
+        {children}
+      </div>
+    </div>
   );
 };
 

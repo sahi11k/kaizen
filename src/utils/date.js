@@ -6,7 +6,7 @@ export const formatDate = (dateInput, format = DATE_FORMAT) => {
 };
 
 export const getDayOfWeek = (dateInput) => {
-  return dayjs(dateInput).format("dddd"); // e.g., "Monday"
+  return dayjs(dateInput).format("ddd"); // e.g., "Monday"
 };
 
 export const getDayOfMonth = (dateInput) => {

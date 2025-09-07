@@ -45,15 +45,15 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   };
 
   return (
-    <div className="h-16 px-4 md:px-6  flex items-center justify-between border-b border-border sticky top-0 bg-background z-10">
+    <div className="h-16 px-4 xl:px-6 flex items-center justify-between border-b border-border sticky top-0 bg-background z-10">
       <Button
         onClick={handleCollapse}
         variant="icon"
-        className="hidden lg:flex -ml-2"
+        className="hidden xl:flex -ml-2"
         icon={isCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
       />
       <SidebarMobile />
-      <div className="flex items-center gap-2 lg:gap-6">
+      <div className="flex items-center gap-2 xl:gap-6">
         <Button variant="icon">
           {/* <Moon className="size-6" /> */}
           {/* <Sun className="size-6" /> */}
@@ -67,7 +67,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
                 {userDisplayName?.charAt(0)}
               </AvatarFallback>
             </Avatar>
-            <span className="flex items-center gap-1 hidden lg:flex">
+            <span className="flex items-center gap-1 hidden md:flex">
               <span className="text-lg font-semibold">{userDisplayName}</span>
               <ChevronDown className="text-muted-foreground mt-1 size-5" />
             </span>
