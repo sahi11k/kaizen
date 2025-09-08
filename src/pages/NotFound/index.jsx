@@ -1,21 +1,21 @@
 import React from "react";
 import { Link } from "react-router";
-import styles from "./style.module.css";
-import ErrorIcon from "@/assets/icons/404.svg?react";
+import ErrorIllustation from "@/assets/illustrations/404.svg?react";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
   return (
-    <div className={styles.notFound}>
-      <div className={styles.content}>
-        <div className={styles.icon}>
-          <ErrorIcon />
+    <div className="h-full w-full flex justify-center items-center">
+      <div className="flex flex-col justify-center items-center">
+        <div className="w-80 md:w-100">
+          <ErrorIllustation className="text-primary fill-current" />
         </div>
-        <h2 className={styles.subtitle}>Page Not Found</h2>
-        <p className={styles.message}>
+        <h2 className="heading-2">Page Not Found</h2>
+        <p className="body-description text-center">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
-        <Link to="/" className="btn btn--primary">
-          Go Back Home
+        <Link to="/" className="mt-6">
+          <Button>Go Back Home</Button>
         </Link>
       </div>
     </div>

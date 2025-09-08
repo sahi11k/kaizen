@@ -1,7 +1,7 @@
 import React from "react";
 import useAuthStore from "@/store/auth";
-import { STATUS } from "@/utils/constants";
-import Fallback from "@/utils/components/Fallback";
+import { STATUS } from "@/constants/db";
+import { Fallback } from "@/components/ui/fallback";
 import { Navigate } from "react-router";
 
 const ProtectedRoute = ({ children }) => {

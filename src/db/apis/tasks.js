@@ -1,10 +1,10 @@
 import { supabase } from "@/db/supabase";
-import { SUPABASE_TABLES } from "@/utils/constants";
+import { SUPABASE_TABLES } from "@/constants/db";
 import {
   transformTasksFromDb,
   transformTasksToDb,
 } from "@/utils/transformers/tasks";
-import { handleResponse } from "@/utils/utils";
+import { handleResponse } from "@/utils/db";
 
 export const fetchTasks = async (userId) => {
   if (!userId) {

@@ -1,0 +1,63 @@
+.journalsWidget {
+  height: 320px;
+}
+
+.journalsWidgetBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.journalsWidgetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.journalItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  font-size: 0.9rem;
+
+  .journalItemHeader {
+    display: flex;
+    flex-direction: column;
+
+    .journalItemHeader__title {
+      font-weight: 500;
+    }
+    .journalItemHeader__tags {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .journalItemContent {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.addNewJournal {
+  display: flex;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  border: 2px dashed var(--accent-primary);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-lg);
+
+  .addNewJournal__btn {
+    --font-size: 0.875rem;
+    --border-radius: calc(var(--border-radius-lg) * 2);
+    --padding: var(--spacing-sm) var(--spacing-md);
+    --bg: var(--accent-secondary);
+  }
+}

@@ -3,9 +3,10 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import svgr from "vite-plugin-svgr";
 import eslint from "vite-plugin-eslint";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [react(), svgr(), eslint()],
+  plugins: [react(), svgr(), eslint(), tailwindcss()],
   build: {
     outDir: "dist",
   },

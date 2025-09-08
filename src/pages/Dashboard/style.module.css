@@ -1,0 +1,30 @@
+.dashboard {
+  display: grid;
+  gap: var(--spacing-md);
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.headerSection {
+  grid-column: 1 / 13;
+}
+
+.pomodoroSection {
+  grid-column: 1 / 7;
+  grid-row: 2 / 3;
+}
+.journalsSection {
+  grid-column: 7 / 13;
+  grid-row: 2 / 3;
+}
+
+.progressChartSection {
+  grid-column: 1 / 7;
+}
+
+.totalHoursSection {
+  grid-column: 7 / 10;
+}
+
+.dailyProgressSection {
+  grid-column: 10 / 13;
+}

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { STATUS } from "@/utils/constants";
+import { STATUS } from "@/constants/db";
 import { getUserSession } from "@/db/apis/auth";
 import { fetchUserSettings } from "@/db/apis/userSettings";
 

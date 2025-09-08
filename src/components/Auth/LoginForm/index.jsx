@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { loginWithEmail, resendOTP } from "@/db/apis/auth";
-import styles from "@/components/Auth/style.module.css";
 import { Link, useNavigate } from "react-router";
-import FormItem from "@/utils/components/FormItem";
-import { Toast } from "@/utils/components/Toast";
-import { EMAIL_NOT_VERIFIED_ERROR } from "@/utils/constants";
+import { Toast } from "@/components/ui/toast";
+import { EMAIL_NOT_VERIFIED_ERROR } from "@/constants/db";
 import OtpVerification from "@/components/Auth/OtpVerification";
-import Spinner from "@/utils/components/Spinner";
 import useAuthStore from "@/store/auth";
 import ResetPasswordForm from "@/components/Auth/ResetPasswordForm";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
 
 const { toast } = Toast;
 
@@ -17,10 +17,14 @@ const DEFAULT_FORM_VALUES = {
   password: "",
 };
 
-const LoginForm = () => {
+const LoginForm = ({
+  showOtpScreen,
+  setShowOtpScreen,
+  showResetPasswordScreen,
+  setShowResetPasswordScreen,
+}) => {
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
-  const [showOtpScreen, setShowOtpScreen] = useState(false);
-  const [showResetPasswordScreen, setShowResetPasswordScreen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
@@ -50,7 +54,7 @@ const LoginForm = () => {
       setUser(response.data.user);
       setIsLoading(false);
       resetForm(); // Reset form before navigation
-      navigate("/", { replace: true });
+      navigate(DEFAULT_NAV_ROUTE, { replace: true });
     }
   };
 
@@ -84,9 +88,9 @@ const LoginForm = () => {
   }
 
   return (
-    <>
-      <form onSubmit={handleLoginSubmit}>
-        <FormItem.Input
+    <div className="flex flex-col gap-6">
+      <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
+        <Input
           type="email"
           id="loginEmail"
           value={formValues.email}
@@ -96,41 +100,37 @@ const LoginForm = () => {
           required
           placeholder="Enter email"
         />
-        <FormItem.Password
-          type="password"
-          id="loginPassword"
-          value={formValues.password}
-          onChange={(e) =>
-            setFormValues({ ...formValues, password: e.target.value })
-          }
-          required
-          placeholder="Enter password"
-        />
-        <button
-          type="button"
-          className={`btn ${styles.forgotPasswordLink}`}
-          onClick={() => setShowResetPasswordScreen(true)}
-        >
-          Forgot password?
-        </button>
-        <button type="submit" className={`btn ${styles.submitButton}`}>
-          {isLoading && (
-            <span className="btn__icon">
-              <Spinner />
-            </span>
-          )}
-          Login
-        </button>
-      </form>
-      <div className={styles.footer}>
-        <div className={styles.redirectLink}>
-          Don&apos;t have an account?{" "}
-          <Link to="/auth/signup" className={styles.link}>
-            Sign up
-          </Link>
+        <div className="flex flex-col">
+          <Input
+            type="password"
+            id="loginPassword"
+            value={formValues.password}
+            onChange={(e) =>
+              setFormValues({ ...formValues, password: e.target.value })
+            }
+            required
+            placeholder="Enter password"
+          />
+          <Button
+            type="button"
+            variant="link"
+            onClick={() => setShowResetPasswordScreen(true)}
+            className="self-end !h-6"
+          >
+            Forgot password?
+          </Button>
         </div>
+        <Button type="submit" loading={isLoading} className="mt-1">
+          Login
+        </Button>
+      </form>
+      <div className="text-sm text-center">
+        Don&apos;t have an account?{" "}
+        <Link to="/auth/signup" className="text-link ml-1 underline-offset-2">
+          Sign up
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

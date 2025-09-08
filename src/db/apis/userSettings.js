@@ -1,6 +1,6 @@
 import { supabase } from "@/db/supabase";
-import { SUPABASE_TABLES } from "@/utils/constants";
-import { handleResponse } from "@/utils/utils";
+import { SUPABASE_TABLES } from "@/constants/db";
+import { handleResponse } from "@/utils/db";
 import {
   transformUserSettingsFromDb,
   transformUserSettingsToDb,

@@ -1,6 +1,6 @@
+import { SUPABASE_TABLES, PAGINATION } from "@/constants/db";
 import { supabase } from "@/db/supabase";
-import { PAGINATION, SUPABASE_TABLES } from "@/utils/constants";
-import { handleResponse } from "@/utils/utils";
+import { handleResponse } from "@/utils/db";
 
 export const createJournal = async (payload = {}, userId) => {
   if (!userId) {

@@ -6,12 +6,12 @@ import Testamonials from "@/components/Home/Testamonials";
 
 const Home = () => {
   return (
-    <>
+    <div className="flex flex-col gap-12 m-4 mt-auto">
       <Banner />
       <About />
       <Quote />
       <Testamonials />
-    </>
+    </div>
   );
 };
 
