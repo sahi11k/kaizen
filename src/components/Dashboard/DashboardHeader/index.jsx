@@ -73,11 +73,11 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="border-border shadow-md w-30 font-medium">
-            <Link to="/dashboard/settings">
+            {/* <Link to="/dashboard/settings">
               <DropdownMenuItem className="cursor-pointer">
                 Settings
               </DropdownMenuItem>
-            </Link>
+            </Link> */}
             <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
               Logout
             </DropdownMenuItem>
