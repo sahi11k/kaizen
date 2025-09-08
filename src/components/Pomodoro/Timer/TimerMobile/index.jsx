@@ -30,20 +30,25 @@ const TimerMobile = () => {
   }, []);
 
   return (
-    <Drawer direction="bottom" open={open} onOpenChange={setOpen}>
+    <Drawer
+      direction="bottom"
+      open={open}
+      onOpenChange={setOpen}
+      className="md:hidden"
+    >
       <DrawerTrigger asChild>
         <Button
           icon={<Timer className="size-5 text-secondary" />}
-          className="h-10 md:hidden"
+          className="h-16 md:hidden rounded-full text-base px-8"
         >
-          Focus Now
+          Focus
         </Button>
       </DrawerTrigger>
       <DrawerContent fullScreen className="[&>div:first-child]:hidden">
         <DrawerClose asChild>
           <Button
-            variant="outline"
-            className="w-fit border-none px-8 py-6 text-primary"
+            variant="link"
+            className="w-fit border-none mx-8 py-6 text-primary"
           >
             Close
           </Button>

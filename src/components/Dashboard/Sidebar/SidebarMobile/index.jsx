@@ -34,17 +34,17 @@ const SidebarMobile = () => {
       <DrawerTrigger asChild>
         <Button
           variant="icon"
-          className="block lg:hidden !p-0 !h-auto"
+          className="block xl:hidden -ml-2"
           icon={<Menu className="size-6" />}
         />
       </DrawerTrigger>
-      <DrawerContent className="!max-w-72 ">
-        <aside className="px-6 flex flex-col space-y-5 h-full">
+      <DrawerContent className="!w-72 ">
+        <aside className="px-6 flex flex-col space-y-6 h-full">
           <SidebarContent isCollapsed={false} />
         </aside>
         <DrawerClose className="absolute top-3.5 right-4" asChild>
-          <Button variant="icon">
-            <PanelLeftClose className="size-6" />
+          <Button variant="icon" className="-mr-2">
+            <PanelLeftClose />
           </Button>
         </DrawerClose>
       </DrawerContent>

@@ -39,7 +39,9 @@ const JournalListItem = ({ journal, onClick, isActive }) => {
         >
           {title || "Untitled"}
         </div>
-        <div className="text-sm line-clamp-4 xl:line-clamp-2">{content}</div>
+        <div className="text-[13px] tracking-wide line-clamp-4 xl:line-clamp-2">
+          {content}
+        </div>
       </div>
     </li>
   );

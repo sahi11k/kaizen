@@ -12,6 +12,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/utils/date";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const DatePicker = ({
   defautDate,
@@ -20,6 +21,7 @@ const DatePicker = ({
   popoverClassName,
   format = "LL",
   showIcon = true,
+  tooltip,
 }) => {
   const [date, setDate] = useState(new Date());
 
@@ -38,19 +40,21 @@ const DatePicker = ({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          data-empty={!date}
-          className={cn(
-            "data-[empty=true]:text-muted-foreground w-auto justify-start text-left font-normal",
-            triggerClassName
-          )}
-        >
-          {showIcon && <CalendarIcon />}
-          {date ? formatDate(date, format) : <span>Pick a date</span>}
-        </Button>
-      </PopoverTrigger>
+      <Tooltip content={tooltip}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            data-empty={!date}
+            className={cn(
+              "data-[empty=true]:text-muted-foreground w-auto justify-start text-left font-normal",
+              triggerClassName
+            )}
+          >
+            {showIcon && <CalendarIcon />}
+            {date ? formatDate(date, format) : <span>Pick a date</span>}
+          </Button>
+        </PopoverTrigger>
+      </Tooltip>
       <PopoverContent className={cn("w-auto p-0", popoverClassName)}>
         <Calendar mode="single" selected={date} onSelect={handleDateChange} />
       </PopoverContent>

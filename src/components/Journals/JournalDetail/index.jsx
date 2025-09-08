@@ -20,7 +20,9 @@ import {
   Pen,
   SquareActivity,
   SquarePen,
+  Trash2,
 } from "lucide-react";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const { toast } = Toast;
 
@@ -42,18 +44,15 @@ const JournalDetail = () => {
 
   const [formValues, setFormValues] = useState(DEFAULT_STATE);
   const [isLoading, setIsLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const disabled = !formValues.content.trim().length;
   const mode = currentJournal?.id ? EDIT : CREATE;
 
   useEffect(() => {
-    if (currentJournal?.id) {
-      setFormValues({
-        title: currentJournal.title,
-        content: currentJournal.content,
-        date: currentJournal.date,
-      });
-    }
+    const current = currentJournal ? currentJournal : DEFAULT_STATE;
+    setFormValues({
+      title: current.title,
+      content: current.content,
+      date: current.date,
+    });
   }, [currentJournal]);
 
   const handleSubmit = async (e) => {
@@ -101,83 +100,53 @@ const JournalDetail = () => {
   };
 
   const handleReset = () => {
-    DEFAULT_STATE;
+    setFormValues(DEFAULT_STATE);
     setCurrentJournal(null);
   };
 
   const removeJournal = async (journalId) => {
-    setDeleteLoading(true);
     const res = await deleteJournal(journalId, user.id);
     if (res.error) {
-      setDeleteLoading(false);
       return toast.error(res.error);
     }
     const updatedJournals = journals.filter((j) => j.id !== journalId);
     setJournals(updatedJournals);
     toast.success("Journal deleted successfully");
     handleReset();
-    setDeleteLoading(false);
   };
 
   return (
-    <div className="hidden xl:flex flex-1 px-6 flex flex-col">
-      {/* <div className="h-16 flex items-center justify-center border-b border-border -mx-6 px-6"> */}
-      {/* <div className="flex items-center justify-center gap-6">
-          <Button
-            variant="text"
-            className="!text-muted-foreground hover:bg-accent"
-            onClick={handleReset}
-          >
-            Reset
-          </Button>
-          {mode === EDIT && (
-            <Button
-              variant="outline"
-              loading={deleteLoading}
-              onClick={() => removeJournal(currentJournal.id)}
-              className="text-destructive hover:text-destructive hover:bg-transparent"
-            >
-              Delete
-            </Button>
-          )}
-          <Button
-            onClick={handleSubmit}
-            loading={isLoading}
-            disabled={disabled}
-          >
-            {mode === CREATE ? "Add Journal" : "Update Journal"}
-          </Button>
-        </div> */}
-      {/* </div> */}
-      <div className="flex-1 px-12 py-6">
-        <div className="flex items-center justify-between">
+    <div className="hidden md:flex h-full flex-1  px-6 xl:px-24 flex flex-col">
+      <div className="flex items-center justify-between gap-2 bg-muted -mx-6 xl:-mx-24 px-6 xl:px-24  border-b border-border">
+        <div className="-mx-4">
+          <Button variant="icon" icon={<ChevronLeft />}></Button>
+          <Button variant="icon" icon={<ChevronRight />}></Button>
+        </div>
+        <Button
+          variant="icon"
+          onClick={() => removeJournal(currentJournal.id)}
+          hidden={mode === CREATE}
+          icon={<Trash2 className="size-5" />}
+          className="hover:text-destructive"
+        />
+      </div>
+      <div className="flex flex-col w-[70ch] flex-1 mx-auto py-4 h-full">
+        <div className="flex gap-4 items-center">
           <DatePicker
             defautDate={formValues.date}
             onDateChange={(date) => setFormValues({ ...formValues, date })}
-            triggerClassName="border-none !px-0 !text-sm font-medium tracking-wide shadow-none text-muted-foreground hover:bg-transparent w-56"
-            showIcon={false}
+            triggerClassName="border-none !px-0 !text-xs xl:!text-sm font-medium tracking-wide shadow-none text-muted-foreground hover:bg-transparent"
             format="dddd, MMMM D, YYYY"
+            tooltip="Click to update"
+            showIcon={false}
+            popoverClassName="border-border"
           />
-          <div className="flex items-center gap-1">
-            <Button
-              variant="icon"
-              icon={<SquarePen className="size-5" />}
-              onClick={handleReset}
-            />
-            {/* <div className="flex items-center">
-              <Button
-                variant="icon"
-                icon={<ChevronLeft className="size-5" />}
-              />
-              <Button
-                variant="icon"
-                icon={<ChevronRight className="size-5" />}
-              />
-            </div> */}
-          </div>
+          <span className="text-xs italic text-muted-foreground font-medium">
+            {/* Saving... */}
+          </span>
         </div>
-        <form className="flex flex-col gap-6 h-full">
-          <div className="flex flex-col border-b border-border pb-3">
+        <form className="flex flex-col flex-1">
+          <div className="flex flex-col border-b border-border pb-1">
             <Input
               label="Title"
               placeholder="Give your day a title"
@@ -186,7 +155,7 @@ const JournalDetail = () => {
                 setFormValues({ ...formValues, title: e.target.value })
               }
               maxLength={50}
-              className="-mt-1 !text-3xl !h-auto !font-normal !px-0 border-none  focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent "
+              className="-mt-1 text-2xl xl:!text-3xl !h-auto !font-normal !px-0 border-none  focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent "
             />
           </div>
           <div className="flex-1">
@@ -196,10 +165,18 @@ const JournalDetail = () => {
               onChange={(e) =>
                 setFormValues({ ...formValues, content: e.target.value })
               }
-              className="h-full !px-0 border-none body-base focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent resize-none"
+              className="h-full !px-1 !pt-4 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent resize-none"
             />
           </div>
         </form>
+        <div className="flex justify-end gap-4 mt-6">
+          <Button variant="outline" onClick={handleReset}>
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit}>
+            {mode === CREATE ? "Create" : "Update"}
+          </Button>
+        </div>
       </div>
     </div>
   );

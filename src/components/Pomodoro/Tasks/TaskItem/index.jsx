@@ -88,7 +88,7 @@ const TaskItem = ({
           {task.title}
         </div>
         <div
-          className={`text-sm ${
+          className={`text-[13px] tracking-wide ${
             isActive ? "text-primary" : "text-muted-foreground"
           }`}
         >
