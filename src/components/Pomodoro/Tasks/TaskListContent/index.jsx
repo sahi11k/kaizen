@@ -38,6 +38,7 @@ const TaskListContent = () => {
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
   const [isLoading, setIsLoading] = useState(false);
   const [orderChanged, setOrderChanged] = useState(false);
+  const [reorderLoading, setReorderLoading] = useState(false);
 
   const currentOrder = useRef([]);
 
@@ -166,12 +167,14 @@ const TaskListContent = () => {
   };
 
   const updateTaskOrder = async () => {
+    setReorderLoading(true);
     const payload = tasks.map((task, index) => ({
       id: task.id,
       rank: index + 1,
     }));
     const res = await sortTasks(payload, user.id);
     if (res.error) {
+      setReorderLoading(false);
       return toast.error(res.error);
     }
     const newTasks = res.data?.slice() || [];
@@ -179,11 +182,11 @@ const TaskListContent = () => {
     toast.success("Task order updated successfully");
     setOrderChanged(false);
     setTasks(newTasks);
+    setReorderLoading(false);
   };
 
   const resetTaskOrder = () => {
     const taskMap = new Map(tasks.map((task) => [task.id, task]));
-
     const reorderedTasks = currentOrder.current
       .map((id) => taskMap.get(id))
       .filter(Boolean);
@@ -207,22 +210,32 @@ const TaskListContent = () => {
   const renderFooter = () => {
     if (orderChanged) {
       return (
-        <TaskListFooter>
-          <Button variant="outline" onClick={resetTaskOrder}>
-            Cancel
-          </Button>
-          <Button onClick={updateTaskOrder}>Update Order</Button>
-        </TaskListFooter>
+        <div className="border-t border-border -mx-6">
+          <div className="flex items-center justify-between py-2 md:py-4 gap-4 px-6 text-muted-foreground">
+            <strong className="text-sm">Unsaved changes : </strong>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="link"
+                onClick={resetTaskOrder}
+                size="sm"
+                className="text-sm !text-muted-foreground !no-underline"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={updateTaskOrder}
+                size="sm"
+                className="!text-sm"
+                disabled={reorderLoading}
+                loading={reorderLoading}
+              >
+                Update
+              </Button>
+            </div>
+          </div>
+        </div>
       );
     }
-
-    return (
-      <div className="md:hidden">
-        <TaskListFooter>
-          <TimerMobile />
-        </TaskListFooter>
-      </div>
-    );
   };
 
   return (
@@ -238,6 +251,7 @@ const TaskListContent = () => {
           onClick={() => setShowModal(true)}
           icon={<Plus className="size-4" />}
           size="sm"
+          className="hidden md:flex"
         >
           Task
         </Button>
@@ -299,6 +313,15 @@ const TaskListContent = () => {
           </div>
         )}
       </div>
+      <div className="flex justify-center items-center pt-2 pb-4 gap-2 mx-auto relative w-full bg-transparent">
+        <TimerMobile />
+        <Button
+          onClick={() => setShowModal(true)}
+          className="rounded-full justify-end absolute right-0 h-10 w-10 flex items-center justify-center md:hidden"
+          icon={<Plus className="size-5" />}
+          variant="secondary"
+        />
+      </div>
       <>{renderFooter()}</>
       <AddForm
         setFormValues={setFormValues}
@@ -309,16 +332,6 @@ const TaskListContent = () => {
         onCancel={handleCancel}
       />
     </>
-  );
-};
-
-const TaskListFooter = ({ children }) => {
-  return (
-    <div className="border-t border-border -mx-6">
-      <div className="flex items-center justify-center h-16 gap-4 px-6">
-        {children}
-      </div>
-    </div>
   );
 };
 

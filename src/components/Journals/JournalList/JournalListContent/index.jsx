@@ -5,7 +5,7 @@ import useAuthStore from "@/store/auth";
 import { fetchJournals } from "@/db/apis/journals";
 
 import { PAGINATION } from "@/constants/db";
-import { FileText, Pen, SquarePen } from "lucide-react";
+import { FileText, SquarePen } from "lucide-react";
 import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import Button from "@/components/ui/button";
@@ -30,8 +30,6 @@ const JournalListContent = () => {
   const { journals, setJournals, currentJournal, setCurrentJournal } =
     useJournalsStore();
 
-  const [, setHasMoreJournals] = useState(true);
-
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -43,9 +41,6 @@ const JournalListContent = () => {
         0,
         PAGINATION.JOURNALS_PAGE_SIZE
       );
-      setHasMoreJournals(
-        response.data.length === PAGINATION.JOURNALS_PAGE_SIZE
-      );
       setJournals(response.data);
       setIsLoading(false);
     };
@@ -53,28 +48,13 @@ const JournalListContent = () => {
     loadJournals();
   }, [setJournals, user?.id]);
 
-  // const onResetFormCallback = () => {
-  //   // setIsInputBoxOpen(false);
-  //   // setMode(CREATE);
-  //   setCurrentJournal(null);
-  // };
-
-  // const loadMoreJournals = async () => {
-  //   setIsLoading(true);
-  //   const res = await fetchJournals(
-  //     user.id,
-  //     journals.length,
-  //     PAGINATION.JOURNALS_PAGE_SIZE
-  //   );
-
-  //   if (res.error) {
-  //     setIsLoading(false);
-  //     return toast.error("Error loading more journals");
-  //   }
-  //   setJournals([...journals, ...res.data]);
-  //   setHasMoreJournals(res.data.length === PAGINATION.JOURNALS_PAGE_SIZE);
-  //   setIsLoading(false);
-  // };
+  const handleJournalClick = (journal) => {
+    if (currentJournal?.id === journal.id) {
+      setCurrentJournal(null);
+    } else {
+      setCurrentJournal(journal);
+    }
+  };
 
   const grouped = useMemo(() => groupByMonth(journals), [journals]);
 
@@ -85,11 +65,14 @@ const JournalListContent = () => {
           <span className="heading-3 mr-1">Journals</span>
         </div>
         <Button
-          onClick={() => {}}
           icon={<SquarePen className="size-4" />}
           size="sm"
+          onClick={() => {
+            setCurrentJournal(null);
+          }}
+          className="hidden md:flex"
         >
-          Today
+          New
         </Button>
       </div>
       <div className="h-full overflow-y-auto scrollbar-thin -mx-4 xl:-mx-6">
@@ -106,7 +89,10 @@ const JournalListContent = () => {
                   <JournalListItem
                     key={journal.id}
                     journal={journal}
-                    onClick={() => setCurrentJournal(journal)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleJournalClick(journal);
+                    }}
                     isActive={currentJournal?.id === journal.id}
                   />
                 ))}

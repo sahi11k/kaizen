@@ -227,12 +227,12 @@ const TimerContent = () => {
           title={timerStarted ? "Pause Timer" : "Start Timer"}
           icon={
             timerStarted ? (
-              <Square className="size-5 text-secondary" fill="currentColor" />
+              <Square className="size-4 text-secondary" fill="currentColor" />
             ) : (
-              <Play className="size-5 text-secondary" fill="currentColor" />
+              <Play className="size-4 text-secondary" fill="currentColor" />
             )
           }
-          className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base xl:text-lg"
+          className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base"
         >
           <span className="hidden sm:block">
             {timerStarted ? "Pause" : "Focus"}

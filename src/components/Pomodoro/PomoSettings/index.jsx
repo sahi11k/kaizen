@@ -89,15 +89,15 @@ const PomoSettings = () => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button
-          icon={<Settings />}
+          icon={<Settings className="size-5" />}
           variant="secondary"
-          className="rounded-full w-12 !h-12"
+          className="rounded-full w-10 !h-10"
         />
       </PopoverTrigger>
-      <PopoverContent className="min-w-80 sm:w-100  md:w-lg mx-8  px-6 bg-background text-foreground border-border shadow-lg">
-        <h4 className="heading-3 mb-4">Pomodoro Settings</h4>
+      <PopoverContent className="min-w-80 sm:w-100  md:w-lg mx-8 px-6 border-border shadow-lg">
+        <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
           <FormItem
             label="Pomodoro Timer Duration"

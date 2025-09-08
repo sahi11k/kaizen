@@ -13,7 +13,7 @@ const Banner = () => {
         productivity techniques.
       </p>
       <Link to={DEFAULT_NAV_ROUTE}>
-        <Button variant="secondary" className="font-semibold !h-12">
+        <Button variant="secondary" className="font-semibold !h-12 ">
           Start Your Journey
         </Button>
       </Link>

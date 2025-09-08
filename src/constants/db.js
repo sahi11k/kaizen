@@ -12,7 +12,7 @@ export const STATUS = {
 };
 
 export const PAGINATION = {
-  JOURNALS_PAGE_SIZE: 30,
+  JOURNALS_PAGE_SIZE: 1000,
 };
 
 export const SUCCESS_STATUS_CODES = [200, 201, 202, 204];
