@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import styles from "@/components/Auth/style.module.css";
 import { Link } from "react-router";
-import FormItem from "@/utils/components/FormItem";
-import { ErrorText } from "@/components/Auth/ErrorText";
 import { signUpNewUser } from "@/db/apis/auth";
-import Spinner from "@/utils/components/Spinner";
-import { Toast } from "@/utils/components/Toast";
-import OTPVerification from "@/components/Auth/OtpVerification";
-import GoogleLogin from "@/components/Auth/GoogleLogin";
-import OrDivider from "@/components/Auth/OrDivider";
-import { validateField } from "@/utils/utils";
+import { Toast } from "@/components/ui/toast";
+import OtpVerification from "@/components/Auth/OtpVerification";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ErrorText } from "@/components/Auth/ErrorText";
+import { validateField } from "@/utils/auth";
 
 const { toast } = Toast;
 
@@ -25,11 +22,10 @@ const DEFAULT_ERRORS = {
   password: "",
 };
 
-const SignupForm = () => {
+const SignupForm = ({ showOtpScreen, setShowOtpScreen }) => {
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
   const [errors, setErrors] = useState(DEFAULT_ERRORS);
   const [loading, setLoading] = useState(false);
-  const [showOtpScreen, setShowOtpScreen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +54,7 @@ const SignupForm = () => {
 
   if (showOtpScreen) {
     return (
-      <OTPVerification
+      <OtpVerification
         email={formValues.email}
         onBack={() => setShowOtpScreen(false)}
         backBtnText="Back to Sign Up"
@@ -67,11 +63,9 @@ const SignupForm = () => {
   }
 
   return (
-    <>
-      {/* <GoogleLogin />
-      <OrDivider /> */}
-      <form onSubmit={handleSubmit}>
-        <FormItem.Input
+    <div className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <Input
           type="text"
           id="signupName"
           value={formValues.name}
@@ -80,7 +74,7 @@ const SignupForm = () => {
           placeholder="Enter name"
         />
         {errors.name && <ErrorText error={errors.name} />}
-        <FormItem.Input
+        <Input
           type="email"
           id="signupEmail"
           value={formValues.email}
@@ -89,7 +83,7 @@ const SignupForm = () => {
           placeholder="Enter email"
         />
         {errors.email && <ErrorText error={errors.email} />}
-        <FormItem.Password
+        <Input
           type="password"
           id="signupPassword"
           value={formValues.password}
@@ -98,24 +92,17 @@ const SignupForm = () => {
           placeholder="Enter password"
         />
         {errors.password && <ErrorText error={errors.password} />}
-        <button type="submit" className={`btn ${styles.submitButton}`}>
-          {loading && (
-            <span className="btn__icon">
-              <Spinner />
-            </span>
-          )}
+        <Button type="submit" loading={loading} className="mt-2">
           Sign Up
-        </button>
+        </Button>
       </form>
-      <div className={styles.footer}>
-        <div className={styles.redirectLink}>
-          Already have an account?{" "}
-          <Link to="/auth/login" className={styles.link}>
-            Login
-          </Link>
-        </div>
+      <div className="text-sm text-center">
+        Already have an account?{" "}
+        <Link to="/auth/login" className="text-link ml-1 underline-offset-2">
+          Login
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

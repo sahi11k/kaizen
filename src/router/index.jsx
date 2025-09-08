@@ -1,16 +1,17 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Home from "@/pages/Home";
 import Pomodoro from "@/pages/Pomodoro";
 import Journal from "@/pages/Journal";
 import Settings from "@/pages/Settings";
 import Analytics from "@/pages/Analytics";
+import Dashboard from "@/pages/Dashboard";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
-import ProtectedRoute from "./ProtectedRoute";
 import UpdatePassword from "@/pages/UpdatePassword";
-import DashboardLayout from "@/components/Layout/DashboardLayout";
-import { AuthLayout, HomePageLayout } from "@/components/Layout";
+import { AuthLayout, HomePageLayout, DashboardLayout } from "@/layouts";
+import ProtectedRoute from "./ProtectedRoute";
+import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,15 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <DashboardLayout />,
     children: [
+      {
+        path: "/dashboard",
+        element: (
+          // <ProtectedRoute>
+          //   <Dashboard />
+          // </ProtectedRoute>
+          <Navigate to={DEFAULT_NAV_ROUTE} replace />
+        ),
+      },
       {
         path: "/dashboard/journals",
         element: (
