@@ -39,8 +39,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    line-clamp: 3;
-    -webkit-line-clamp: 3;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
 }
@@ -52,7 +52,7 @@
   border: 2px dashed var(--accent-primary);
   align-items: center;
   justify-content: space-between;
-  margin-top: var(--spacing-lg);
+  font-size: 1.1rem;
 
   .addNewJournal__btn {
     --font-size: 0.875rem;

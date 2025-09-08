@@ -33,6 +33,12 @@ const ProgressChartWidget = () => {
         backgroundColor: "rgba(197, 83, 34, 0.8)", // green-500
         borderRadius: 8,
       },
+      {
+        label: "Pomodoro complted",
+        data: [2, 4, 3, 5, 6, 4, 7], // your streak/progress data here
+        backgroundColor: "rgba(34, 197, 113, 0.8)", // green-500
+        borderRadius: 8,
+      },
     ],
   };
 
@@ -60,7 +66,6 @@ const ProgressChartWidget = () => {
         ticks: { color: "#ccc" },
       },
     },
-    categoryPercentage: 0.6,
   };
 
   return (
