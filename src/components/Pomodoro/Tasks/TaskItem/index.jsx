@@ -2,17 +2,13 @@ import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
-import {
-  CheckCircle,
-  CheckCircle2,
-  GripVertical,
-  Pen,
-  Trash2,
-} from "lucide-react";
+import { CheckCircle, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import TaskMoreOptions from "@/components/Pomodoro/Tasks/TaskMoreOptions";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors";
+  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors bg-background";
 const hover = "hover:bg-muted";
 const activeClass =
   "bg-primary/5 text-primary hover:bg-primary/5 hover:text-primary";
@@ -37,7 +33,8 @@ const TaskItem = ({
   const getTaskClass = () => {
     return cn(base, hover, {
       [activeClass]: isActive,
-      [completedClass]: task.completed,
+      [completedClass]: task.completed && !isActive,
+      "opacity-50": task.completed,
     });
   };
 
@@ -47,6 +44,10 @@ const TaskItem = ({
       onClick?.(e);
     }
   };
+
+  const completeTooltip = task.completed
+    ? "Mark as incomplete"
+    : "Mark as complete";
 
   return (
     <li
@@ -58,26 +59,28 @@ const TaskItem = ({
       role="option"
       aria-selected={isActive}
       tabIndex={0}
+      {...attributes}
+      {...listeners}
     >
       <div className="flex items-center gap-1 shrink-0">
-        <Button
-          onClick={onComplete}
-          variant="icon"
-          icon={
-            task.completed ? (
-              <CheckCircle className="size-5" color="currentColor" />
-            ) : (
-              <CheckCircle2 className="size-5" color="currentColor" />
-            )
-          }
-          className={`!p-0 hover:bg-transparent ${
-            isActive ? "text-primary" : ""
-          }`}
-          aria-label={
-            task.completed ? "Mark as incomplete" : "Mark as complete"
-          }
-          aria-pressed={task.completed}
-        />
+        <Tooltip content={completeTooltip}>
+          <Button
+            onClick={onComplete}
+            variant="icon"
+            icon={
+              task.completed ? (
+                <CheckCircle className="size-5" color="currentColor" />
+              ) : (
+                <CheckCircle2 className="size-5" color="currentColor" />
+              )
+            }
+            className={`!p-0 hover:bg-transparent ${
+              isActive ? "text-primary" : ""
+            }`}
+            aria-label={completeTooltip}
+            aria-pressed={task.completed}
+          />
+        </Tooltip>
       </div>
 
       <div className="flex-1 min-w-0">
@@ -97,31 +100,7 @@ const TaskItem = ({
             : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
         </div>
       </div>
-
-      <div className="hidden shrink-0 items-center gap-4 group-hover:flex">
-        <Button
-          onClick={onEdit}
-          variant="icon"
-          icon={<Pen className="size-5" />}
-          className="!p-0 hover:bg-transparent"
-          aria-label="Edit task"
-        />
-        <Button
-          variant="icon"
-          icon={<Trash2 className="size-5" />}
-          onClick={onRemove}
-          className="!p-0 hover:bg-transparent hover:text-destructive"
-          aria-label="Remove task"
-        />
-        <Button
-          {...attributes}
-          {...listeners}
-          variant="icon"
-          icon={<GripVertical className="size-5" />}
-          className="!p-0 hover:bg-transparent cursor-move"
-          aria-label="Reorder task"
-        />
-      </div>
+      <TaskMoreOptions onEdit={onEdit} onDelete={onRemove} />
     </li>
   );
 };

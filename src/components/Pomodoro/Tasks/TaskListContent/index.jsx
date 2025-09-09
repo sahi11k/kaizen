@@ -20,6 +20,7 @@ import { FolderOpen, Plus } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MIN_SESSIONS } from "@/constants/pomodoro";
 import { TimerMobile } from "@/components/Pomodoro/Timer";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const { toast } = Toast;
 
@@ -243,18 +244,23 @@ const TaskListContent = () => {
       <div className="mt-4 xl:mt-6 pb-2 xl:pb-4 flex items-center justify-between">
         <div>
           <span className="heading-3 mr-1">Tasks</span>
-          <span className="body-description" hidden={tasks.length === 0}>
+          <span
+            className="text-muted-foreground text-sm"
+            hidden={tasks.length === 0}
+          >
             ({getCompletedTasks()}/{tasks.length})
           </span>
         </div>
-        <Button
-          onClick={() => setShowModal(true)}
-          icon={<Plus className="size-4" />}
-          size="sm"
-          className="hidden md:flex"
-        >
-          Task
-        </Button>
+        <Tooltip content="Add task">
+          <Button
+            onClick={() => setShowModal(true)}
+            icon={<Plus className="size-4" />}
+            size="sm"
+            className="hidden md:flex"
+          >
+            Task
+          </Button>
+        </Tooltip>
       </div>
       <div className="h-full overflow-y-auto scrollbar-thin -mr-4 xl:-mr-6 -ml-2">
         <ul className="pr-2 xl:pr-4" role="listbox">
@@ -315,12 +321,14 @@ const TaskListContent = () => {
       </div>
       <div className="flex justify-center items-center pt-2 pb-4 gap-2 mx-auto relative w-full bg-transparent">
         <TimerMobile />
-        <Button
-          onClick={() => setShowModal(true)}
-          className="rounded-full justify-end absolute right-0 h-10 w-10 flex items-center justify-center md:hidden"
-          icon={<Plus className="size-5" />}
-          variant="secondary"
-        />
+        <Tooltip content="Add task">
+          <Button
+            onClick={() => setShowModal(true)}
+            className="rounded-full justify-end absolute right-0 h-10 w-10 flex items-center justify-center md:hidden"
+            icon={<Plus className="size-5" />}
+            variant="secondary"
+          />
+        </Tooltip>
       </div>
       <>{renderFooter()}</>
       <AddForm

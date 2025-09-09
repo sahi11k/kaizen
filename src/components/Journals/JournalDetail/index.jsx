@@ -14,14 +14,7 @@ import dayjs from "dayjs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/ui/date-picker";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Pen,
-  SquareActivity,
-  SquarePen,
-  Trash2,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import { Tooltip } from "@/components/ui/tooltip";
 
 const { toast } = Toast;
@@ -43,7 +36,8 @@ const JournalDetail = () => {
   } = useJournalsStore();
 
   const [formValues, setFormValues] = useState(DEFAULT_STATE);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const [isSaving, setIsSaving] = useState(false);
   const mode = currentJournal?.id ? EDIT : CREATE;
 
   useEffect(() => {
@@ -57,7 +51,6 @@ const JournalDetail = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     if (mode === CREATE) {
       await handleCreate();
     } else {
@@ -74,11 +67,11 @@ const JournalDetail = () => {
       },
       user.id
     );
-    setIsLoading(false);
     if (res.error) {
       return toast.error(res.error);
     }
     updateJournalInStore(res.data[0]);
+    setCurrentJournal(res.data[0]);
     toast.success("Journal updated successfully");
   };
 
@@ -90,7 +83,6 @@ const JournalDetail = () => {
       },
       user.id
     );
-    setIsLoading(false);
     if (res.error) {
       return toast.error(res.error);
     }
@@ -115,20 +107,52 @@ const JournalDetail = () => {
     handleReset();
   };
 
+  const handlePreviousJournalClick = () => {
+    let prevIndex = -1;
+    if (currentJournal) {
+      prevIndex = journals.findIndex((j) => j.id === currentJournal?.id);
+    }
+    setCurrentJournal(
+      prevIndex === journals.length - 1 ? null : journals[prevIndex + 1]
+    );
+  };
+
+  const handleNextJournalClick = () => {
+    if (currentJournal) {
+      const prevIndex = journals.findIndex((j) => j.id === currentJournal?.id);
+      setCurrentJournal(prevIndex === 0 ? null : journals[prevIndex - 1]);
+    }
+  };
+
   return (
     <div className="hidden md:flex h-full flex-1  px-6 xl:px-24 flex flex-col">
       <div className="flex items-center justify-between gap-2 bg-muted -mx-6 xl:-mx-24 px-6 xl:px-24  border-b border-border">
         <div className="-mx-4">
-          <Button variant="icon" icon={<ChevronLeft />}></Button>
-          <Button variant="icon" icon={<ChevronRight />}></Button>
+          <Tooltip content="Previous Journal">
+            <Button
+              variant="icon"
+              icon={<ChevronLeft />}
+              onClick={handlePreviousJournalClick}
+            ></Button>
+          </Tooltip>
+          <Tooltip content="Next Journal">
+            <Button
+              variant="icon"
+              icon={<ChevronRight />}
+              onClick={handleNextJournalClick}
+              disabled={!currentJournal}
+            ></Button>
+          </Tooltip>
         </div>
-        <Button
-          variant="icon"
-          onClick={() => removeJournal(currentJournal.id)}
-          hidden={mode === CREATE}
-          icon={<Trash2 className="size-5" />}
-          className="hover:text-destructive"
-        />
+        <Tooltip content="Remove Journal">
+          <Button
+            variant="icon"
+            onClick={() => removeJournal(currentJournal.id)}
+            hidden={mode === CREATE}
+            icon={<Trash2 className="size-5" />}
+            className="hover:text-destructive"
+          />
+        </Tooltip>
       </div>
       <div className="flex flex-col w-[70ch] flex-1 mx-auto py-4 h-full">
         <div className="flex gap-4 items-center">
@@ -142,7 +166,7 @@ const JournalDetail = () => {
             popoverClassName="border-border"
           />
           <span className="text-xs italic text-muted-foreground font-medium">
-            {/* Saving... */}
+            {isSaving ? "Saving..." : ""}
           </span>
         </div>
         <form className="flex flex-col flex-1">

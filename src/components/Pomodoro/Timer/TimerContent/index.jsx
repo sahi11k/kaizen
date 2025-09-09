@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { getLongBreakInterval, getTimerDurations } from "@/utils/timer";
 import PomoSettings from "@/components/Pomodoro/PomoSettings";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
 
@@ -213,39 +214,52 @@ const TimerContent = () => {
           </>
         </Tabs>
       </div>
+      {currentTask && (
+        <div className="mx-auto bg-muted py-4 px-6 rounded-lg !max-w-[100%] md:!max-w-[50%]">
+          <div className="flex items-center gap-2 justify-center font-semibold">
+            #{currentTask?.completedSessions + 1}
+            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+              {currentTask.title}
+            </span>
+          </div>
+        </div>
+      )}
       <div className="flex justify-center items-center gap-6 relative">
-        <Button
-          onClick={resetTimer}
-          title="Reset Timer"
-          icon={<TimerResetIcon />}
-          className="rounded-full w-12 !h-12"
-          variant="icon"
-          aria-label="Reset Timer"
-        />
-        <Button
-          onClick={timerStarted ? stopTimer : startTimer}
-          title={timerStarted ? "Pause Timer" : "Start Timer"}
-          icon={
-            timerStarted ? (
-              <Square className="size-4 text-secondary" fill="currentColor" />
-            ) : (
-              <Play className="size-4 text-secondary" fill="currentColor" />
-            )
-          }
-          className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base"
-        >
-          <span className="hidden sm:block">
-            {timerStarted ? "Pause" : "Focus"}
-          </span>
-        </Button>
-        <Button
-          onClick={skipTimer}
-          title="Skip Timer"
-          icon={<SkipForward />}
-          variant="icon"
-          className="rounded-full w-12 !h-12"
-          aria-label="Skip Timer"
-        />
+        <Tooltip content="Reset Timer">
+          <Button
+            onClick={resetTimer}
+            icon={<TimerResetIcon />}
+            className="rounded-full w-12 !h-12"
+            variant="icon"
+            aria-label="Reset Timer"
+          />
+        </Tooltip>
+        <Tooltip content={timerStarted ? "Pause Timer" : "Start Timer"}>
+          <Button
+            onClick={timerStarted ? stopTimer : startTimer}
+            icon={
+              timerStarted ? (
+                <Square className="size-4 text-secondary" fill="currentColor" />
+              ) : (
+                <Play className="size-4 text-secondary" fill="currentColor" />
+              )
+            }
+            className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base"
+          >
+            <span className="hidden sm:block">
+              {timerStarted ? "Pause" : "Focus"}
+            </span>
+          </Button>
+        </Tooltip>
+        <Tooltip content="Skip Timer">
+          <Button
+            onClick={skipTimer}
+            icon={<SkipForward />}
+            variant="icon"
+            className="rounded-full w-12 !h-12"
+            aria-label="Skip Timer"
+          />
+        </Tooltip>
         <div className="absolute right-4 xl:right-8">
           <PomoSettings />
         </div>
