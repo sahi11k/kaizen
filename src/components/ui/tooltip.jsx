@@ -25,7 +25,7 @@ function TooltipTrigger({ ...props }) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
-function TooltipContent({ className, sideOffset = -4, children, ...props }) {
+function TooltipContent({ className, sideOffset = 0, children, ...props }) {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
@@ -44,14 +44,23 @@ function TooltipContent({ className, sideOffset = -4, children, ...props }) {
   );
 }
 
-const Tooltip = ({ content, sideOffset, children, ...props }) => {
+const Tooltip = ({
+  content,
+  sideOffset,
+  children,
+  side = "top",
+  align = "center",
+  ...props
+}) => {
   if (content === null) {
     return children;
   }
   return (
     <ShadTooltip {...props}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent sideOffset={sideOffset}>{content}</TooltipContent>
+      <TooltipContent sideOffset={sideOffset} side={side} align={align}>
+        {content}
+      </TooltipContent>
     </ShadTooltip>
   );
 };

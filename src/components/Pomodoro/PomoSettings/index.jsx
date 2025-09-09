@@ -12,6 +12,7 @@ import { getLongBreakInterval, getTimerDurations } from "@/utils/timer";
 import { Settings } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Toast } from "@/components/ui/toast";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const { toast } = Toast;
 
@@ -89,13 +90,15 @@ const PomoSettings = () => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          icon={<Settings className="size-5" />}
-          variant="secondary"
-          className="rounded-full w-10 !h-10"
-        />
-      </PopoverTrigger>
+      <Tooltip content="Pomodoro Settings" side="top" align="end">
+        <PopoverTrigger asChild>
+          <Button
+            icon={<Settings className="size-5" />}
+            variant="secondary"
+            className="rounded-full w-10 !h-10"
+          />
+        </PopoverTrigger>
+      </Tooltip>
       <PopoverContent className="min-w-80 sm:w-100  md:w-lg mx-8 px-6 border-border shadow-lg">
         <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">

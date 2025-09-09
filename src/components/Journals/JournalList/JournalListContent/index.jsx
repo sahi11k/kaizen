@@ -9,6 +9,7 @@ import { FileText, SquarePen } from "lucide-react";
 import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import Button from "@/components/ui/button";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const groupByMonth = (journals = []) => {
   const byMonth = journals.reduce((acc, j) => {
@@ -64,16 +65,18 @@ const JournalListContent = () => {
         <div>
           <span className="heading-3 mr-1">Journals</span>
         </div>
-        <Button
-          icon={<SquarePen className="size-4" />}
-          size="sm"
-          onClick={() => {
-            setCurrentJournal(null);
-          }}
-          className="hidden md:flex"
-        >
-          New
-        </Button>
+        <Tooltip content="New Journal">
+          <Button
+            icon={<SquarePen className="size-4" />}
+            size="sm"
+            onClick={() => {
+              setCurrentJournal(null);
+            }}
+            className="hidden md:flex"
+          >
+            New
+          </Button>
+        </Tooltip>
       </div>
       <div className="h-full overflow-y-auto scrollbar-thin -mx-4 xl:-mx-6">
         <div className="">

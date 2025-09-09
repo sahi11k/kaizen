@@ -2,8 +2,9 @@ import React from "react";
 import { Link, useLocation } from "react-router";
 import { Logo } from "@/components/ui/logo";
 import { SIDEBAR_LINKS } from "@/constants/sidebar";
+import { Tooltip } from "@/components/ui/tooltip";
 
-const SidebarContent = ({ isCollapsed }) => {
+const SidebarContent = ({ isCollapsed, setOpen, isMobile = false }) => {
   return (
     <>
       <div className="h-16 flex justify-between items-center">
@@ -22,6 +23,8 @@ const SidebarContent = ({ isCollapsed }) => {
             label={link.label}
             icon={link.icon}
             isCollapsed={isCollapsed}
+            setOpen={setOpen}
+            isMobile={isMobile}
           />
         ))}
       </ul>
@@ -29,22 +32,25 @@ const SidebarContent = ({ isCollapsed }) => {
   );
 };
 
-const LinkItem = ({ to, label, icon, isCollapsed }) => {
+const LinkItem = ({ to, label, icon, isCollapsed, setOpen, isMobile }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
   return (
     <Link to={to} key={to}>
-      <li
-        className={`p-2 rounded-lg hover:bg-sidebar-accent flex items-center gap-2 ${
-          isActive
-            ? "bg-primary/5 text-primary font-semibold hover:bg-primary/5"
-            : "text-sidebar-foreground"
-        }`}
-        title={label}
-      >
-        <span className="">{icon}</span>
-        <span hidden={isCollapsed}>{label}</span>
-      </li>
+      <Tooltip content={isCollapsed ? label : null} side="right">
+        <li
+          className={`p-2 rounded-lg hover:bg-sidebar-accent flex items-center gap-2 ${
+            isActive
+              ? "bg-primary/5 text-primary font-semibold hover:bg-primary/5"
+              : "text-sidebar-foreground"
+          }`}
+          onClick={() => isMobile && setOpen((prev) => !prev)}
+        >
+          <span className="">{icon}</span>
+
+          <span hidden={isCollapsed}>{label}</span>
+        </li>
+      </Tooltip>
     </Link>
   );
 };

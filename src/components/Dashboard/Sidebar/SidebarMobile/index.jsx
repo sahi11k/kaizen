@@ -6,6 +6,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { Tooltip } from "@/components/ui/tooltip";
 import { Menu, PanelLeftClose } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -31,22 +32,30 @@ const SidebarMobile = () => {
 
   return (
     <Drawer direction="left" open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button
-          variant="icon"
-          className="block xl:hidden -ml-2"
-          icon={<Menu className="size-6" />}
-        />
-      </DrawerTrigger>
+      <Tooltip content="Open Sidebar" side="bottom" align="end">
+        <DrawerTrigger asChild>
+          <Button
+            variant="icon"
+            className="block xl:hidden -ml-2"
+            icon={<Menu className="size-6" />}
+          />
+        </DrawerTrigger>
+      </Tooltip>
       <DrawerContent className="!w-72 ">
         <aside className="px-6 flex flex-col space-y-6 h-full">
-          <SidebarContent isCollapsed={false} />
+          <SidebarContent
+            isCollapsed={false}
+            setOpen={setOpen}
+            isMobile={true}
+          />
         </aside>
-        <DrawerClose className="absolute top-3.5 right-4" asChild>
-          <Button variant="icon" className="-mr-2">
-            <PanelLeftClose />
-          </Button>
-        </DrawerClose>
+        <Tooltip content="Close Sidebar" side="bottom" align="end">
+          <DrawerClose className="absolute top-3.5 right-4" asChild>
+            <Button variant="icon" className="-mr-2">
+              <PanelLeftClose />
+            </Button>
+          </DrawerClose>
+        </Tooltip>
       </DrawerContent>
     </Drawer>
   );
