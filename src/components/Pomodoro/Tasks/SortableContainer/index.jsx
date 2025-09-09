@@ -18,7 +18,6 @@ import {
 import {
   arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import TaskItem from "@/components/Pomodoro/Tasks/TaskItem";
@@ -29,9 +28,8 @@ const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
   const items = tasks.map((task) => task.id);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 5 },
     })
   );
 
