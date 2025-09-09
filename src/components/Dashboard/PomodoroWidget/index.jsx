@@ -16,21 +16,9 @@ const PomodoroWidget = () => {
       </div>
       <div className={`card__body ${styles.pomodoroWidgetBody}`}>
         <div className={styles.sessionInsights}>
-          <SessionInsightItem
-            icon={<Clock />}
-            title="Focus Time"
-            value="10 hrs"
-          />
-          <SessionInsightItem
-            icon={<Coffee />}
-            title="Break Time"
-            value="10 hrs"
-          />
-          <SessionInsightItem
-            icon={<CheckCircle />}
-            title="Sessions Done"
-            value="10"
-          />
+          <SessionInsightItem icon={<Clock />} value="10 hrs" />
+          <SessionInsightItem icon={<Coffee />} value="10 hrs" />
+          <SessionInsightItem icon={<CheckCircle />} value="10" />
         </div>
 
         <div className={styles.activePomodoroSession}>

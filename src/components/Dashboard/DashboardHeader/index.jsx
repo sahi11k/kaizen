@@ -21,6 +21,7 @@ import { Toast } from "@/components/ui/toast";
 import { STATUS } from "@/constants/db";
 import { getUserDisplayName } from "@/utils/auth";
 import { SidebarMobile } from "@/components/Dashboard/Sidebar";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const { toast } = Toast;
 
@@ -46,12 +47,19 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
 
   return (
     <div className="h-16 px-4 xl:px-6 flex items-center justify-between border-b border-border sticky top-0 bg-background z-10">
-      <Button
-        onClick={handleCollapse}
-        variant="icon"
-        className="hidden xl:flex -ml-2"
-        icon={isCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
-      />
+      <Tooltip
+        content={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+        side="right"
+        arrow={false}
+      >
+        <Button
+          onClick={handleCollapse}
+          variant="icon"
+          className="hidden xl:flex -ml-2"
+          icon={isCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
+        />
+      </Tooltip>
+
       <SidebarMobile />
       <div className="flex items-center gap-2 xl:gap-6">
         <Button variant="icon">
@@ -72,7 +80,10 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
               <ChevronDown className="text-muted-foreground mt-1 size-5" />
             </span>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="border-border shadow-md w-30 font-medium">
+          <DropdownMenuContent
+            className="border-border shadow-md w-30 font-medium"
+            align="end"
+          >
             {/* <Link to="/dashboard/settings">
               <DropdownMenuItem className="cursor-pointer">
                 Settings
