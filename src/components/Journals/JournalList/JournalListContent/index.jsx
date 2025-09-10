@@ -4,7 +4,6 @@ import useJournalsStore from "@/store/journals";
 import useAuthStore from "@/store/auth";
 import { fetchJournals } from "@/db/apis/journals";
 
-import { PAGINATION } from "@/constants/db";
 import { FileText, SquarePen } from "lucide-react";
 import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -37,11 +36,7 @@ const JournalListContent = () => {
     const loadJournals = async () => {
       if (!user?.id) return;
       setIsLoading(true);
-      const response = await fetchJournals(
-        user.id,
-        0,
-        PAGINATION.JOURNALS_PAGE_SIZE
-      );
+      const response = await fetchJournals(user.id);
       setJournals(response.data);
       setIsLoading(false);
     };

@@ -100,7 +100,11 @@ const TaskItem = ({
             : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
         </div>
       </div>
-      <TaskMoreOptions onEdit={onEdit} onDelete={onRemove} />
+      <TaskMoreOptions
+        onEdit={onEdit}
+        onDelete={onRemove}
+        className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity"
+      />
     </li>
   );
 };

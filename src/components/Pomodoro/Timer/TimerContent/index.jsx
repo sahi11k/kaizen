@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-// import PlayIcon from "@/assets/icons/play.svg?react";
-// import NextIcon from "@/assets/icons/next.svg?react";
-// import ResetIcon from "@/assets/icons/reset.svg?react";
-// import StopIcon from "@/assets/icons/stop.svg?react";
+import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
+import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
+import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
@@ -13,15 +12,7 @@ import useAuthStore from "@/store/auth";
 import { Button } from "@/components/ui/button";
 import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Coffee,
-  Leaf,
-  Play,
-  SkipForward,
-  Square,
-  TimerIcon,
-  TimerResetIcon,
-} from "lucide-react";
+import { Play, SkipForward, Square, TimerResetIcon } from "lucide-react";
 import { getLongBreakInterval, getTimerDurations } from "@/utils/timer";
 import PomoSettings from "@/components/Pomodoro/PomoSettings";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -32,17 +23,23 @@ const TABS = [
   {
     key: POMODORO_TAB,
     label: "Pomodoro",
-    icon: <TimerIcon className="size-5 mr-1 hidden sm:block" />,
+    icon: (
+      <HourglassFilled className="size-5 mr-1 hidden sm:block fill-current" />
+    ),
   },
   {
     key: SHORT_BREAK_TAB,
     label: "Short Break",
-    icon: <Coffee className="size-5 mr-1 hidden sm:block" />,
+    icon: (
+      <HourglassHalf className="size-5 mr-1 hidden sm:block fill-current" />
+    ),
   },
   {
     key: LONG_BREAK_TAB,
     label: "Long Break",
-    icon: <Leaf className="size-5 mr-1 hidden sm:block" />,
+    icon: (
+      <HourglassOutline className="size-5 mr-1 hidden sm:block fill-current" />
+    ),
   },
 ];
 

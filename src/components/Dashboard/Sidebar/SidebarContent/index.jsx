@@ -19,12 +19,10 @@ const SidebarContent = ({ isCollapsed, setOpen, isMobile = false }) => {
         {SIDEBAR_LINKS.map((link) => (
           <LinkItem
             key={link.to}
-            to={link.to}
-            label={link.label}
-            icon={link.icon}
             isCollapsed={isCollapsed}
             setOpen={setOpen}
             isMobile={isMobile}
+            {...link}
           />
         ))}
       </ul>
@@ -32,22 +30,29 @@ const SidebarContent = ({ isCollapsed, setOpen, isMobile = false }) => {
   );
 };
 
-const LinkItem = ({ to, label, icon, isCollapsed, setOpen, isMobile }) => {
+const LinkItem = ({
+  to,
+  label,
+  icon,
+  iconFilled,
+  isCollapsed,
+  setOpen,
+  isMobile,
+}) => {
   const location = useLocation();
   const isActive = location.pathname === to;
   return (
     <Link to={to} key={to}>
       <Tooltip content={isCollapsed ? label : null} side="right">
         <li
-          className={`p-2 rounded-lg hover:bg-sidebar-accent flex items-center gap-2 ${
+          className={`p-2 rounded-lg hover:bg-sidebar-accent font-medium flex items-center gap-2 ${
             isActive
-              ? "bg-primary/5 text-primary font-semibold hover:bg-primary/5"
+              ? "bg-primary/5 text-primary hover:bg-primary/5"
               : "text-sidebar-foreground"
           }`}
           onClick={() => isMobile && setOpen((prev) => !prev)}
         >
-          <span className="">{icon}</span>
-
+          <span className="">{isActive ? iconFilled : icon}</span>
           <span hidden={isCollapsed}>{label}</span>
         </li>
       </Tooltip>

@@ -54,10 +54,10 @@
 :root {
   /* Base text & backgrounds */
   --background: oklch(98.5% 0 0); /* near-white page background */
-  --foreground: oklch(14.5% 0 0); /* primary body text (dark) */
+  --foreground: oklch(20.5% 0 0); /* primary body text (dark) */
 
   /* Brand */
-  --primary: #1d4145; /* deep teal / brand */
+  --primary: oklch(38.6% 0.063 188.416); /* deep teal / brand */
   --primary-foreground: oklch(98.5% 0 0); /* white text on primary */
 
   /* Accent / secondary (peach) */
