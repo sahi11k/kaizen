@@ -50,6 +50,7 @@ const Tooltip = ({
   children,
   side = "top",
   align = "center",
+  contentClassName = "hidden lg:block",
   ...props
 }) => {
   if (content === null) {
@@ -58,7 +59,12 @@ const Tooltip = ({
   return (
     <ShadTooltip {...props}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent sideOffset={sideOffset} side={side} align={align}>
+      <TooltipContent
+        sideOffset={sideOffset}
+        side={side}
+        align={align}
+        className={contentClassName}
+      >
         {content}
       </TooltipContent>
     </ShadTooltip>
