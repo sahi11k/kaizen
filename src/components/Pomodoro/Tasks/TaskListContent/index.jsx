@@ -98,7 +98,7 @@ const TaskListContent = () => {
     }
 
     setTasks([...tasks, ...res.data]);
-    toast.success("Task created successfully");
+    toast.success("Task Created");
     handleCancel();
   };
 
@@ -115,7 +115,7 @@ const TaskListContent = () => {
     }
 
     updateTaskInStore(res.data[0]);
-    toast.success("Task updated successfully");
+    toast.success("Task Updated");
     handleCancel();
   };
 
@@ -135,7 +135,7 @@ const TaskListContent = () => {
     if (currentTask?.id === taskId) {
       setCurrentTask(null);
     }
-    toast.success("Task deleted successfully");
+    toast.success("Task Deleted");
   };
 
   const taskCompleteHandler = async (taskId) => {
@@ -151,7 +151,7 @@ const TaskListContent = () => {
       return toast.error(res.error);
     }
     updateTaskInStore(res.data[0]);
-    toast.success("Task updated successfully");
+    toast.success("Task Updated");
   };
 
   const taskEditHandler = (task) => {
@@ -180,7 +180,7 @@ const TaskListContent = () => {
     }
     const newTasks = res.data?.slice() || [];
     currentOrder.current = newTasks.map((task) => task.id);
-    toast.success("Task order updated successfully");
+    toast.success("Task Order Updated");
     setOrderChanged(false);
     setTasks(newTasks);
     setReorderLoading(false);

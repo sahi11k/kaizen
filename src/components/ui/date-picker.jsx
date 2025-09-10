@@ -22,6 +22,8 @@ const DatePicker = ({
   format = "LL",
   showIcon = true,
   tooltip,
+  side = "bottom",
+  align = "center",
 }) => {
   const [date, setDate] = useState(new Date());
 
@@ -55,7 +57,11 @@ const DatePicker = ({
           </Button>
         </PopoverTrigger>
       </Tooltip>
-      <PopoverContent className={cn("w-auto p-0", popoverClassName)}>
+      <PopoverContent
+        className={cn("w-auto p-0", popoverClassName)}
+        side={side}
+        align={align}
+      >
         <Calendar mode="single" selected={date} onSelect={handleDateChange} />
       </PopoverContent>
     </Popover>
