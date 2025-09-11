@@ -90,16 +90,17 @@ const PomoSettings = () => {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <Tooltip content="Pomodoro Settings" side="top" align="end">
+      <Tooltip content="Pomodoro Settings">
         <PopoverTrigger asChild>
           <Button
             icon={<Settings className="size-5" />}
-            variant="secondary"
-            className="rounded-full w-10 !h-10"
+            className="rounded-full w-12 !h-12"
+            variant="icon"
+            aria-label="Pomodoro Settings"
           />
         </PopoverTrigger>
       </Tooltip>
-      <PopoverContent className="min-w-80 sm:w-100  md:w-lg mx-8 px-6 border-border shadow-lg">
+      <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-lg bg-background">
         <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
           <FormItem

@@ -9,15 +9,25 @@ import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import Button from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
+import { deepCopy } from "@/utils/jsUtils";
+import { useShallow } from "zustand/react/shallow";
+import { STATUS } from "@/constants/db";
 
 const groupByMonth = (journals = []) => {
-  const byMonth = journals.reduce((acc, j) => {
+  const sortedJournals = deepCopy(journals);
+  sortedJournals.sort(
+    (a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf()
+  );
+
+  const byMonth = sortedJournals.reduce((acc, j) => {
     const key = dayjs(j.date).format("YYYY-MM");
     if (!acc[key]) acc[key] = [];
     acc[key].push(j);
     return acc;
   }, {});
+
   const keys = Object.keys(byMonth).sort((a, b) => (a > b ? -1 : 1));
+
   return keys.map((k) => ({
     key: k,
     label: dayjs(k + "-01").format("MMMM YYYY"),
@@ -26,9 +36,25 @@ const groupByMonth = (journals = []) => {
 };
 
 const JournalListContent = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const { journals, setJournals, currentJournal, setCurrentJournal } =
-    useJournalsStore();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    journals,
+    setJournals,
+    currentJournal,
+    setCurrentJournal,
+    journalsFetchStatus,
+    setJournalsFetchStatus,
+  } = useJournalsStore(
+    useShallow((state) => ({
+      journals: state.journals,
+      setJournals: state.setJournals,
+      setCurrentJournal: state.setCurrentJournal,
+      currentJournal: state.currentJournal,
+      journalsFetchStatus: state.journalsFetchStatus,
+      setJournalsFetchStatus: state.setJournalsFetchStatus,
+    }))
+  );
 
   const { user } = useAuthStore();
 
@@ -39,10 +65,13 @@ const JournalListContent = () => {
       const response = await fetchJournals(user.id);
       setJournals(response.data);
       setIsLoading(false);
+      setJournalsFetchStatus(STATUS.FETCHED);
     };
 
-    loadJournals();
-  }, [setJournals, user?.id]);
+    if (journalsFetchStatus === STATUS.LOADING) {
+      loadJournals();
+    }
+  }, [setJournals, user?.id, journalsFetchStatus, setJournalsFetchStatus]);
 
   const handleJournalClick = (journal) => {
     if (currentJournal?.id === journal.id) {
