@@ -221,7 +221,7 @@ const TimerContent = () => {
           </div>
         </div>
       )}
-      <div className="flex justify-center items-center gap-6 relative">
+      <div className="flex justify-center items-center gap-6 relative py-2 lg:py-4">
         <Tooltip content="Reset Timer">
           <Button
             onClick={resetTimer}
@@ -248,18 +248,7 @@ const TimerContent = () => {
             </span>
           </Button>
         </Tooltip>
-        <Tooltip content="Skip Timer">
-          <Button
-            onClick={skipTimer}
-            icon={<SkipForward />}
-            variant="icon"
-            className="rounded-full w-12 !h-12"
-            aria-label="Skip Timer"
-          />
-        </Tooltip>
-        <div className="absolute right-4 xl:right-8">
-          <PomoSettings />
-        </div>
+        <PomoSettings />
       </div>
     </>
   );

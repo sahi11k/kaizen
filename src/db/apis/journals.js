@@ -26,8 +26,7 @@ export const fetchJournals = async (userId) => {
   let res = await supabase
     .from(SUPABASE_TABLES.JOURNALS)
     .select("*")
-    .eq("created_by", userId)
-    .order("date", { ascending: false });
+    .eq("created_by", userId);
 
   res = handleResponse({
     response: res,
@@ -81,5 +80,28 @@ export const updateJournal = async (payload = {}, userId) => {
     },
     errorMessage: "Journal update failed",
   });
+  return res;
+};
+
+export const saveJournal = async (payload = {}, userId) => {
+  if (!userId) {
+    return { error: "User authentication required" };
+  }
+
+  const payloadToUpsert = { ...payload, created_by: userId };
+  let res = await supabase
+    .from(SUPABASE_TABLES.JOURNALS)
+    .upsert(payloadToUpsert, {
+      onConflict: "id",
+      ignoreDuplicates: false,
+    })
+    .select()
+    .single();
+
+  res = handleResponse({
+    response: res,
+    errorMessage: "Failed to save journal",
+  });
+
   return res;
 };
