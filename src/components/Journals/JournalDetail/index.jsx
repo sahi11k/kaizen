@@ -1,15 +1,8 @@
-import { Button } from "@/components/ui/button";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useEffect, useState } from "react";
-import {
-  createJournal,
-  deleteJournal,
-  updateJournal,
-} from "@/db/apis/journals";
+import { saveJournal } from "@/db/apis/journals";
 import useAuthStore from "@/store/auth";
-import { Toast } from "@/components/ui/toast";
 import useJournalsStore from "@/store/journals";
-import { CREATE } from "@/constants/global";
 import dayjs from "dayjs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,10 +12,10 @@ import EmptyJournal from "../EmptyJournal";
 import {
   AUTO_SAVE_DEBOUNCE_TIME,
   AUTO_SAVE_STATUS,
+  DATEPICKER_DATE_FORMAT,
   DEFAULT_JOURNAL_STATE,
 } from "@/constants/journals";
-
-const { toast } = Toast;
+import { CloudAlertIcon, CloudCheck, RefreshCcw } from "lucide-react";
 
 const JournalDetail = () => {
   const { user } = useAuthStore();
@@ -36,8 +29,7 @@ const JournalDetail = () => {
 
   const [formValues, setFormValues] = useState(DEFAULT_JOURNAL_STATE);
 
-  const [isSaving, setIsSaving] = useState(AUTO_SAVE_STATUS.PENDING);
-  const [mode, setMode] = useState(CREATE);
+  const [saveStatus, setSaveStatus] = useState(AUTO_SAVE_STATUS.PENDING);
 
   useEffect(() => {
     if (currentJournal) {
@@ -47,78 +39,42 @@ const JournalDetail = () => {
         date: currentJournal.date,
       });
     }
-  }, [currentJournal]);
+  }, [currentJournal?.id]);
 
-  // const removeJournal = async (journalId) => {
-  //   const res = await deleteJournal(journalId, user.id);
-  //   if (res.error) {
-  //     return toast.error(res.error);
-  //   }
-  //   const updatedJournals = journals.filter((j) => j.id !== journalId);
-  //   setJournals(updatedJournals);
-  //   toast.success("Journal deleted successfully");
-  //   // handleReset();
-  // };
-
-  const handleSubmit = async (payload) => {
-    if (mode === CREATE) {
-      await handleCreate(payload);
-    } else {
-      await handleUpdate();
-    }
-  };
-
-  const handleUpdate = async () => {
-    const res = await updateJournal(
-      {
-        ...currentJournal,
-        ...formValues,
-        date: dayjs(formValues.date).format("YYYY-MM-DD"),
-      },
-      user.id
-    );
+  const handleSave = async (payload) => {
+    const res = await saveJournal(payload, user.id);
     if (res.error) {
-      return toast.error(res.error);
-    }
-    updateJournalInStore(res.data[0]);
-    setCurrentJournal(res.data[0]);
-    toast.success("Journal updated successfully");
-  };
-
-  const handleCreate = async (payload) => {
-    const res = await createJournal(
-      {
-        ...payload,
-        date: dayjs(formValues.date).format("YYYY-MM-DD"),
-      },
-      user.id
-    );
-    if (res.error) {
-      setIsSaving(AUTO_SAVE_STATUS.ERROR);
+      setSaveStatus(AUTO_SAVE_STATUS.ERROR);
       return;
     }
-    setIsSaving(AUTO_SAVE_STATUS.SAVED);
+    setSaveStatus(AUTO_SAVE_STATUS.SAVED);
+    updateJournalInStore(res.data[0]);
+    setCurrentJournal(res.data[0]);
   };
 
   const debouncedSave = useMemo(
     () =>
-      debounce((value) => {
-        setIsSaving(AUTO_SAVE_STATUS.SAVING);
-        handleSubmit(value);
+      debounce((payload) => {
+        setSaveStatus(AUTO_SAVE_STATUS.SAVING);
+        handleSave(payload);
       }, AUTO_SAVE_DEBOUNCE_TIME),
     []
   );
 
-  const handleContentChange = (e) => {
-    const payload = { ...formValues, content: e.target.value };
-    setFormValues(payload);
-    debouncedSave(payload);
+  const handleChange = (key, value) => {
+    setFormValues((prev) => ({ ...prev, [key]: value }));
+    debouncedSave({ ...currentJournal, ...formValues });
   };
 
   const handleNewJournalClick = () => {
-    setCurrentJournal(DEFAULT_JOURNAL_STATE);
-    setJournals([...journals, DEFAULT_JOURNAL_STATE]);
-    setMode(CREATE);
+    const unsavedJournal = journals.find((j) => !j.created_at);
+    if (unsavedJournal) {
+      setCurrentJournal(unsavedJournal);
+      return;
+    }
+    const newJournal = { ...DEFAULT_JOURNAL_STATE, id: crypto.randomUUID() };
+    setCurrentJournal(newJournal);
+    setJournals([...journals, newJournal]);
   };
 
   if (!currentJournal) {
@@ -128,21 +84,22 @@ const JournalDetail = () => {
   return (
     <div className="hidden md:flex h-full flex-1  px-6 xl:px-24 flex flex-col">
       <div className="flex flex-col  flex-1  py-4 h-full ">
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center justify-between">
           <DatePicker
             defautDate={formValues.date}
-            onDateChange={(date) => setFormValues({ ...formValues, date })}
+            onDateChange={(date) => handleChange("date", date)}
             triggerClassName="border-none !px-0 !text-xs xl:!text-sm font-medium tracking-wide shadow-none text-muted-foreground hover:bg-transparent"
-            format="dddd, MMMM D, YYYY"
+            format={DATEPICKER_DATE_FORMAT}
             tooltip="Click to update"
             showIcon={false}
             popoverClassName="border-border"
             side="bottom"
             align="start"
           />
-          <span className="text-xs italic text-muted-foreground font-medium">
-            {/* {isSaving ? "Saving..." : ""} */}
-          </span>
+          <SavingStatus
+            status={saveStatus}
+            updatedAt={currentJournal.updatedAt}
+          />
         </div>
         <form
           className="flex flex-col flex-1"
@@ -153,9 +110,7 @@ const JournalDetail = () => {
               label="Title"
               placeholder="Give your day a title"
               value={formValues.title}
-              onChange={(e) =>
-                setFormValues({ ...formValues, title: e.target.value })
-              }
+              onChange={(e) => handleChange("title", e.target.value)}
               maxLength={50}
               className="-mt-1 text-2xl xl:!text-3xl !h-auto !font-normal !px-0 border-none  focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent "
             />
@@ -164,12 +119,46 @@ const JournalDetail = () => {
             <Textarea
               placeholder="Write about your day..."
               value={formValues.content}
-              onChange={handleContentChange}
+              onChange={(e) => handleChange("content", e.target.value)}
               className="h-full !px-1 !pt-4 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent resize-none"
             />
           </div>
         </form>
       </div>
+    </div>
+  );
+};
+
+const SavingStatus = ({ status, updatedAt }) => {
+  let icon = null;
+  let text = null;
+
+  if (status === AUTO_SAVE_STATUS.SAVING) {
+    icon = (
+      <RefreshCcw className="size-4 text-muted-foreground cursor-pointer animate-spin" />
+    );
+    text = "Saving";
+  }
+
+  if (status === AUTO_SAVE_STATUS.SAVED) {
+    icon = (
+      <CloudCheck className="size-4 text-muted-foreground cursor-pointer" />
+    );
+
+    text = `Last saved at ${dayjs(updatedAt).format("DD/MM/YYYY HH:mm")}`;
+  }
+
+  if (status === AUTO_SAVE_STATUS.ERROR) {
+    icon = (
+      <CloudAlertIcon className="size-4 text-muted-foreground cursor-pointer" />
+    );
+    text = "Failed to save";
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      {icon}
+      <span className="text-sm text-muted-foreground font-medium">{text}</span>
     </div>
   );
 };

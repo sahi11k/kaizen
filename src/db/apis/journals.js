@@ -1,22 +1,7 @@
 import { SUPABASE_TABLES } from "@/constants/db";
 import { supabase } from "@/db/supabase";
 import { handleResponse } from "@/utils/db";
-
-export const createJournal = async (payload = {}, userId) => {
-  if (!userId) {
-    return { error: "User authentication required" };
-  }
-  const journalPayload = { ...payload, created_by: userId };
-  let res = await supabase
-    .from(SUPABASE_TABLES.JOURNALS)
-    .insert(journalPayload)
-    .select();
-  res = handleResponse({
-    response: res,
-    errorMessage: "Journal creation failed",
-  });
-  return res;
-};
+import dayjs from "dayjs";
 
 export const fetchJournals = async (userId) => {
   if (!userId) {
@@ -59,44 +44,23 @@ export const deleteJournal = async (journalId, userId) => {
   return res;
 };
 
-export const updateJournal = async (payload = {}, userId) => {
-  if (!userId) {
-    return { error: "User authentication required" };
-  }
-
-  const payloadToUpdate = { ...payload };
-  let res = await supabase
-    .from(SUPABASE_TABLES.JOURNALS)
-    .update(payloadToUpdate)
-    .eq("id", payload.id)
-    .eq("created_by", userId)
-    .select();
-
-  const status = res.status === 200 && res.data.length === 0 ? 404 : res.status;
-  res = handleResponse({
-    response: {
-      ...res,
-      status,
-    },
-    errorMessage: "Journal update failed",
-  });
-  return res;
-};
-
 export const saveJournal = async (payload = {}, userId) => {
   if (!userId) {
     return { error: "User authentication required" };
   }
 
-  const payloadToUpsert = { ...payload, created_by: userId };
+  const payloadToUpsert = {
+    ...payload,
+    created_by: userId,
+    date: dayjs(payload.date).format("YYYY-MM-DD"),
+  };
+
   let res = await supabase
     .from(SUPABASE_TABLES.JOURNALS)
     .upsert(payloadToUpsert, {
       onConflict: "id",
-      ignoreDuplicates: false,
     })
-    .select()
-    .single();
+    .select();
 
   res = handleResponse({
     response: res,
