@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import JournalListItem from "@/components/Journals/JournalListItem";
 import useJournalsStore from "@/store/journals";
 import useAuthStore from "@/store/auth";
-import { fetchJournals } from "@/db/apis/journals";
+import { deleteJournal, fetchJournals } from "@/db/apis/journals";
 
 import { FileText, SquarePen } from "lucide-react";
 import dayjs from "dayjs";
@@ -12,6 +12,10 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { deepCopy } from "@/utils/jsUtils";
 import { useShallow } from "zustand/react/shallow";
 import { STATUS } from "@/constants/db";
+import { Toast } from "@/components/ui/toast";
+import { DEFAULT_JOURNAL_STATE } from "@/constants/journals";
+
+const { toast } = Toast;
 
 const groupByMonth = (journals = []) => {
   const sortedJournals = deepCopy(journals);
@@ -81,6 +85,34 @@ const JournalListContent = () => {
     }
   };
 
+  const removeJournal = async (journalId) => {
+    if (journalId && currentJournal?.created_at) {
+      const res = await deleteJournal(journalId, user.id);
+      if (res.error) {
+        return toast.error(res.error);
+      }
+    }
+    const updatedJournals = journals.filter((j) => j.id !== journalId);
+    setJournals(updatedJournals);
+    setCurrentJournal(null);
+    toast.success("Journal deleted successfully");
+  };
+
+  const editJournal = (journal) => {
+    setCurrentJournal(journal);
+  };
+
+  const newJournal = () => {
+    const unsavedJournal = journals.find((j) => !j.created_at);
+    if (unsavedJournal) {
+      setCurrentJournal(unsavedJournal);
+      return;
+    }
+    const newJournal = { ...DEFAULT_JOURNAL_STATE, id: crypto.randomUUID() };
+    setCurrentJournal(newJournal);
+    setJournals([...journals, newJournal]);
+  };
+
   const grouped = useMemo(() => groupByMonth(journals), [journals]);
 
   return (
@@ -93,9 +125,7 @@ const JournalListContent = () => {
           <Button
             icon={<SquarePen className="size-4" />}
             size="sm"
-            onClick={() => {
-              setCurrentJournal(null);
-            }}
+            onClick={newJournal}
             className="hidden md:flex"
           >
             New
@@ -121,6 +151,14 @@ const JournalListContent = () => {
                       handleJournalClick(journal);
                     }}
                     isActive={currentJournal?.id === journal.id}
+                    onRemove={(e) => {
+                      e.stopPropagation();
+                      removeJournal(journal.id);
+                    }}
+                    onEdit={(e) => {
+                      e.stopPropagation();
+                      editJournal(journal);
+                    }}
                   />
                 ))}
               </ul>

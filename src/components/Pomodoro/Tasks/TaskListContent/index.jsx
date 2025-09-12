@@ -251,8 +251,6 @@ const TaskListContent = () => {
     }
   };
 
-  console.info({ tasksFetchStatus, tasks, isLoading });
-
   return (
     <>
       <div className="mt-4 xl:mt-6 pb-2 xl:pb-4 flex items-center justify-between">
