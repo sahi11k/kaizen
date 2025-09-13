@@ -213,11 +213,19 @@ const TimerContent = () => {
       </div>
       {currentTask && (
         <div className="mx-auto bg-muted py-4 px-6 rounded-lg !max-w-[100%] md:!max-w-[50%]">
-          <div className="flex items-center gap-2 justify-center font-semibold">
-            #{currentTask?.completedSessions + 1}
-            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-              {currentTask.title}
-            </span>
+          <div className="flex items-center justify-center gap-2 font-semibold">
+            {currentTab === POMODORO_TAB ? (
+              <>
+                <span className="text-muted-foreground shrink-0">
+                  Session #{currentTask.completedSessions + 1} :
+                </span>
+                <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                  {currentTask.title}
+                </span>
+              </>
+            ) : (
+              <span className="text-muted-foreground">Yay! Break Time</span>
+            )}
           </div>
         </div>
       )}
@@ -257,7 +265,13 @@ const TimerContent = () => {
 const TabContent = ({ timerValue, duration, currentTab }) => {
   const percentage = ((duration - timerValue) / duration) * 100;
   const fillColor =
-    currentTab === POMODORO_TAB ? "var(--primary)" : "var(--secondary)";
+    currentTab === POMODORO_TAB
+      ? "var(--pomodoro-filled)"
+      : "var(--break-filled)";
+  const unfilledColor =
+    currentTab === POMODORO_TAB
+      ? "var(--pomodoro-unfilled)"
+      : "var(--break-unfilled)";
 
   const { minutes, seconds } = getFormattedTime(timerValue);
 
@@ -267,7 +281,7 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            background: `conic-gradient(${fillColor} ${percentage}%, var(--accent) ${percentage}% 100%)`,
+            background: `conic-gradient(${fillColor} ${percentage}%, ${unfilledColor} ${percentage}% 100%)`,
           }}
         />
 

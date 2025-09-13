@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 
 /* Variants (kept mostly as you had them; tweak tokens in your theme) */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 cursor-pointer",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 cursor-pointer",
   {
     variants: {
       variant: {
@@ -24,9 +24,10 @@ const buttonVariants = cva(
         icon: "text-muted-foreground hover:bg-muted hover:text-primary !px-2",
       },
       size: {
-        default: "h-9 px-4 text-sm md:h-10 md:px-5 md:text-base",
-        sm: "h-8 px-3 text-xs md:text-sm rounded-md",
-        lg: "h-11 px-6 text-base md:h-12 md:px-7 md:text-lg",
+        default:
+          "h-9 px-3 py-2 md:h-10 md:px-4 md:py-2 lg:h-11 lg:px-6 lg:py-2 lg:text-base",
+        sm: "h-8 rounded-md px-3 md:h-9 md:px-3 lg:h-9 lg:px-4",
+        lg: "h-10 rounded-md px-6 md:h-11 md:px-8 lg:h-12 lg:px-10 lg:text-base",
       },
     },
     defaultVariants: {
@@ -82,6 +83,7 @@ const Button = React.forwardRef(function Button(
     asChild = false,
     type = "button", // default to button to avoid accidental form submits
     disabled,
+    rounded = false,
     ...props
   },
   ref
@@ -101,7 +103,7 @@ const Button = React.forwardRef(function Button(
       variant={variant}
       size={size}
       type={type}
-      className={cn("rounded-md", className)}
+      className={cn(rounded ? "rounded-full" : "rounded-md", className)}
       disabled={isDisabled}
       aria-busy={loading ? "true" : undefined}
       aria-disabled={isDisabled ? "true" : undefined}

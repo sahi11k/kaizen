@@ -62,11 +62,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
 
       <SidebarMobile />
       <div className="flex items-center gap-2 xl:gap-6">
-        <Button variant="icon">
-          {/* <Moon className="size-6" /> */}
-          {/* <Sun className="size-6" /> */}
-        </Button>
-        {/* <div className="border border-border hidden lg:block h-6" /> */}
+        <div className="border border-border hidden lg:block h-6" />
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-3">
             <Avatar>
