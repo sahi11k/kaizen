@@ -19,7 +19,9 @@ const EmptyJournal = ({ onClick }) => {
         <Button
           onClick={onClick}
           className="mt-2"
-          icon={<SquarePen className="size-4" />}
+          icon={
+            <SquarePen className="size-4 text-secondary" color="currentColor" />
+          }
         >
           New Journal
         </Button>

@@ -5,7 +5,7 @@ import { MoreOptions } from "@/components/ui/more-options";
 const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
   const { title, date, content } = journal;
   const activeClass = isActive
-    ? "bg-primary/5 text-primary hover:bg-primary/5 hover:text-primary"
+    ? "bg-primary-light text-primary hover:bg-primary-light hover:text-primary"
     : "text-muted-foreground";
 
   const onKeyDown = (e) => {

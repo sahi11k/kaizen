@@ -266,7 +266,9 @@ const TaskListContent = () => {
         <Tooltip content="Add task">
           <Button
             onClick={() => setShowModal(true)}
-            icon={<Plus className="size-4" />}
+            icon={
+              <Plus className="size-4 text-secondary" color="currentColor" />
+            }
             size="sm"
             className="hidden md:flex"
           >

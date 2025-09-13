@@ -123,7 +123,12 @@ const JournalListContent = () => {
         </div>
         <Tooltip content="New Journal">
           <Button
-            icon={<SquarePen className="size-4" />}
+            icon={
+              <SquarePen
+                className="size-4 text-secondary"
+                color="currentColor"
+              />
+            }
             size="sm"
             onClick={newJournal}
             className="hidden md:flex"
