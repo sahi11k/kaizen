@@ -17,7 +17,7 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
 
   return (
     <li
-      className={`group flex gap-4 mb-1 px-3 py-2  hover:bg-muted rounded-lg cursor-pointer transition-colors ${activeClass}`}
+      className={`group flex gap-4 mb-1 px-3 py-2  hover:bg-muted rounded-md cursor-pointer transition-colors ${activeClass}`}
       onClick={onClick}
       onKeyDown={onKeyDown}
       role="option"

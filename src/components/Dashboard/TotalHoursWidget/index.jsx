@@ -1,62 +1,61 @@
 import React from "react";
-import styles from "./style.module.css";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-const percentage = 75;
-const totalHours = 100;
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import hoursInvested from "@/assets/illustrations/hours-invested.svg";
+import useTasksStore from "@/store/tasks";
+import { Info } from "lucide-react";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const TotalHoursWidget = () => {
-  const data = {
-    labels: ["Spent", "Remaining"],
-    datasets: [
-      {
-        data: [100 - percentage, percentage],
-        backgroundColor: ["#333", "#666"],
-        borderWidth: 0,
-        circumference: 360,
-        rotation: -90,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: false,
-    cutout: "80%",
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: false },
-    },
-  };
+  const { tasks } = useTasksStore();
+  const totalTimeInvested = getTotalTimeInvested(tasks);
 
   return (
-    <div className={`card ${styles.totalHoursWidget}`}>
-      <div className={`card__header ${styles.totalHoursWidgetHeader}`}>
-        Total Hours Spent
-      </div>
-      <div className={`card__body ${styles.totalHoursWidgetBody}`}>
-        <div className={styles.progressContainer}>
-          <Doughnut data={data} options={options} height={180} width={180} />
-          <div
-            className={styles.progressText}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            <span className={styles.progressTextValue}>
-              {totalHours || 100}
-            </span>
-            <span className={styles.progressTextUnit}>{"H"}</span>
-          </div>
+    <Card className="border-none shadow-none bg-secondary-light text-foreground">
+      <CardContent className="flex items-center justify-center">
+        <div className="w-60 h-60">
+          <img
+            src={hoursInvested}
+            alt="Hours Invested"
+            className="w-full h-full object-cove mix-blend-multiply"
+          />
         </div>
-      </div>
-    </div>
+      </CardContent>
+      <CardFooter className="flex-col">
+        <div className="text-sm text-muted-foreground -mb-1 font-medium flex items-center">
+          Total Time Invested
+          <Tooltip
+            content="Total time invested via pomodoro sessions"
+            contentClassName="w-50"
+            level="image"
+          >
+            <Info className="size-3.5 inline-block ml-2" />
+          </Tooltip>
+        </div>
+        <div className="heading-1">
+          <strong>{totalTimeInvested.value}</strong>
+          <span className="text-muted-foreground heading-2">
+            {totalTimeInvested.unit}
+          </span>
+        </div>
+      </CardFooter>
+    </Card>
   );
+};
+
+const getTotalTimeInvested = (tasks = []) => {
+  const totalMinutes = Array.isArray(tasks)
+    ? tasks.reduce((sum, t) => sum + (Number(t?.timeSpent) || 0), 0)
+    : 0;
+
+  let unit = totalMinutes < 60 ? "m" : "h";
+  const value = unit === "m" ? totalMinutes : totalMinutes / 60;
+
+  let rounded = Number.isInteger(value) ? value : Math.round(value * 10) / 10;
+
+  return {
+    value: rounded === 0 ? "NA" : rounded,
+    unit: rounded === 0 ? "" : unit,
+  };
 };
 
 export default TotalHoursWidget;

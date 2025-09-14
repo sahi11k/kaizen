@@ -3,41 +3,17 @@ import JournalListItem from "@/components/Journals/JournalListItem";
 import useJournalsStore from "@/store/journals";
 import useAuthStore from "@/store/auth";
 import { deleteJournal, fetchJournals } from "@/db/apis/journals";
-
 import { FileText, SquarePen } from "lucide-react";
-import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import Button from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
-import { deepCopy } from "@/utils/jsUtils";
 import { useShallow } from "zustand/react/shallow";
 import { STATUS } from "@/constants/db";
 import { Toast } from "@/components/ui/toast";
 import { DEFAULT_JOURNAL_STATE } from "@/constants/journals";
+import { groupByMonth } from "@/components/Journals/helpers";
 
 const { toast } = Toast;
-
-const groupByMonth = (journals = []) => {
-  const sortedJournals = deepCopy(journals);
-  sortedJournals.sort(
-    (a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf()
-  );
-
-  const byMonth = sortedJournals.reduce((acc, j) => {
-    const key = dayjs(j.date).format("YYYY-MM");
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(j);
-    return acc;
-  }, {});
-
-  const keys = Object.keys(byMonth).sort((a, b) => (a > b ? -1 : 1));
-
-  return keys.map((k) => ({
-    key: k,
-    label: dayjs(k + "-01").format("MMMM YYYY"),
-    items: byMonth[k],
-  }));
-};
 
 const JournalListContent = () => {
   const [isLoading, setIsLoading] = useState(false);

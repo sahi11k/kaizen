@@ -1,6 +1,4 @@
 import React from "react";
-import styles from "./style.module.css";
-import widgetStyles from "../styles.module.css";
 
 import { Bar } from "react-chartjs-2";
 import {
@@ -12,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 
 // register components
 ChartJS.register(
@@ -69,15 +68,14 @@ const ProgressChartWidget = () => {
   };
 
   return (
-    <div className={`card ${styles.progressChartWidget}`}>
-      <div className={`card__header ${styles.progressChartWidgetHeader}`}>
-        <span>Weekly Progress</span>
-        <span className={widgetStyles.tag}> Last 7 Days</span>
-      </div>
-      <div className={`card__body ${styles.progressChartWidgetBody}`}>
+    <Card className="border border-border">
+      <CardHeader className="flex items-center justify-between">
+        Pomodoro Activity
+      </CardHeader>
+      <CardContent>
         <Bar data={data} options={options} />
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

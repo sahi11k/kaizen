@@ -23,6 +23,8 @@
   --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: var(--secondary);
+  --color-secondary-light: var(--secondary-light);
+  --color-secondary-dark: var(--secondary-dark);
   --color-secondary-foreground: var(--secondary-foreground);
 
   /* utility / text */
@@ -51,10 +53,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --color-pomodoro-filled: var(--pomodoro-filled);
-  --color-pomodoro-unfilled: var(--pomodoro-unfilled);
-  --color-break-filled: var(--break-filled);
-  --color-break-unfilled: var(--break-unfilled);
+  --color-pomodoro-filled: var(--primary);
+  --color-pomodoro-unfilled: var(--primary-light);
+  --color-break-filled: var(--secondary-dark);
+  --color-break-unfilled: var(--secondary-light);
 }
 
 :root {
@@ -69,6 +71,8 @@
 
   /* Accent / secondary (peach) */
   --secondary: #ebe8b8;
+  --secondary-light: #ebe8d8;
+  --secondary-dark: #d8d38b;
   --secondary-foreground: oklch(
     20.5% 0 0
   ); /* dark text for use on peach backgrounds */
@@ -106,13 +110,20 @@
   --sidebar-border: oklch(92.2% 0 0);
   --sidebar-ring: oklch(70.8% 0 0);
 
-  --pomodoro-filled: #1c3f3a;
-  --pomodoro-unfilled: #e0e9e9;
-  --break-filled: #ebe8b8;
-  --break-unfilled: rgba(235, 232, 184, 0.4);
+  /* Z-Index Scale */
+  --z-image: 10;
+  --z-header: 200;
+  --z-popover: 700;
+  --z-dropdown: 700;
+  --z-drawer-overlay: 800;
+  --z-drawer: 850;
+  --z-overlay: 900; /* modal overlay */
+  --z-modal: 950; /* modal/dialog content */
+  /* Tooltip tiers */
+  --z-tooltip-image: 300; /* images/cards (above header) */
+  --z-tooltip-header: 400; /* header tooltips (above image tooltips) */
+  --z-tooltip-overlay: 1000; /* tooltips inside overlays/dialogs */
 }
-
-/* (Dark theme overrides removed on request) */
 
 .heading-1 {
   @apply text-5xl md:text-6xl xl:text-7xl font-semibold leading-tight;
