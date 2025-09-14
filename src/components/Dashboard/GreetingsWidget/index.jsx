@@ -1,31 +1,32 @@
 import useAuthStore from "@/store/auth";
 import React from "react";
-import styles from "./style.module.css";
 import CoverImage from "@/assets/images/dashboard_cover.jpg";
+import { getUserDisplayName } from "@/utils/auth";
 
 const GreetingsWidget = () => {
   const { user } = useAuthStore();
-  const displayName = user?.user_metadata?.display_name || "Friend";
+  const displayName = getUserDisplayName(user);
 
   const { greeting, subtitle } = getTimeBasedGreeting();
 
   return (
-    <div className={styles.greetingsWidget}>
-      <div className={styles.greetingsWidget__greetings}>
-        <h1 className={styles.greetingsWidget__greeting}>
-          <span className={styles.greetingsWidget__greetingText}>
-            {greeting},
-          </span>{" "}
-          <span className={styles.greetingsWidget__displayName}>
-            {displayName}!
+    <div className="relative p-6 text-background">
+      <div className="relative z-10">
+        <h1 className="heading-2">
+          <span>{greeting},</span>{" "}
+          <span className="w-[20ch]">
+            {displayName.length > 25
+              ? displayName.slice(0, 25) + "..."
+              : displayName}
           </span>
         </h1>
-        <p className={styles.greetingsWidget__subtitle}>{subtitle}</p>
+        <p className="body-base font-medium">{subtitle}</p>
       </div>
+      <div className="absolute inset-0 bg-black/40"></div>
       <img
         src={CoverImage}
         alt="Greetings Widget"
-        className={styles.greetingsWidget__coverImage}
+        className="absolute inset-0 w-full h-full object-cover -z-10"
       />
     </div>
   );

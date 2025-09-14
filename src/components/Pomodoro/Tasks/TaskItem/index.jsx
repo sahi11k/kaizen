@@ -8,7 +8,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { MoreOptions } from "@/components/ui/more-options";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors bg-background relative";
+  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-md transition-colors bg-background relative";
 const hover = "hover:bg-sidebar-accent";
 const activeClass =
   "bg-primary-light text-primary hover:bg-primary-light hover:text-primary";

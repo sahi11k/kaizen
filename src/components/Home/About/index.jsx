@@ -10,7 +10,7 @@ import {
 import { ABOUT_CARDS } from "@/constants/aboutCards";
 import { cn } from "@/lib/utils";
 import Button from "@/components/ui/button";
-import { ArrowRight, ArrowUpRight, MoveUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const About = () => {
   return (
@@ -34,7 +34,7 @@ const AboutCard = ({ title, description, icon }) => {
   return (
     <Card
       className={cn(
-        "flex-2 flex flex-col gap-8 !p-6 py-6 bg-transparent border border-border rounded-sm shadow-none"
+        "flex-2 flex flex-col gap-8 !p-6 py-6 bg-transparent border border-border shadow-none"
       )}
     >
       <CardHeader>
@@ -52,7 +52,7 @@ const AboutCard = ({ title, description, icon }) => {
         <Button
           variant="outline"
           icon={<ArrowUpRight className="size-4" />}
-          className="rounded-full w-12 h-12"
+          className="rounded-full w-12 !h-12"
         />
       </CardFooter>
     </Card>

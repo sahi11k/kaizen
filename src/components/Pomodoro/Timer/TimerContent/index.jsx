@@ -12,7 +12,7 @@ import useAuthStore from "@/store/auth";
 import { Button } from "@/components/ui/button";
 import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Play, SkipForward, Square, TimerResetIcon } from "lucide-react";
+import { Play, Square, TimerResetIcon } from "lucide-react";
 import { getLongBreakInterval, getTimerDurations } from "@/utils/timer";
 import PomoSettings from "@/components/Pomodoro/PomoSettings";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -120,10 +120,6 @@ const TimerContent = () => {
     setTimerValue(getCurrentTime(currentTab, userSettings));
   };
 
-  const skipTimer = () => {
-    goToNextPhase(true);
-  };
-
   const handleTabChange = (key) => {
     setCurrentTab(key);
     clearTimerInterval();
@@ -160,11 +156,13 @@ const TimerContent = () => {
 
     if (currentTask && user?.id) {
       const completedSessions = currentTask.completedSessions + 1;
+
       const res = await updateTask(
         {
           id: currentTask.id,
           completedSessions,
           completed: completedSessions === currentTask.totalSessions,
+          timeSpent: currentTask.timeSpent + duration / 60,
         },
         user.id
       );
@@ -266,12 +264,12 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
   const percentage = ((duration - timerValue) / duration) * 100;
   const fillColor =
     currentTab === POMODORO_TAB
-      ? "var(--pomodoro-filled)"
-      : "var(--break-filled)";
+      ? "var(--color-pomodoro-filled)"
+      : "var(--color-break-filled)";
   const unfilledColor =
     currentTab === POMODORO_TAB
-      ? "var(--pomodoro-unfilled)"
-      : "var(--break-unfilled)";
+      ? "var(--color-pomodoro-unfilled)"
+      : "var(--color-break-unfilled)";
 
   const { minutes, seconds } = getFormattedTime(timerValue);
 

@@ -127,6 +127,9 @@ const TaskListContent = () => {
     }
 
     updateTaskInStore(res.data[0]);
+    if (currentTask?.id === task.id) {
+      setCurrentTask(res.data[0]);
+    }
     toast.success("Task Updated");
     handleCancel();
   };

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { saveJournal } from "@/db/apis/journals";
 import useAuthStore from "@/store/auth";
 import useJournalsStore from "@/store/journals";
@@ -62,8 +62,16 @@ const JournalDetail = () => {
   );
 
   const handleChange = (key, value) => {
-    setFormValues((prev) => ({ ...prev, [key]: value }));
-    debouncedSave({ ...currentJournal, ...formValues });
+    const payload = {
+      ...formValues,
+      [key]: value,
+    };
+    setFormValues(payload);
+    debouncedSave({
+      ...currentJournal,
+      ...payload,
+      word_count: getWordCount(payload.content),
+    });
   };
 
   const handleNewJournalClick = () => {
@@ -161,6 +169,13 @@ const SavingStatus = ({ status, updatedAt }) => {
       <span className="text-sm text-muted-foreground font-medium">{text}</span>
     </div>
   );
+};
+
+const getWordCount = (content) => {
+  const text = content || "";
+  const trimmed = text.trim();
+  if (!trimmed) return 0;
+  return trimmed.split(/\s+/).length;
 };
 
 export default JournalDetail;
