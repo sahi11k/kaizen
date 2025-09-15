@@ -18,3 +18,13 @@ export const arraysEqual = (arr1, arr2) => {
 
   return true;
 };
+
+export const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};

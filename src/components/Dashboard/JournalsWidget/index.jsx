@@ -1,47 +1,75 @@
+import {
+  getSortedJournals,
+  getTotalWordsWritten,
+  getJournalStreak,
+} from "@/components/Journals/helpers";
+import Button from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import useJournalsStore from "@/store/journals";
+import { getSelfReflectionDate } from "@/components/Journals/helpers";
 import React from "react";
-import styles from "./style.module.css";
-import widgetStyles from "../styles.module.css";
+import { Link } from "react-router";
 
 const JournalsWidget = () => {
-  return (
-    <div className={`card ${styles.journalsWidget}`}>
-      <div className={`card__header ${styles.journalsWidgetHeader}`}>
-        <span>Journals</span>
-        <span className={widgetStyles.tag}>🔥 10 Days Streak</span>
-      </div>
+  const { journals } = useJournalsStore();
+  const sortedJournals = getSortedJournals(journals);
 
-      <div className={`card__body ${styles.journalsWidgetBody}`}>
-        <div className={styles.journalItem}>
-          <div className={styles.journalItemHeader}>
-            <span className={styles.journalItemHeader__title}>
-              Self reflections from yesterday • Aug 17 • Happy 😊
-            </span>
-            <span className={`${styles.journalItemHeader__tags}`}>
-              <span className={styles.journalItemHeader__tag}>#Gratitude</span>
-              <span className={styles.journalItemHeader__tag}>
-                #SelfReflection
-              </span>
-              <span className={styles.journalItemHeader__tag}>
-                #DailyJournal
-              </span>
-            </span>
+  const latestJournal = sortedJournals[0];
+  const totalWordsWritten = getTotalWordsWritten(journals);
+  const journalStreak = getJournalStreak(sortedJournals);
+
+  return (
+    <Card className="border-none shadow-none  h-full">
+      <CardHeader>
+        <CardTitle>
+          {latestJournal
+            ? `Self Reflections from ${getSelfReflectionDate(
+                latestJournal?.created_at
+              )}`
+            : "Take a moment to reflect"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col items-center justify-center flex-1 gap-4">
+        {latestJournal ? (
+          <>
+            <div className="flex-1 line-clamp-4">{latestJournal?.content}</div>
+            <div className="flex items-center justify-between gap-4 w-full">
+              <MetricItem label="Streak" value={journalStreak} />
+              <MetricItem label="Words Written" value={totalWordsWritten} />
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col items-center justify-center flex-1 gap-4">
+            <p className="text-center">
+              Write anything — <br /> a thought, a win, or just how your day
+              felt.
+            </p>
           </div>
-          <div className={styles.journalItemContent}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-            quos. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet Lorem
-            ipsum dolor sit amet consect
-          </div>
-        </div>
-        <div className={styles.addNewJournal}>
-          <span> How are you feeling today?</span>
-          <button className={`btn ${styles.addNewJournal__btn}`}>
-            Write Now
-          </button>
-        </div>
-      </div>
+        )}
+      </CardContent>
+
+      <CardFooter>
+        <Link to="/dashboard/journals" className="w-full block">
+          <Button className="w-full">
+            {latestJournal ? "Take a moment to reflect" : "Write a journal"}
+          </Button>
+        </Link>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const MetricItem = ({ label, value }) => {
+  return (
+    <div className="rounded-md px-6 py-2 flex-1 bg-primary-light">
+      <span className="text-primary font-medium block text-sm">{label}</span>
+      <strong className="text-primary heading-2 !font-bold">{value}</strong>
     </div>
   );
 };

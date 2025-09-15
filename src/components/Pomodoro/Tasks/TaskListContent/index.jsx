@@ -21,6 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MIN_SESSIONS } from "@/constants/pomodoro";
 import { TimerMobile } from "@/components/Pomodoro/Timer";
 import { Tooltip } from "@/components/ui/tooltip";
+import { STATUS } from "@/constants/db";
 
 const { toast } = Toast;
 
@@ -44,30 +45,41 @@ const TaskListContent = () => {
   const currentOrder = useRef([]);
 
   const { user } = useAuthStore();
-  const { tasks, setTasks, setCurrentTask, currentTask, updateTaskInStore } =
-    useTasksStore(
-      useShallow((state) => ({
-        tasks: state.tasks,
-        setTasks: state.setTasks,
-        setCurrentTask: state.setCurrentTask,
-        currentTask: state.currentTask,
-        updateTaskInStore: state.updateTask,
-      }))
-    );
+  const {
+    tasks,
+    setTasks,
+    setCurrentTask,
+    currentTask,
+    updateTaskInStore,
+    tasksFetchStatus,
+    setTasksFetchStatus,
+  } = useTasksStore(
+    useShallow((state) => ({
+      tasks: state.tasks,
+      setTasks: state.setTasks,
+      setCurrentTask: state.setCurrentTask,
+      currentTask: state.currentTask,
+      updateTaskInStore: state.updateTask,
+      tasksFetchStatus: state.tasksFetchStatus,
+      setTasksFetchStatus: state.setTasksFetchStatus,
+    }))
+  );
 
   useEffect(() => {
     const loadTasks = async () => {
       if (!user?.id) return;
-
       setIsLoading(true);
       const tasks = await fetchTasks(user.id);
       setTasks(tasks);
       currentOrder.current = tasks.map((task) => task.id);
       setIsLoading(false);
+      setTasksFetchStatus(STATUS.FETCHED);
     };
 
-    loadTasks();
-  }, [setTasks, user?.id]);
+    if (tasksFetchStatus === STATUS.LOADING) {
+      loadTasks();
+    }
+  }, [setTasks, user?.id, tasksFetchStatus, setTasksFetchStatus]);
 
   const formSubmitHandler = () => {
     if (mode === CREATE) {
@@ -115,6 +127,9 @@ const TaskListContent = () => {
     }
 
     updateTaskInStore(res.data[0]);
+    if (currentTask?.id === task.id) {
+      setCurrentTask(res.data[0]);
+    }
     toast.success("Task Updated");
     handleCancel();
   };
@@ -254,7 +269,9 @@ const TaskListContent = () => {
         <Tooltip content="Add task">
           <Button
             onClick={() => setShowModal(true)}
-            icon={<Plus className="size-4" />}
+            icon={
+              <Plus className="size-4 text-secondary" color="currentColor" />
+            }
             size="sm"
             className="hidden md:flex"
           >

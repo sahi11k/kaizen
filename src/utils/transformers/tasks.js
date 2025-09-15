@@ -5,6 +5,7 @@ const TASK_FIELD_MAPPING = {
   completed_sessions: "completedSessions",
   total_sessions: "totalSessions",
   created_by: "createdBy",
+  time_spent: "timeSpent",
 };
 
 export const transformTasksFromDb = (tasks) => {

@@ -46,11 +46,12 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   };
 
   return (
-    <div className="h-16 px-4 xl:px-6 flex items-center justify-between border-b border-border sticky top-0 bg-background z-10">
+    <div className="h-16 px-4 xl:px-6 flex items-center justify-between border-b border-border sticky top-0 bg-background z-[var(--z-header)]">
       <Tooltip
         content={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
         side="right"
         arrow={false}
+        level="header"
       >
         <Button
           onClick={handleCollapse}
@@ -62,11 +63,6 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
 
       <SidebarMobile />
       <div className="flex items-center gap-2 xl:gap-6">
-        <Button variant="icon">
-          {/* <Moon className="size-6" /> */}
-          {/* <Sun className="size-6" /> */}
-        </Button>
-        {/* <div className="border border-border hidden lg:block h-6" /> */}
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-3">
             <Avatar>

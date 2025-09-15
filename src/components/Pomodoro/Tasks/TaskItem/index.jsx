@@ -4,14 +4,14 @@ import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import TaskMoreOptions from "@/components/Pomodoro/Tasks/TaskMoreOptions";
 import { Tooltip } from "@/components/ui/tooltip";
+import { MoreOptions } from "@/components/ui/more-options";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors bg-background";
-const hover = "hover:bg-muted";
+  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-md transition-colors bg-background relative";
+const hover = "hover:bg-sidebar-accent";
 const activeClass =
-  "bg-primary/5 text-primary hover:bg-primary/5 hover:text-primary";
+  "bg-primary-light text-primary hover:bg-primary-light hover:text-primary";
 const completedClass = "text-muted-foreground opacity-50";
 
 const TaskItem = ({
@@ -34,7 +34,6 @@ const TaskItem = ({
     return cn(base, hover, {
       [activeClass]: isActive,
       [completedClass]: task.completed && !isActive,
-      "opacity-50": task.completed,
     });
   };
 
@@ -67,13 +66,7 @@ const TaskItem = ({
           <Button
             onClick={onComplete}
             variant="icon"
-            icon={
-              task.completed ? (
-                <CheckCircle className="size-5" color="currentColor" />
-              ) : (
-                <CheckCircle2 className="size-5" color="currentColor" />
-              )
-            }
+            icon={<CheckCircle2 className="size-5" color="currentColor" />}
             className={`!p-0 hover:bg-transparent ${
               isActive ? "text-primary" : ""
             }`}
@@ -100,10 +93,18 @@ const TaskItem = ({
             : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
         </div>
       </div>
-      <TaskMoreOptions
-        onEdit={onEdit}
-        onDelete={onRemove}
-        className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity"
+      <MoreOptions
+        triggerClassName="!p-0 w-0 overflow-hidden group-hover:w-auto data-[state=open]:w-auto hover:bg-transparent"
+        contentClassName="border-border"
+        align="end"
+        items={[
+          { label: "Edit", onClick: onEdit },
+          {
+            label: "Delete",
+            onClick: onRemove,
+            className: "hover:!bg-destructive/10 !text-destructive",
+          },
+        ]}
       />
     </li>
   );

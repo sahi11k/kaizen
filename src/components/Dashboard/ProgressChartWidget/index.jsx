@@ -1,6 +1,4 @@
-import React from "react";
-import styles from "./style.module.css";
-import widgetStyles from "../styles.module.css";
+import React, { useEffect, useMemo } from "react";
 
 import { Bar } from "react-chartjs-2";
 import {
@@ -12,8 +10,19 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import useAuthStore from "@/store/auth";
+import { getLastWeekTaskSessions } from "@/db/apis/tasks";
+import useTasksStore from "@/store/tasks";
+import { useShallow } from "zustand/react/shallow";
+import { STATUS } from "@/constants/db";
+import dayjs from "dayjs";
+import { generatePomodoroChartData } from "./data";
+import Button from "@/components/ui/button";
+import { Play } from "lucide-react";
+import { Link } from "react-router";
+import EmptyProgressIllustration from "@/assets/illustrations/empty-progress.svg?react";
 
-// register components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,60 +33,75 @@ ChartJS.register(
 );
 
 const ProgressChartWidget = () => {
-  const data = {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    datasets: [
-      {
-        label: "Focus Hours",
-        data: [2, 4, 3, 5, 6, 4, 7], // your streak/progress data here
-        backgroundColor: "rgba(197, 83, 34, 0.8)", // green-500
-        borderRadius: 8,
-      },
-      {
-        label: "Pomodoro complted",
-        data: [2, 4, 3, 5, 6, 4, 7], // your streak/progress data here
-        backgroundColor: "rgba(34, 197, 113, 0.8)", // green-500
-        borderRadius: 8,
-      },
-    ],
-  };
+  const { user } = useAuthStore();
+  const {
+    setTaskSessions,
+    taskSessionsFetchStatus,
+    setTaskSessionsFetchStatus,
+    taskSessions,
+  } = useTasksStore(
+    useShallow((state) => ({
+      setTaskSessions: state.setTaskSessions,
+      taskSessionsFetchStatus: state.taskSessionsFetchStatus,
+      setTaskSessionsFetchStatus: state.setTaskSessionsFetchStatus,
+      taskSessions: state.taskSessions,
+    }))
+  );
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false, // hide legend if you want minimal look
-      },
-      title: {
-        display: false,
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false,
+  useEffect(() => {
+    const loadSessions = async () => {
+      if (!user?.id) return;
+      const tasks = await getLastWeekTaskSessions(
+        {
+          startDate: dayjs().subtract(7, "day").toISOString(),
+          endDate: dayjs().toISOString(),
         },
-        ticks: { color: "#ccc" },
-      },
-      y: {
-        grid: {
-          color: "rgba(255,255,255,0.1)",
-        },
-        ticks: { color: "#ccc" },
-      },
-    },
-  };
+        user.id
+      );
+      setTaskSessions(tasks.data);
+      setTaskSessionsFetchStatus(STATUS.FETCHED);
+    };
+
+    if (taskSessionsFetchStatus === STATUS.LOADING) {
+      loadSessions();
+    }
+  }, [
+    setTaskSessions,
+    user?.id,
+    taskSessionsFetchStatus,
+    setTaskSessionsFetchStatus,
+  ]);
+
+  const { data, options } = useMemo(() => {
+    return generatePomodoroChartData(taskSessions || []);
+  }, [taskSessions]);
 
   return (
-    <div className={`card ${styles.progressChartWidget}`}>
-      <div className={`card__header ${styles.progressChartWidgetHeader}`}>
-        <span>Weekly Progress</span>
-        <span className={widgetStyles.tag}> Last 7 Days</span>
-      </div>
-      <div className={`card__body ${styles.progressChartWidgetBody}`}>
-        <Bar data={data} options={options} />
-      </div>
-    </div>
+    <Card className="border-none shadow-none h-full">
+      <CardHeader>
+        <CardTitle>Weekly Progress (Last 7 days)</CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1">
+        {taskSessions.length > 0 ? (
+          <div className="h-80">
+            <Bar data={data} options={options} />
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center h-80 gap-6">
+            <div className="w-50 h-50">
+              <EmptyProgressIllustration className="text-primary fill-current" />
+            </div>
+            <p className="text-center">
+              No progress yet — start your first session to unlock your weekly
+              insights!
+            </p>
+            <Link to="/dashboard/pomodoro">
+              <Button>Start Session</Button>
+            </Link>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
