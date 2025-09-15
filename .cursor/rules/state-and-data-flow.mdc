@@ -1,0 +1,20 @@
+---
+alwaysApply: false
+description: State management and data flow conventions using Zustand and transformers
+globs: src/store/*.js,src/components/**/*.jsx
+---
+
+## State & Data Flow
+
+- Global state via Zustand stores in [store](mdc:src/store/)
+  - Tasks: [store/tasks.js](mdc:src/store/tasks.js)
+  - Journals: [store/journals.js](mdc:src/store/journals.js)
+  - Auth/Settings: [store/auth.js](mdc:src/store/auth.js) (if present)
+- Fetch on Dashboard mount: see [pages/Dashboard/index.jsx](mdc:src/pages/Dashboard/index.jsx)
+- Keep API updates in sync with store using store’s `update` helpers
+- Maintain ordering fields like `rank` on sortable resources
+
+### Transformers
+
+- Use transformers for DB↔UI mapping to keep component code in camelCase
+- Add new mapping entries in the relevant transformer file
