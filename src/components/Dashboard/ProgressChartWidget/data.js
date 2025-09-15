@@ -40,7 +40,7 @@ export const generatePomodoroChartData = (sessions = []) => {
       {
         label: "Sessions",
         data: sessionsPerDay,
-        backgroundColor: "#9aa6ac",
+        backgroundColor: "#88aca9",
         borderRadius: 8,
         pointStyle: "circle",
         yAxisID: "ySessions",

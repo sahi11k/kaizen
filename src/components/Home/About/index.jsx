@@ -11,6 +11,7 @@ import { ABOUT_CARDS } from "@/constants/aboutCards";
 import { cn } from "@/lib/utils";
 import Button from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router";
 
 const About = () => {
   return (
@@ -30,7 +31,7 @@ const About = () => {
   );
 };
 
-const AboutCard = ({ title, description, icon }) => {
+const AboutCard = ({ title, description, icon, link }) => {
   return (
     <Card
       className={cn(
@@ -49,11 +50,13 @@ const AboutCard = ({ title, description, icon }) => {
         </CardDescription>
       </CardContent>
       <CardFooter>
-        <Button
-          variant="outline"
-          icon={<ArrowUpRight className="size-4" />}
-          className="rounded-full w-12 !h-12"
-        />
+        <Link to={link}>
+          <Button
+            variant="outline"
+            icon={<ArrowUpRight className="size-4" />}
+            className="rounded-full w-12 !h-12"
+          />
+        </Link>
       </CardFooter>
     </Card>
   );
