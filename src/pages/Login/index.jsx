@@ -4,12 +4,15 @@ import useAuthStore from "@/store/auth";
 import { Navigate } from "react-router";
 import { AUTH_HEADER_TEXT } from "@/constants/auth";
 import AuthFormContainer from "@/components/Auth/AuthFormContainer";
-import { DEFAULT_NAV_ROUTE } from "@/constants/routes";
+import { DEFAULT_NAV_ROUTE, TAB_TITLES } from "@/constants/routes";
+import useTabTitle from "@/hooks/useTabTitle";
 
 const Login = () => {
   const [showOtpScreen, setShowOtpScreen] = useState(false);
   const [showResetPasswordScreen, setShowResetPasswordScreen] = useState(false);
   const { user } = useAuthStore();
+
+  useTabTitle(TAB_TITLES.LOGIN);
 
   if (user) {
     return <Navigate to={DEFAULT_NAV_ROUTE} replace />;

@@ -6,13 +6,13 @@ import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
-import { updateTask } from "@/db/apis/tasks";
+import { addTaskSession, updateTask } from "@/db/apis/tasks";
 import useAuthStore from "@/store/auth";
 
 import { Button } from "@/components/ui/button";
 import { TIMER_CONSTANTS } from "@/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Play, SkipForward, Square, TimerResetIcon } from "lucide-react";
+import { Play, Square, TimerResetIcon } from "lucide-react";
 import { getLongBreakInterval, getTimerDurations } from "@/utils/timer";
 import PomoSettings from "@/components/Pomodoro/PomoSettings";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -57,6 +57,7 @@ const TimerContent = () => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [pomodoroCount, setPomodoroCount] = useState(0);
   const intervalRef = useRef(null);
+  const completingRef = useRef(false);
 
   const [timerValue, setTimerValue] = useGetTimerValue({
     activeTab: currentTab,
@@ -120,17 +121,22 @@ const TimerContent = () => {
     setTimerValue(getCurrentTime(currentTab, userSettings));
   };
 
-  const skipTimer = () => {
-    goToNextPhase(true);
-  };
+  useEffect(() => {
+    if (!currentTask) return;
+    resetTimer();
+  }, [currentTask?.id]);
 
   const handleTabChange = (key) => {
     setCurrentTab(key);
     clearTimerInterval();
   };
 
-  const handleTimerComplete = () => {
-    goToNextPhase(true);
+  const handleTimerComplete = async () => {
+    if (completingRef.current) return;
+    completingRef.current = true;
+    clearTimerInterval();
+    await goToNextPhase(true);
+    completingRef.current = false;
   };
 
   const getNextTab = (tabKey) => {
@@ -160,11 +166,22 @@ const TimerContent = () => {
 
     if (currentTask && user?.id) {
       const completedSessions = currentTask.completedSessions + 1;
+      const completed = completedSessions === currentTask.totalSessions;
+
       const res = await updateTask(
         {
           id: currentTask.id,
           completedSessions,
-          completed: completedSessions === currentTask.totalSessions,
+          completed,
+          timeSpent: currentTask.timeSpent + duration / 60,
+        },
+        user.id
+      );
+      await addTaskSession(
+        {
+          task_id: currentTask.id,
+          duration: duration / 60,
+          status: completed,
         },
         user.id
       );
@@ -213,15 +230,23 @@ const TimerContent = () => {
       </div>
       {currentTask && (
         <div className="mx-auto bg-muted py-4 px-6 rounded-lg !max-w-[100%] md:!max-w-[50%]">
-          <div className="flex items-center gap-2 justify-center font-semibold">
-            #{currentTask?.completedSessions + 1}
-            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-              {currentTask.title}
-            </span>
+          <div className="flex items-center justify-center gap-2 font-semibold">
+            {currentTab === POMODORO_TAB ? (
+              <>
+                <span className="text-muted-foreground shrink-0">
+                  Session #{currentTask.completedSessions + 1} :
+                </span>
+                <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                  {currentTask.title}
+                </span>
+              </>
+            ) : (
+              <span className="text-muted-foreground">Yay! Break Time</span>
+            )}
           </div>
         </div>
       )}
-      <div className="flex justify-center items-center gap-6 relative">
+      <div className="flex justify-center items-center gap-6 relative py-2 lg:py-4">
         <Tooltip content="Reset Timer">
           <Button
             onClick={resetTimer}
@@ -248,18 +273,7 @@ const TimerContent = () => {
             </span>
           </Button>
         </Tooltip>
-        <Tooltip content="Skip Timer">
-          <Button
-            onClick={skipTimer}
-            icon={<SkipForward />}
-            variant="icon"
-            className="rounded-full w-12 !h-12"
-            aria-label="Skip Timer"
-          />
-        </Tooltip>
-        <div className="absolute right-4 xl:right-8">
-          <PomoSettings />
-        </div>
+        <PomoSettings />
       </div>
     </>
   );
@@ -268,7 +282,13 @@ const TimerContent = () => {
 const TabContent = ({ timerValue, duration, currentTab }) => {
   const percentage = ((duration - timerValue) / duration) * 100;
   const fillColor =
-    currentTab === POMODORO_TAB ? "var(--primary)" : "var(--secondary)";
+    currentTab === POMODORO_TAB
+      ? "var(--color-pomodoro-filled)"
+      : "var(--color-break-filled)";
+  const unfilledColor =
+    currentTab === POMODORO_TAB
+      ? "var(--color-pomodoro-unfilled)"
+      : "var(--color-break-unfilled)";
 
   const { minutes, seconds } = getFormattedTime(timerValue);
 
@@ -278,7 +298,7 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            background: `conic-gradient(${fillColor} ${percentage}%, var(--accent) ${percentage}% 100%)`,
+            background: `conic-gradient(${fillColor} ${percentage}%, ${unfilledColor} ${percentage}% 100%)`,
           }}
         />
 

@@ -2,6 +2,7 @@ export const SUPABASE_TABLES = {
   TASKS: "tasks_master",
   JOURNALS: "journals_master",
   USER_SETTINGS: "user_settings_master",
+  TASK_SESSIONS: "task_sessions_master",
 };
 
 export const EMAIL_NOT_VERIFIED_ERROR = "email_not_confirmed";

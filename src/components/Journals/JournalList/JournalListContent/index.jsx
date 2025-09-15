@@ -2,33 +2,39 @@ import React, { useEffect, useMemo, useState } from "react";
 import JournalListItem from "@/components/Journals/JournalListItem";
 import useJournalsStore from "@/store/journals";
 import useAuthStore from "@/store/auth";
-import { fetchJournals } from "@/db/apis/journals";
-
+import { deleteJournal, fetchJournals } from "@/db/apis/journals";
 import { FileText, SquarePen } from "lucide-react";
-import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import Button from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
+import { useShallow } from "zustand/react/shallow";
+import { STATUS } from "@/constants/db";
+import { Toast } from "@/components/ui/toast";
+import { DEFAULT_JOURNAL_STATE } from "@/constants/journals";
+import { groupByMonth } from "@/components/Journals/helpers";
 
-const groupByMonth = (journals = []) => {
-  const byMonth = journals.reduce((acc, j) => {
-    const key = dayjs(j.date).format("YYYY-MM");
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(j);
-    return acc;
-  }, {});
-  const keys = Object.keys(byMonth).sort((a, b) => (a > b ? -1 : 1));
-  return keys.map((k) => ({
-    key: k,
-    label: dayjs(k + "-01").format("MMMM YYYY"),
-    items: byMonth[k],
-  }));
-};
+const { toast } = Toast;
 
 const JournalListContent = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const { journals, setJournals, currentJournal, setCurrentJournal } =
-    useJournalsStore();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    journals,
+    setJournals,
+    currentJournal,
+    setCurrentJournal,
+    journalsFetchStatus,
+    setJournalsFetchStatus,
+  } = useJournalsStore(
+    useShallow((state) => ({
+      journals: state.journals,
+      setJournals: state.setJournals,
+      setCurrentJournal: state.setCurrentJournal,
+      currentJournal: state.currentJournal,
+      journalsFetchStatus: state.journalsFetchStatus,
+      setJournalsFetchStatus: state.setJournalsFetchStatus,
+    }))
+  );
 
   const { user } = useAuthStore();
 
@@ -39,10 +45,13 @@ const JournalListContent = () => {
       const response = await fetchJournals(user.id);
       setJournals(response.data);
       setIsLoading(false);
+      setJournalsFetchStatus(STATUS.FETCHED);
     };
 
-    loadJournals();
-  }, [setJournals, user?.id]);
+    if (journalsFetchStatus === STATUS.LOADING) {
+      loadJournals();
+    }
+  }, [setJournals, user?.id, journalsFetchStatus, setJournalsFetchStatus]);
 
   const handleJournalClick = (journal) => {
     if (currentJournal?.id === journal.id) {
@@ -50,6 +59,34 @@ const JournalListContent = () => {
     } else {
       setCurrentJournal(journal);
     }
+  };
+
+  const removeJournal = async (journalId) => {
+    if (journalId && currentJournal?.created_at) {
+      const res = await deleteJournal(journalId, user.id);
+      if (res.error) {
+        return toast.error(res.error);
+      }
+    }
+    const updatedJournals = journals.filter((j) => j.id !== journalId);
+    setJournals(updatedJournals);
+    setCurrentJournal(null);
+    toast.success("Journal deleted successfully");
+  };
+
+  const editJournal = (journal) => {
+    setCurrentJournal(journal);
+  };
+
+  const newJournal = () => {
+    const unsavedJournal = journals.find((j) => !j.created_at);
+    if (unsavedJournal) {
+      setCurrentJournal(unsavedJournal);
+      return;
+    }
+    const newJournal = { ...DEFAULT_JOURNAL_STATE, id: crypto.randomUUID() };
+    setCurrentJournal(newJournal);
+    setJournals([...journals, newJournal]);
   };
 
   const grouped = useMemo(() => groupByMonth(journals), [journals]);
@@ -62,11 +99,14 @@ const JournalListContent = () => {
         </div>
         <Tooltip content="New Journal">
           <Button
-            icon={<SquarePen className="size-4" />}
+            icon={
+              <SquarePen
+                className="size-4 text-secondary"
+                color="currentColor"
+              />
+            }
             size="sm"
-            onClick={() => {
-              setCurrentJournal(null);
-            }}
+            onClick={newJournal}
             className="hidden md:flex"
           >
             New
@@ -92,6 +132,14 @@ const JournalListContent = () => {
                       handleJournalClick(journal);
                     }}
                     isActive={currentJournal?.id === journal.id}
+                    onRemove={(e) => {
+                      e.stopPropagation();
+                      removeJournal(journal.id);
+                    }}
+                    onEdit={(e) => {
+                      e.stopPropagation();
+                      editJournal(journal);
+                    }}
                   />
                 ))}
               </ul>
