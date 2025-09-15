@@ -10,13 +10,13 @@ const TotalHoursWidget = () => {
   const totalTimeInvested = getTotalTimeInvested(tasks);
 
   return (
-    <Card className="border-none shadow-none bg-secondary-light text-foreground">
+    <Card className="border-none shadow-none bg-secondary/70 text-foreground">
       <CardContent className="flex items-center justify-center">
         <div className="w-60 h-60">
           <img
             src={hoursInvested}
             alt="Hours Invested"
-            className="w-full h-full object-cove mix-blend-multiply"
+            className="w-full h-full"
           />
         </div>
       </CardContent>
