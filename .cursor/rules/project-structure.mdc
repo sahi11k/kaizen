@@ -1,45 +1,24 @@
 ---
 alwaysApply: false
-description: Project structure guide for the Pomodoro app
+description: High-level project structure and key entry points for the Pomodoro app
 ---
 
-# ZenTen Pomodoro App - Project Structure Guide
+## Project Structure Guide
 
-This is a React-based Pomodoro timer application with the following architecture:
+- App is a React SPA using Tailwind, Radix UI, Zustand, and Supabase.
+- Dashboard composition lives in [pages/Dashboard/index.jsx](mdc:src/pages/Dashboard/index.jsx).
+- Reusable UI primitives are in [components/ui](mdc:src/components/ui/).
+- Feature widgets/components live under [components/Dashboard](mdc:src/components/Dashboard/).
+- Pomodoro core lives under [components/Pomodoro](mdc:src/components/Pomodoro/).
+- Global styles and design tokens are in [styles/global.css](mdc:src/styles/global.css).
+- Client state stores live under [store](mdc:src/store/).
+- Supabase APIs live under [db/apis](mdc:src/db/apis/), using tables from [constants/db.js](mdc:src/constants/db.js) and helpers from [utils/db.js](mdc:src/utils/db.js).
+- Data transformers (snake_case ↔ camelCase) live under [utils/transformers](mdc:src/utils/transformers/), with mappings like [tasks.js](mdc:src/utils/transformers/tasks.js) and utilities in [common.js](mdc:src/utils/transformers/common.js).
+- Date utilities live in [utils/date.js](mdc:src/utils/date.js).
 
-## Main Entry Points
+### Notable Dashboard Pieces
 
-- [src/index.jsx](mdc:src/index.jsx) - Application entry point with React StrictMode and RouterProvider
-- [src/router/index.jsx](mdc:src/router/index.jsx) - React Router configuration with protected routes
-- [vite.config.js](mdc:vite.config.js) - Vite build configuration with path aliases (`@` → `src/`)
-
-## Directory Structure
-
-- `src/components/` - Reusable React components organized by feature (Layout, Tasks, Timer, etc.)
-- `src/pages/` - Page-level components (Home, Pomodoro, Profile, Auth pages)
-- `src/store/` - Zustand state management stores (auth.js, tasks.js, journals.js)
-- `src/db/` - Database layer with Supabase client and API functions
-- `src/utils/` - Utilities, constants, transformers, and shared components
-- `src/styles/` - Global CSS with variables and reset styles
-- `src/assets/` - Static assets including SVG icons
-
-## Key Technologies
-
-- **Frontend**: React 19, React Router, CSS Modules
-- **State Management**: Zustand with shallow comparisons
-- **Database**: Supabase with API layer and data transformers
-- **Build Tool**: Vite with path aliases and SVG-as-React components
-- **Styling**: CSS Modules with CSS custom properties (design tokens)
-- **Icons**: SVG files imported as React components via `vite-plugin-svgr`
-
-## Authentication Flow
-
-- Protected routes use [src/router/ProtectedRoute.jsx](mdc:src/router/ProtectedRoute.jsx)
-- Auth state managed in [src/store/auth.js](mdc:src/store/auth.js)
-- Session management through Supabase auth APIs
-
-## Component Organization
-
-- Each component directory contains `index.jsx` and `style.module.css`
-- Sub-components organized in nested directories
-- Feature-based grouping (Tasks, Timer, Layout, etc.)
+- Header: [components/Dashboard/DashboardHeader/index.jsx](mdc:src/components/Dashboard/DashboardHeader/index.jsx)
+- Total Hours: [components/Dashboard/TotalHoursWidget/index.jsx](mdc:src/components/Dashboard/TotalHoursWidget/index.jsx)
+- Journals: [components/Dashboard/JournalsWidget/index.jsx](mdc:src/components/Dashboard/JournalsWidget/index.jsx)
+- Task List: [components/Dashboard/TaskListWidget/index.jsx](mdc:src/components/Dashboard/TaskListWidget/index.jsx)

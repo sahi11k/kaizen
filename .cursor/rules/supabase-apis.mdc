@@ -1,0 +1,19 @@
+---
+alwaysApply: false
+description: Supabase API, transformers, and response handling conventions
+globs: src/db/apis/*.js,src/utils/transformers/*.js
+---
+
+## Supabase API Patterns
+
+- Client: [db/supabase.js](mdc:src/db/supabase.js)
+- Table names: [constants/db.js](mdc:src/constants/db.js)
+- Response shaping: [utils/db.js](mdc:src/utils/db.js) `handleResponse`
+- Transformers map snake_case ↔ camelCase in [utils/transformers](mdc:src/utils/transformers/), e.g. [tasks.js](mdc:src/utils/transformers/tasks.js)
+
+### API Conventions
+
+- Validate `userId` on mutating calls; return `{ error: "User authentication required" }` if missing.
+- Transform payloads to DB shape via transformers before insert/update.
+- Post-process responses via `handleResponse`, then transform back to camelCase.
+- Use explicit `.select()` after inserts/updates when you need returned rows.

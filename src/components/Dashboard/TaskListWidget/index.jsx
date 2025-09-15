@@ -92,7 +92,7 @@ const getPendingTasks = (tasks = []) => {
       count++;
       filteredTasks.push(task);
     }
-    if (count === 4) break;
+    if (count === 5) break;
   }
   return filteredTasks;
 };

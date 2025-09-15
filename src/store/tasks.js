@@ -12,6 +12,14 @@ const useTasksStore = create((set) => ({
     set((state) => ({
       tasks: state.tasks.map((t) => (t.id === task.id ? task : t)),
     })),
+  taskSessions: [],
+  setTaskSessions: (updatedTaskSessions) =>
+    set(() => ({
+      taskSessions: updatedTaskSessions,
+    })),
+  taskSessionsFetchStatus: STATUS.LOADING,
+  setTaskSessionsFetchStatus: (status) =>
+    set(() => ({ taskSessionsFetchStatus: status })),
 }));
 
 export default useTasksStore;

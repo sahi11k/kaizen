@@ -6,7 +6,7 @@ import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 import { useGetTimerValue, getCurrentTime } from "@/hooks/useGetTimerValue";
 import useTasksStore from "@/store/tasks";
 import { useShallow } from "zustand/react/shallow";
-import { updateTask } from "@/db/apis/tasks";
+import { addTaskSession, updateTask } from "@/db/apis/tasks";
 import useAuthStore from "@/store/auth";
 
 import { Button } from "@/components/ui/button";
@@ -57,6 +57,7 @@ const TimerContent = () => {
   const [timerStarted, setTimerStarted] = useState(false);
   const [pomodoroCount, setPomodoroCount] = useState(0);
   const intervalRef = useRef(null);
+  const completingRef = useRef(false);
 
   const [timerValue, setTimerValue] = useGetTimerValue({
     activeTab: currentTab,
@@ -120,13 +121,22 @@ const TimerContent = () => {
     setTimerValue(getCurrentTime(currentTab, userSettings));
   };
 
+  useEffect(() => {
+    if (!currentTask) return;
+    resetTimer();
+  }, [currentTask?.id]);
+
   const handleTabChange = (key) => {
     setCurrentTab(key);
     clearTimerInterval();
   };
 
-  const handleTimerComplete = () => {
-    goToNextPhase(true);
+  const handleTimerComplete = async () => {
+    if (completingRef.current) return;
+    completingRef.current = true;
+    clearTimerInterval();
+    await goToNextPhase(true);
+    completingRef.current = false;
   };
 
   const getNextTab = (tabKey) => {
@@ -156,13 +166,22 @@ const TimerContent = () => {
 
     if (currentTask && user?.id) {
       const completedSessions = currentTask.completedSessions + 1;
+      const completed = completedSessions === currentTask.totalSessions;
 
       const res = await updateTask(
         {
           id: currentTask.id,
           completedSessions,
-          completed: completedSessions === currentTask.totalSessions,
+          completed,
           timeSpent: currentTask.timeSpent + duration / 60,
+        },
+        user.id
+      );
+      await addTaskSession(
+        {
+          task_id: currentTask.id,
+          duration: duration / 60,
+          status: completed,
         },
         user.id
       );

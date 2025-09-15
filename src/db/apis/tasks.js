@@ -121,3 +121,30 @@ export const sortTasks = async (payload = [], userId) => {
   res.data = transformTasksFromDb(res.data);
   return res;
 };
+
+export const addTaskSession = async (payload = {}, userId) => {
+  if (!userId) {
+    return { error: "User authentication required" };
+  }
+  const taskWithUser = { ...payload, created_by: userId };
+  await supabase.from(SUPABASE_TABLES.TASK_SESSIONS).insert(taskWithUser);
+};
+
+export const getLastWeekTaskSessions = async (payload = {}, userId) => {
+  if (!userId) {
+    return { error: "User authentication required" };
+  }
+
+  let res = await supabase
+    .from(SUPABASE_TABLES.TASK_SESSIONS)
+    .select("*")
+    .eq("created_by", userId)
+    .gte("created_at", payload.startDate)
+    .lte("created_at", payload.endDate);
+
+  res = handleResponse({
+    response: res,
+  });
+
+  return res;
+};

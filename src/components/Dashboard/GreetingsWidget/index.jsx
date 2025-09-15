@@ -1,6 +1,6 @@
 import useAuthStore from "@/store/auth";
 import React from "react";
-import CoverImage from "@/assets/images/dashboard_cover.jpg";
+import CoverImage from "@/assets/images/cover.jpg";
 import { getUserDisplayName } from "@/utils/auth";
 
 const GreetingsWidget = () => {
@@ -22,11 +22,11 @@ const GreetingsWidget = () => {
         </h1>
         <p className="body-base font-medium">{subtitle}</p>
       </div>
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/30"></div>
       <img
         src={CoverImage}
         alt="Greetings Widget"
-        className="absolute inset-0 w-full h-full object-cover -z-10"
+        className="absolute inset-0 object-cover object-center w-full h-full -z-10"
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GreetingsWidget from "@/components/Dashboard/GreetingsWidget";
 import JournalsWidget from "@/components/Dashboard/JournalsWidget";
 import ProgressChartWidget from "@/components/Dashboard/ProgressChartWidget";
@@ -15,33 +15,50 @@ import { fetchJournals } from "@/db/apis/journals";
 import useJournalsStore from "@/store/journals";
 import useTabTitle from "@/hooks/useTabTitle";
 import { TAB_TITLES } from "@/constants/routes";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const SPAN_CLASS = {
+  12: "col-span-12",
+  8: "col-span-8",
+  4: "col-span-4",
+};
 
 const CARD_GRID = [
-  { span: 12, content: <GreetingsWidget key="greet" />, key: "greet" },
+  {
+    span: 12,
+    content: <GreetingsWidget key="greet" />,
+    key: "greet",
+    height: "h-40",
+  },
   {
     span: 4,
     content: <TotalHoursWidget key="total-hours" />,
     key: "total-hours",
+    height: "h-100",
   },
   {
     span: 4,
     content: <JournalsWidget key="journal" />,
     key: "journals",
+    height: "h-100",
   },
   {
     span: 4,
     content: <TaskListWidget key="tasks" />,
     key: "tasks",
+    height: "h-100",
   },
   {
     span: 8,
     content: <ProgressChartWidget key="progress" />,
     key: "progress",
+    height: "h-100",
   },
   {
     span: 4,
     content: <TCPWidget key="taskCompletionPercentage" />,
     key: "taskCompletionPercentage",
+    height: "h-100",
   },
 ];
 
@@ -54,6 +71,8 @@ const Dashboard = () => {
       setTasksFetchStatus: state.setTasksFetchStatus,
     }))
   );
+
+  const [loading, setLoading] = useState(true);
 
   useTabTitle(TAB_TITLES.DASHBOARD);
 
@@ -69,8 +88,8 @@ const Dashboard = () => {
   useEffect(() => {
     const loadTasks = async () => {
       if (!user?.id) return;
-      const tasks = await fetchTasks(user.id);
-      setTasks(tasks);
+      const data = await fetchTasks(user.id);
+      setTasks(data);
       setTasksFetchStatus(STATUS.FETCHED);
     };
 
@@ -92,10 +111,24 @@ const Dashboard = () => {
     }
   }, [setJournals, user?.id, journalsFetchStatus, setJournalsFetchStatus]);
 
+  useEffect(() => {
+    if (
+      tasksFetchStatus === STATUS.FETCHED &&
+      journalsFetchStatus === STATUS.FETCHED
+    ) {
+      setLoading(false);
+    }
+  }, [tasksFetchStatus, journalsFetchStatus]);
+
   return (
     <div className="p-6 grid grid-cols-12 gap-6">
-      {CARD_GRID.map(({ span, content, key }) => (
-        <DashboardCard className={`col-span-${span}`} key={key}>
+      {CARD_GRID.map(({ span, content, key, height }) => (
+        <DashboardCard
+          className={SPAN_CLASS[span]}
+          key={key}
+          loading={loading}
+          height={height}
+        >
           {content}
         </DashboardCard>
       ))}
@@ -103,10 +136,16 @@ const Dashboard = () => {
   );
 };
 
-const DashboardCard = ({ children, className }) => {
+const DashboardCard = ({ children, className, loading, height }) => {
   return (
     <div className={cn("rounded-lg overflow-hidden", className)}>
-      {children}
+      {loading ? (
+        <Skeleton
+          className={cn("border-none shadow-none rounded-lg", height)}
+        />
+      ) : (
+        children
+      )}
     </div>
   );
 };

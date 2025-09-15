@@ -9,6 +9,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import useJournalsStore from "@/store/journals";
 import { getSelfReflectionDate } from "@/components/Journals/helpers";
@@ -25,14 +26,15 @@ const JournalsWidget = () => {
 
   return (
     <Card className="border-none shadow-none  h-full">
-      <CardHeader className="font-medium">
-        {latestJournal
-          ? `Self Reflections from ${getSelfReflectionDate(
-              latestJournal?.created_at
-            )}`
-          : "Take a moment to reflect"}
+      <CardHeader>
+        <CardTitle>
+          {latestJournal
+            ? `Self Reflections from ${getSelfReflectionDate(
+                latestJournal?.created_at
+              )}`
+            : "Take a moment to reflect"}
+        </CardTitle>
       </CardHeader>
-
       <CardContent className="flex flex-col items-center justify-center flex-1 gap-4">
         {latestJournal ? (
           <>
