@@ -127,7 +127,17 @@ export const addTaskSession = async (payload = {}, userId) => {
     return { error: "User authentication required" };
   }
   const taskWithUser = { ...payload, created_by: userId };
-  await supabase.from(SUPABASE_TABLES.TASK_SESSIONS).insert(taskWithUser);
+  let res = await supabase
+    .from(SUPABASE_TABLES.TASK_SESSIONS)
+    .insert(taskWithUser)
+    .select();
+
+  res = handleResponse({
+    response: res,
+    errorMessage: "Task session addition failed",
+  });
+
+  return res;
 };
 
 export const getLastWeekTaskSessions = async (payload = {}, userId) => {

@@ -9,8 +9,8 @@ const HeaderMain = () => {
   const { user } = useAuthStore();
 
   return (
-    <header className="flex justify-between items-center p-4 xl:px-16 max-w-8xl mx-auto sticky top-0 bg-background z-10">
-      <Logo size="md" link={true} className="text-primary" />
+    <header className="sticky top-0 inset-x-0 z-50 flex justify-between items-center p-4 md:px-8 xl:px-16 max-w-8xl mx-auto bg-background">
+      <Logo link={true} className="text-primary" />
       {user ? (
         <Link to={DEFAULT_NAV_ROUTE}>
           <Button variant="secondary" rounded>

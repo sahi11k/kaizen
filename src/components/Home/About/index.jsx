@@ -15,14 +15,14 @@ import { Link } from "react-router";
 
 const About = () => {
   return (
-    <div className="flex items-center justify-center max-w-7xl mx-auto gap-16 py-12 flex-col">
+    <div className="flex items-center justify-center max-w-7xl mx-auto gap-16 px-6 lg:px-8 xl:px-0 py-12 flex-col">
       <div className="flex flex-col gap-2 items-center justify-center">
-        <h2 className="heading-2">Everything You Need to Grow</h2>
-        <p className="body-description">
+        <h2 className="heading-2 text-center">Everything You Need to Grow</h2>
+        <p className="body-description text-center">
           Powerful tools designed to support your personal development journey
         </p>
       </div>
-      <div className="flex flex-wrap flex-gap ">
+      <div className="flex flex-wrap flex-gap overflow-x-auto w-full">
         {ABOUT_CARDS.map((card) => {
           return <AboutCard key={card.title} {...card} />;
         })}
@@ -35,8 +35,9 @@ const AboutCard = ({ title, description, icon, link }) => {
   return (
     <Card
       className={cn(
-        "flex-2 flex flex-col gap-8 !p-6 py-6 bg-transparent border border-border shadow-none"
+        "flex-2 flex flex-col gap-8 !p-6 py-6 bg-transparent border border-border shadow-none basis-80"
       )}
+      key={title}
     >
       <CardHeader>
         <CardTitle className="text-muted-foreground size-10 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-[1.25]">

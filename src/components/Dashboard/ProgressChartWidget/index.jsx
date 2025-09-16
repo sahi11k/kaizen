@@ -83,7 +83,7 @@ const ProgressChartWidget = () => {
       </CardHeader>
       <CardContent className="flex-1">
         {taskSessions.length > 0 ? (
-          <div className="h-80">
+          <div className="h-50 md:h-80">
             <Bar data={data} options={options} />
           </div>
         ) : (
