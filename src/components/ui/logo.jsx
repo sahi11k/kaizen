@@ -8,9 +8,9 @@ import { Link } from "react-router";
 const logoVariants = cva("flex items-center gap-2 !no-underline", {
   variants: {
     size: {
-      sm: "text-foreground text-sm font-semibold",
-      md: "text-foreground text-lg md:text-xl xl:text-2xl font-semibold",
-      lg: "text-2xl xl:text-3xl font-semibold",
+      sm: "",
+      md: "",
+      lg: "",
     },
   },
   defaultVariants: {
@@ -31,6 +31,19 @@ const iconVariants = cva("text-primary", {
   },
 });
 
+const textVariants = cva("text-foreground font-semibold leading-none", {
+  variants: {
+    size: {
+      sm: "text-sm md:text-base xl:text-lg",
+      md: "text-lg lg:text-xl xl:text-2xl",
+      lg: "text-2xl xl:text-3xl",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+});
+
 const Logo = ({
   size = "md",
   className = "",
@@ -43,7 +56,7 @@ const Logo = ({
       <span className={cn(iconVariants({ size }), iconClassName)}>
         <LogoIcon className="!w-full !h-full fill-current" />
       </span>
-      {showText && <span>kaïzen</span>}
+      {showText && <span className={cn(textVariants({ size }))}>kaïzen</span>}
     </Button>
   );
 
