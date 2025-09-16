@@ -16,10 +16,9 @@ const FooterMain = () => {
           <div className="flex flex-col gap-2 items-center">
             <span className="heading-3">Navigate</span>
             <div className="flex justify-center flex-col body-description">
-              {/* <Link to="/dashboard">Dashboard</Link> */}
+              <Link to="/dashboard">Dashboard</Link>
               <Link to="/dashboard/pomodoro">Pomodoro</Link>
               <Link to="/dashboard/journals">Journals</Link>
-              <Link to="/dashboard/bookmarks">Bookmarks</Link>
             </div>
           </div>
         </div>

@@ -1,66 +1,16 @@
-import React, { useEffect, useState } from "react";
-import GreetingsWidget from "@/components/Dashboard/GreetingsWidget";
-import JournalsWidget from "@/components/Dashboard/JournalsWidget";
-import ProgressChartWidget from "@/components/Dashboard/ProgressChartWidget";
-import TotalHoursWidget from "@/components/Dashboard/TotalHoursWidget";
-import TaskListWidget from "@/components/Dashboard/TaskListWidget";
-import TCPWidget from "@/components/Dashboard/TCPWidget";
-import { cn } from "@/lib/utils";
-import useTasksStore from "@/store/tasks";
-import { useShallow } from "zustand/react/shallow";
-import useAuthStore from "@/store/auth";
-import { fetchTasks } from "@/db/apis/tasks";
-import { STATUS } from "@/constants/db";
-import { fetchJournals } from "@/db/apis/journals";
-import useJournalsStore from "@/store/journals";
-import useTabTitle from "@/hooks/useTabTitle";
-import { TAB_TITLES } from "@/constants/routes";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const SPAN_CLASS = {
-  12: "col-span-12",
-  8: "col-span-8",
-  4: "col-span-4",
-};
-
-const CARD_GRID = [
-  {
-    span: 12,
-    content: <GreetingsWidget key="greet" />,
-    key: "greet",
-    height: "h-40",
-  },
-  {
-    span: 4,
-    content: <TotalHoursWidget key="total-hours" />,
-    key: "total-hours",
-    height: "h-100",
-  },
-  {
-    span: 4,
-    content: <JournalsWidget key="journal" />,
-    key: "journals",
-    height: "h-100",
-  },
-  {
-    span: 4,
-    content: <TaskListWidget key="tasks" />,
-    key: "tasks",
-    height: "h-100",
-  },
-  {
-    span: 8,
-    content: <ProgressChartWidget key="progress" />,
-    key: "progress",
-    height: "h-100",
-  },
-  {
-    span: 4,
-    content: <TCPWidget key="taskCompletionPercentage" />,
-    key: "taskCompletionPercentage",
-    height: "h-100",
-  },
-];
+import { CARD_GRID } from "@/constants/dashboards";
+import { STATUS } from "@/constants/db";
+import { TAB_TITLES } from "@/constants/routes";
+import { fetchJournals } from "@/db/apis/journals";
+import { fetchTasks } from "@/db/apis/tasks";
+import useTabTitle from "@/hooks/useTabTitle";
+import { cn } from "@/lib/utils";
+import useAuthStore from "@/store/auth";
+import useJournalsStore from "@/store/journals";
+import useTasksStore from "@/store/tasks";
+import { useEffect, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 const Dashboard = () => {
   const { user } = useAuthStore();
@@ -124,7 +74,7 @@ const Dashboard = () => {
     <div className="p-6 grid grid-cols-12 gap-6">
       {CARD_GRID.map(({ span, content, key, height }) => (
         <DashboardCard
-          className={SPAN_CLASS[span]}
+          className={span}
           key={key}
           loading={loading}
           height={height}
