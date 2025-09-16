@@ -45,11 +45,19 @@ const TABS = [
 
 const TimerContent = () => {
   const { user, userSettings } = useAuthStore();
-  const { currentTask, updateTaskInStore, setCurrentTask } = useTasksStore(
+  const {
+    currentTask,
+    updateTaskInStore,
+    setCurrentTask,
+    taskSessions,
+    setTaskSessions,
+  } = useTasksStore(
     useShallow((state) => ({
       currentTask: state.currentTask,
       updateTaskInStore: state.updateTask,
       setCurrentTask: state.setCurrentTask,
+      taskSessions: state.taskSessions,
+      setTaskSessions: state.setTaskSessions,
     }))
   );
 
@@ -177,7 +185,7 @@ const TimerContent = () => {
         },
         user.id
       );
-      await addTaskSession(
+      const sessionRes = await addTaskSession(
         {
           task_id: currentTask.id,
           duration: duration / 60,
@@ -185,6 +193,11 @@ const TimerContent = () => {
         },
         user.id
       );
+
+      if (!sessionRes.error) {
+        setTaskSessions([...taskSessions, ...sessionRes.data]);
+      }
+
       if (res.error) {
         console.error("Failed to update task:", res.error);
       } else {
