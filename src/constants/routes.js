@@ -10,6 +10,6 @@ export const TAB_TITLES = {
   LOGIN: "Login",
   SIGNUP: "Signup",
   UPDATE_PASSWORD: "Update Password",
-  DASHBOARD: "Kaizen",
-  HOME: "Kaizen",
+  DASHBOARD: "kaïzen",
+  HOME: "kaïzen",
 };
