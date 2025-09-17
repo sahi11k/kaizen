@@ -15,3 +15,5 @@ export const AUTO_SAVE_STATUS = {
   SAVED: "saved",
   ERROR: "error",
 };
+
+export const JOURNAL_CONTENT_TRUNCATION_LENGTH = 180;

@@ -5,6 +5,7 @@ import {
   transformTasksToDb,
 } from "@/utils/transformers/tasks";
 import { handleResponse } from "@/utils/db";
+import dayjs from "dayjs";
 
 export const fetchTasks = async (userId) => {
   if (!userId) {
@@ -15,6 +16,7 @@ export const fetchTasks = async (userId) => {
     .from(SUPABASE_TABLES.TASKS)
     .select("*")
     .eq("created_by", userId)
+    .is("deleted_at", null)
     .order("rank", { ascending: true });
 
   res = handleResponse({
@@ -79,10 +81,9 @@ export const deleteTask = async (taskId, userId) => {
 
   let res = await supabase
     .from(SUPABASE_TABLES.TASKS)
-    .delete()
+    .update({ deleted_at: dayjs().toISOString() })
     .eq("id", taskId)
-    .eq("created_by", userId)
-    .select();
+    .eq("created_by", userId);
 
   const status = res.status === 200 && res.data.length === 0 ? 404 : res.status;
   res = handleResponse({
