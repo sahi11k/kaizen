@@ -15,6 +15,7 @@ import useJournalsStore from "@/store/journals";
 import { getSelfReflectionDate } from "@/components/Journals/helpers";
 import React from "react";
 import { Link } from "react-router";
+import { JOURNAL_CONTENT_TRUNCATION_LENGTH } from "@/constants/journals";
 
 const JournalsWidget = () => {
   const { journals } = useJournalsStore();
@@ -23,6 +24,17 @@ const JournalsWidget = () => {
   const latestJournal = sortedJournals[0];
   const totalWordsWritten = getTotalWordsWritten(journals);
   const journalStreak = getJournalStreak(sortedJournals);
+
+  const contentLength = latestJournal?.content.length;
+
+  const truncatedContent = latestJournal?.content
+    ?.slice(
+      0,
+      contentLength > JOURNAL_CONTENT_TRUNCATION_LENGTH
+        ? JOURNAL_CONTENT_TRUNCATION_LENGTH
+        : contentLength
+    )
+    .concat(contentLength > JOURNAL_CONTENT_TRUNCATION_LENGTH ? "..." : "");
 
   return (
     <Card className="border-none shadow-none  h-full">
@@ -38,7 +50,7 @@ const JournalsWidget = () => {
       <CardContent className="flex flex-col items-center justify-center flex-1 gap-4">
         {latestJournal ? (
           <>
-            <div className="flex-1 line-clamp-4">{latestJournal?.content}</div>
+            <div className="flex-1 line-clamp-4">{truncatedContent}</div>
             <div className="flex items-center justify-between gap-4 w-full">
               <MetricItem label="Streak" value={journalStreak} />
               <MetricItem label="Words Written" value={totalWordsWritten} />

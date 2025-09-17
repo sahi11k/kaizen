@@ -82,13 +82,13 @@ const ProgressChartWidget = () => {
         <CardTitle>Weekly Progress (Last 7 days)</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
-        {taskSessions.length > 0 ? (
+        {data?.datasets?.length > 0 ? (
           <div className="h-50 md:h-80">
             <Bar data={data} options={options} />
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center h-80 gap-6">
-            <div className="w-50 h-50">
+            <div className="w-40 h-40 lg:w-50 lg:h-50">
               <EmptyProgressIllustration className="text-primary fill-current" />
             </div>
             <p className="text-center">

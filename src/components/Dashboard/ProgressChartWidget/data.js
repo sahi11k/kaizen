@@ -9,6 +9,13 @@ import dayjs from "dayjs";
  * Sessions are expected to have fields: created_at (ISO date), duration (minutes)
  */
 export const generatePomodoroChartData = (sessions = []) => {
+  if (!sessions.length) {
+    return {
+      labels: [],
+      datasets: [],
+    };
+  }
+
   const days = Array.from({ length: 7 }, (_, i) =>
     dayjs().subtract(6 - i, "day")
   );
