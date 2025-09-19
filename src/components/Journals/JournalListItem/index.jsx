@@ -32,15 +32,15 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
           {getDayOfWeek(date)}
         </span>
       </div>
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col">
         <div
-          className={`text-base font-semibold truncate ${
+          className={`text-base font-semibold line-clamp-1 ${
             isActive ? "text-primary" : "text-foreground"
           }`}
         >
           {title || "Untitled"}
         </div>
-        <div className="text-[13px] tracking-wide truncate">{content}</div>
+        <div className="text-[13px] tracking-wide line-clamp-1">{content}</div>
       </div>
 
       <MoreOptions

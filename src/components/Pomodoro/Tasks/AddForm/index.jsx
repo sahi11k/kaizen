@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { MAX_SESSIONS, MIN_SESSIONS } from "@/constants/pomodoro";
+import { CREATE } from "@/constants/global";
 
 const AddForm = ({
   formValues,
@@ -20,6 +21,7 @@ const AddForm = ({
   setShowModal,
   onSave = () => {},
   onCancel = () => {},
+  mode = CREATE,
 }) => {
   const handleChange = (key, value) => {
     setFormValues((prev) => ({ ...prev, [key]: value }));
@@ -28,9 +30,11 @@ const AddForm = ({
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <form>
-        <DialogContent className="w-lg p-6 overflow-y-auto scrollbar-thin">
+        <DialogContent className="w-lg p-6 overflow-y-auto scrollbar-thin border">
           <DialogHeader>
-            <DialogTitle className="heading-3">Add Task</DialogTitle>
+            <DialogTitle className="heading-3">
+              {mode === CREATE ? "Add Task" : "Edit Task"}
+            </DialogTitle>
           </DialogHeader>
           <form className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
