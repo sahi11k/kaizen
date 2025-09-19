@@ -3,7 +3,7 @@ import JournalListItem from "@/components/Journals/JournalListItem";
 import useJournalsStore from "@/store/journals";
 import useAuthStore from "@/store/auth";
 import { deleteJournal, fetchJournals } from "@/db/apis/journals";
-import { FileText, SquarePen } from "lucide-react";
+import { FileText } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Button from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -12,10 +12,11 @@ import { STATUS } from "@/constants/db";
 import { Toast } from "@/components/ui/toast";
 import { DEFAULT_JOURNAL_STATE } from "@/constants/journals";
 import { groupByMonth } from "@/components/Journals/helpers";
+import { SquarePen } from "lucide-react";
 
 const { toast } = Toast;
 
-const JournalListContent = () => {
+const JournalListContent = ({ onItemClick }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -53,11 +54,18 @@ const JournalListContent = () => {
     }
   }, [setJournals, user?.id, journalsFetchStatus, setJournalsFetchStatus]);
 
+  const moveToDetail = () => {
+    if (typeof onItemClick === "function") {
+      onItemClick();
+    }
+  };
+
   const handleJournalClick = (journal) => {
     if (currentJournal?.id === journal.id) {
       setCurrentJournal(null);
     } else {
       setCurrentJournal(journal);
+      moveToDetail();
     }
   };
 
@@ -76,24 +84,27 @@ const JournalListContent = () => {
 
   const editJournal = (journal) => {
     setCurrentJournal(journal);
+    moveToDetail();
   };
 
   const newJournal = () => {
     const unsavedJournal = journals.find((j) => !j.created_at);
     if (unsavedJournal) {
       setCurrentJournal(unsavedJournal);
+      moveToDetail();
       return;
     }
     const newJournal = { ...DEFAULT_JOURNAL_STATE, id: crypto.randomUUID() };
     setCurrentJournal(newJournal);
     setJournals([...journals, newJournal]);
+    moveToDetail();
   };
 
   const grouped = useMemo(() => groupByMonth(journals), [journals]);
 
   return (
     <>
-      <div className="mt-4 xl:mt-6 pb-2 xl:pb-4 flex items-center justify-between">
+      <div className="mt-4 xl:mt-6 pb-2 xl:pb-4 flex items-center justify-between hidden md:flex">
         <div>
           <span className="heading-3 mr-1">Journals</span>
         </div>
@@ -107,7 +118,6 @@ const JournalListContent = () => {
             }
             size="sm"
             onClick={newJournal}
-            className="hidden md:flex"
           >
             New
           </Button>
@@ -170,6 +180,15 @@ const JournalListContent = () => {
           </div>
         )}
       </div>
+
+      <Button
+        onClick={newJournal}
+        className="rounded-full justify-end absolute right-8 bottom-20 h-12  px-6 flex items-center justify-center md:hidden"
+        icon={<SquarePen className="size-4" color="currentColor" />}
+        variant="secondary"
+      >
+        New
+      </Button>
     </>
   );
 };
