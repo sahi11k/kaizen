@@ -216,7 +216,7 @@ const TimerContent = () => {
           onValueChange={handleTabChange}
           className="h-full"
         >
-          <TabsList className="w-full h-12 cursor-pointer">
+          <TabsList className="w-full h-12">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab.key}
@@ -235,31 +235,14 @@ const TimerContent = () => {
                   timerValue={timerValue}
                   duration={duration}
                   currentTab={currentTab}
+                  currentTask={currentTask}
                 />
               </TabsContent>
             ))}
           </>
         </Tabs>
       </div>
-      {currentTask && (
-        <div className="mx-auto bg-muted py-4 px-6 rounded-lg !max-w-[100%] md:!max-w-[50%]">
-          <div className="flex items-center justify-center gap-2 font-semibold">
-            {currentTab === POMODORO_TAB ? (
-              <>
-                <span className="text-muted-foreground shrink-0">
-                  Session #{currentTask.completedSessions + 1} :
-                </span>
-                <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-                  {currentTask.title}
-                </span>
-              </>
-            ) : (
-              <span className="text-muted-foreground">Yay! Break Time</span>
-            )}
-          </div>
-        </div>
-      )}
-      <div className="flex justify-center items-center gap-6 relative py-2 lg:py-4">
+      <div className="flex justify-center items-center gap-6 relative rounded-full w-fit mx-auto px-6 py-2 pb-6 md:pb-2">
         <Tooltip content="Reset Timer">
           <Button
             onClick={resetTimer}
@@ -292,7 +275,7 @@ const TimerContent = () => {
   );
 };
 
-const TabContent = ({ timerValue, duration, currentTab }) => {
+const TabContent = ({ timerValue, duration, currentTab, currentTask }) => {
   const percentage = ((duration - timerValue) / duration) * 100;
   const fillColor =
     currentTab === POMODORO_TAB
@@ -306,8 +289,27 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className="w-80 h-80 md:w-[min(40vw,400px)] md:h-[min(40vw,400px)] relative">
+    <div className="flex justify-center items-center h-full flex-col gap-16">
+      <div className="mx-auto bg-muted py-2 px-6 rounded-full max-w-100">
+        <div className="flex items-center justify-center gap-2 font-semibold">
+          {currentTab === POMODORO_TAB ? (
+            <>
+              <span className="text-muted-foreground shrink-0">
+                {currentTask
+                  ? `Session #${currentTask?.completedSessions + 1} : `
+                  : ""}
+              </span>
+              <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                {currentTask?.title || "Focus Time!"}
+              </span>
+            </>
+          ) : (
+            <span>Yay! Break Time</span>
+          )}
+        </div>
+      </div>
+
+      <div className="w-80 h-80 md:h-88 md:w-88 xl:h-96 xl:w-96 relative">
         <div
           className="absolute inset-0 rounded-full"
           style={{
@@ -315,7 +317,7 @@ const TabContent = ({ timerValue, duration, currentTab }) => {
           }}
         />
 
-        <div className="absolute inset-4 bg-background rounded-full flex justify-center items-center font-mono heading-1">
+        <div className="absolute inset-4 bg-background rounded-full flex justify-center items-center font-bold text-5xl xl:text-6xl">
           <span>{minutes}</span>
           <span className="vertical-line">:</span>
           <span>{seconds}</span>

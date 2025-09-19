@@ -9,7 +9,7 @@ import useTabTitle from "@/hooks/useTabTitle";
 const Home = () => {
   useTabTitle(TAB_TITLES.HOME);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-6">
       <Banner />
       <About />
       <Quote />
