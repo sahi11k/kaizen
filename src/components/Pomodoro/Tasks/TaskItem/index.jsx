@@ -2,13 +2,13 @@ import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "@/components/ui/tooltip";
 import { MoreOptions } from "@/components/ui/more-options";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-md transition-colors bg-background relative";
+  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-md transition-colors bg-background";
 const hover = "hover:bg-sidebar-accent";
 const activeClass =
   "bg-primary-light text-primary hover:bg-primary-light hover:text-primary";
@@ -76,9 +76,9 @@ const TaskItem = ({
         </Tooltip>
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="flex-1">
         <div
-          className="text-base font-semibold truncate"
+          className="text-base font-semibold line-clamp-1"
           style={{ textDecoration: task.completed ? "line-through" : "none" }}
         >
           {task.title}

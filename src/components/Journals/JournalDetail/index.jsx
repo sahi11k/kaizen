@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { saveJournal } from "@/db/apis/journals";
 import useAuthStore from "@/store/auth";
 import useJournalsStore from "@/store/journals";
@@ -90,9 +90,9 @@ const JournalDetail = () => {
   }
 
   return (
-    <div className="hidden md:flex h-full flex-1  px-6 xl:px-24 flex flex-col">
+    <div className="flex h-full flex-1  md:px-6 lg:px-12 flex flex-col">
       <div className="flex flex-col  flex-1  py-4 h-full ">
-        <div className="flex gap-4 items-center justify-between">
+        <div className="flex flex-col-reverse items-start md:flex-row md:gap-4 md:items-center justify-between">
           <DatePicker
             defautDate={formValues.date}
             onDateChange={(date) => handleChange("date", date)}
@@ -164,9 +164,11 @@ const SavingStatus = ({ status, updatedAt }) => {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex self-start md:self-center items-center gap-2">
       {icon}
-      <span className="text-sm text-muted-foreground font-medium">{text}</span>
+      <span className="text-xs md:text-sm text-muted-foreground font-medium">
+        {text}
+      </span>
     </div>
   );
 };
