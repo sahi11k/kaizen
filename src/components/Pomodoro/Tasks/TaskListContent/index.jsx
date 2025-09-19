@@ -221,7 +221,6 @@ const TaskListContent = ({ onItemClick }) => {
 
   return (
     <>
-      <div className="mt-4 md:hidden" />
       <div className="mt-4 xl:mt-6 pb-2 xl:pb-4 items-center justify-between hidden md:flex">
         <div>
           <span className="heading-3 mr-1">Tasks</span>
@@ -302,14 +301,14 @@ const TaskListContent = ({ onItemClick }) => {
         )}
       </div>
 
-      <Tooltip content="Add task">
-        <Button
-          onClick={() => setShowModal(true)}
-          className="rounded-full justify-end absolute right-8 bottom-20 h-12 w-12 flex items-center justify-center md:hidden"
-          icon={<Plus className="size-5" />}
-          variant="secondary"
-        />
-      </Tooltip>
+      <Button
+        onClick={() => setShowModal(true)}
+        className="rounded-full justify-end absolute right-8 bottom-20 h-12  px-6 flex items-center justify-center md:hidden"
+        icon={<Plus className="size-4" />}
+        variant="secondary"
+      >
+        Task
+      </Button>
 
       <AddForm
         setFormValues={setFormValues}
@@ -318,6 +317,7 @@ const TaskListContent = ({ onItemClick }) => {
         setShowModal={setShowModal}
         onSave={formSubmitHandler}
         onCancel={handleCancel}
+        mode={mode}
       />
     </>
   );

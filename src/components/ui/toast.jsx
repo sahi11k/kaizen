@@ -7,9 +7,10 @@ export const Toast = () => {
       position="top-right"
       closeButton
       richColors
+      duration={2500}
       toastOptions={{
         classNames: {
-          toast: "!rounded-lg !text-base !w-max !pr-12",
+          toast: "!rounded-lg !text-base !w-max !pr-12 mx-auto",
           closeButton:
             "!top-1/2 -translate-y-[2px] !left-auto !right-2 !border-none [&>svg]:!size-4 bg-transparent hover:!bg-transparent",
         },

@@ -4,6 +4,8 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Menu, PanelLeftClose } from "lucide-react";
@@ -31,13 +33,18 @@ const SidebarMobile = () => {
 
   return (
     <Drawer direction="left" open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button
-          variant="icon"
-          className="block xl:hidden -ml-2"
-          icon={<Menu className="size-6" />}
-        />
-      </DrawerTrigger>
+      <DrawerHeader className="p-0">
+        <DrawerTitle>
+          <DrawerTrigger asChild>
+            <Button
+              variant="icon"
+              className="block xl:hidden"
+              icon={<Menu className="size-6" />}
+            />
+          </DrawerTrigger>
+        </DrawerTitle>
+      </DrawerHeader>
+
       <DrawerContent className="!w-72 ">
         <aside className="px-6 flex flex-col space-y-6 h-full">
           <SidebarContent

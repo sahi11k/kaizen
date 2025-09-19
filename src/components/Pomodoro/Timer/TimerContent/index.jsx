@@ -265,7 +265,7 @@ const TimerContent = () => {
             className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base"
           >
             <span className="hidden sm:block">
-              {timerStarted ? "Pause" : "Focus"}
+              {timerStarted ? "Pause" : "Start"}
             </span>
           </Button>
         </Tooltip>

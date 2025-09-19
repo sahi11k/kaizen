@@ -1,45 +1,46 @@
-import TimerFilled from "@/assets/icons/timer-filled.svg?react";
-import TimerOutline from "@/assets/icons/timer-outline.svg?react";
-import TaskListContent from "@/components/Pomodoro/Tasks/TaskListContent";
-import TimerContent from "@/components/Pomodoro/Timer/TimerContent";
+import JournalOutline from "@/assets/icons/journal-outline.svg?react";
+import JournalFilled from "@/assets/icons/journal.filled.svg?react";
+
+import JournalListContent from "@/components/Journals/JournalList/JournalListContent";
+import JournalDetail from "@/components/Journals/JournalDetail";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { List } from "lucide-react";
 import { useState } from "react";
+import { List } from "lucide-react";
 
-const TASKS_TAB = "tasks";
-const FOCUS_TAB = "focus";
+const LIST_TAB = "list";
+const REFLECT_TAB = "reflect";
 
-const PomodoroMobile = () => {
-  const [currentTab, setCurrentTab] = useState(TASKS_TAB);
+const JournalsMobile = () => {
+  const [currentTab, setCurrentTab] = useState(LIST_TAB);
 
   const handleTabChange = (tabKey) => {
     setCurrentTab(tabKey);
   };
 
   const onItemClick = () => {
-    setCurrentTab(FOCUS_TAB);
+    setCurrentTab(REFLECT_TAB);
   };
 
   const TABS = [
     {
-      key: TASKS_TAB,
-      label: "Tasks",
+      key: LIST_TAB,
+      label: "Journals",
       icon: <List />,
       iconFilled: <List />,
       content: (
         <div className="h-full">
-          <TaskListContent onItemClick={onItemClick} />
+          <JournalListContent onItemClick={onItemClick} />
         </div>
       ),
     },
     {
-      key: FOCUS_TAB,
-      label: "Focus",
-      icon: <TimerOutline fill="currentColor" />,
-      iconFilled: <TimerFilled fill="currentColor" />,
+      key: REFLECT_TAB,
+      label: "Reflect",
+      icon: <JournalOutline fill="currentColor" />,
+      iconFilled: <JournalFilled fill="currentColor" />,
       content: (
-        <div className="flex flex-col h-full py-4">
-          <TimerContent />
+        <div className="">
+          <JournalDetail />
         </div>
       ),
     },
@@ -48,10 +49,10 @@ const PomodoroMobile = () => {
   return (
     <div className="md:hidden h-[calc(100vh-64px)]">
       <Tabs
-        defaultValue={TASKS_TAB}
+        defaultValue={LIST_TAB}
         value={currentTab}
         onValueChange={handleTabChange}
-        className="h-full gap-0"
+        className="h-full gap-0 overflow-hidden"
       >
         {TABS.map((tab) => (
           <TabsContent
@@ -87,4 +88,4 @@ const PomodoroMobile = () => {
   );
 };
 
-export default PomodoroMobile;
+export default JournalsMobile;

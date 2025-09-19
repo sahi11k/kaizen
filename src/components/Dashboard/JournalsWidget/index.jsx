@@ -50,7 +50,7 @@ const JournalsWidget = () => {
       <CardContent className="flex flex-col items-center justify-center flex-1 gap-4">
         {latestJournal ? (
           <>
-            <div className="flex-1 line-clamp-4">{truncatedContent}</div>
+            <div className="flex-1 line-clamp-4 w-full">{truncatedContent}</div>
             <div className="flex items-center justify-between gap-4 w-full">
               <MetricItem label="Streak" value={journalStreak} />
               <MetricItem label="Words Written" value={totalWordsWritten} />
