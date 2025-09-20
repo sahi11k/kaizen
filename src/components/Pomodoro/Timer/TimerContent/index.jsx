@@ -209,40 +209,38 @@ const TimerContent = () => {
 
   return (
     <>
-      <div className="flex-1">
-        <Tabs
-          defaultValue={POMODORO_TAB}
-          value={currentTab}
-          onValueChange={handleTabChange}
-          className="h-full"
-        >
-          <TabsList className="w-full h-12">
-            {TABS.map((tab) => (
-              <TabsTrigger
-                key={tab.key}
-                value={tab.key}
-                className="cursor-pointer text-sm xl:text-base"
-              >
-                {tab.icon}
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          <>
-            {TABS.map((tab) => (
-              <TabsContent key={tab.key} value={tab.key}>
-                <TabContent
-                  timerValue={timerValue}
-                  duration={duration}
-                  currentTab={currentTab}
-                  currentTask={currentTask}
-                />
-              </TabsContent>
-            ))}
-          </>
-        </Tabs>
-      </div>
-      <div className="flex justify-center items-center gap-6 relative rounded-full w-fit mx-auto px-6 py-2 pb-6 md:pb-2">
+      <Tabs
+        defaultValue={POMODORO_TAB}
+        value={currentTab}
+        onValueChange={handleTabChange}
+        className="flex-1"
+      >
+        <TabsList className="w-full h-12">
+          {TABS.map((tab) => (
+            <TabsTrigger
+              key={tab.key}
+              value={tab.key}
+              className="cursor-pointer text-sm xl:text-base"
+            >
+              {tab.icon}
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <>
+          {TABS.map((tab) => (
+            <TabsContent key={tab.key} value={tab.key}>
+              <TabContent
+                timerValue={timerValue}
+                duration={duration}
+                currentTab={currentTab}
+                currentTask={currentTask}
+              />
+            </TabsContent>
+          ))}
+        </>
+      </Tabs>
+      <div className="flex justify-center items-center gap-6 relative rounded-full w-fit mx-auto px-6 py-4">
         <Tooltip content="Reset Timer">
           <Button
             onClick={resetTimer}
@@ -289,7 +287,7 @@ const TabContent = ({ timerValue, duration, currentTab, currentTask }) => {
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <div className="flex justify-center items-center h-full flex-col gap-16">
+    <div className="flex justify-center items-center h-full flex-col gap-8 xl:gap-12">
       <div className="mx-auto bg-muted py-2 px-6 rounded-full max-w-100">
         <div className="flex items-center justify-center gap-2 font-semibold">
           {currentTab === POMODORO_TAB ? (
