@@ -229,7 +229,11 @@ const TimerContent = () => {
         </TabsList>
         <>
           {TABS.map((tab) => (
-            <TabsContent key={tab.key} value={tab.key}>
+            <TabsContent
+              key={tab.key}
+              value={tab.key}
+              className="flex justify-center items-center flex-col gap-6 xl:gap-12"
+            >
               <TabContent
                 timerValue={timerValue}
                 duration={duration}
@@ -240,7 +244,7 @@ const TimerContent = () => {
           ))}
         </>
       </Tabs>
-      <div className="flex justify-center items-center gap-6 relative rounded-full w-fit mx-auto px-6 py-4">
+      <div className="flex justify-center items-center gap-6 relative rounded-full w-fit mx-auto px-6">
         <Tooltip content="Reset Timer">
           <Button
             onClick={resetTimer}
@@ -287,7 +291,7 @@ const TabContent = ({ timerValue, duration, currentTab, currentTask }) => {
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <div className="flex justify-center items-center h-full flex-col gap-8 xl:gap-12">
+    <>
       <div className="mx-auto bg-muted py-2 px-6 rounded-full max-w-100">
         <div className="flex items-center justify-center gap-2 font-semibold">
           {currentTab === POMODORO_TAB ? (
@@ -307,7 +311,7 @@ const TabContent = ({ timerValue, duration, currentTab, currentTask }) => {
         </div>
       </div>
 
-      <div className="w-80 h-80 md:h-88 md:w-88 xl:h-96 xl:w-96 relative">
+      <div className="w-64 h-64 md:h-72 md:w-72 lg:h-80 lg:w-80 xl:h-96 xl:w-96 relative">
         <div
           className="absolute inset-0 rounded-full"
           style={{
@@ -315,13 +319,13 @@ const TabContent = ({ timerValue, duration, currentTab, currentTask }) => {
           }}
         />
 
-        <div className="absolute inset-4 bg-background rounded-full flex justify-center items-center font-bold text-5xl xl:text-6xl">
+        <div className="absolute inset-4 bg-background rounded-full flex justify-center items-center heading-1">
           <span>{minutes}</span>
           <span className="vertical-line">:</span>
           <span>{seconds}</span>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

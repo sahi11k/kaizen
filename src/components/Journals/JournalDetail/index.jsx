@@ -90,7 +90,7 @@ const JournalDetail = () => {
   }
 
   return (
-    <div className="flex h-full flex-1  md:px-6 lg:px-12 flex flex-col">
+    <div className="flex h-full flex-1 px-6 lg:px-12 flex flex-col">
       <div className="flex flex-col  flex-1  py-4 h-full ">
         <div className="flex flex-col-reverse items-start md:flex-row md:gap-4 md:items-center justify-between">
           <DatePicker
