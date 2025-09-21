@@ -126,7 +126,7 @@
 }
 
 .heading-1 {
-  @apply text-4xl md:text-5xl xl:text-7xl font-semibold leading-tight;
+  @apply text-3xl lg:text-5xl xl:text-6xl font-semibold leading-tight;
 }
 
 .heading-2 {
@@ -163,4 +163,14 @@
 
 .form-error {
   @apply text-sm text-destructive leading-snug;
+}
+
+/* iOS Safari: ensure at least 16px font-size on form controls to prevent zoom */
+@supports (-webkit-touch-callout: none) and (not (hover: hover)) and
+  (pointer: coarse) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }

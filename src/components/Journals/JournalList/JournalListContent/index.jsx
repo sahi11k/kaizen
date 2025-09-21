@@ -123,7 +123,7 @@ const JournalListContent = ({ onItemClick }) => {
           </Button>
         </Tooltip>
       </div>
-      <div className="h-full overflow-y-auto scrollbar-thin -mx-4 xl:-mx-6">
+      <div className="h-full overflow-y-auto scrollbar-thin  md:-mx-4 xl:-mx-6">
         <div className="">
           {grouped.map(({ key, label, items }) => (
             <section key={key} className="mb-2">
@@ -156,7 +156,7 @@ const JournalListContent = ({ onItemClick }) => {
             </section>
           ))}
         </div>
-        <div className="pr-6">
+        <div className="mx-2 md:mx-4 xl:mx-6">
           {isLoading &&
             journals.length === 0 &&
             Array.from({ length: 3 }).map((_, index) => (

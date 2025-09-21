@@ -26,22 +26,14 @@ const PomodoroMobile = () => {
       label: "Tasks",
       icon: <List />,
       iconFilled: <List />,
-      content: (
-        <div className="h-full">
-          <TaskListContent onItemClick={onItemClick} />
-        </div>
-      ),
+      content: <TaskListContent onItemClick={onItemClick} />,
     },
     {
       key: FOCUS_TAB,
       label: "Focus",
       icon: <TimerOutline fill="currentColor" />,
       iconFilled: <TimerFilled fill="currentColor" />,
-      content: (
-        <div className="flex flex-col h-full py-4">
-          <TimerContent />
-        </div>
-      ),
+      content: <TimerContent />,
     },
   ];
 
@@ -51,18 +43,18 @@ const PomodoroMobile = () => {
         defaultValue={TASKS_TAB}
         value={currentTab}
         onValueChange={handleTabChange}
-        className="h-full gap-0"
+        className="gap-0 h-full"
       >
         {TABS.map((tab) => (
           <TabsContent
             key={tab.key}
             value={tab.key}
-            className="flex-1 overflow-hidden px-6"
+            className="flex flex-col min-h-0 p-6"
           >
             {tab.content}
           </TabsContent>
         ))}
-        <TabsList className="sticky right-0 bottom-0 left-0 w-full rounded-none p-0 h-16">
+        <TabsList className="w-full rounded-none p-0 h-16">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.key}
