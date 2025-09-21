@@ -35,7 +35,7 @@ const AboutCard = ({ title, description, icon, link }) => {
   return (
     <Card
       className={cn(
-        "flex-2 flex flex-col gap-8 !p-6 py-6 bg-transparent border border-border shadow-none basis-80"
+        "flex-1 flex flex-col gap-4 lg:gap-8 px-3 py-6 bg-background border border-border shadow-none basis-80"
       )}
       key={title}
     >
