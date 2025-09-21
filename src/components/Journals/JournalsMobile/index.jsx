@@ -27,22 +27,14 @@ const JournalsMobile = () => {
       label: "Journals",
       icon: <List />,
       iconFilled: <List />,
-      content: (
-        <div className="h-full">
-          <JournalListContent onItemClick={onItemClick} />
-        </div>
-      ),
+      content: <JournalListContent onItemClick={onItemClick} />,
     },
     {
       key: REFLECT_TAB,
       label: "Reflect",
       icon: <JournalOutline fill="currentColor" />,
       iconFilled: <JournalFilled fill="currentColor" />,
-      content: (
-        <div className="">
-          <JournalDetail />
-        </div>
-      ),
+      content: <JournalDetail />,
     },
   ];
 
@@ -52,18 +44,18 @@ const JournalsMobile = () => {
         defaultValue={LIST_TAB}
         value={currentTab}
         onValueChange={handleTabChange}
-        className="h-full gap-0 overflow-hidden"
+        className="gap-0 h-full"
       >
         {TABS.map((tab) => (
           <TabsContent
             key={tab.key}
             value={tab.key}
-            className="flex-1 overflow-hidden px-6"
+            className="flex flex-col min-h-0"
           >
             {tab.content}
           </TabsContent>
         ))}
-        <TabsList className="sticky right-0 bottom-0 left-0 w-full rounded-none p-0 h-16">
+        <TabsList className="w-full rounded-none p-0 h-16">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.key}
