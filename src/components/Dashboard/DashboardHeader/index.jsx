@@ -1,12 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  PanelLeftOpen,
-  PanelLeftClose,
-  ChevronDown,
-  Moon,
-  Sun,
-} from "lucide-react";
+import { PanelLeftOpen, PanelLeftClose, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -14,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import useAuthStore from "@/store/auth";
 import { signOut } from "@/db/apis/auth";
 import { Toast } from "@/components/ui/toast";
@@ -22,12 +16,16 @@ import { STATUS } from "@/constants/db";
 import { getUserDisplayName } from "@/utils/auth";
 import { SidebarMobile } from "@/components/Dashboard/Sidebar";
 import { Tooltip } from "@/components/ui/tooltip";
+import useTasksStore from "@/store/tasks";
+import useJournalsStore from "@/store/journals";
 
 const { toast } = Toast;
 
 const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   const navigate = useNavigate();
   const { setUser, setUserFetchStatus, user } = useAuthStore();
+  const { setTasks, setTasksFetchStatus } = useTasksStore();
+  const { setJournals, setJournalsFetchStatus } = useJournalsStore();
   const userDisplayName = getUserDisplayName(user);
 
   const handleCollapse = () => {
@@ -41,6 +39,10 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
     } else {
       setUser(null);
       setUserFetchStatus(STATUS.LOADING);
+      setTasks([]);
+      setTasksFetchStatus(STATUS.LOADING);
+      setJournals([]);
+      setJournalsFetchStatus(STATUS.LOADING);
       navigate("/", { replace: true });
     }
   };
