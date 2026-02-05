@@ -1,15 +1,22 @@
 ---
 alwaysApply: false
 description: Supabase API, transformers, and response handling conventions
-globs: src/db/apis/*.js,src/utils/transformers/*.js
+globs: src/features/*/api/*.js,src/features/*/utils/transformers/*.js,src/shared/api/*.js
 ---
 
 ## Supabase API Patterns
 
-- Client: [db/supabase.js](mdc:src/db/supabase.js)
-- Table names: [constants/db.js](mdc:src/constants/db.js)
-- Response shaping: [utils/db.js](mdc:src/utils/db.js) `handleResponse`
-- Transformers map snake_case ↔ camelCase in [utils/transformers](mdc:src/utils/transformers/), e.g. [tasks.js](mdc:src/utils/transformers/tasks.js)
+- Client: [shared/api/supabase.js](mdc:src/shared/api/supabase.js)
+- Table names: [shared/constants/db.js](mdc:src/shared/constants/db.js)
+- Response shaping: [shared/api/db.js](mdc:src/shared/api/db.js) `handleResponse`
+- Transformers map snake_case ↔ camelCase
+
+### Feature APIs
+
+- Auth: [features/auth/api/auth.js](mdc:src/features/auth/api/auth.js)
+- Tasks: [features/pomodoro/api/tasks.js](mdc:src/features/pomodoro/api/tasks.js)
+- Journals: [features/journals/api/journals.js](mdc:src/features/journals/api/journals.js)
+- User Settings: [features/settings/api/userSettings.js](mdc:src/features/settings/api/userSettings.js)
 
 ### API Conventions
 

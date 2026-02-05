@@ -1,0 +1,147 @@
+---
+alwaysApply: false
+description: Guidelines for organizing different types of functions within the feature-based structure
+globs: src/features/**/*.js,src/features/**/*.jsx,src/shared/**/*.js
+---
+
+## Function Organization Guide
+
+This guide defines where different types of functions should live in the codebase.
+
+### Decision Flowchart
+
+When adding a new function, ask these questions in order:
+
+1. **Does it interact with the database/API?** → `api/`
+2. **Does it manage global state?** → `store/`
+3. **Does it transform DB ↔ UI format?** → `utils/transformers/`
+4. **Does it validate data/forms?** → `utils/validators.js`
+5. **Is it pure business logic?** → `helpers/`
+6. **Does it use component state/props?** → Keep in component
+7. **Otherwise** → `helpers/` or `utils/`
+
+### Function Locations
+
+#### 1. API Functions (`api/`)
+
+**Location**: `features/{feature}/api/{resource}.js`
+
+```javascript
+// Example: features/pomodoro/api/tasks.js
+export const fetchTasks = async (userId) => { ... }
+export const createTask = async (payload, userId) => { ... }
+export const updateTask = async (payload, userId) => { ... }
+export const deleteTask = async (taskId, userId) => { ... }
+```
+
+**Naming**: `fetchX`, `createX`, `updateX`, `deleteX`, `getX`
+
+#### 2. Store Actions (`store/`)
+
+**Location**: `features/{feature}/store/{resource}.js`
+
+```javascript
+// Example: features/pomodoro/store/tasks.js
+setTasks: (tasks) => set({ tasks })
+updateTask: (task) => set((state) => ({ tasks: state.tasks.map(...) }))
+```
+
+**Naming**: `setX`, `updateX`, `loadX`, `resetX`
+
+#### 3. Transformers (`utils/transformers/`)
+
+**Location**: `features/{feature}/utils/transformers/{resource}.js`
+
+```javascript
+// Example: features/pomodoro/utils/transformers/tasks.js
+export const transformTasksFromDb = (tasks) => { ... }
+export const transformTasksToDb = (tasks) => { ... }
+```
+
+**Naming**: `transformXFromDb`, `transformXToDb`
+
+#### 4. Validators (`utils/validators.js`)
+
+**Location**: `features/{feature}/utils/validators.js`
+
+```javascript
+// Example: features/auth/utils/validators.js
+export const validateField = (field, value) => { ... }
+export const validateEmail = (email) => { ... }
+```
+
+**Naming**: `validateX`, `isValidX`
+
+#### 5. Business Logic Helpers (`helpers/`)
+
+**Location**: `features/{feature}/helpers/index.js` or `helpers/{domain}.js`
+
+```javascript
+// Example: features/journals/helpers/index.js
+export const groupByMonth = (journals) => { ... }
+export const getJournalStreak = (journals) => { ... }
+export const getWordCount = (content) => { ... }
+
+// Example: features/pomodoro/helpers/timer.js
+export const getFormattedTime = (seconds) => { ... }
+export const getNextTab = (currentTab, count, interval) => { ... }
+```
+
+**Naming**: `getX`, `calculateX`, `groupByX`, `sortX`, `formatX`
+
+#### 6. Component Handlers (inline)
+
+Keep in components when they:
+- Use component state or props
+- Orchestrate API + store + UI feedback
+- Manage loading/error states
+
+```javascript
+// Keep inside component
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  const result = await createTask(payload, userId);
+  if (result.error) { toast.error(...); return; }
+  setTasks([...tasks, result.data[0]]);
+  setIsLoading(false);
+};
+```
+
+### Shared vs Feature-Specific
+
+| Location | Use Case |
+|----------|----------|
+| `shared/api/` | Supabase client, handleResponse |
+| `shared/utils/` | date.js, jsUtils.js, transformers/common.js |
+| `shared/lib/` | cn() for Tailwind |
+| `features/{x}/helpers/` | Feature-specific business logic |
+
+**Rule**: If used by 2+ features, move to `shared/`. Otherwise, keep in feature folder.
+
+### File Structure Reference
+
+```
+features/{feature}/
+├── api/
+│   └── {resource}.js          # API calls only
+├── store/
+│   └── {resource}.js          # State + simple actions
+├── utils/
+│   ├── transformers/
+│   │   └── {resource}.js      # DB ↔ UI transformations
+│   └── validators.js          # Validation functions
+├── helpers/
+│   ├── index.js               # Main business logic helpers
+│   └── {domain}.js            # Domain-specific helpers
+├── constants/
+│   └── index.js               # Feature constants
+├── hooks/
+│   └── {hookName}.js          # Custom hooks
+├── components/
+│   └── {Component}/
+│       └── index.jsx          # Component with inline handlers
+└── pages/
+    └── {Page}/
+        └── index.jsx
+```

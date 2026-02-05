@@ -6,19 +6,65 @@ description: High-level project structure and key entry points for the Pomodoro 
 ## Project Structure Guide
 
 - App is a React SPA using Tailwind, Radix UI, Zustand, and Supabase.
-- Dashboard composition lives in [pages/Dashboard/index.jsx](mdc:src/pages/Dashboard/index.jsx).
-- Reusable UI primitives are in [components/ui](mdc:src/components/ui/).
-- Feature widgets/components live under [components/Dashboard](mdc:src/components/Dashboard/).
-- Pomodoro core lives under [components/Pomodoro](mdc:src/components/Pomodoro/).
-- Global styles and design tokens are in [styles/global.css](mdc:src/styles/global.css).
-- Client state stores live under [store](mdc:src/store/).
-- Supabase APIs live under [db/apis](mdc:src/db/apis/), using tables from [constants/db.js](mdc:src/constants/db.js) and helpers from [utils/db.js](mdc:src/utils/db.js).
-- Data transformers (snake_case ↔ camelCase) live under [utils/transformers](mdc:src/utils/transformers/), with mappings like [tasks.js](mdc:src/utils/transformers/tasks.js) and utilities in [common.js](mdc:src/utils/transformers/common.js).
-- Date utilities live in [utils/date.js](mdc:src/utils/date.js).
+- Uses a **feature-based folder structure** for scalability and maintainability.
 
-### Notable Dashboard Pieces
+### Top-Level Structure
 
-- Header: [components/Dashboard/DashboardHeader/index.jsx](mdc:src/components/Dashboard/DashboardHeader/index.jsx)
-- Total Hours: [components/Dashboard/TotalHoursWidget/index.jsx](mdc:src/components/Dashboard/TotalHoursWidget/index.jsx)
-- Journals: [components/Dashboard/JournalsWidget/index.jsx](mdc:src/components/Dashboard/JournalsWidget/index.jsx)
-- Task List: [components/Dashboard/TaskListWidget/index.jsx](mdc:src/components/Dashboard/TaskListWidget/index.jsx)
+```
+src/
+├── app/                    # App-level setup (router, layouts)
+├── features/               # Feature modules (auth, pomodoro, journals, etc.)
+├── shared/                 # Shared code (ui components, utils, constants)
+├── assets/                 # Static assets (icons, images, sounds)
+├── styles/                 # Global styles
+└── index.jsx               # App entry point
+```
+
+### Feature Modules
+
+Each feature in `features/` follows a consistent structure:
+
+```
+features/[feature-name]/
+├── api/            # API functions for this feature
+├── components/     # UI components for this feature
+├── constants/      # Constants specific to this feature
+├── hooks/          # Custom hooks (if any)
+├── pages/          # Route pages
+├── store/          # Zustand store (if any)
+├── utils/          # Utilities specific to this feature
+└── index.js        # Feature exports
+```
+
+### Key Entry Points
+
+- **App Entry**: [src/index.jsx](mdc:src/index.jsx)
+- **Router**: [src/app/router/index.jsx](mdc:src/app/router/index.jsx)
+- **Layouts**: [src/app/layouts/](mdc:src/app/layouts/)
+- **Layout Components**: [src/app/layouts/components/](mdc:src/app/layouts/components/) - Header, Footer, Sidebar
+
+### Features
+
+- **Auth**: [src/features/auth/](mdc:src/features/auth/) - Login, signup, OTP, password management
+- **Pomodoro**: [src/features/pomodoro/](mdc:src/features/pomodoro/) - Timer, tasks, sessions
+- **Journals**: [src/features/journals/](mdc:src/features/journals/) - Journal entries
+- **Dashboard**: [src/features/dashboard/](mdc:src/features/dashboard/) - Overview widgets
+- **Settings**: [src/features/settings/](mdc:src/features/settings/) - User settings
+- **Home**: [src/features/home/](mdc:src/features/home/) - Landing page
+- **Analytics**: [src/features/analytics/](mdc:src/features/analytics/) - Analytics (placeholder)
+
+### Shared Code
+
+- **UI Components**: [src/shared/ui/](mdc:src/shared/ui/) - Radix/Shadcn primitives
+- **Constants**: [src/shared/constants/](mdc:src/shared/constants/) - db.js, routes.js, global.js
+- **Utils**: [src/shared/utils/](mdc:src/shared/utils/) - date.js, jsUtils.js, transformers
+- **API Utilities**: [src/shared/api/](mdc:src/shared/api/) - supabase.js, db.js
+- **Hooks**: [src/shared/hooks/](mdc:src/shared/hooks/) - useTabTitle
+- **Lib**: [src/shared/lib/](mdc:src/shared/lib/) - cn() utility
+
+### Import Aliases
+
+- `@/*` - maps to `src/*`
+- Use `@/features/[feature]` for feature imports
+- Use `@/shared/` for shared code imports
+- Use `@/app/` for app-level imports
