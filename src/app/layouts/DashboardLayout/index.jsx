@@ -1,0 +1,23 @@
+import { SidebarLaptop } from "@/app/layouts/components/Sidebar";
+import { Outlet } from "react-router";
+import BaseLayout from "@/app/layouts/BaseLayout";
+import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
+import { useState } from "react";
+
+const DashboardLayout = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  return (
+    <BaseLayout className="flex">
+      <SidebarLaptop isCollapsed={isCollapsed} />
+      <main className="flex-1">
+        <DashboardHeader
+          setIsCollapsed={setIsCollapsed}
+          isCollapsed={isCollapsed}
+        />
+        <Outlet />
+      </main>
+    </BaseLayout>
+  );
+};
+
+export default DashboardLayout;

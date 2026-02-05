@@ -1,20 +1,23 @@
 ---
 alwaysApply: false
 description: State management and data flow conventions using Zustand and transformers
-globs: src/store/*.js,src/components/**/*.jsx
+globs: src/features/*/store/*.js,src/features/*/components/**/*.jsx
 ---
 
 ## State & Data Flow
 
-- Global state via Zustand stores in [store](mdc:src/store/)
-  - Tasks: [store/tasks.js](mdc:src/store/tasks.js)
-  - Journals: [store/journals.js](mdc:src/store/journals.js)
-  - Auth/Settings: [store/auth.js](mdc:src/store/auth.js) (if present)
-- Fetch on Dashboard mount: see [pages/Dashboard/index.jsx](mdc:src/pages/Dashboard/index.jsx)
-- Keep API updates in sync with store using store’s `update` helpers
+- Global state via Zustand stores in feature folders:
+  - Tasks: [features/pomodoro/store/tasks.js](mdc:src/features/pomodoro/store/tasks.js)
+  - Journals: [features/journals/store/journals.js](mdc:src/features/journals/store/journals.js)
+  - Auth/Settings: [features/auth/store/auth.js](mdc:src/features/auth/store/auth.js)
+- Fetch on Dashboard mount: see [features/dashboard/pages/Dashboard/index.jsx](mdc:src/features/dashboard/pages/Dashboard/index.jsx)
+- Keep API updates in sync with store using store's `update` helpers
 - Maintain ordering fields like `rank` on sortable resources
 
 ### Transformers
 
 - Use transformers for DB↔UI mapping to keep component code in camelCase
-- Add new mapping entries in the relevant transformer file
+- Shared transformer utilities: [shared/utils/transformers/common.js](mdc:src/shared/utils/transformers/common.js)
+- Feature-specific transformers:
+  - Tasks: [features/pomodoro/utils/transformers/tasks.js](mdc:src/features/pomodoro/utils/transformers/tasks.js)
+  - User Settings: [features/settings/utils/transformers/userSettings.js](mdc:src/features/settings/utils/transformers/userSettings.js)
