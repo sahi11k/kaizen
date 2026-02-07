@@ -5,6 +5,7 @@ import { CREATE, EDIT } from "@/shared/constants/global";
 import SortableContainer from "@/features/pomodoro/components/Tasks/SortableContainer";
 import { arraysEqual, deepCopy } from "@/shared/utils/jsUtils";
 import useTasksStore from "@/features/pomodoro/store/tasks";
+import useTimerStore from "@/features/pomodoro/store/timer";
 import useAuthStore from "@/features/auth/store/auth";
 import { useShallow } from "zustand/react/shallow";
 import {
@@ -14,9 +15,11 @@ import {
   sortTasks,
   updateTask,
 } from "@/features/pomodoro/api/tasks";
+import { getCurrentTime } from "@/features/pomodoro/hooks/useGetTimerValue";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
-import { FolderOpen, List, Plus } from "lucide-react";
+import TaskSwitchDialog from "@/features/pomodoro/components/Tasks/TaskSwitchDialog";
+import { FolderOpen, Plus } from "lucide-react";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { MIN_SESSIONS } from "@/features/pomodoro/constants/pomodoro";
 import { Tooltip } from "@/shared/ui/tooltip";
@@ -208,15 +211,39 @@ const TaskListContent = ({ onItemClick }) => {
     return tasks.filter((task) => task.completed).length;
   };
 
+  const [pendingTask, setPendingTask] = useState(null);
+
   const handleTaskClick = (task) => {
-    if (currentTask?.id === task.id) {
-      setCurrentTask(null);
-    } else {
-      setCurrentTask(task);
-      if (typeof onItemClick === "function") {
-        onItemClick();
-      }
+    if (currentTask?.id === task.id) return;
+
+    // If timer is running AND a task is currently selected, ask for confirmation
+    const { timerStarted } = useTimerStore.getState();
+    if (timerStarted && currentTask) {
+      setPendingTask(task);
+      return;
     }
+
+    setCurrentTask(task);
+    if (typeof onItemClick === "function") {
+      onItemClick();
+    }
+  };
+
+  const confirmTaskSwitch = () => {
+    if (!pendingTask) return;
+    const { currentTab } = useTimerStore.getState();
+    const userSettings = useAuthStore.getState().userSettings;
+    const value = getCurrentTime(currentTab, userSettings);
+    useTimerStore.getState().resetTimer(value);
+    setCurrentTask(pendingTask);
+    if (typeof onItemClick === "function") {
+      onItemClick();
+    }
+    setPendingTask(null);
+  };
+
+  const cancelTaskSwitch = () => {
+    setPendingTask(null);
   };
 
   return (
@@ -318,6 +345,12 @@ const TaskListContent = ({ onItemClick }) => {
         onSave={formSubmitHandler}
         onCancel={handleCancel}
         mode={mode}
+      />
+
+      <TaskSwitchDialog
+        task={pendingTask}
+        onConfirm={confirmTaskSwitch}
+        onCancel={cancelTaskSwitch}
       />
     </>
   );

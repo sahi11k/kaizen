@@ -1,30 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
-import {
-  useGetTimerValue,
-  getCurrentTime,
-} from "@/features/pomodoro/hooks/useGetTimerValue";
+import { getCurrentTime } from "@/features/pomodoro/hooks/useGetTimerValue";
 import useSound from "@/features/pomodoro/hooks/useSound";
+import useTimerStore from "@/features/pomodoro/store/timer";
 import useTasksStore from "@/features/pomodoro/store/tasks";
-import { useShallow } from "zustand/react/shallow";
-import { addTaskSession, updateTask } from "@/features/pomodoro/api/tasks";
 import useAuthStore from "@/features/auth/store/auth";
 
 import { Button } from "@/shared/ui/button";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Play, Square, TimerResetIcon } from "lucide-react";
-import {
-  getLongBreakInterval,
-  getTimerDurations,
-} from "@/features/pomodoro/utils/timer";
-import {
-  getFormattedTime,
-  getNextTab,
-} from "@/features/pomodoro/helpers/timer";
+import { getFormattedTime } from "@/features/pomodoro/helpers/timer";
 import PomoSettings from "@/features/pomodoro/components/PomoSettings";
 import { Tooltip } from "@/shared/ui/tooltip";
 
@@ -55,162 +44,61 @@ const TABS = [
 ];
 
 const TimerContent = () => {
-  const { user, userSettings } = useAuthStore();
-  const {
-    currentTask,
-    updateTaskInStore,
-    setCurrentTask,
-    taskSessions,
-    setTaskSessions,
-  } = useTasksStore(
-    useShallow((state) => ({
-      currentTask: state.currentTask,
-      updateTaskInStore: state.updateTask,
-      setCurrentTask: state.setCurrentTask,
-      taskSessions: state.taskSessions,
-      setTaskSessions: state.setTaskSessions,
-    })),
-  );
+  const userSettings = useAuthStore((s) => s.userSettings);
+  const currentTask = useTasksStore((s) => s.currentTask);
 
-  const [currentTab, setCurrentTab] = useState(POMODORO_TAB);
-  const [timerStarted, setTimerStarted] = useState(false);
-  const [pomodoroCount, setPomodoroCount] = useState(0);
-  const intervalRef = useRef(null);
-  const completingRef = useRef(false);
+  const timerValue = useTimerStore((s) => s.timerValue);
+  const timerStarted = useTimerStore((s) => s.timerStarted);
+  const currentTab = useTimerStore((s) => s.currentTab);
+  const duration = useTimerStore((s) => s.duration);
+  const timerTaskId = useTimerStore((s) => s.timerTaskId);
+  const startTimer = useTimerStore((s) => s.startTimer);
+  const stopTimer = useTimerStore((s) => s.stopTimer);
+  const resetTimer = useTimerStore((s) => s.resetTimer);
+  const setTab = useTimerStore((s) => s.setTab);
+  const setTimerValue = useTimerStore((s) => s.setTimerValue);
 
-  const { play, playLoop, stopLoop } = useSound();
+  // The task the timer is running for (may differ from selected currentTask)
+  const tasks = useTasksStore((s) => s.tasks);
+  const timerTask = timerTaskId
+    ? (tasks.find((t) => t.id === timerTaskId) ?? currentTask)
+    : currentTask;
 
-  const [timerValue, setTimerValue] = useGetTimerValue({
-    activeTab: currentTab,
-    userSettings,
-  });
-
-  const [duration, setDuration] = useState(0);
+  // Play "timerStart" sound only on false → true transition (not on mount/navigation)
+  const { play } = useSound();
+  const prevStartedRef = useRef(timerStarted);
 
   useEffect(() => {
-    const { taskTime, shortBreakTime, longBreakTime } =
-      getTimerDurations(userSettings);
-
-    setDuration(
-      currentTab === POMODORO_TAB
-        ? taskTime
-        : currentTab === SHORT_BREAK_TAB
-          ? shortBreakTime
-          : longBreakTime,
-    );
-  }, [currentTab, userSettings]);
-
-  useEffect(() => {
-    const { minutes, seconds } = getFormattedTime(timerValue);
-    const titlePrefix =
-      currentTab === POMODORO_TAB
-        ? "Pomodoro"
-        : currentTab === SHORT_BREAK_TAB
-          ? "Short Break"
-          : "Long Break";
-    document.title = `${titlePrefix} : ${minutes}:${seconds}`;
-  }, [currentTab, timerValue]);
-
-  const startTimer = () => {
-    if (timerStarted) return;
-    play("timerStart");
-    playLoop("timerRun");
-    intervalRef.current = setInterval(() => {
-      setTimerValue((prev) => {
-        if (prev <= 0) {
-          handleTimerComplete();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    setTimerStarted(true);
-  };
-
-  const stopTimer = () => {
-    clearTimerInterval();
-  };
-
-  const clearTimerInterval = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    if (timerStarted && !prevStartedRef.current) {
+      play("timerStart");
     }
-    stopLoop("timerRun");
-    setTimerStarted(false);
-  };
+    prevStartedRef.current = timerStarted;
+  }, [timerStarted, play]);
 
-  const resetTimer = () => {
-    clearTimerInterval();
-    setTimerValue(getCurrentTime(currentTab, userSettings));
-  };
-
+  // Initialize / sync timer value from user settings (only when not running)
   useEffect(() => {
-    if (!currentTask) return;
-    resetTimer();
+    const { timerStarted, currentTab } = useTimerStore.getState();
+    if (!timerStarted) {
+      const value = getCurrentTime(currentTab, userSettings);
+      setTimerValue(value);
+    }
+  }, [userSettings, setTimerValue]);
+
+  // Reset timer when selected task changes
+  useEffect(() => {
+    const { currentTab } = useTimerStore.getState();
+    const value = getCurrentTime(currentTab, userSettings);
+    resetTimer(value);
   }, [currentTask?.id]);
 
   const handleTabChange = (key) => {
-    setCurrentTab(key);
-    clearTimerInterval();
+    const value = getCurrentTime(key, userSettings);
+    setTab(key, value);
   };
 
-  const handleTimerComplete = async () => {
-    if (completingRef.current) return;
-    completingRef.current = true;
-    play("timerEnd");
-    clearTimerInterval();
-    await goToNextPhase(true);
-    completingRef.current = false;
-  };
-
-  const goToNextPhase = async (shouldFinishSession) => {
-    if (shouldFinishSession && currentTab === POMODORO_TAB) {
-      await finishSession();
-    }
-    const longBreakInterval = getLongBreakInterval(userSettings);
-    const next = getNextTab(currentTab, pomodoroCount, longBreakInterval);
-    handleTabChange(next);
-  };
-
-  const finishSession = async () => {
-    if (currentTab !== POMODORO_TAB) return;
-
-    setPomodoroCount((prev) => prev + 1);
-
-    if (currentTask && user?.id) {
-      const completedSessions = currentTask.completedSessions + 1;
-      const completed = completedSessions === currentTask.totalSessions;
-
-      const res = await updateTask(
-        {
-          id: currentTask.id,
-          completedSessions,
-          completed,
-          timeSpent: currentTask.timeSpent + duration / 60,
-        },
-        user.id,
-      );
-      const sessionRes = await addTaskSession(
-        {
-          task_id: currentTask.id,
-          duration: duration / 60,
-          status: completed,
-        },
-        user.id,
-      );
-
-      if (!sessionRes.error) {
-        setTaskSessions([...taskSessions, ...sessionRes.data]);
-      }
-
-      if (res.error) {
-        console.error("Failed to update task:", res.error);
-      } else {
-        updateTaskInStore(res.data[0]);
-        setCurrentTask(res.data[0]);
-      }
-    }
+  const handleResetTimer = () => {
+    const value = getCurrentTime(currentTab, userSettings);
+    resetTimer(value);
   };
 
   return (
@@ -244,7 +132,7 @@ const TimerContent = () => {
                 timerValue={timerValue}
                 duration={duration}
                 currentTab={currentTab}
-                currentTask={currentTask}
+                currentTask={timerTask}
               />
             </TabsContent>
           ))}
@@ -253,7 +141,7 @@ const TimerContent = () => {
       <div className="flex justify-center items-center gap-6 relative rounded-full w-fit mx-auto px-6">
         <Tooltip content="Reset Timer">
           <Button
-            onClick={resetTimer}
+            onClick={handleResetTimer}
             icon={<TimerResetIcon />}
             className="rounded-full w-12 !h-12"
             variant="icon"
@@ -262,7 +150,9 @@ const TimerContent = () => {
         </Tooltip>
         <Tooltip content={timerStarted ? "Pause Timer" : "Start Timer"}>
           <Button
-            onClick={timerStarted ? stopTimer : startTimer}
+            onClick={
+              timerStarted ? stopTimer : () => startTimer(currentTask?.id)
+            }
             icon={
               timerStarted ? (
                 <Square className="size-4 text-secondary" fill="currentColor" />

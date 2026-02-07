@@ -10,7 +10,7 @@ const SOUNDS = {
 
 /**
  * Hook to play timer sounds.
- * Pre-loads audio instances and exposes a `play` function.
+ * Lazily creates and caches Audio instances per sound name.
  */
 const useSound = () => {
   const audioRefs = useRef({});
@@ -28,21 +28,6 @@ const useSound = () => {
     (name) => {
       const audio = getAudio(name);
       if (!audio) return;
-      // Reset to start so rapid replays work
-      audio.currentTime = 0;
-      audio.play().catch((err) => {
-        // Browsers may block autoplay before user interaction — safe to ignore
-        console.warn("Sound playback blocked:", err);
-      });
-    },
-    [getAudio],
-  );
-
-  const playLoop = useCallback(
-    (name) => {
-      const audio = getAudio(name);
-      if (!audio) return;
-      audio.loop = true;
       audio.currentTime = 0;
       audio.play().catch((err) => {
         console.warn("Sound playback blocked:", err);
@@ -51,17 +36,7 @@ const useSound = () => {
     [getAudio],
   );
 
-  const stopLoop = useCallback(
-    (name) => {
-      const audio = getAudio(name);
-      if (!audio) return;
-      audio.pause();
-      audio.currentTime = 0;
-    },
-    [getAudio],
-  );
-
-  return { play, playLoop, stopLoop };
+  return { play };
 };
 
 export default useSound;
