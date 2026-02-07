@@ -62,12 +62,9 @@ const JournalListContent = ({ onItemClick }) => {
   };
 
   const handleJournalClick = (journal) => {
-    if (currentJournal?.id === journal.id) {
-      setCurrentJournal(null);
-    } else {
-      setCurrentJournal(journal);
-      moveToDetail();
-    }
+    if (currentJournal?.id === journal.id) return;
+    setCurrentJournal(journal);
+    moveToDetail();
   };
 
   const removeJournal = async (journalId) => {
