@@ -12,8 +12,9 @@ import useAuthStore from "@/features/auth/store/auth";
 import { Button } from "@/shared/ui/button";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
-import { Play, Square, TimerResetIcon } from "lucide-react";
+import { Play, Square, TimerResetIcon, PictureInPicture2 } from "lucide-react";
 import { getFormattedTime } from "@/features/pomodoro/helpers/timer";
+import { openPipWindow, isPipSupported } from "@/features/pomodoro/helpers/pip";
 import PomoSettings from "@/features/pomodoro/components/PomoSettings";
 import { Tooltip } from "@/shared/ui/tooltip";
 
@@ -84,8 +85,11 @@ const TimerContent = () => {
     }
   }, [userSettings, setTimerValue]);
 
-  // Reset timer when selected task changes
+  // Reset timer when selected task changes (skip on initial mount/remount)
+  const prevTaskIdRef = useRef(currentTask?.id);
   useEffect(() => {
+    if (prevTaskIdRef.current === currentTask?.id) return;
+    prevTaskIdRef.current = currentTask?.id;
     const { currentTab } = useTimerStore.getState();
     const value = getCurrentTime(currentTab, userSettings);
     resetTimer(value);
@@ -168,6 +172,19 @@ const TimerContent = () => {
           </Button>
         </Tooltip>
         <PomoSettings />
+        {isPipSupported() && (
+          <div className="hidden md:block">
+            <Tooltip content="PiP Mode">
+              <Button
+                onClick={openPipWindow}
+                icon={<PictureInPicture2 className="size-5" />}
+                className="rounded-full w-12 !h-12"
+                variant="icon"
+                aria-label="PiP Mode"
+              />
+            </Tooltip>
+          </div>
+        )}
       </div>
     </>
   );
