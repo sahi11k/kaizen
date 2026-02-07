@@ -3,7 +3,11 @@ import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
-import { useGetTimerValue, getCurrentTime } from "@/features/pomodoro/hooks/useGetTimerValue";
+import {
+  useGetTimerValue,
+  getCurrentTime,
+} from "@/features/pomodoro/hooks/useGetTimerValue";
+import useSound from "@/features/pomodoro/hooks/useSound";
 import useTasksStore from "@/features/pomodoro/store/tasks";
 import { useShallow } from "zustand/react/shallow";
 import { addTaskSession, updateTask } from "@/features/pomodoro/api/tasks";
@@ -13,8 +17,14 @@ import { Button } from "@/shared/ui/button";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Play, Square, TimerResetIcon } from "lucide-react";
-import { getLongBreakInterval, getTimerDurations } from "@/features/pomodoro/utils/timer";
-import { getFormattedTime, getNextTab } from "@/features/pomodoro/helpers/timer";
+import {
+  getLongBreakInterval,
+  getTimerDurations,
+} from "@/features/pomodoro/utils/timer";
+import {
+  getFormattedTime,
+  getNextTab,
+} from "@/features/pomodoro/helpers/timer";
 import PomoSettings from "@/features/pomodoro/components/PomoSettings";
 import { Tooltip } from "@/shared/ui/tooltip";
 
@@ -59,7 +69,7 @@ const TimerContent = () => {
       setCurrentTask: state.setCurrentTask,
       taskSessions: state.taskSessions,
       setTaskSessions: state.setTaskSessions,
-    }))
+    })),
   );
 
   const [currentTab, setCurrentTab] = useState(POMODORO_TAB);
@@ -67,6 +77,8 @@ const TimerContent = () => {
   const [pomodoroCount, setPomodoroCount] = useState(0);
   const intervalRef = useRef(null);
   const completingRef = useRef(false);
+
+  const { play, playLoop, stopLoop } = useSound();
 
   const [timerValue, setTimerValue] = useGetTimerValue({
     activeTab: currentTab,
@@ -83,8 +95,8 @@ const TimerContent = () => {
       currentTab === POMODORO_TAB
         ? taskTime
         : currentTab === SHORT_BREAK_TAB
-        ? shortBreakTime
-        : longBreakTime
+          ? shortBreakTime
+          : longBreakTime,
     );
   }, [currentTab, userSettings]);
 
@@ -94,13 +106,15 @@ const TimerContent = () => {
       currentTab === POMODORO_TAB
         ? "Pomodoro"
         : currentTab === SHORT_BREAK_TAB
-        ? "Short Break"
-        : "Long Break";
+          ? "Short Break"
+          : "Long Break";
     document.title = `${titlePrefix} : ${minutes}:${seconds}`;
   }, [currentTab, timerValue]);
 
   const startTimer = () => {
     if (timerStarted) return;
+    play("timerStart");
+    playLoop("timerRun");
     intervalRef.current = setInterval(() => {
       setTimerValue((prev) => {
         if (prev <= 0) {
@@ -122,6 +136,7 @@ const TimerContent = () => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+    stopLoop("timerRun");
     setTimerStarted(false);
   };
 
@@ -143,6 +158,7 @@ const TimerContent = () => {
   const handleTimerComplete = async () => {
     if (completingRef.current) return;
     completingRef.current = true;
+    play("timerEnd");
     clearTimerInterval();
     await goToNextPhase(true);
     completingRef.current = false;
@@ -173,7 +189,7 @@ const TimerContent = () => {
           completed,
           timeSpent: currentTask.timeSpent + duration / 60,
         },
-        user.id
+        user.id,
       );
       const sessionRes = await addTaskSession(
         {
@@ -181,7 +197,7 @@ const TimerContent = () => {
           duration: duration / 60,
           status: completed,
         },
-        user.id
+        user.id,
       );
 
       if (!sessionRes.error) {
