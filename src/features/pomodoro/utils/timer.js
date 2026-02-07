@@ -21,11 +21,11 @@ export const getTimerDurations = (userSettings) => ({
   taskTime: getTimeInSeconds(userSettings?.pomodoroDuration, TASK_TIME),
   shortBreakTime: getTimeInSeconds(
     userSettings?.shortBreakDuration,
-    SHORT_BREAK_TIME
+    SHORT_BREAK_TIME,
   ),
   longBreakTime: getTimeInSeconds(
     userSettings?.longBreakDuration,
-    LONG_BREAK_TIME
+    LONG_BREAK_TIME,
   ),
 });
 
