@@ -101,7 +101,7 @@ const TimerManager = () => {
 
       if (timerTask && user?.id) {
         const completedSessions = timerTask.completedSessions + 1;
-        const completed = completedSessions === timerTask.totalSessions;
+        const completed = completedSessions >= timerTask.totalSessions;
 
         const res = await updateTask(
           {
