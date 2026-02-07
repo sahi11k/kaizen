@@ -76,7 +76,7 @@ const TaskItem = ({
         </Tooltip>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 min-w-0">
         <div
           className="text-base font-semibold line-clamp-1"
           style={{ textDecoration: task.completed ? "line-through" : "none" }}

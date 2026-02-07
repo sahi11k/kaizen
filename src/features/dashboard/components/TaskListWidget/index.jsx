@@ -22,7 +22,7 @@ const TaskListWidget = () => {
       updateTaskInStore: state.updateTask,
       tasksFetchStatus: state.tasksFetchStatus,
       setTasksFetchStatus: state.setTasksFetchStatus,
-    }))
+    })),
   );
 
   const pendingTasks = getPendingTasks(tasks);
@@ -66,10 +66,7 @@ const TaskListWidget = () => {
 const TaskItem = ({ task }) => {
   return (
     <li className="flex items-center justify-between border border-border rounded-md px-4 py-2 gap-2">
-      <span className="font-medium truncate">
-        {task.title}Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Quisquam, quos.
-      </span>
+      <span className="font-medium truncate min-w-0">{task.title}</span>
       <Tooltip content="Openwith Pomodoro">
         <Link to="/dashboard/pomodoro">
           <Button

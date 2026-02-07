@@ -2,12 +2,10 @@ import { useRef, useCallback } from "react";
 
 import timerStartSound from "@/assets/sounds/timerStart.mp3";
 import timerEndSound from "@/assets/sounds/timerEnd.mp3";
-import timerRunSound from "@/assets/sounds/timerRun.mp3";
 
 const SOUNDS = {
   timerStart: timerStartSound,
   timerEnd: timerEndSound,
-  timerRun: timerRunSound,
 };
 
 /**
@@ -37,7 +35,7 @@ const useSound = () => {
         console.warn("Sound playback blocked:", err);
       });
     },
-    [getAudio]
+    [getAudio],
   );
 
   const playLoop = useCallback(
@@ -50,7 +48,7 @@ const useSound = () => {
         console.warn("Sound playback blocked:", err);
       });
     },
-    [getAudio]
+    [getAudio],
   );
 
   const stopLoop = useCallback(
@@ -60,7 +58,7 @@ const useSound = () => {
       audio.pause();
       audio.currentTime = 0;
     },
-    [getAudio]
+    [getAudio],
   );
 
   return { play, playLoop, stopLoop };
