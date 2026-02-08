@@ -9,87 +9,97 @@ import Login from "@/features/auth/pages/Login";
 import Signup from "@/features/auth/pages/Signup";
 import NotFound from "@/features/home/pages/NotFound";
 import UpdatePassword from "@/features/auth/pages/UpdatePassword";
-import { AuthLayout, HomePageLayout, DashboardLayout } from "@/app/layouts";
+import {
+  AuthLayout,
+  HomePageLayout,
+  DashboardLayout,
+  BaseLayout,
+} from "@/app/layouts";
 import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <HomePageLayout />,
+    element: <BaseLayout />,
     children: [
       {
         path: "/",
-        element: <Home />,
-      },
-    ],
-  },
-  {
-    path: "/",
-    element: <AuthLayout />,
-    children: [
-      {
-        path: "auth/login",
-        element: <Login />,
+        element: <HomePageLayout />,
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+        ],
       },
       {
-        path: "auth/signup",
-        element: <Signup />,
+        path: "/",
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "auth/login",
+            element: <Login />,
+          },
+          {
+            path: "auth/signup",
+            element: <Signup />,
+          },
+          {
+            path: "auth/update-password",
+            element: <UpdatePassword />,
+          },
+        ],
       },
-      {
-        path: "auth/update-password",
-        element: <UpdatePassword />,
-      },
-    ],
-  },
-  {
-    path: "/dashboard",
-    element: <DashboardLayout />,
-    children: [
       {
         path: "/dashboard",
-        element: (
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        ),
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: "/dashboard",
+            element: (
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/dashboard/journals",
+            element: (
+              <ProtectedRoute>
+                <Journal />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/dashboard/pomodoro",
+            element: (
+              <ProtectedRoute>
+                <Pomodoro />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/dashboard/settings",
+            element: (
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/dashboard/analytics",
+            element: (
+              <ProtectedRoute>
+                <Analytics />
+              </ProtectedRoute>
+            ),
+          },
+        ],
       },
       {
-        path: "/dashboard/journals",
-        element: (
-          <ProtectedRoute>
-            <Journal />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/dashboard/pomodoro",
-        element: (
-          <ProtectedRoute>
-            <Pomodoro />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/dashboard/settings",
-        element: (
-          <ProtectedRoute>
-            <Settings />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/dashboard/analytics",
-        element: (
-          <ProtectedRoute>
-            <Analytics />
-          </ProtectedRoute>
-        ),
+        path: "*",
+        element: <NotFound />,
       },
     ],
-  },
-  {
-    path: "*",
-    element: <NotFound />,
   },
 ]);
 

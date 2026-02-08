@@ -17,7 +17,9 @@ import { getUserDisplayName } from "@/features/auth/utils/auth";
 import { SidebarMobile } from "@/app/layouts/components/Sidebar";
 import { Tooltip } from "@/shared/ui/tooltip";
 import useTasksStore from "@/features/pomodoro/store/tasks";
+import useTimerStore from "@/features/pomodoro/store/timer";
 import useJournalsStore from "@/features/journals/store/journals";
+import { closePipWindow } from "@/features/pomodoro/helpers/pip";
 
 const { toast } = Toast;
 
@@ -43,6 +45,8 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
       setTasksFetchStatus(STATUS.LOADING);
       setJournals([]);
       setJournalsFetchStatus(STATUS.LOADING);
+      useTimerStore.getState().resetTimer(0);
+      closePipWindow();
       navigate("/", { replace: true });
     }
   };

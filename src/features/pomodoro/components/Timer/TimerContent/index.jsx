@@ -173,7 +173,7 @@ const TimerContent = () => {
         </Tooltip>
         <PomoSettings />
         {isPipSupported() && (
-          <div className="hidden md:block">
+          <div className="hidden md:block absolute right-0 translate-x-full pl-6">
             <Tooltip content="Floating Timer">
               <Button
                 onClick={openPipWindow}
