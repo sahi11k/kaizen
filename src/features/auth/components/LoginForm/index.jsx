@@ -1,0 +1,137 @@
+import React, { useState } from "react";
+import { loginWithEmail, resendOTP } from "@/features/auth/api/auth";
+import { Link, useNavigate } from "react-router";
+import { Toast } from "@/shared/ui/toast";
+import { EMAIL_NOT_VERIFIED_ERROR } from "@/shared/constants/db";
+import OtpVerification from "@/features/auth/components/OtpVerification";
+import useAuthStore from "@/features/auth/store/auth";
+import ResetPasswordForm from "@/features/auth/components/ResetPasswordForm";
+import { Input } from "@/shared/ui/input";
+import { Button } from "@/shared/ui/button";
+import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
+
+const { toast } = Toast;
+
+const DEFAULT_FORM_VALUES = {
+  email: "",
+  password: "",
+};
+
+const LoginForm = ({
+  showOtpScreen,
+  setShowOtpScreen,
+  showResetPasswordScreen,
+  setShowResetPasswordScreen,
+}) => {
+  const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { setUser } = useAuthStore();
+
+  const resetForm = () => {
+    setFormValues(DEFAULT_FORM_VALUES);
+    setShowOtpScreen(false);
+    setIsLoading(false);
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const response = await loginWithEmail(formValues);
+
+    if (response.error) {
+      if (response.error === EMAIL_NOT_VERIFIED_ERROR) {
+        await sendOtp();
+        setIsLoading(false);
+        return;
+      }
+      toast.error(response.error);
+      setIsLoading(false);
+      return;
+    }
+    if (response.data.user) {
+      setUser(response.data.user);
+      setIsLoading(false);
+      resetForm(); // Reset form before navigation
+      navigate(DEFAULT_NAV_ROUTE, { replace: true });
+    }
+  };
+
+  const sendOtp = async () => {
+    const response = await resendOTP({ email: formValues.email });
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      toast.success("OTP sent successfully! Check your email.");
+      setShowOtpScreen(true);
+    }
+  };
+
+  if (showOtpScreen) {
+    return (
+      <OtpVerification
+        email={formValues.email}
+        onBack={() => setShowOtpScreen(false)}
+        backBtnText="Back to Login"
+      />
+    );
+  }
+
+  if (showResetPasswordScreen) {
+    return (
+      <ResetPasswordForm
+        onBack={() => setShowResetPasswordScreen(false)}
+        defaultEmail={formValues.email}
+      />
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
+        <Input
+          type="email"
+          id="loginEmail"
+          value={formValues.email}
+          onChange={(e) =>
+            setFormValues({ ...formValues, email: e.target.value })
+          }
+          required
+          placeholder="Enter email"
+        />
+        <div className="flex flex-col">
+          <Input
+            type="password"
+            id="loginPassword"
+            value={formValues.password}
+            onChange={(e) =>
+              setFormValues({ ...formValues, password: e.target.value })
+            }
+            required
+            placeholder="Enter password"
+          />
+          <Button
+            type="button"
+            variant="link"
+            onClick={() => setShowResetPasswordScreen(true)}
+            className="self-end !h-6"
+          >
+            Forgot password?
+          </Button>
+        </div>
+        <Button type="submit" loading={isLoading} className="mt-1">
+          Login
+        </Button>
+      </form>
+      <div className="text-sm text-center">
+        Don&apos;t have an account?{" "}
+        <Link to="/auth/signup" className="text-link ml-1 underline-offset-2">
+          Sign up
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default LoginForm;

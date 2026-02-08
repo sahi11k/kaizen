@@ -18,11 +18,11 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      open: true,
+      host: true,
       port: 3000,
-      host: "0.0.0.0",
-      hmr: {
-        host: env.VITE_HOST_IP || "localhost",
+      open: true,
+      watch: {
+        usePolling: env.VITE_WSL === "true",
       },
     },
   };
