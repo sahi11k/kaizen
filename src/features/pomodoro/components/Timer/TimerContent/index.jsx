@@ -3,7 +3,7 @@ import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
-import { getCurrentTime } from "@/features/pomodoro/hooks/useGetTimerValue";
+import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
 import useSound from "@/features/pomodoro/hooks/useSound";
 import useTimerStore from "@/features/pomodoro/store/timer";
 import useTasksStore from "@/features/pomodoro/store/tasks";
@@ -174,13 +174,13 @@ const TimerContent = () => {
         <PomoSettings />
         {isPipSupported() && (
           <div className="hidden md:block">
-            <Tooltip content="PiP Mode">
+            <Tooltip content="Floating Timer">
               <Button
                 onClick={openPipWindow}
                 icon={<PictureInPicture2 className="size-5" />}
                 className="rounded-full w-12 !h-12"
                 variant="icon"
-                aria-label="PiP Mode"
+                aria-label="Floating Timer"
               />
             </Tooltip>
           </div>

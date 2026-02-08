@@ -13,7 +13,7 @@ import {
   getFormattedTime,
   getNextTab,
 } from "@/features/pomodoro/helpers/timer";
-import { getCurrentTime } from "@/features/pomodoro/hooks/useGetTimerValue";
+import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB } = TIMER_CONSTANTS;
 

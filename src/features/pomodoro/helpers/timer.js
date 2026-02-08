@@ -1,4 +1,5 @@
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { getTimerDurations } from "@/features/pomodoro/utils/timer";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
 
@@ -32,4 +33,21 @@ export const getNextTab = (currentTab, pomodoroCount, longBreakInterval) => {
   }
   // From any break, go back to Pomodoro
   return POMODORO_TAB;
+};
+
+/**
+ * Gets the timer duration in seconds for the given tab and user settings
+ * @param {string} tabKey - Current tab key (pomodoro, short_break, long_break)
+ * @param {Object} userSettings - User settings object
+ * @returns {number} Timer duration in seconds
+ */
+export const getCurrentTime = (tabKey, userSettings) => {
+  const { taskTime, shortBreakTime, longBreakTime } =
+    getTimerDurations(userSettings);
+
+  if (tabKey === POMODORO_TAB) return taskTime;
+  if (tabKey === SHORT_BREAK_TAB) return shortBreakTime;
+  if (tabKey === LONG_BREAK_TAB) return longBreakTime;
+
+  return taskTime;
 };

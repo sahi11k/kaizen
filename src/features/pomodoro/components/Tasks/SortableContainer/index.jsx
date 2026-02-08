@@ -30,12 +30,12 @@ const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
-    })
+    }),
   );
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
+    if (over && active.id !== over.id) {
       const updatedTasks = (items) => {
         const oldIndex = items.findIndex((task) => task.id === active.id);
         const newIndex = items.findIndex((task) => task.id === over.id);
