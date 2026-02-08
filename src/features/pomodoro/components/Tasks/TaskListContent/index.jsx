@@ -15,7 +15,7 @@ import {
   sortTasks,
   updateTask,
 } from "@/features/pomodoro/api/tasks";
-import { getCurrentTime } from "@/features/pomodoro/hooks/useGetTimerValue";
+import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
 import TaskSwitchDialog from "@/features/pomodoro/components/Tasks/TaskSwitchDialog";
