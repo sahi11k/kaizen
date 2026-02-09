@@ -1,4 +1,5 @@
 import usePipStore from "@/features/pomodoro/store/pip";
+import { THEME } from "@/features/theme/constants/theme";
 
 /**
  * Checks whether the Document Picture-in-Picture API is available.
@@ -33,7 +34,7 @@ const copyStyles = (pipWindow) => {
   const mainBody = document.body;
   pipWindow.document.body.setAttribute(
     "data-theme",
-    mainBody.getAttribute("data-theme") || "light",
+    mainBody.getAttribute("data-theme") || THEME.LIGHT,
   );
   pipWindow.document.body.className = mainBody.className;
 };

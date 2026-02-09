@@ -125,6 +125,50 @@
   --z-tooltip-overlay: 1000; /* tooltips inside overlays/dialogs */
 }
 
+.dark {
+  /* Base text & backgrounds */
+  --background: oklch(14% 0 0); /* dark page background */
+  --foreground: oklch(93% 0 0); /* light body text */
+
+  /* Brand */
+  --primary: #a3d4cd;
+  --primary-light: #1e3533;
+  --primary-foreground: oklch(14% 0 0); /* dark text on primary */
+
+  /* Accent / secondary (muted peach) */
+  --secondary: #8f884a;
+  --secondary-light: #2e2c1a;
+  --secondary-dark: #5a5630;
+  --secondary-foreground: oklch(93% 0 0); /* light text on secondary */
+
+  /* Muted / subtitles / placeholders */
+  --muted: oklch(20% 0 0); /* dark card bg */
+  --muted-foreground: oklch(60% 0 0); /* medium gray for muted text */
+
+  /* Generic accents / surfaces */
+  --accent: #2a2a2a; /* dark surface accent */
+  --accent-foreground: #a3d4cd; /* teal text on accent surfaces */
+
+  /* Destructive */
+  --destructive: oklch(55% 0.22 27); /* brighter red for dark bg */
+  --destructive-foreground: oklch(14% 0 0);
+
+  /* Interaction / form */
+  --border: oklch(28% 0 0); /* subtle dark border */
+  --input: oklch(22% 0 0); /* dark input background */
+  --ring: oklch(35% 0 0); /* focus ring */
+
+  /* Sidebar specifics */
+  --sidebar: oklch(16% 0 0);
+  --sidebar-foreground: oklch(60% 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: oklch(22% 0 0);
+  --sidebar-accent-foreground: var(--primary);
+  --sidebar-border: oklch(24% 0 0);
+  --sidebar-ring: oklch(40% 0 0);
+}
+
 .heading-1 {
   @apply text-3xl lg:text-5xl xl:text-6xl font-semibold leading-tight;
 }
@@ -163,6 +207,22 @@
 
 .form-error {
   @apply text-sm text-destructive leading-snug;
+}
+
+/* Theme toggle icon animation */
+@keyframes spin-once {
+  from {
+    transform: rotate(-90deg) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-spin-once {
+  animation: spin-once 0.5s ease-out;
 }
 
 /* iOS Safari: ensure at least 16px font-size on form controls to prevent zoom */
