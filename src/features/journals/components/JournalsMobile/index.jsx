@@ -66,7 +66,7 @@ const JournalsMobile = () => {
             >
               <span
                 className={`rounded-full py-2 px-4 flex items-center justify-center [&>svg]:!size-5 ${
-                  currentTab === tab.key ? "bg-primary-light" : ""
+                  currentTab === tab.key ? "bg-primary-container" : ""
                 }`}
               >
                 {currentTab === tab.key ? tab.iconFilled : tab.icon}{" "}

@@ -2,6 +2,7 @@ import React from "react";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Tooltip } from "@/shared/ui/tooltip";
+import { cn } from "@/shared/lib/utils";
 import useThemeStore from "@/features/theme/store/theme";
 import { THEME, THEME_TOOLTIP_TEXT } from "@/features/theme/constants/theme";
 
@@ -25,7 +26,7 @@ const ThemeToggle = ({ tooltipSide = "bottom", tooltipLevel, className }) => {
             <Moon className="animate-spin-once" />
           )
         }
-        className={className}
+        className={cn("w-12 !h-12", className)}
       />
     </Tooltip>
   );

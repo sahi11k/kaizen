@@ -63,7 +63,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
         <Button
           onClick={handleCollapse}
           variant="icon"
-          className="hidden xl:flex -ml-2"
+          className="hidden xl:flex -ml-2 w-12 !h-12"
           icon={isCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
         />
       </Tooltip>

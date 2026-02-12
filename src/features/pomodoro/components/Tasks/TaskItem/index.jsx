@@ -9,9 +9,9 @@ import { MoreOptions } from "@/shared/ui/more-options";
 
 const base =
   "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-md transition-colors bg-background";
-const hover = "hover:bg-sidebar-accent";
+const hover = "hover:bg-muted";
 const activeClass =
-  "bg-primary-light text-primary hover:bg-primary-light hover:text-primary";
+  "bg-primary-container text-primary hover:bg-primary-container hover:text-primary";
 const completedClass = "text-muted-foreground opacity-50";
 
 const TaskItem = ({

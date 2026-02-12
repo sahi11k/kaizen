@@ -96,9 +96,9 @@
   }
 
   .saveBtn {
-    --bg: var(--accent-secondary);
+    --bg: var(--secondary);
     &:hover {
-      background-color: var(--accent-secondary);
+      background-color: var(--secondary);
     }
   }
 

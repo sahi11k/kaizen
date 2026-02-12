@@ -108,12 +108,7 @@ const JournalListContent = ({ onItemClick }) => {
         </div>
         <Tooltip content="New Journal">
           <Button
-            icon={
-              <SquarePen
-                className="size-4 text-secondary"
-                color="currentColor"
-              />
-            }
+            icon={<SquarePen className="size-4" />}
             size="sm"
             onClick={newJournal}
           >

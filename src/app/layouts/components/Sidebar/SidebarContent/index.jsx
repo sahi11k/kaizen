@@ -45,10 +45,10 @@ const LinkItem = ({
     <Link to={to} key={to}>
       <Tooltip content={isCollapsed ? label : null} side="right">
         <li
-          className={`p-2 rounded-md hover:bg-sidebar-accent font-medium flex items-center gap-2 ${
+          className={`p-2 rounded-md hover:bg-muted font-medium flex items-center gap-2 ${
             isActive
-              ? "bg-primary-light text-primary hover:!bg-primary-light"
-              : "text-sidebar-foreground"
+              ? "bg-primary-container text-primary hover:!bg-primary-container"
+              : "text-muted-foreground"
           }`}
           onClick={() => isMobile && setOpen((prev) => !prev)}
         >

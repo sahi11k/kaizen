@@ -1,0 +1,59 @@
+/* ============================================
+ * PRIMITIVE COLOR PALETTE
+ * Raw color scales — never use directly in components.
+ * Reference these via semantic role tokens in global.css.
+ * ============================================ */
+
+:root {
+  /* ─── Neutral (achromatic) ─── */
+  --neutral-50: oklch(98.5% 0 0);
+  --neutral-100: oklch(96% 0 0);
+  --neutral-200: oklch(92% 0 0);
+  --neutral-300: oklch(87% 0 0);
+  --neutral-400: oklch(71% 0 0);
+  --neutral-500: oklch(56% 0 0);
+  --neutral-600: oklch(44% 0 0);
+  --neutral-700: oklch(37% 0 0);
+  --neutral-800: oklch(27% 0 0);
+  --neutral-900: oklch(21% 0 0);
+  --neutral-950: oklch(14% 0 0);
+
+  /* ─── Teal (derived from #1c3f3a) ─── */
+  --teal-50: #e0e9e9;
+  --teal-100: #c8dad7;
+  --teal-200: #a3d4cd;
+  --teal-300: #7ec0b7;
+  --teal-400: #5ca69c;
+  --teal-500: #3f8d83;
+  --teal-600: #2f756b;
+  --teal-700: #235c54;
+  --teal-800: #1c3f3a;
+  --teal-900: #1e3533;
+
+  /* ─── Warm (derived from #ebe8b8) ─── */
+  --warm-50: #f5f4e6;
+  --warm-100: #ebe8d8;
+  --warm-200: #ebe8b8;
+  --warm-300: #e2dea2;
+  --warm-400: #d8d38b;
+  --warm-500: #b3ad6a;
+  --warm-600: #8f884a;
+  --warm-700: #74703d;
+  --warm-800: #5a5630;
+  --warm-900: #2e2c1a;
+
+  /* ─── Z-Index Scale ─── */
+  --z-image: 10;
+  --z-header: 200;
+  --z-popover: 700;
+  --z-dropdown: 700;
+  --z-drawer-overlay: 800;
+  --z-drawer: 850;
+  --z-overlay: 900; /* modal overlay */
+  --z-modal: 950; /* modal/dialog content */
+
+  /* Tooltip tiers */
+  --z-tooltip-image: 300; /* images/cards (above header) */
+  --z-tooltip-header: 400; /* header tooltips (above image tooltips) */
+  --z-tooltip-overlay: 1000; /* tooltips inside overlays/dialogs */
+}

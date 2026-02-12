@@ -1,14 +1,13 @@
 import Button from "@/shared/ui/button";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/shared/ui/popover";
+import { Popover, PopoverTrigger, PopoverContent } from "@/shared/ui/popover";
 import { Slider } from "@/shared/ui/slider";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
 import useAuthStore from "@/features/auth/store/auth";
 import { upsertUserSettings } from "@/features/settings/api/userSettings";
-import { getLongBreakInterval, getTimerDurations } from "@/features/pomodoro/utils/timer";
+import {
+  getLongBreakInterval,
+  getTimerDurations,
+} from "@/features/pomodoro/utils/timer";
 import { Settings } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Toast } from "@/shared/ui/toast";
@@ -29,7 +28,7 @@ const PomoSettings = () => {
   const { user, userSettings, setUserSettings } = useAuthStore();
 
   const [pomodoroFormValues, setPomodoroFormValues] = useState(
-    DEFAULT_POMODORO_FORM_VALUES
+    DEFAULT_POMODORO_FORM_VALUES,
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -93,7 +92,7 @@ const PomoSettings = () => {
       <Tooltip content="Pomodoro Settings">
         <PopoverTrigger asChild>
           <Button
-            icon={<Settings className="size-5" />}
+            icon={<Settings />}
             className="rounded-full w-12 !h-12"
             variant="icon"
             aria-label="Pomodoro Settings"
