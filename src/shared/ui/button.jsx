@@ -103,7 +103,7 @@ const Button = React.forwardRef(function Button(
       variant={variant}
       size={size}
       type={type}
-      className={cn(rounded ? "rounded-full" : "rounded-md", className)}
+      className={cn(rounded || variant === "icon" ? "rounded-full" : "rounded-md", className)}
       disabled={isDisabled}
       aria-busy={loading ? "true" : undefined}
       aria-disabled={isDisabled ? "true" : undefined}

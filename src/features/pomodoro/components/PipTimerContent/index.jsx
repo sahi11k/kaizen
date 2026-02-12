@@ -31,8 +31,8 @@ const PipTimerContent = () => {
     duration > 0 ? ((duration - timerValue) / duration) * 100 : 0;
 
   const isPomodoro = currentTab === POMODORO_TAB;
-  const barColor = isPomodoro ? "var(--primary)" : "var(--secondary-dark)";
-  const barBg = isPomodoro ? "var(--primary-light)" : "var(--secondary-light)";
+  const barColor = isPomodoro ? "var(--color-pomodoro-filled)" : "var(--color-break-filled)";
+  const barBg = isPomodoro ? "var(--color-pomodoro-unfilled)" : "var(--color-break-unfilled)";
 
   const handleToggle = () => {
     if (timerStarted) {

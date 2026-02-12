@@ -159,9 +159,9 @@ const TimerContent = () => {
             }
             icon={
               timerStarted ? (
-                <Square className="size-4 text-secondary" fill="currentColor" />
+                <Square className="size-4" fill="currentColor" />
               ) : (
-                <Play className="size-4 text-secondary" fill="currentColor" />
+                <Play className="size-4" fill="currentColor" />
               )
             }
             className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base"
@@ -177,7 +177,7 @@ const TimerContent = () => {
             <Tooltip content="Floating Timer">
               <Button
                 onClick={openPipWindow}
-                icon={<PictureInPicture2 className="size-5" />}
+                icon={<PictureInPicture2 />}
                 className="rounded-full w-12 !h-12"
                 variant="icon"
                 aria-label="Floating Timer"
