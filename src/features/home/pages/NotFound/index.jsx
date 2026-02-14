@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import ErrorIllustation from "@/assets/illustrations/404.svg?react";
+import NotFoundIllustration from "@/assets/illustrations/not-found.svg?react";
 import { Button } from "@/shared/ui/button";
 
 const NotFound = () => {
@@ -8,7 +8,7 @@ const NotFound = () => {
     <div className="h-full w-full flex justify-center items-center">
       <div className="flex flex-col justify-center items-center gap-6">
         <div className="w-80 md:w-100">
-          <ErrorIllustation className="text-primary fill-current" />
+          <NotFoundIllustration />
         </div>
         <div className="flex flex-col items-center justify-center">
           <h2 className="heading-2">Page Not Found</h2>

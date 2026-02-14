@@ -13,13 +13,12 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-link underline-offset-2 !p-0 h-auto",
         icon: "text-muted-foreground hover:bg-muted hover:text-primary !px-2",
       },
@@ -34,7 +33,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 /**
@@ -86,7 +85,7 @@ const Button = React.forwardRef(function Button(
     rounded = false,
     ...props
   },
-  ref
+  ref,
 ) {
   const isDisabled = disabled || loading;
 
@@ -103,7 +102,10 @@ const Button = React.forwardRef(function Button(
       variant={variant}
       size={size}
       type={type}
-      className={cn(rounded ? "rounded-full" : "rounded-md", className)}
+      className={cn(
+        rounded || variant === "icon" ? "rounded-full" : "rounded-md",
+        className,
+      )}
       disabled={isDisabled}
       aria-busy={loading ? "true" : undefined}
       aria-disabled={isDisabled ? "true" : undefined}

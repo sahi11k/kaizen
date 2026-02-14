@@ -10,7 +10,7 @@ const GreetingsWidget = () => {
   const { greeting, subtitle } = getTimeBasedGreeting();
 
   return (
-    <div className="relative p-6 text-background">
+    <div className="relative p-6 text-neutral-200">
       <div className="relative z-10">
         <h1 className="heading-2">
           <span>{greeting},</span>{" "}

@@ -16,6 +16,7 @@ import { STATUS } from "@/shared/constants/db";
 import { getUserDisplayName } from "@/features/auth/utils/auth";
 import { SidebarMobile } from "@/app/layouts/components/Sidebar";
 import { Tooltip } from "@/shared/ui/tooltip";
+import { ThemeToggle } from "@/features/theme";
 import useTasksStore from "@/features/pomodoro/store/tasks";
 import useTimerStore from "@/features/pomodoro/store/timer";
 import useJournalsStore from "@/features/journals/store/journals";
@@ -62,18 +63,24 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
         <Button
           onClick={handleCollapse}
           variant="icon"
-          className="hidden xl:flex -ml-2"
+          className="hidden xl:flex -ml-2 w-12 !h-12"
           icon={isCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
         />
       </Tooltip>
 
       <SidebarMobile />
-      <div className="flex items-center gap-2 xl:gap-6">
+      <div className="flex items-center gap-4 xl:gap-6">
+        <ThemeToggle
+          tooltipSide="bottom"
+          tooltipLevel="header"
+          className="-mr-2"
+        />
+        <div className="h-6 w-px bg-border" />
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-3">
             <Avatar>
               <AvatarImage src="" />
-              <AvatarFallback className="uppercase bg-secondary font-semibold">
+              <AvatarFallback className="uppercase bg-secondary text-secondary-foreground font-semibold">
                 {userDisplayName?.charAt(0)}
               </AvatarFallback>
             </Avatar>

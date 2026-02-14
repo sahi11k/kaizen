@@ -1,0 +1,74 @@
+/* ============================================
+ * PRIMITIVE COLOR PALETTE
+ * Raw color scales — never use directly in components.
+ * Reference these via semantic role tokens in global.css.
+ * ============================================ */
+
+:root {
+  /* ─── Neutral (achromatic) ─── */
+  --neutral-50: oklch(98.5% 0 0);
+  --neutral-100: oklch(96% 0 0);
+  --neutral-200: oklch(92% 0 0);
+  --neutral-300: oklch(87% 0 0);
+  --neutral-400: oklch(70.8% 0 0);
+  --neutral-500: oklch(55.6% 0 0);
+  --neutral-600: oklch(43.9% 0 0);
+  --neutral-700: oklch(37.1% 0 0);
+  --neutral-800: oklch(26.9% 0 0);
+  --neutral-900: oklch(20.5% 0 0);
+  --neutral-950: oklch(14.5% 0 0);
+
+  /* ─── Teal ─── */
+  --teal-50: #d1d8d7;
+  --teal-100: #a4b2b0;
+  --teal-200: #607875;
+  --teal-300: #496561;
+  --teal-400: #32524d;
+  --teal-500: #1c3f3a;
+  --teal-600: #193834;
+  --teal-700: #16322e;
+  --teal-800: #132c28;
+  --teal-900: #102522;
+  --teal-950: #0e1f1d;
+
+  /* ─── Warm ─── */
+  --warm-50: #f5f3db;
+  --warm-100: #f3f1d4;
+  --warm-200: #f1eecd;
+  --warm-300: #edeabf;
+  --warm-400: #d8d38b;
+  --warm-500: #ebe8b8;
+  --warm-600: #d3d0a5;
+  --warm-700: #bcb993;
+  --warm-800: #a4a280;
+  --warm-900: #8d8b6e;
+  --warm-950: #75745c;
+
+  /* ─── Destructive (Tailwind Red) ─── */
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-300: #fca5a5;
+  --red-400: #f87171;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --red-800: #991b1b;
+  --red-900: #7f1d1d;
+  --red-950: #450a0a;
+
+  /* ─── Z-Index Scale ─── */
+  --z-image: 10;
+  --z-header: 200;
+  --z-popover: 700;
+  --z-dropdown: 700;
+  --z-drawer-overlay: 800;
+  --z-drawer: 850;
+  --z-overlay: 900; /* modal overlay */
+  --z-modal: 950; /* modal/dialog content */
+
+  /* Tooltip tiers */
+  --z-tooltip-image: 300; /* images/cards (above header) */
+  --z-tooltip-header: 400; /* header tooltips (above image tooltips) */
+  --z-tooltip-overlay: 1000; /* tooltips inside overlays/dialogs */
+}
