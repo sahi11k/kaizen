@@ -19,7 +19,6 @@ import { STATUS } from "@/shared/constants/db";
 import dayjs from "dayjs";
 import { generatePomodoroChartData } from "./data";
 import Button from "@/shared/ui/button";
-import { Play } from "lucide-react";
 import { Link } from "react-router";
 import EmptyProgressIllustration from "@/assets/illustrations/empty-progress.svg?react";
 
@@ -29,7 +28,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const ProgressChartWidget = () => {
@@ -45,7 +44,7 @@ const ProgressChartWidget = () => {
       taskSessionsFetchStatus: state.taskSessionsFetchStatus,
       setTaskSessionsFetchStatus: state.setTaskSessionsFetchStatus,
       taskSessions: state.taskSessions,
-    }))
+    })),
   );
 
   useEffect(() => {
@@ -56,7 +55,7 @@ const ProgressChartWidget = () => {
           startDate: dayjs().subtract(7, "day").toISOString(),
           endDate: dayjs().toISOString(),
         },
-        user.id
+        user.id,
       );
       setTaskSessions(tasks.data);
       setTaskSessionsFetchStatus(STATUS.FETCHED);
@@ -89,7 +88,7 @@ const ProgressChartWidget = () => {
         ) : (
           <div className="flex flex-col justify-center items-center h-80 gap-6">
             <div className="w-40 h-40 lg:w-50 lg:h-50">
-              <EmptyProgressIllustration className="text-primary fill-current" />
+              <EmptyProgressIllustration />
             </div>
             <p className="text-center">
               No progress yet — start your first session to unlock your weekly

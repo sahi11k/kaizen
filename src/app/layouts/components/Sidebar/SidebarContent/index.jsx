@@ -47,7 +47,7 @@ const LinkItem = ({
         <li
           className={`p-2 rounded-md hover:bg-muted font-medium flex items-center gap-2 ${
             isActive
-              ? "bg-primary-container text-primary hover:!bg-primary-container"
+              ? "bg-primary-container text-primary-container-foreground hover:!bg-primary-container"
               : "text-muted-foreground"
           }`}
           onClick={() => isMobile && setOpen((prev) => !prev)}

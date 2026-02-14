@@ -80,7 +80,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
           <DropdownMenuTrigger className="flex items-center gap-3">
             <Avatar>
               <AvatarImage src="" />
-              <AvatarFallback className="uppercase bg-secondary font-semibold">
+              <AvatarFallback className="uppercase bg-secondary text-secondary-foreground font-semibold">
                 {userDisplayName?.charAt(0)}
               </AvatarFallback>
             </Avatar>

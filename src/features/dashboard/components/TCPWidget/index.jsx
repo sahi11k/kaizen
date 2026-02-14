@@ -8,7 +8,6 @@ import {
   Tooltip as ChartTooltip,
   Legend,
 } from "chart.js";
-import { Percent } from "lucide-react";
 
 ChartJS.register(ArcElement, ChartTooltip, Legend);
 
@@ -18,12 +17,19 @@ const TCPWidget = () => {
   const completed = Math.max(0, Math.min(100, tcp));
   const remaining = 100 - completed;
 
+  const styles = getComputedStyle(document.documentElement);
+
+  const pomodoroFilled = styles.getPropertyValue("--pomodoro-filled").trim();
+  const pomodoroUnfilled = styles
+    .getPropertyValue("--pomodoro-unfilled")
+    .trim();
+
   const data = {
     labels: ["Completed", "Remaining"],
     datasets: [
       {
         data: [completed, remaining],
-        backgroundColor: ["#1c3f3a", "#e0e9e9"],
+        backgroundColor: [pomodoroFilled, pomodoroUnfilled],
         borderWidth: 0,
       },
     ],

@@ -29,7 +29,7 @@
 }
 
 .text-link {
-  @apply text-sm font-medium text-primary hover:underline;
+  @apply text-sm font-medium text-primary hover:underline dark:text-secondary;
 }
 
 /* Layout */

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { OTPInput, OTPInputContext, REGEXP_ONLY_DIGITS } from "input-otp";
-import { MinusIcon } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 
 function ShadInputOTP({ className, containerClassName, ...props }) {
@@ -9,7 +8,7 @@ function ShadInputOTP({ className, containerClassName, ...props }) {
       data-slot="input-otp"
       containerClassName={cn(
         "flex items-center gap-2 has-disabled:opacity-50",
-        containerClassName
+        containerClassName,
       )}
       className={cn("disabled:cursor-not-allowed", className)}
       pattern={REGEXP_ONLY_DIGITS}
@@ -37,8 +36,8 @@ function InputOTPSlot({ index, className, ...props }) {
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
-        "data-[active=true]:border-ring data-[active=true]:ring-ring/50 data-[active=true]:aria-invalid:ring-destructive/20 dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[active=true]:aria-invalid:border-destructive dark:bg-input/30 border-input relative flex h-9 w-9 items-center justify-center border-y border-r text-sm shadow-xs transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-[3px]",
-        className
+        "data-[active=true]:border-border data-[active=true]:ring-border data-[active=true]:aria-invalid:ring-destructive/20 dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:border-destructive data-[active=true]:aria-invalid:border-destructive border-border relative flex h-9 w-9 items-center justify-center border rounded-md text-sm shadow-xs transition-all outline-none data-[active=true]:z-10 data-[active=true]:ring-[3px]",
+        className,
       )}
       {...props}
     >

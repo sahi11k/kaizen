@@ -10,7 +10,7 @@ const HeaderMain = () => {
   const { user } = useAuthStore();
 
   return (
-    <header className="sticky top-0 inset-x-0 z-50 flex justify-between items-center p-4 md:px-8 xl:px-16 max-w-8xl mx-auto bg-background">
+    <header className="sticky top-0 inset-x-0 z-50 flex justify-between items-center p-4 md:px-8 xl:px-24 max-w-8xl mx-auto bg-background">
       <Logo link={true} className="text-primary" />
       <div className="flex items-center gap-4 xl:gap-6">
         <ThemeToggle
@@ -21,15 +21,11 @@ const HeaderMain = () => {
         <div className="h-6 w-px bg-border" />
         {user ? (
           <Link to={DEFAULT_NAV_ROUTE}>
-            <Button variant="secondary" rounded>
-              Dashboard
-            </Button>
+            <Button rounded>Dashboard</Button>
           </Link>
         ) : (
           <Link to="/auth/signup">
-            <Button variant="secondary" rounded>
-              Sign Up
-            </Button>
+            <Button rounded>Sign Up</Button>
           </Link>
         )}
       </div>
