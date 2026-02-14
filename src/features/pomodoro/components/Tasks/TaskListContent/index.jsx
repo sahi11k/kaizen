@@ -62,7 +62,7 @@ const TaskListContent = ({ onItemClick }) => {
       updateTaskInStore: state.updateTask,
       tasksFetchStatus: state.tasksFetchStatus,
       setTasksFetchStatus: state.setTasksFetchStatus,
-    }))
+    })),
   );
 
   useEffect(() => {
@@ -160,7 +160,7 @@ const TaskListContent = ({ onItemClick }) => {
         id: taskId,
         completed: !task.completed,
       },
-      user.id
+      user.id,
     );
     if (res.error) {
       return toast.error(res.error);
@@ -261,9 +261,7 @@ const TaskListContent = ({ onItemClick }) => {
         <Tooltip content="Add task">
           <Button
             onClick={() => setShowModal(true)}
-            icon={
-              <Plus className="size-4 text-secondary" color="currentColor" />
-            }
+            icon={<Plus className="size-4" />}
             size="sm"
           >
             Task

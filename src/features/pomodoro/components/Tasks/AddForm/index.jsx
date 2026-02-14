@@ -32,7 +32,7 @@ const AddForm = ({
 
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
-      <DialogContent className="w-lg p-6 overflow-y-auto scrollbar-thin border">
+      <DialogContent className="w-lg p-6 overflow-y-auto scrollbar-thin shadow-md">
         <DialogHeader>
           <DialogTitle className="heading-3">
             {mode === CREATE ? "Add Task" : "Edit Task"}

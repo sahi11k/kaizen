@@ -1,0 +1,62 @@
+/* Typography */
+
+.heading-1 {
+  @apply text-3xl lg:text-5xl xl:text-6xl font-semibold leading-tight;
+}
+
+.heading-2 {
+  @apply text-2xl md:text-3xl xl:text-4xl font-semibold leading-snug;
+}
+
+.heading-3 {
+  @apply text-lg xl:text-xl font-semibold leading-snug;
+}
+
+.body-base {
+  @apply text-base xl:text-lg leading-relaxed tracking-wide;
+}
+
+.body-description {
+  @apply text-sm md:text-base text-muted-foreground leading-relaxed tracking-wide;
+}
+
+.text-caption {
+  @apply text-xs uppercase tracking-wide text-muted-foreground;
+}
+
+.text-number {
+  @apply text-2xl font-bold font-mono;
+}
+
+.text-link {
+  @apply text-sm font-medium text-primary hover:underline dark:text-secondary;
+}
+
+/* Layout */
+
+.flex-gap {
+  @apply gap-6 md:gap-8 xl:gap-10;
+}
+
+/* Forms */
+
+.form-error {
+  @apply text-sm text-destructive leading-snug;
+}
+
+/* Animation — theme toggle icon */
+
+@keyframes spin-once {
+  from {
+    transform: rotate(-90deg) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-spin-once {
+  animation: spin-once 0.5s ease-out;
+}

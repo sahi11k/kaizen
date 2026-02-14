@@ -38,7 +38,7 @@ const SidebarMobile = () => {
           <DrawerTrigger asChild>
             <Button
               variant="icon"
-              className="block xl:hidden"
+              className="block xl:hidden w-12 !h-12"
               icon={<Menu className="size-6" />}
             />
           </DrawerTrigger>
@@ -54,7 +54,7 @@ const SidebarMobile = () => {
           />
         </aside>
         <DrawerClose className="absolute top-3.5 right-4" asChild>
-          <Button variant="icon" className="-mr-2">
+          <Button variant="icon" className="-mr-2 w-12 !h-12">
             <PanelLeftClose />
           </Button>
         </DrawerClose>

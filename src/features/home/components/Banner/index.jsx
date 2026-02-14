@@ -2,17 +2,19 @@ import React from "react";
 import { Link } from "react-router";
 import { Button } from "@/shared/ui/button";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
-import bannerImage from "@/assets/illustrations/banner.gif";
+import BannerIllustration from "@/assets/illustrations/banner.svg?react";
 
 const Banner = () => {
   return (
     <div className="flex flex-col-reverse lg:flex-row items-center justify-center max-w-8xl mx-auto gap-4 lg:gap-12 xl:gap-24  px-6 lg:px-8 xl:px-16 lg:py-32">
       <div className="flex-1 flex flex-col justify-center gap-6 lg:gap-12">
         <h1 className="heading-1 text-center lg:text-left">
-          Your Journey to <br className="hidden lg:block" />
-          <span className="text-primary/60">Self-Mastery</span>
+          Your journey to <br className="hidden lg:block" />
+          <span className="text-primary/50 dark:text-primary/90">
+            self-mastery
+          </span>
           <br />
-          Starts Here
+          starts here
         </h1>
         <p className="body-base md:max-w-2xl  text-center lg:text-left">
           Transform your life one small step at a time. Build better habits,
@@ -25,12 +27,8 @@ const Banner = () => {
           </Button>
         </Link>
       </div>
-      <div className="h-60 w-60 md:h-80 md:w-80 lg:h-110 lg:w-110 xl:h-130 xl:w-130">
-        <img
-          src={bannerImage}
-          alt="Banner"
-          className="mix-blend-multiply object-contain h-full w-full"
-        />
+      <div className="h-60 w-60 md:h-80 md:w-80 lg:h-110 lg:w-110 xl:h-130 xl:w-130 dark:opacity-85">
+        <BannerIllustration />
       </div>
     </div>
   );

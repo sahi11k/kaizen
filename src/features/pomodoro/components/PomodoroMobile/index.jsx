@@ -60,12 +60,14 @@ const PomodoroMobile = () => {
               key={tab.key}
               value={tab.key}
               className={`rounded-none !bg-muted !shadow-none cursor-pointer ${
-                currentTab === tab.key ? "!text-primary " : ""
+                currentTab === tab.key
+                  ? "!text-primary-container-foreground"
+                  : ""
               } `}
             >
               <span
                 className={`rounded-full py-2 px-4 flex items-center justify-center [&>svg]:!size-5 ${
-                  currentTab === tab.key ? "bg-primary-light" : ""
+                  currentTab === tab.key ? "bg-primary-container" : ""
                 }`}
               >
                 {currentTab === tab.key ? tab.iconFilled : tab.icon}{" "}

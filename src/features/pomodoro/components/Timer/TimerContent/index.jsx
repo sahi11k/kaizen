@@ -159,9 +159,9 @@ const TimerContent = () => {
             }
             icon={
               timerStarted ? (
-                <Square className="size-4 text-secondary" fill="currentColor" />
+                <Square className="size-4" fill="currentColor" />
               ) : (
-                <Play className="size-4 text-secondary" fill="currentColor" />
+                <Play className="size-4" fill="currentColor" />
               )
             }
             className="rounded-full !h-16 !min-w-16 sm:!px-8 text-base"
@@ -177,7 +177,7 @@ const TimerContent = () => {
             <Tooltip content="Floating Timer">
               <Button
                 onClick={openPipWindow}
-                icon={<PictureInPicture2 className="size-5" />}
+                icon={<PictureInPicture2 />}
                 className="rounded-full w-12 !h-12"
                 variant="icon"
                 aria-label="Floating Timer"
@@ -194,12 +194,12 @@ const TabContent = ({ timerValue, duration, currentTab, currentTask }) => {
   const percentage = ((duration - timerValue) / duration) * 100;
   const fillColor =
     currentTab === POMODORO_TAB
-      ? "var(--color-pomodoro-filled)"
-      : "var(--color-break-filled)";
+      ? "var(--pomodoro-filled)"
+      : "var(--break-filled)";
   const unfilledColor =
     currentTab === POMODORO_TAB
-      ? "var(--color-pomodoro-unfilled)"
-      : "var(--color-break-unfilled)";
+      ? "var(--pomodoro-unfilled)"
+      : "var(--break-unfilled)";
 
   const { minutes, seconds } = getFormattedTime(timerValue);
 

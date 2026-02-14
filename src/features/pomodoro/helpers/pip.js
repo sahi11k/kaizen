@@ -1,4 +1,5 @@
 import usePipStore from "@/features/pomodoro/store/pip";
+import { THEME } from "@/features/theme/constants/theme";
 
 /**
  * Checks whether the Document Picture-in-Picture API is available.
@@ -29,13 +30,10 @@ const copyStyles = (pipWindow) => {
     }
   });
 
-  // Mirror the body attributes so CSS variable scoping works
-  const mainBody = document.body;
-  pipWindow.document.body.setAttribute(
-    "data-theme",
-    mainBody.getAttribute("data-theme") || "light",
-  );
-  pipWindow.document.body.className = mainBody.className;
+  // Mirror the dark class on PiP's <html> so .dark overrides :root on the same element
+  if (document.documentElement.classList.contains(THEME.DARK)) {
+    pipWindow.document.documentElement.classList.add(THEME.DARK);
+  }
 };
 
 /**
@@ -81,6 +79,21 @@ export const openPipWindow = async () => {
   } catch (err) {
     console.warn("PiP open failed:", err);
     return false;
+  }
+};
+
+/**
+ * Syncs the PIP window's theme with the main document.
+ * Call this whenever the theme changes.
+ */
+export const syncPipTheme = (isDark) => {
+  const { pipWindow } = usePipStore.getState();
+  if (!pipWindow) return;
+  const pipRoot = pipWindow.document.documentElement;
+  if (isDark) {
+    pipRoot.classList.add(THEME.DARK);
+  } else {
+    pipRoot.classList.remove(THEME.DARK);
   }
 };
 

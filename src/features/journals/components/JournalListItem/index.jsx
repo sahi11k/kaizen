@@ -5,7 +5,7 @@ import { MoreOptions } from "@/shared/ui/more-options";
 const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
   const { title, date, content } = journal;
   const activeClass = isActive
-    ? "bg-primary-light text-primary hover:bg-primary-light hover:text-primary"
+    ? "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground"
     : "text-muted-foreground";
 
   const onKeyDown = (e) => {
@@ -35,7 +35,7 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
       <div className="flex-1 flex flex-col">
         <div
           className={`text-base font-semibold line-clamp-1 ${
-            isActive ? "text-primary" : "text-foreground"
+            isActive && "text-primary-container-foreground"
           }`}
         >
           {title || "Untitled"}
