@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardFooter } from "@/shared/ui/card";
-import hoursInvested from "@/assets/illustrations/hours-invested.svg";
+import HoursInvestedIllustration from "@/assets/illustrations/hours-invested.svg?react";
 import useTasksStore from "@/features/pomodoro/store/tasks";
 import { Info } from "lucide-react";
 import { Tooltip } from "@/shared/ui/tooltip";
@@ -10,14 +10,10 @@ const TotalHoursWidget = () => {
   const totalTimeInvested = getTotalTimeInvested(tasks);
 
   return (
-    <Card className="border-none shadow-none bg-secondary/70 text-foreground">
+    <Card className="border-none shadow-none text-foreground">
       <CardContent className="flex items-center justify-center">
         <div className="w-60 h-60">
-          <img
-            src={hoursInvested}
-            alt="Hours Invested"
-            className="w-full h-full"
-          />
+          <HoursInvestedIllustration />
         </div>
       </CardContent>
       <CardFooter className="flex-col">

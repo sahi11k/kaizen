@@ -61,7 +61,9 @@ const JournalsMobile = () => {
               key={tab.key}
               value={tab.key}
               className={`rounded-none !bg-muted !shadow-none cursor-pointer ${
-                currentTab === tab.key ? "!text-primary " : ""
+                currentTab === tab.key
+                  ? "!text-primary-container-foreground"
+                  : ""
               } `}
             >
               <span

@@ -17,7 +17,7 @@ export const generatePomodoroChartData = (sessions = []) => {
   }
 
   const days = Array.from({ length: 7 }, (_, i) =>
-    dayjs().subtract(6 - i, "day")
+    dayjs().subtract(6 - i, "day"),
   );
 
   const labels = days.map((d) => d.format(WEEKLY_DATE_FORMAT));
@@ -33,13 +33,17 @@ export const generatePomodoroChartData = (sessions = []) => {
     return sessions.filter((s) => dayjs(s.created_at).isSame(d, "day")).length;
   });
 
+  const styles = getComputedStyle(document.documentElement);
+  const minutesBarColor = styles.getPropertyValue("--teal-700").trim();
+  const sessionsBarColor = styles.getPropertyValue("--teal-200").trim();
+
   const data = {
     labels,
     datasets: [
       {
         label: "Minutes",
         data: minutesPerDay,
-        backgroundColor: "#1c3f3a",
+        backgroundColor: minutesBarColor,
         borderRadius: 8,
         pointStyle: "circle",
         yAxisID: "yMinutes",
@@ -47,7 +51,7 @@ export const generatePomodoroChartData = (sessions = []) => {
       {
         label: "Sessions",
         data: sessionsPerDay,
-        backgroundColor: "#88aca9",
+        backgroundColor: sessionsBarColor,
         borderRadius: 8,
         pointStyle: "circle",
         yAxisID: "ySessions",

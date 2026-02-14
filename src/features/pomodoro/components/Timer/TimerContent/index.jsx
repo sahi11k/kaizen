@@ -194,12 +194,12 @@ const TabContent = ({ timerValue, duration, currentTab, currentTask }) => {
   const percentage = ((duration - timerValue) / duration) * 100;
   const fillColor =
     currentTab === POMODORO_TAB
-      ? "var(--color-pomodoro-filled)"
-      : "var(--color-break-filled)";
+      ? "var(--pomodoro-filled)"
+      : "var(--break-filled)";
   const unfilledColor =
     currentTab === POMODORO_TAB
-      ? "var(--color-pomodoro-unfilled)"
-      : "var(--color-break-unfilled)";
+      ? "var(--pomodoro-unfilled)"
+      : "var(--break-unfilled)";
 
   const { minutes, seconds } = getFormattedTime(timerValue);
 

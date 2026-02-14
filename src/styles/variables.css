@@ -10,37 +10,52 @@
   --neutral-100: oklch(96% 0 0);
   --neutral-200: oklch(92% 0 0);
   --neutral-300: oklch(87% 0 0);
-  --neutral-400: oklch(71% 0 0);
-  --neutral-500: oklch(56% 0 0);
-  --neutral-600: oklch(44% 0 0);
-  --neutral-700: oklch(37% 0 0);
-  --neutral-800: oklch(27% 0 0);
-  --neutral-900: oklch(21% 0 0);
-  --neutral-950: oklch(14% 0 0);
+  --neutral-400: oklch(70.8% 0 0);
+  --neutral-500: oklch(55.6% 0 0);
+  --neutral-600: oklch(43.9% 0 0);
+  --neutral-700: oklch(37.1% 0 0);
+  --neutral-800: oklch(26.9% 0 0);
+  --neutral-900: oklch(20.5% 0 0);
+  --neutral-950: oklch(14.5% 0 0);
 
-  /* ─── Teal (derived from #1c3f3a) ─── */
-  --teal-50: #e0e9e9;
-  --teal-100: #c8dad7;
-  --teal-200: #a3d4cd;
-  --teal-300: #7ec0b7;
-  --teal-400: #5ca69c;
-  --teal-500: #3f8d83;
-  --teal-600: #2f756b;
-  --teal-700: #235c54;
-  --teal-800: #1c3f3a;
-  --teal-900: #1e3533;
+  /* ─── Teal ─── */
+  --teal-50: #d1d8d7;
+  --teal-100: #a4b2b0;
+  --teal-200: #607875;
+  --teal-300: #496561;
+  --teal-400: #32524d;
+  --teal-500: #1c3f3a;
+  --teal-600: #193834;
+  --teal-700: #16322e;
+  --teal-800: #132c28;
+  --teal-900: #102522;
+  --teal-950: #0e1f1d;
 
-  /* ─── Warm (derived from #ebe8b8) ─── */
-  --warm-50: #f5f4e6;
-  --warm-100: #ebe8d8;
-  --warm-200: #ebe8b8;
-  --warm-300: #e2dea2;
+  /* ─── Warm ─── */
+  --warm-50: #f5f3db;
+  --warm-100: #f3f1d4;
+  --warm-200: #f1eecd;
+  --warm-300: #edeabf;
   --warm-400: #d8d38b;
-  --warm-500: #b3ad6a;
-  --warm-600: #8f884a;
-  --warm-700: #74703d;
-  --warm-800: #5a5630;
-  --warm-900: #2e2c1a;
+  --warm-500: #ebe8b8;
+  --warm-600: #d3d0a5;
+  --warm-700: #bcb993;
+  --warm-800: #a4a280;
+  --warm-900: #8d8b6e;
+  --warm-950: #75745c;
+
+  /* ─── Destructive (Tailwind Red) ─── */
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-300: #fca5a5;
+  --red-400: #f87171;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --red-800: #991b1b;
+  --red-900: #7f1d1d;
+  --red-950: #450a0a;
 
   /* ─── Z-Index Scale ─── */
   --z-image: 10;
