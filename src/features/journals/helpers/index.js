@@ -31,12 +31,12 @@ export const getSortedJournals = (journals = []) => {
       : Number.NEGATIVE_INFINITY;
     if (dayB !== dayA) return dayB - dayA; // newer day first
 
-    // If created_at is missing => treat as newest => +Infinity
-    const createdA = a.created_at
-      ? dayjs(a.created_at).valueOf()
+    // If createdAt is missing => treat as newest => +Infinity
+    const createdA = a.createdAt
+      ? dayjs(a.createdAt).valueOf()
       : Number.POSITIVE_INFINITY;
-    const createdB = b.created_at
-      ? dayjs(b.created_at).valueOf()
+    const createdB = b.createdAt
+      ? dayjs(b.createdAt).valueOf()
       : Number.POSITIVE_INFINITY;
 
     if (createdB === createdA) return 0;
@@ -47,7 +47,7 @@ export const getSortedJournals = (journals = []) => {
 export const getTotalWordsWritten = (journals = []) => {
   if (journals.length === 0) return 0;
   const totalWords = journals.reduce((acc, j) => {
-    const words = j.word_count || 0;
+    const words = j.wordCount || 0;
     return acc + words;
   }, 0);
   return totalWords;
@@ -57,7 +57,7 @@ export const getJournalStreak = (sortedJournals = []) => {
   if (!sortedJournals.length) return 0;
 
   const today = dayjs().startOf("day");
-  const mostRecent = dayjs(sortedJournals[0]?.created_at || "").startOf("day");
+  const mostRecent = dayjs(sortedJournals[0]?.createdAt || "").startOf("day");
 
   // If most recent entry is too old, streak is already broken
   if (today.diff(mostRecent, "day") > 1) return 0;
@@ -66,7 +66,7 @@ export const getJournalStreak = (sortedJournals = []) => {
   let prevDay = mostRecent;
 
   for (let i = 1; i < sortedJournals.length; i++) {
-    const currDay = dayjs(sortedJournals[i]?.created_at).startOf("day");
+    const currDay = dayjs(sortedJournals[i]?.createdAt).startOf("day");
 
     if (currDay.isSame(prevDay, "day")) {
       // same-day duplicate → skip

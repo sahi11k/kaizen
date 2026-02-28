@@ -1,59 +1,45 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import JournalListItem from "@/features/journals/components/JournalListItem";
 import useJournalsStore from "@/features/journals/store/journals";
 import useAuthStore from "@/features/auth/store/auth";
-import { deleteJournal, fetchJournals } from "@/features/journals/api/journals";
 import { FileText } from "lucide-react";
 import { Skeleton } from "@/shared/ui/skeleton";
 import Button from "@/shared/ui/button";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { useShallow } from "zustand/react/shallow";
-import { STATUS } from "@/shared/constants/db";
 import { Toast } from "@/shared/ui/toast";
 import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants/journals";
 
 import { SquarePen } from "lucide-react";
 import { groupByMonth } from "@/features/journals/helpers";
+import { useJournalsQuery } from "@/features/journals/services/queries";
+import { useDeleteJournalMutation } from "@/features/journals/services/mutations";
 
 const { toast } = Toast;
 
 const JournalListContent = ({ onItemClick }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuthStore();
+  const { data: journals = [], isLoading } = useJournalsQuery(user.id);
+  const deleteJournalMutation = useDeleteJournalMutation();
 
   const {
-    journals,
-    setJournals,
+    unsavedJournal,
+    setUnsavedJournal,
     currentJournal,
     setCurrentJournal,
-    journalsFetchStatus,
-    setJournalsFetchStatus,
   } = useJournalsStore(
     useShallow((state) => ({
-      journals: state.journals,
-      setJournals: state.setJournals,
+      unsavedJournal: state.unsavedJournal,
+      setUnsavedJournal: state.setUnsavedJournal,
       setCurrentJournal: state.setCurrentJournal,
       currentJournal: state.currentJournal,
-      journalsFetchStatus: state.journalsFetchStatus,
-      setJournalsFetchStatus: state.setJournalsFetchStatus,
     })),
   );
 
-  const { user } = useAuthStore();
-
-  useEffect(() => {
-    const loadJournals = async () => {
-      if (!user?.id) return;
-      setIsLoading(true);
-      const response = await fetchJournals(user.id);
-      setJournals(response.data);
-      setIsLoading(false);
-      setJournalsFetchStatus(STATUS.FETCHED);
-    };
-
-    if (journalsFetchStatus === STATUS.LOADING) {
-      loadJournals();
-    }
-  }, [setJournals, user?.id, journalsFetchStatus, setJournalsFetchStatus]);
+  const allJournals = useMemo(
+    () => (unsavedJournal ? [unsavedJournal, ...journals] : journals),
+    [journals, unsavedJournal],
+  );
 
   const moveToDetail = () => {
     if (typeof onItemClick === "function") {
@@ -67,17 +53,26 @@ const JournalListContent = ({ onItemClick }) => {
     moveToDetail();
   };
 
-  const removeJournal = async (journalId) => {
-    if (journalId && currentJournal?.created_at) {
-      const res = await deleteJournal(journalId, user.id);
-      if (res.error) {
-        return toast.error(res.error);
-      }
+  const removeJournal = (journalId) => {
+    if (unsavedJournal?.id === journalId) {
+      setUnsavedJournal(null);
+      setCurrentJournal(null);
+      toast.success("Journal deleted successfully");
+      return;
     }
-    const updatedJournals = journals.filter((j) => j.id !== journalId);
-    setJournals(updatedJournals);
-    setCurrentJournal(null);
-    toast.success("Journal deleted successfully");
+
+    deleteJournalMutation.mutate(
+      { journalId, userId: user.id },
+      {
+        onSuccess: () => {
+          setCurrentJournal(null);
+          toast.success("Journal deleted successfully");
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    );
   };
 
   const editJournal = (journal) => {
@@ -86,19 +81,18 @@ const JournalListContent = ({ onItemClick }) => {
   };
 
   const newJournal = () => {
-    const unsavedJournal = journals.find((j) => !j.created_at);
     if (unsavedJournal) {
       setCurrentJournal(unsavedJournal);
       moveToDetail();
       return;
     }
-    const newJournal = { ...DEFAULT_JOURNAL_STATE, id: crypto.randomUUID() };
-    setCurrentJournal(newJournal);
-    setJournals([...journals, newJournal]);
+    const journal = { ...DEFAULT_JOURNAL_STATE, id: crypto.randomUUID() };
+    setUnsavedJournal(journal);
+    setCurrentJournal(journal);
     moveToDetail();
   };
 
-  const grouped = useMemo(() => groupByMonth(journals), [journals]);
+  const grouped = useMemo(() => groupByMonth(allJournals), [allJournals]);
 
   return (
     <>
@@ -151,7 +145,7 @@ const JournalListContent = ({ onItemClick }) => {
         </div>
         <div className="mx-2 md:mx-4 xl:mx-6">
           {isLoading &&
-            journals.length === 0 &&
+            allJournals.length === 0 &&
             Array.from({ length: 3 }).map((_, index) => (
               <Skeleton
                 key={index}
@@ -159,7 +153,7 @@ const JournalListContent = ({ onItemClick }) => {
               />
             ))}
         </div>
-        {journals.length === 0 && !isLoading && (
+        {allJournals.length === 0 && !isLoading && (
           <div className="flex justify-center items-center h-full">
             <div className="flex flex-col items-center gap-3 text-muted-foreground">
               <FileText className="size-8" />

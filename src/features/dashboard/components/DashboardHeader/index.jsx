@@ -19,8 +19,8 @@ import { Tooltip } from "@/shared/ui/tooltip";
 import { ThemeToggle } from "@/features/theme";
 import useTasksStore from "@/features/pomodoro/store/tasks";
 import useTimerStore from "@/features/pomodoro/store/timer";
-import useJournalsStore from "@/features/journals/store/journals";
 import { closePipWindow } from "@/features/pomodoro/helpers/pip";
+import { useQueryClient } from "@tanstack/react-query";
 
 const { toast } = Toast;
 
@@ -28,7 +28,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   const navigate = useNavigate();
   const { setUser, setUserFetchStatus, user } = useAuthStore();
   const { setTasks, setTasksFetchStatus } = useTasksStore();
-  const { setJournals, setJournalsFetchStatus } = useJournalsStore();
+  const queryClient = useQueryClient();
   const userDisplayName = getUserDisplayName(user);
 
   const handleCollapse = () => {
@@ -44,8 +44,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
       setUserFetchStatus(STATUS.LOADING);
       setTasks([]);
       setTasksFetchStatus(STATUS.LOADING);
-      setJournals([]);
-      setJournalsFetchStatus(STATUS.LOADING);
+      queryClient.removeQueries({ queryKey: ["journals"] });
       useTimerStore.getState().resetTimer(0);
       closePipWindow();
       navigate("/", { replace: true });

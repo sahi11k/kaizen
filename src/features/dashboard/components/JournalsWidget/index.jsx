@@ -12,13 +12,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/ui/card";
-import useJournalsStore from "@/features/journals/store/journals";
+
 import React from "react";
 import { Link } from "react-router";
 import { JOURNAL_CONTENT_TRUNCATION_LENGTH } from "@/features/journals/constants/journals";
+import { useJournalsQuery } from "@/features/journals/services/queries";
+
+import { useAuthStore } from "@/features/auth";
 
 const JournalsWidget = () => {
-  const { journals } = useJournalsStore();
+  const { user } = useAuthStore();
+
+  const { data: journals } = useJournalsQuery(user.id);
+
   const sortedJournals = getSortedJournals(journals);
 
   const latestJournal = sortedJournals[0];
@@ -42,7 +48,7 @@ const JournalsWidget = () => {
         <CardTitle>
           {latestJournal
             ? `Self Reflections from ${getSelfReflectionDate(
-                latestJournal?.created_at,
+                latestJournal?.createdAt,
               )}`
             : "Take a moment to reflect"}
         </CardTitle>

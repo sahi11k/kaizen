@@ -28,3 +28,14 @@ export const debounce = (func, delay) => {
     }, delay);
   };
 };
+
+export const upsertById = (items = [], newItem) => {
+  const exists = items.some((item) => item.id === newItem.id);
+  return exists
+    ? items.map((item) => (item.id === newItem.id ? newItem : item))
+    : [...items, newItem];
+};
+
+export const deleteById = (items = [], itemId) => {
+  return items.filter((item) => item.id !== itemId);
+};

@@ -3,6 +3,7 @@ import globals from "globals";
 import pluginReact from "eslint-plugin-react";
 import { defineConfig } from "eslint/config";
 import reactHooks from "eslint-plugin-react-hooks";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 export default defineConfig([
   {
@@ -21,11 +22,12 @@ export default defineConfig([
       js,
       react: pluginReact,
       "react-hooks": reactHooks,
+      "@tanstack/query": pluginQuery,
     },
     rules: {
       ...pluginReact.configs.flat.recommended.rules,
       ...reactHooks.configs["recommended-latest"].rules,
-
+      "@tanstack/query/exhaustive-deps": "error",
       // ✅ Custom rules
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
