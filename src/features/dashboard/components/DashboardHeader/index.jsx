@@ -36,20 +36,17 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   };
 
   const handleLogout = async () => {
-    const res = await signOut();
-    if (res.error) {
-      toast.error(res.error);
-    } else {
+    try {
+      await signOut();
       setUser(null);
       setUserFetchStatus(STATUS.LOADING);
       setCurrentTask(null);
-      queryClient.removeQueries({ queryKey: ["tasks"] });
-      queryClient.removeQueries({ queryKey: ["taskSessions"] });
-      queryClient.removeQueries({ queryKey: ["journals"] });
-      queryClient.removeQueries({ queryKey: ["userSettings"] });
+      queryClient.clear();
       useTimerStore.getState().resetTimer(0);
       closePipWindow();
       navigate("/", { replace: true });
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 

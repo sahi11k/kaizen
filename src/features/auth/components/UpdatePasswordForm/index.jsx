@@ -27,16 +27,16 @@ const UpdatePasswordForm = () => {
     const hasErrors = Object.values(errors).some((error) => error !== "");
     if (hasErrors) return;
     setIsLoading(true);
-    const response = await updatePassword(formValues);
-    if (response.error) {
-      toast.error(response.error);
-    } else {
+    try {
+      const response = await updatePassword(formValues);
       toast.success(response.message);
       setTimeout(() => {
         setFormValues(DEFAULT_FORM_VALUES);
         setErrors({});
         navigate(DEFAULT_NAV_ROUTE);
       }, 1000);
+    } catch (error) {
+      toast.error(error.message);
     }
     setIsLoading(false);
   };

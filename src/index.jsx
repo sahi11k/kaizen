@@ -8,7 +8,17 @@ import "@/styles/global.css";
 
 const root = createRoot(document.getElementById("root"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      retry: (failureCount, error) => {
+        if (error?.status >= 400 && error?.status < 500) return false;
+        return failureCount < 2;
+      },
+    },
+  },
+});
 
 root.render(
   <React.StrictMode>

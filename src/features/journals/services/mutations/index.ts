@@ -1,7 +1,7 @@
 import { deleteJournal, saveJournal } from "@/features/journals/services/apis";
 import { DefaultJournalState, Journal } from "@/features/journals/types";
+import { queryKeys } from "@/shared/constants/queryKeys";
 import { deleteById, upsertById } from "@/shared/utils/jsUtils";
-import { ApiResponse } from "@/types/apis";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type SaveJournalMutationPayload = {
@@ -20,14 +20,12 @@ export const useSaveJournalMutation = () => {
   return useMutation({
     mutationFn: ({ payload, userId }: SaveJournalMutationPayload) =>
       saveJournal(payload, userId),
-    onSuccess: (res: ApiResponse<Journal[]>, variables) => {
-      if (res.error) throw new Error(res.error);
-
-      const updatedJournal = res.data?.[0];
+    onSuccess: (data: Journal[], variables) => {
+      const updatedJournal = data?.[0];
       if (!updatedJournal) return;
 
       queryClient.setQueryData<Journal[]>(
-        ["journals", variables.userId],
+        queryKeys.journals.all(variables.userId),
         (old) => upsertById(old, updatedJournal),
       );
     },
@@ -43,11 +41,9 @@ export const useDeleteJournalMutation = () => {
   return useMutation({
     mutationFn: ({ journalId, userId }: DeleteJournalMutationPayload) =>
       deleteJournal(journalId, userId),
-    onSuccess: (res: ApiResponse<Journal[]>, variables) => {
-      if (res.error) throw new Error(res.error);
-
+    onSuccess: (_res, variables) => {
       queryClient.setQueryData<Journal[]>(
-        ["journals", variables.userId],
+        queryKeys.journals.all(variables.userId),
         (old) => deleteById(old ?? [], variables.journalId),
       );
     },

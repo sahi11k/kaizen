@@ -38,33 +38,30 @@ const LoginForm = ({
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const response = await loginWithEmail(formValues);
-
-    if (response.error) {
-      if (response.error === EMAIL_NOT_VERIFIED_ERROR) {
-        await sendOtp();
-        setIsLoading(false);
-        return;
+    try {
+      const response = await loginWithEmail(formValues);
+      if (response.data.user) {
+        setUser(response.data.user);
+        resetForm();
+        navigate(DEFAULT_NAV_ROUTE, { replace: true });
       }
-      toast.error(response.error);
-      setIsLoading(false);
-      return;
+    } catch (error) {
+      if (error.message === EMAIL_NOT_VERIFIED_ERROR) {
+        await sendOtp();
+      } else {
+        toast.error(error.message);
+      }
     }
-    if (response.data.user) {
-      setUser(response.data.user);
-      setIsLoading(false);
-      resetForm(); // Reset form before navigation
-      navigate(DEFAULT_NAV_ROUTE, { replace: true });
-    }
+    setIsLoading(false);
   };
 
   const sendOtp = async () => {
-    const response = await resendOTP({ email: formValues.email });
-    if (response.error) {
-      toast.error(response.error);
-    } else {
+    try {
+      await resendOTP({ email: formValues.email });
       toast.success("OTP sent successfully! Check your email.");
       setShowOtpScreen(true);
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 

@@ -1,26 +1,56 @@
 ---
 alwaysApply: false
-description: Supabase API, transformers, and response handling conventions
-globs: src/features/*/api/*.js,src/features/*/utils/transformers/*.js,src/shared/api/*.js
+description: Supabase API, services layer, and response handling conventions
+globs: src/features/*/services/**/*.{js,ts},src/features/*/api/*.js,src/shared/api/*.js
 ---
 
 ## Supabase API Patterns
 
 - Client: [shared/api/supabase.js](mdc:src/shared/api/supabase.js)
 - Table names: [shared/constants/db.js](mdc:src/shared/constants/db.js)
-- Response shaping: [shared/api/db.js](mdc:src/shared/api/db.js) `handleResponse`
+- Response shaping: [shared/api/db.js](mdc:src/shared/api/db.js) `parseApiResponse`
+- Query keys: [shared/constants/queryKeys.ts](mdc:src/shared/constants/queryKeys.ts)
 - Transformers map snake_case ↔ camelCase
+
+### Services Layer
+
+Migrated features use a three-layer `services/` structure:
+
+```
+features/{feature}/services/
+├── apis/index.js          # Raw Supabase calls (async functions)
+├── mutations/index.ts     # useMutation hooks (write operations + cache updates)
+└── queries/index.ts       # useQuery hooks (read operations)
+```
 
 ### Feature APIs
 
-- Auth: [features/auth/api/auth.js](mdc:src/features/auth/api/auth.js)
-- Tasks: [features/pomodoro/api/tasks.js](mdc:src/features/pomodoro/api/tasks.js)
-- Journals: [features/journals/api/journals.js](mdc:src/features/journals/api/journals.js)
-- User Settings: [features/settings/api/userSettings.js](mdc:src/features/settings/api/userSettings.js)
+| Feature | Location | Pattern |
+|---------|----------|---------|
+| Pomodoro | [services/apis](mdc:src/features/pomodoro/services/apis/index.js) | `services/` |
+| Journals | [services/apis](mdc:src/features/journals/services/apis/index.js) | `services/` |
+| Settings | [services/apis](mdc:src/features/settings/services/apis/index.js) | `services/` |
+| Auth | [api/auth.js](mdc:src/features/auth/api/auth.js) | Legacy `api/` |
 
-### API Conventions
+### API Conventions (`services/apis/`)
 
 - Validate `userId` on mutating calls; return `{ error: "User authentication required" }` if missing.
 - Transform payloads to DB shape via transformers before insert/update.
-- Post-process responses via `handleResponse`, then transform back to camelCase.
+- Post-process responses via `parseApiResponse`, then transform back to camelCase.
 - Use explicit `.select()` after inserts/updates when you need returned rows.
+- Naming: `fetchX`, `createX`, `updateX`, `deleteX`, `getX`, `upsertX`, `sortX`
+
+### Query Conventions (`services/queries/`)
+
+- Use `useQuery` from `@tanstack/react-query`.
+- Query keys from `@/shared/constants/queryKeys` — e.g. `queryKeys.tasks.all(userId)`.
+- Guard with `enabled: !!userId` to avoid unauthenticated fetches.
+- `queryFn` calls the corresponding function from `services/apis/`.
+
+### Mutation Conventions (`services/mutations/`)
+
+- Use `useMutation` from `@tanstack/react-query`.
+- `mutationFn` calls the corresponding function from `services/apis/`.
+- Update cache in `onSuccess` via `queryClient.setQueryData(queryKeys.X.all(userId), ...)`.
+- Use `upsertById` / `deleteById` from `@/shared/utils/jsUtils` for cache array updates.
+- Use `onMutate` / `onError` for optimistic updates with rollback where needed.

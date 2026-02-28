@@ -9,12 +9,13 @@ const useAuthStore = create((set, get) => ({
   setUserFetchStatus: (status) => set(() => ({ userFetchStatus: status })),
   loadUser: async () => {
     if (get().user) return;
-    const response = await getUserSession();
-    const userData =
-      !response.error && response.data.session
-        ? response.data.session.user
-        : null;
-    set(() => ({ user: userData, userFetchStatus: STATUS.FETCHED }));
+    try {
+      const response = await getUserSession();
+      const userData = response.data?.session?.user ?? null;
+      set(() => ({ user: userData, userFetchStatus: STATUS.FETCHED }));
+    } catch {
+      set(() => ({ user: null, userFetchStatus: STATUS.FETCHED }));
+    }
   },
 }));
 

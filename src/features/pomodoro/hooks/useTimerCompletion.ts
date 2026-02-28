@@ -7,6 +7,7 @@ import useTasksStore from "@/features/pomodoro/store/tasks";
 import useTimerStore from "@/features/pomodoro/store/timer";
 import { Task } from "@/features/pomodoro/types";
 import { getLongBreakInterval } from "@/features/pomodoro/utils/timer";
+import { queryKeys } from "@/shared/constants/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 const { POMODORO_TAB } = TIMER_CONSTANTS;
@@ -36,7 +37,7 @@ const useTimerCompletion = () => {
           useTimerStore.getState();
         const { user } = useAuthStore.getState();
         const tasks =
-          queryClient.getQueryData<Task[]>(["tasks", user?.id]) ?? [];
+          queryClient.getQueryData<Task[]>(queryKeys.tasks.all(user?.id)) ?? [];
         const currentTask = useTasksStore.getState().currentTask;
 
         const timerTask = timerTaskId
@@ -57,10 +58,9 @@ const useTimerCompletion = () => {
           }
         }
 
-        const userSettings = queryClient.getQueryData([
-          "userSettings",
-          user?.id,
-        ]);
+        const userSettings = queryClient.getQueryData(
+          queryKeys.userSettings.all(user?.id),
+        );
 
         advanceToNextPhase(currentTab, preIncrementCount, userSettings);
       } finally {

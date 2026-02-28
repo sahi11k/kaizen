@@ -16,26 +16,21 @@ import {
   RecordPomodoroCompletionPayload,
 } from "@/features/pomodoro/types";
 
-import useTasksStore from "@/features/pomodoro/store/tasks";
+import { queryKeys } from "@/shared/constants/queryKeys";
 import { upsertById, deleteById } from "@/shared/utils/jsUtils";
-import { ApiResponse } from "@/types/apis";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useCreateTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ payload, userId }: CreateTaskMutationPayload) => {
-      console.log("payload", payload);
-      return createTask(payload, userId);
-    },
-    onSuccess: (res: ApiResponse<Task[]>, variables) => {
-      if (res.error) throw new Error(res.error);
-
-      queryClient.setQueryData<Task[]>(["tasks", variables.userId], (old) => [
-        ...(old ?? []),
-        ...(res.data ?? []),
-      ]);
+    mutationFn: ({ payload, userId }: CreateTaskMutationPayload) =>
+      createTask(payload, userId),
+    onSuccess: (data: Task[], variables) => {
+      queryClient.setQueryData<Task[]>(
+        queryKeys.tasks.all(variables.userId),
+        (old) => [...(old ?? []), ...data],
+      );
     },
     onError: (error: Error, variables) => {
       console.error({ error, variables });
@@ -49,14 +44,13 @@ export const useUpdateTaskMutation = () => {
   return useMutation({
     mutationFn: ({ payload, userId }: UpdateTaskMutationPayload) =>
       updateTask(payload, userId),
-    onSuccess: (res: ApiResponse<Task[]>, variables) => {
-      if (res.error) throw new Error(res.error);
-
-      const updatedTask = res.data?.[0];
+    onSuccess: (data: Task[], variables) => {
+      const updatedTask = data?.[0];
       if (!updatedTask) return;
 
-      queryClient.setQueryData<Task[]>(["tasks", variables.userId], (old) =>
-        upsertById(old, updatedTask),
+      queryClient.setQueryData<Task[]>(
+        queryKeys.tasks.all(variables.userId),
+        (old) => upsertById(old, updatedTask),
       );
     },
   });
@@ -68,11 +62,10 @@ export const useDeleteTaskMutation = () => {
   return useMutation({
     mutationFn: ({ taskId, userId }: DeleteTaskMutationPayload) =>
       deleteTask(taskId, userId),
-    onSuccess: (res: ApiResponse<Task[]>, variables) => {
-      if (res.error) throw new Error(res.error);
-
-      queryClient.setQueryData<Task[]>(["tasks", variables.userId], (old) =>
-        deleteById(old ?? [], variables.taskId),
+    onSuccess: (_res, variables) => {
+      queryClient.setQueryData<Task[]>(
+        queryKeys.tasks.all(variables.userId),
+        (old) => deleteById(old ?? [], variables.taskId),
       );
     },
   });
@@ -90,23 +83,30 @@ export const useSortTasksMutation = () => {
       }));
       return sortTasks(newOrder, userId);
     },
-    onMutate: ({ payload, userId }) => {
-      const optimistic = payload.map((task, i) => ({ ...task, rank: i + 1 }));
-      queryClient.setQueryData<Task[]>(["tasks", userId], optimistic);
+    onMutate: async ({ payload, userId }) => {
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.tasks.all(userId),
+      });
+      const previousTasks = queryClient.getQueryData<Task[]>(
+        queryKeys.tasks.all(userId),
+      );
 
-      const previousTasks = queryClient.getQueryData<Task[]>(["tasks", userId]);
+      const optimistic = payload.map((task, i) => ({ ...task, rank: i + 1 }));
+      queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), optimistic);
 
       return { previousTasks };
     },
-    onSuccess: (res: ApiResponse<Task[]>, variables) => {
-      if (res.error) throw new Error(res.error);
-      const sorted = [...(res.data ?? [])].sort((a, b) => a.rank - b.rank);
-      queryClient.setQueryData<Task[]>(["tasks", variables.userId], sorted);
+    onSuccess: (data: Task[], variables) => {
+      const sorted = [...data].sort((a, b) => a.rank - b.rank);
+      queryClient.setQueryData<Task[]>(
+        queryKeys.tasks.all(variables.userId),
+        sorted,
+      );
     },
     onError: (error, variables, context) => {
       if (context?.previousTasks) {
         queryClient.setQueryData(
-          ["tasks", variables.userId],
+          queryKeys.tasks.all(variables.userId),
           context.previousTasks,
         );
       }
@@ -132,8 +132,6 @@ export const useRecordPomodoroCompletionMutation = () => {
         userId,
       );
 
-      if (sessionRes.error) throw new Error(sessionRes.error as string);
-
       const taskRes = await updateTask(
         {
           id: task.id,
@@ -144,19 +142,16 @@ export const useRecordPomodoroCompletionMutation = () => {
         userId,
       );
 
-      return { taskRes, sessionRes };
+      return { tasks: taskRes, sessions: sessionRes };
     },
-    onSuccess: ({ taskRes, sessionRes }, { userId }) => {
-      if (taskRes.error) throw new Error(taskRes.error as string);
-      if (sessionRes.error) throw new Error(sessionRes.error as string);
-
-      queryClient.setQueryData<Task[]>(["tasks", userId], (old) =>
-        upsertById(old, taskRes.data?.[0]),
+    onSuccess: ({ tasks, sessions }, { userId }) => {
+      queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), (old) =>
+        upsertById(old, tasks?.[0]),
       );
 
       queryClient.setQueryData<TaskSession[]>(
-        ["taskSessions", userId],
-        (old) => [...(old ?? []), ...(sessionRes.data ?? [])],
+        queryKeys.taskSessions.all(userId),
+        (old) => [...(old ?? []), ...sessions],
       );
     },
   });

@@ -37,41 +37,35 @@ const OtpVerification = ({ onBack, email, backBtnText }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const res = await verifyOTP({
-      email,
-      token: otp,
-    });
-
-    if (res.error) {
-      toast.error(res.error);
-      setIsLoading(false);
-      return;
+    try {
+      const res = await verifyOTP({ email, token: otp });
+      if (res.data.user) {
+        toast.success("Email verified successfully!");
+        setUser(res.data.user);
+        resetForm();
+        setTimeout(() => {
+          navigate(DEFAULT_NAV_ROUTE, { replace: true });
+        }, 500);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
-
-    if (res.data.user) {
-      toast.success("Email verified successfully!");
-      setUser(res.data.user);
-      resetForm(); // Reset form before navigation
-      setTimeout(() => {
-        navigate(DEFAULT_NAV_ROUTE, { replace: true });
-      }, 500);
-    }
+    setIsLoading(false);
   };
 
   const handleResendOTP = async () => {
     if (resendTimer > 0) return;
 
     setIsLoading(true);
-    const res = await resendOTP({ email });
-    setIsLoading(false);
-
-    if (res.error) {
-      toast.error(res.error);
-    } else {
+    try {
+      await resendOTP({ email });
       toast.success("OTP sent successfully! Check your email.");
       setResendTimer(RESEND_OTP_TIME);
-      setOtp(""); // Clear OTP input after resend
+      setOtp("");
+    } catch (error) {
+      toast.error(error.message);
     }
+    setIsLoading(false);
   };
 
   return (
