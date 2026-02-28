@@ -8,6 +8,7 @@ import useSound from "@/features/pomodoro/hooks/useSound";
 import useTimerStore from "@/features/pomodoro/store/timer";
 import useTasksStore from "@/features/pomodoro/store/tasks";
 import useAuthStore from "@/features/auth/store/auth";
+import { useTasksQuery } from "@/features/pomodoro/services/queries";
 
 import { Button } from "@/shared/ui/button";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
@@ -45,7 +46,7 @@ const TABS = [
 ];
 
 const TimerContent = () => {
-  const userSettings = useAuthStore((s) => s.userSettings);
+  const { user, userSettings } = useAuthStore();
   const currentTask = useTasksStore((s) => s.currentTask);
 
   const timerValue = useTimerStore((s) => s.timerValue);
@@ -59,8 +60,7 @@ const TimerContent = () => {
   const setTab = useTimerStore((s) => s.setTab);
   const setTimerValue = useTimerStore((s) => s.setTimerValue);
 
-  // The task the timer is running for (may differ from selected currentTask)
-  const tasks = useTasksStore((s) => s.tasks);
+  const { data: tasks = [] } = useTasksQuery(user?.id);
   const timerTask = timerTaskId
     ? (tasks.find((t) => t.id === timerTaskId) ?? currentTask)
     : currentTask;

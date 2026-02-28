@@ -36,6 +36,17 @@ export const getNextTab = (currentTab, pomodoroCount, longBreakInterval) => {
 };
 
 /**
+ * Returns a human-readable label for the given timer tab
+ * @param {string} tab - Tab key (pomodoro, short_break, long_break)
+ * @returns {string} Display label
+ */
+export const getTabLabel = (tab) => {
+  if (tab === POMODORO_TAB) return "Pomodoro";
+  if (tab === SHORT_BREAK_TAB) return "Short Break";
+  return "Long Break";
+};
+
+/**
  * Gets the timer duration in seconds for the given tab and user settings
  * @param {string} tabKey - Current tab key (pomodoro, short_break, long_break)
  * @param {Object} userSettings - User settings object

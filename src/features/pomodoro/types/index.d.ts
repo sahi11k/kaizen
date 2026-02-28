@@ -1,0 +1,58 @@
+export type DefaultTask = {
+  category: string;
+  completed: boolean;
+  completedSessions: number;
+  description: string;
+  rank: number;
+  title: string;
+  totalSessions: number;
+};
+
+export type Task = DefaultTask & {
+  id: string;
+  timeSpent: number;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+};
+
+export type TaskSession = {
+  id: string;
+  taskId: string;
+  duration: number;
+  status: boolean;
+  createdBy: string;
+  createdAt: string;
+};
+
+type CreateTaskMutationPayload = {
+  payload: DefaultTask;
+  userId?: string;
+};
+
+type UpdateTaskMutationPayload = {
+  payload: Task;
+  userId?: string;
+};
+
+type DeleteTaskMutationPayload = {
+  taskId: string;
+  userId?: string;
+};
+
+type SortTasksMutationPayload = {
+  payload: Array<Task>;
+  userId?: string;
+};
+
+type AddTaskSessionMutationPayload = {
+  payload: Record<string, unknown>;
+  userId?: string;
+};
+
+type RecordPomodoroCompletionPayload = {
+  task: Task;
+  userId: string;
+  duration: number;
+};

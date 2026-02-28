@@ -6,7 +6,7 @@ import dayjs from "dayjs";
  * - Minutes per day (sum of session.duration)
  * - Sessions completed per day (count of rows)
  *
- * Sessions are expected to have fields: created_at (ISO date), duration (minutes)
+ * Sessions are expected to have fields: createdAt (ISO date), duration (minutes)
  */
 export const generatePomodoroChartData = (sessions = []) => {
   if (!sessions.length) {
@@ -24,13 +24,13 @@ export const generatePomodoroChartData = (sessions = []) => {
 
   const minutesPerDay = days.map((d) => {
     const total = sessions
-      .filter((s) => dayjs(s.created_at).isSame(d, "day"))
+      .filter((s) => dayjs(s.createdAt).isSame(d, "day"))
       .reduce((acc, s) => acc + Number(s.duration || 0), 0);
     return Math.round(total);
   });
 
   const sessionsPerDay = days.map((d) => {
-    return sessions.filter((s) => dayjs(s.created_at).isSame(d, "day")).length;
+    return sessions.filter((s) => dayjs(s.createdAt).isSame(d, "day")).length;
   });
 
   const styles = getComputedStyle(document.documentElement);
