@@ -27,7 +27,7 @@ const { toast } = Toast;
 const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   const navigate = useNavigate();
   const { setUser, setUserFetchStatus, user } = useAuthStore();
-  const { setTasks, setTasksFetchStatus } = useTasksStore();
+  const { setCurrentTask } = useTasksStore();
   const queryClient = useQueryClient();
   const userDisplayName = getUserDisplayName(user);
 
@@ -42,8 +42,9 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
     } else {
       setUser(null);
       setUserFetchStatus(STATUS.LOADING);
-      setTasks([]);
-      setTasksFetchStatus(STATUS.LOADING);
+      setCurrentTask(null);
+      queryClient.removeQueries({ queryKey: ["tasks"] });
+      queryClient.removeQueries({ queryKey: ["taskSessions"] });
       queryClient.removeQueries({ queryKey: ["journals"] });
       useTimerStore.getState().resetTimer(0);
       closePipWindow();

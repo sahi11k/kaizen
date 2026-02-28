@@ -1,12 +1,14 @@
 import React from "react";
 import { Card, CardContent, CardFooter } from "@/shared/ui/card";
 import HoursInvestedIllustration from "@/assets/illustrations/hours-invested.svg?react";
-import useTasksStore from "@/features/pomodoro/store/tasks";
+import useAuthStore from "@/features/auth/store/auth";
+import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import { Info } from "lucide-react";
 import { Tooltip } from "@/shared/ui/tooltip";
 
 const TotalHoursWidget = () => {
-  const { tasks } = useTasksStore();
+  const { user } = useAuthStore();
+  const { data: tasks = [] } = useTasksQuery(user?.id);
   const totalTimeInvested = getTotalTimeInvested(tasks);
 
   return (

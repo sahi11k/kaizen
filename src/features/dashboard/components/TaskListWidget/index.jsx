@@ -7,23 +7,14 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 import { Tooltip } from "@/shared/ui/tooltip";
-import useTasksStore from "@/features/pomodoro/store/tasks";
+import useAuthStore from "@/features/auth/store/auth";
+import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import { FolderOpen, Play } from "lucide-react";
 import { Link } from "react-router";
-import { useShallow } from "zustand/react/shallow";
 
 const TaskListWidget = () => {
-  const { tasks } = useTasksStore(
-    useShallow((state) => ({
-      tasks: state.tasks,
-      setTasks: state.setTasks,
-      setCurrentTask: state.setCurrentTask,
-      currentTask: state.currentTask,
-      updateTaskInStore: state.updateTask,
-      tasksFetchStatus: state.tasksFetchStatus,
-      setTasksFetchStatus: state.setTasksFetchStatus,
-    })),
-  );
+  const { user } = useAuthStore();
+  const { data: tasks = [] } = useTasksQuery(user?.id);
 
   const pendingTasks = getPendingTasks(tasks);
 

@@ -1,12 +1,10 @@
+import {
+  TASK_FIELD_MAPPING,
+  TASK_SESSION_FIELD_MAPPING,
+} from "@/features/pomodoro/constants/pomodoro";
 import { transformKeys, reverseMapping } from "@/shared/transformers/common";
 
 // Mapping configuration for snake_case to camelCase transformation
-const TASK_FIELD_MAPPING = {
-  completed_sessions: "completedSessions",
-  total_sessions: "totalSessions",
-  created_by: "createdBy",
-  time_spent: "timeSpent",
-};
 
 export const transformTasksFromDb = (tasks) => {
   if (!tasks || !Array.isArray(tasks)) {
@@ -28,4 +26,19 @@ export const transformTasksToDb = (tasks = []) => {
 
 export const transformTaskToDb = (task = {}) => {
   return transformKeys(task, reverseMapping(TASK_FIELD_MAPPING));
+};
+
+export const transformTaskSessionFromDb = (session) => {
+  return transformKeys(session, TASK_SESSION_FIELD_MAPPING);
+};
+
+export const transformTaskSessionsFromDb = (sessions) => {
+  if (!sessions || !Array.isArray(sessions)) {
+    return [];
+  }
+  return sessions.map(transformTaskSessionFromDb);
+};
+
+export const transformTaskSessionToDb = (session = {}) => {
+  return transformKeys(session, reverseMapping(TASK_SESSION_FIELD_MAPPING));
 };

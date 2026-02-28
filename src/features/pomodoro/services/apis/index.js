@@ -3,29 +3,22 @@ import { SUPABASE_TABLES } from "@/shared/constants/db";
 import {
   transformTasksFromDb,
   transformTasksToDb,
+  transformTaskSessionsFromDb,
+  transformTaskSessionToDb,
 } from "@/features/pomodoro/utils/transformers/tasks";
 import { handleResponse } from "@/shared/api/db";
 import dayjs from "dayjs";
 
 export const fetchTasks = async (userId) => {
-  if (!userId) {
-    return [];
-  }
-
-  let res = await supabase
+  const response = await supabase
     .from(SUPABASE_TABLES.TASKS)
     .select("*")
     .eq("created_by", userId)
     .is("deleted_at", null)
     .order("rank", { ascending: true });
 
-  res = handleResponse({
-    response: res,
-  });
-  if (res.status === 200) {
-    return transformTasksFromDb(res.data);
-  }
-  return [];
+  const res = handleResponse({ response });
+  return { ...res, data: transformTasksFromDb(res.data ?? []) };
 };
 
 export const createTask = async (payload = {}, userId) => {
@@ -45,13 +38,12 @@ export const createTask = async (payload = {}, userId) => {
     response: res,
     errorMessage: "Task creation failed",
   });
-  res.data = transformTasksFromDb(res.data);
-  return res;
+  return { ...res, data: transformTasksFromDb(res.data ?? []) };
 };
 
 export const updateTask = async (payload = {}, userId) => {
   if (!userId) {
-    return { error: "User authentication required" };
+    return { error: "User authentication required", data: null };
   }
 
   const payloadToUpdate = transformTasksToDb([payload]);
@@ -70,8 +62,7 @@ export const updateTask = async (payload = {}, userId) => {
     },
     errorMessage: "Task update failed",
   });
-  res.data = transformTasksFromDb(res.data);
-  return res;
+  return { ...res, data: transformTasksFromDb(res.data ?? []) };
 };
 
 export const deleteTask = async (taskId, userId) => {
@@ -102,12 +93,7 @@ export const sortTasks = async (payload = [], userId) => {
     return { error: "User authentication required" };
   }
 
-  // Add created_by to each task in the payload
-  const payloadWithUser = payload.map((task) => ({
-    ...task,
-    created_by: userId,
-  }));
-  const payloadToUpdate = transformTasksToDb(payloadWithUser);
+  const payloadToUpdate = transformTasksToDb(payload);
 
   let res = await supabase
     .from(SUPABASE_TABLES.TASKS)
@@ -119,33 +105,29 @@ export const sortTasks = async (payload = [], userId) => {
     response: res,
     errorMessage: "Task order update failed",
   });
-  res.data = transformTasksFromDb(res.data);
-  return res;
+  return { ...res, data: transformTasksFromDb(res.data ?? []) };
 };
 
 export const addTaskSession = async (payload = {}, userId) => {
   if (!userId) {
-    return { error: "User authentication required" };
+    return { error: "User authentication required", data: null };
   }
-  const taskWithUser = { ...payload, created_by: userId };
+
+  const dbPayload = transformTaskSessionToDb({ ...payload, createdBy: userId });
+
   let res = await supabase
     .from(SUPABASE_TABLES.TASK_SESSIONS)
-    .insert(taskWithUser)
+    .insert(dbPayload)
     .select();
 
   res = handleResponse({
     response: res,
     errorMessage: "Task session addition failed",
   });
-
-  return res;
+  return { ...res, data: transformTaskSessionsFromDb(res.data ?? []) };
 };
 
 export const getLastWeekTaskSessions = async (payload = {}, userId) => {
-  if (!userId) {
-    return { error: "User authentication required" };
-  }
-
   let res = await supabase
     .from(SUPABASE_TABLES.TASK_SESSIONS)
     .select("*")
@@ -157,5 +139,5 @@ export const getLastWeekTaskSessions = async (payload = {}, userId) => {
     response: res,
   });
 
-  return res;
+  return { ...res, data: transformTaskSessionsFromDb(res.data ?? []) };
 };

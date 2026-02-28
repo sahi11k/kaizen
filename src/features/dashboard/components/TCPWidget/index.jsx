@@ -1,4 +1,5 @@
-import useTasksStore from "@/features/pomodoro/store/tasks";
+import useAuthStore from "@/features/auth/store/auth";
+import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 import { Doughnut } from "react-chartjs-2";
@@ -12,7 +13,8 @@ import {
 ChartJS.register(ArcElement, ChartTooltip, Legend);
 
 const TCPWidget = () => {
-  const { tasks } = useTasksStore();
+  const { user } = useAuthStore();
+  const { data: tasks = [] } = useTasksQuery(user?.id);
   const tcp = getTCP(tasks);
   const completed = Math.max(0, Math.min(100, tcp));
   const remaining = 100 - completed;
