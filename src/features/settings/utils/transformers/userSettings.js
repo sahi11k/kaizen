@@ -1,4 +1,4 @@
-import { transformKeys, reverseMapping } from "@/shared/utils/transformers/common";
+import { transformKeys, reverseMapping } from "@/shared/transformers/common";
 
 // Mapping configuration for snake_case to camelCase transformation
 const USER_SETTINGS_FIELD_MAPPING = {
@@ -18,6 +18,6 @@ export const transformUserSettingsFromDb = (userSettings) => {
 export const transformUserSettingsToDb = (userSettings) => {
   return transformKeys(
     userSettings,
-    reverseMapping(USER_SETTINGS_FIELD_MAPPING)
+    reverseMapping(USER_SETTINGS_FIELD_MAPPING),
   );
 };

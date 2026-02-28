@@ -2,22 +2,19 @@ import { SUPABASE_TABLES } from "@/shared/constants/db";
 import { supabase } from "@/shared/api/supabase";
 import { handleResponse } from "@/shared/api/db";
 import dayjs from "dayjs";
+import {
+  transformJournalsFromDb,
+  transformJournalToDb,
+} from "@/features/journals/utils/transformers/journals";
 
 export const fetchJournals = async (userId) => {
-  if (!userId) {
-    return [];
-  }
-
-  let res = await supabase
+  let response = await supabase
     .from(SUPABASE_TABLES.JOURNALS)
     .select("*")
     .eq("created_by", userId);
 
-  res = handleResponse({
-    response: res,
-  });
-
-  return res;
+  const res = handleResponse({ response });
+  return { ...res, data: transformJournalsFromDb(res.data ?? []) };
 };
 
 export const deleteJournal = async (journalId, userId) => {
@@ -49,10 +46,11 @@ export const saveJournal = async (payload = {}, userId) => {
     return { error: "User authentication required" };
   }
 
+  const dbPayload = transformJournalToDb(payload);
   const payloadToUpsert = {
-    ...payload,
+    ...dbPayload,
     created_by: userId,
-    date: dayjs(payload.date).format("YYYY-MM-DD"),
+    date: dayjs(dbPayload.date).format("YYYY-MM-DD"),
   };
 
   let res = await supabase
@@ -67,5 +65,5 @@ export const saveJournal = async (payload = {}, userId) => {
     errorMessage: "Failed to save journal",
   });
 
-  return res;
+  return { ...res, data: transformJournalsFromDb(res.data ?? []) };
 };

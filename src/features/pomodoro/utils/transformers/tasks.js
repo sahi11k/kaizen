@@ -1,4 +1,4 @@
-import { transformKeys, reverseMapping } from "@/shared/utils/transformers/common";
+import { transformKeys, reverseMapping } from "@/shared/transformers/common";
 
 // Mapping configuration for snake_case to camelCase transformation
 const TASK_FIELD_MAPPING = {

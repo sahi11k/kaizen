@@ -6,6 +6,8 @@ export const DEFAULT_JOURNAL_STATE = {
   title: "",
   content: "",
   date: new Date(),
+  wordCount: 0,
+  id: "",
 };
 
 export const AUTO_SAVE_DEBOUNCE_TIME = 1000;
