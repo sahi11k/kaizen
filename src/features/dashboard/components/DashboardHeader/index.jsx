@@ -46,6 +46,7 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
       queryClient.removeQueries({ queryKey: ["tasks"] });
       queryClient.removeQueries({ queryKey: ["taskSessions"] });
       queryClient.removeQueries({ queryKey: ["journals"] });
+      queryClient.removeQueries({ queryKey: ["userSettings"] });
       useTimerStore.getState().resetTimer(0);
       closePipWindow();
       navigate("/", { replace: true });

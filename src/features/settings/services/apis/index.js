@@ -23,7 +23,7 @@ export const fetchUserSettings = async (userId) => {
 
 export const upsertUserSettings = async (payload = {}, userId) => {
   if (!userId) {
-    return { error: "User authentication required" };
+    return { error: "User authentication required", data: null };
   }
 
   const payloadToUpsert = transformUserSettingsToDb({

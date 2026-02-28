@@ -3,7 +3,8 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/shared/ui/popover";
 import { Slider } from "@/shared/ui/slider";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
 import useAuthStore from "@/features/auth/store/auth";
-import { upsertUserSettings } from "@/features/settings/api/userSettings";
+import { useUserSettingsQuery } from "@/features/settings/services/queries";
+import { useUpsertUserSettingsMutation } from "@/features/settings/services/mutations";
 import {
   getLongBreakInterval,
   getTimerDurations,
@@ -25,13 +26,14 @@ const DEFAULT_POMODORO_FORM_VALUES = {
 };
 
 const PomoSettings = () => {
-  const { user, userSettings, setUserSettings } = useAuthStore();
+  const user = useAuthStore((s) => s.user);
+  const { data: userSettings } = useUserSettingsQuery(user?.id);
+  const { mutate: upsertSettings, isPending } = useUpsertUserSettingsMutation();
 
   const [pomodoroFormValues, setPomodoroFormValues] = useState(
     DEFAULT_POMODORO_FORM_VALUES,
   );
 
-  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const getDefaultPomodoroFormValues = useCallback(() => {
@@ -45,34 +47,30 @@ const PomoSettings = () => {
     };
   }, [userSettings]);
 
-  // Initialize form with user settings when available
   useEffect(() => {
     if (userSettings) {
       setPomodoroFormValues(getDefaultPomodoroFormValues());
     }
   }, [userSettings, getDefaultPomodoroFormValues]);
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     if (!user?.id) {
       toast.error("User authentication required");
       return;
     }
-    setIsLoading(true);
-    try {
-      const res = await upsertUserSettings(pomodoroFormValues, user.id);
-      if (res.error) {
-        toast.error(res.error);
-      } else {
-        setUserSettings(res.data);
-        setOpen(false);
-        toast.success("Settings saved successfully!");
-      }
-    } catch (error) {
-      toast.error("Failed to save settings:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    upsertSettings(
+      { payload: pomodoroFormValues, userId: user.id },
+      {
+        onSuccess: () => {
+          setOpen(false);
+          toast.success("Settings saved successfully!");
+        },
+        onError: () => {
+          toast.error("Failed to save settings");
+        },
+      },
+    );
   };
 
   const handleFormCancel = () => {
@@ -166,7 +164,7 @@ const PomoSettings = () => {
             <Button type="button" variant="outline" onClick={handleFormCancel}>
               Cancel
             </Button>
-            <Button type="submit" loading={isLoading} disabled={isLoading}>
+            <Button type="submit" loading={isPending} disabled={isPending}>
               Save Settings
             </Button>
           </div>
