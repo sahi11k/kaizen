@@ -57,7 +57,12 @@ const useTimerCompletion = () => {
           }
         }
 
-        advanceToNextPhase(currentTab, preIncrementCount);
+        const userSettings = queryClient.getQueryData([
+          "userSettings",
+          user?.id,
+        ]);
+
+        advanceToNextPhase(currentTab, preIncrementCount, userSettings);
       } finally {
         completingRef.current = false;
       }
@@ -68,8 +73,7 @@ const useTimerCompletion = () => {
   }, [completionCount]);
 };
 
-const advanceToNextPhase = (currentTab, pomodoroCount) => {
-  const settings = useAuthStore.getState().userSettings;
+const advanceToNextPhase = (currentTab, pomodoroCount, settings) => {
   const longBreakInterval = getLongBreakInterval(settings);
   const nextTab = getNextTab(currentTab, pomodoroCount, longBreakInterval);
   const nextDuration = getCurrentTime(nextTab, settings);

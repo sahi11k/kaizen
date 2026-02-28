@@ -9,6 +9,7 @@ import useTimerStore from "@/features/pomodoro/store/timer";
 import useTasksStore from "@/features/pomodoro/store/tasks";
 import useAuthStore from "@/features/auth/store/auth";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
+import { useUserSettingsQuery } from "@/features/settings/services/queries";
 
 import { Button } from "@/shared/ui/button";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
@@ -46,7 +47,8 @@ const TABS = [
 ];
 
 const TimerContent = () => {
-  const { user, userSettings } = useAuthStore();
+  const user = useAuthStore((s) => s.user);
+  const { data: userSettings } = useUserSettingsQuery(user?.id);
   const currentTask = useTasksStore((s) => s.currentTask);
 
   const timerValue = useTimerStore((s) => s.timerValue);
