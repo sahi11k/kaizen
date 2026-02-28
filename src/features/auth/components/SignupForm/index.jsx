@@ -33,17 +33,14 @@ const SignupForm = ({ showOtpScreen, setShowOtpScreen }) => {
     if (hasErrors) return;
 
     setLoading(true);
-    const response = await signUpNewUser(formValues);
-    setLoading(false);
-
-    if (response.error) {
-      toast.error(response.error);
-      return;
+    try {
+      await signUpNewUser(formValues);
+      toast.success("Account created successfully! Please verify your email.");
+      setShowOtpScreen(true);
+    } catch (error) {
+      toast.error(error.message);
     }
-
-    // Clear form data after successful signup
-    toast.success("Account created successfully! Please verify your email.");
-    setShowOtpScreen(true);
+    setLoading(false);
   };
 
   const handleChange = (field, value) => {

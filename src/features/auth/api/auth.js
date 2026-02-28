@@ -1,6 +1,6 @@
 import { supabase } from "@/shared/api/supabase";
 import { EMAIL_NOT_VERIFIED_ERROR } from "@/shared/constants/db";
-import { handleResponse } from "@/shared/api/db";
+import { parseApiResponse } from "@/shared/api/db";
 import { APP_URL } from "@/shared/constants/routes";
 
 export async function signUpNewUser(payload) {
@@ -14,7 +14,7 @@ export async function signUpNewUser(payload) {
     },
   });
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -32,7 +32,7 @@ export async function verifyOTP(payload) {
     type: "email",
   });
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -49,7 +49,7 @@ export async function resendOTP(payload) {
     email: payload.email,
   });
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -67,7 +67,7 @@ export async function loginWithEmail(payload) {
   });
 
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -84,7 +84,7 @@ export async function loginWithEmail(payload) {
 export async function signOut() {
   let res = await supabase.auth.signOut();
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -98,7 +98,7 @@ export async function signOut() {
 export async function getUserSession() {
   let res = await supabase.auth.getSession();
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -115,7 +115,7 @@ export async function resetPassword(payload) {
   });
 
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -131,7 +131,7 @@ export async function updatePassword(payload) {
     password: payload.password,
   });
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,
@@ -148,7 +148,7 @@ export async function updateUserMetadata(payload) {
   });
 
   const status = res.error ? 400 : 200;
-  res = handleResponse({
+  res = parseApiResponse({
     response: {
       ...res,
       status,

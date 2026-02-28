@@ -1,6 +1,6 @@
 import { SUPABASE_TABLES } from "@/shared/constants/db";
 import { supabase } from "@/shared/api/supabase";
-import { handleResponse } from "@/shared/api/db";
+import { parseApiResponse, ApiError } from "@/shared/api/db";
 import dayjs from "dayjs";
 import {
   transformJournalsFromDb,
@@ -8,43 +8,37 @@ import {
 } from "@/features/journals/utils/transformers/journals";
 
 export const fetchJournals = async (userId) => {
-  let response = await supabase
+  const response = await supabase
     .from(SUPABASE_TABLES.JOURNALS)
     .select("*")
     .eq("created_by", userId);
 
-  const res = handleResponse({ response });
-  return { ...res, data: transformJournalsFromDb(res.data ?? []) };
+  const res = parseApiResponse({ response });
+  return transformJournalsFromDb(res.data ?? []);
 };
 
 export const deleteJournal = async (journalId, userId) => {
-  if (!userId) {
-    return { error: "User authentication required" };
-  }
+  if (!userId) throw new ApiError("User authentication required");
 
-  let res = await supabase
+  const response = await supabase
     .from(SUPABASE_TABLES.JOURNALS)
     .delete()
     .eq("id", journalId)
     .eq("created_by", userId)
     .select();
 
-  const status = res.status === 200 && res.data.length === 0 ? 404 : res.status;
-  res = handleResponse({
-    response: {
-      ...res,
-      status,
-    },
+  const status =
+    response.status === 200 && response.data.length === 0
+      ? 404
+      : response.status;
+  parseApiResponse({
+    response: { ...response, status },
     errorMessage: "Journal not found or you don't have permission to delete it",
   });
-
-  return res;
 };
 
 export const saveJournal = async (payload = {}, userId) => {
-  if (!userId) {
-    return { error: "User authentication required" };
-  }
+  if (!userId) throw new ApiError("User authentication required");
 
   const dbPayload = transformJournalToDb(payload);
   const payloadToUpsert = {
@@ -53,17 +47,16 @@ export const saveJournal = async (payload = {}, userId) => {
     date: dayjs(dbPayload.date).format("YYYY-MM-DD"),
   };
 
-  let res = await supabase
+  const response = await supabase
     .from(SUPABASE_TABLES.JOURNALS)
     .upsert(payloadToUpsert, {
       onConflict: "id",
     })
     .select();
 
-  res = handleResponse({
-    response: res,
+  const res = parseApiResponse({
+    response,
     errorMessage: "Failed to save journal",
   });
-
-  return { ...res, data: transformJournalsFromDb(res.data ?? []) };
+  return transformJournalsFromDb(res.data ?? []);
 };

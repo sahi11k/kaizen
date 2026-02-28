@@ -1,4 +1,5 @@
 import { upsertUserSettings } from "@/features/settings/services/apis";
+import { queryKeys } from "@/shared/constants/queryKeys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type UpsertUserSettingsMutationPayload = {
@@ -12,9 +13,8 @@ export const useUpsertUserSettingsMutation = () => {
   return useMutation({
     mutationFn: ({ payload, userId }: UpsertUserSettingsMutationPayload) =>
       upsertUserSettings(payload, userId),
-    onSuccess: (res, variables) => {
-      if (res.error) throw new Error(res.error as string);
-      queryClient.setQueryData(["userSettings", variables.userId], res.data);
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(queryKeys.userSettings.all(variables.userId), data);
     },
   });
 };

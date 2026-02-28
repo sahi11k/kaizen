@@ -15,6 +15,7 @@ import {
   useSortTasksMutation,
 } from "@/features/pomodoro/services/mutations";
 import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
+import { queryKeys } from "@/shared/constants/queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
@@ -206,7 +207,9 @@ const TaskListContent = ({ onItemClick }) => {
   const confirmTaskSwitch = () => {
     if (!pendingTask) return;
     const { currentTab } = useTimerStore.getState();
-    const userSettings = queryClient.getQueryData(["userSettings", user?.id]);
+    const userSettings = queryClient.getQueryData(
+      queryKeys.userSettings.all(user?.id),
+    );
     const value = getCurrentTime(currentTab, userSettings);
     useTimerStore.getState().resetTimer(value);
     setCurrentTask(pendingTask);

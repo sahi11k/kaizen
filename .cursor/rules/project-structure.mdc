@@ -5,7 +5,7 @@ description: High-level project structure and key entry points for the Pomodoro 
 
 ## Project Structure Guide
 
-- App is a React SPA using Tailwind, Radix UI, Zustand, and Supabase.
+- App is a React SPA using Tailwind, Radix UI, Zustand, React Query (TanStack Query), and Supabase.
 - Uses a **feature-based folder structure** for scalability and maintainability.
 
 ### Top-Level Structure
@@ -17,7 +17,7 @@ src/
 ├── shared/                 # Shared code (ui components, utils, constants)
 ├── assets/                 # Static assets (icons, images, sounds)
 ├── styles/                 # Global styles
-└── index.jsx               # App entry point
+└── index.jsx               # App entry point (QueryClientProvider + Router)
 ```
 
 ### Feature Modules
@@ -26,39 +26,46 @@ Each feature in `features/` follows a consistent structure:
 
 ```
 features/[feature-name]/
-├── api/            # API functions for this feature
-├── components/     # UI components for this feature
-├── constants/      # Constants specific to this feature
-├── hooks/          # Custom hooks (if any)
-├── pages/          # Route pages
-├── store/          # Zustand store (if any)
-├── utils/          # Utilities specific to this feature
-└── index.js        # Feature exports
+├── services/          # Data layer (migrated features)
+│   ├── apis/          #   Raw Supabase calls + transformers
+│   ├── mutations/     #   useMutation hooks (write operations)
+│   └── queries/       #   useQuery hooks (read operations)
+├── components/        # UI components for this feature
+├── constants/         # Constants specific to this feature
+├── hooks/             # Custom hooks (if any)
+├── pages/             # Route pages
+├── store/             # Zustand store — UI/selection state only
+├── types/             # TypeScript types
+├── utils/             # Utilities (transformers, validators)
+└── index.js           # Feature exports
 ```
+
+> **Note:** `auth` still uses the legacy `api/` folder since it handles session/identity flows rather than table CRUD.
 
 ### Key Entry Points
 
-- **App Entry**: [src/index.jsx](mdc:src/index.jsx)
+- **App Entry**: [src/index.jsx](mdc:src/index.jsx) — QueryClient setup, QueryClientProvider, ReactQueryDevtools
 - **Router**: [src/app/router/index.jsx](mdc:src/app/router/index.jsx)
 - **Layouts**: [src/app/layouts/](mdc:src/app/layouts/)
 - **Layout Components**: [src/app/layouts/components/](mdc:src/app/layouts/components/) - Header, Footer, Sidebar
 
 ### Features
 
-- **Auth**: [src/features/auth/](mdc:src/features/auth/) - Login, signup, OTP, password management
-- **Pomodoro**: [src/features/pomodoro/](mdc:src/features/pomodoro/) - Timer, tasks, sessions
-- **Journals**: [src/features/journals/](mdc:src/features/journals/) - Journal entries
-- **Dashboard**: [src/features/dashboard/](mdc:src/features/dashboard/) - Overview widgets
-- **Settings**: [src/features/settings/](mdc:src/features/settings/) - User settings
+- **Auth**: [src/features/auth/](mdc:src/features/auth/) - Login, signup, OTP, password management (legacy `api/`)
+- **Pomodoro**: [src/features/pomodoro/](mdc:src/features/pomodoro/) - Timer, tasks, sessions (`services/`)
+- **Journals**: [src/features/journals/](mdc:src/features/journals/) - Journal entries (`services/`)
+- **Dashboard**: [src/features/dashboard/](mdc:src/features/dashboard/) - Overview widgets (consumes queries from other features)
+- **Settings**: [src/features/settings/](mdc:src/features/settings/) - User settings (`services/`)
 - **Home**: [src/features/home/](mdc:src/features/home/) - Landing page
 - **Analytics**: [src/features/analytics/](mdc:src/features/analytics/) - Analytics (placeholder)
 
 ### Shared Code
 
 - **UI Components**: [src/shared/ui/](mdc:src/shared/ui/) - Radix/Shadcn primitives
-- **Constants**: [src/shared/constants/](mdc:src/shared/constants/) - db.js, routes.js, global.js
-- **Utils**: [src/shared/utils/](mdc:src/shared/utils/) - date.js, jsUtils.js, transformers
-- **API Utilities**: [src/shared/api/](mdc:src/shared/api/) - supabase.js, db.js
+- **Constants**: [src/shared/constants/](mdc:src/shared/constants/) - db.js, routes.js, global.js, queryKeys.ts
+- **Utils**: [src/shared/utils/](mdc:src/shared/utils/) - date.js, jsUtils.js (upsertById, deleteById, debounce)
+- **Transformers**: [src/shared/transformers/](mdc:src/shared/transformers/) - common.js
+- **API Utilities**: [src/shared/api/](mdc:src/shared/api/) - supabase.js, db.js (parseApiResponse, ApiError)
 - **Hooks**: [src/shared/hooks/](mdc:src/shared/hooks/) - useTabTitle
 - **Lib**: [src/shared/lib/](mdc:src/shared/lib/) - cn() utility
 

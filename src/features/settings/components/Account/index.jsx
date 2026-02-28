@@ -30,15 +30,16 @@ const Account = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const res = await updateUserMetadata({
-      display_name: accountFormValues.displayName,
-    });
-
-    if (res.error) {
-      toast.error(res.errorMessage || "Failed to update profile");
-    } else if (res.data.user) {
-      setUser(res.data.user);
-      toast.success("Profile updated successfully");
+    try {
+      const res = await updateUserMetadata({
+        display_name: accountFormValues.displayName,
+      });
+      if (res.data.user) {
+        setUser(res.data.user);
+        toast.success("Profile updated successfully");
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update profile");
     }
     setIsLoading(false);
   };
