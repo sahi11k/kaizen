@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { verifyOTP, resendOTP } from "@/features/auth/api/auth";
 import { Toast } from "@/shared/ui/toast";
-import useAuthStore from "@/features/auth/store/auth";
 import { Button } from "@/shared/ui/button";
 import { InputOTP } from "@/shared/ui/input-otp";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
@@ -16,7 +15,6 @@ const OtpVerification = ({ onBack, email, backBtnText }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(RESEND_OTP_TIME);
   const navigate = useNavigate();
-  const { setUser } = useAuthStore();
 
   // Countdown timer for resend OTP
   useEffect(() => {
@@ -41,7 +39,6 @@ const OtpVerification = ({ onBack, email, backBtnText }) => {
       const res = await verifyOTP({ email, token: otp });
       if (res.data.user) {
         toast.success("Email verified successfully!");
-        setUser(res.data.user);
         resetForm();
         setTimeout(() => {
           navigate(DEFAULT_NAV_ROUTE, { replace: true });

@@ -1,58 +1,101 @@
-# ZenTen - A Pomodoro App
+# Kaizen - Personal Growth & Productivity App
 
-A clean and intuitive Pomodoro Timer application built with HTML, CSS, and JavaScript. This application helps users manage their time effectively using the Pomodoro Technique.
+A personal growth and productivity web app built with React, Supabase, and Tailwind CSS. Kaizen combines a Pomodoro timer, journaling, and a dashboard to help you build better habits and track your progress.
 
 ## Features
 
-- 🕒 25-minute Pomodoro timer
-- ⏸️ Pause, resume, and reset functionality
-- 📋 Task management system
-- 🎯 Daily progress tracking
-- 📊 Session counting for each task
-- 🎨 Category-based task organization
-- 💫 Clean and responsive UI
-- ⚡ Loading state management
+- **Pomodoro Timer** - 25-minute focus sessions with short/long breaks, task management, session tracking, and Picture-in-Picture mode
+- **Journals** - Create, edit, and manage journal entries to reflect on your day
+- **Dashboard** - Overview widgets including total hours, task list, progress chart, and task completion percentage
+- **Analytics** - Coming soon
+- **Auth** - Email signup, login, OTP verification, and password reset via Supabase Auth
+- **Settings** - Account and profile management
+- **Theme** - Light and dark mode toggle
+
+## Tech Stack
+
+- **Frontend** - React 19, React Router, Zustand, TanStack Query
+- **Styling** - Tailwind CSS 4, Radix UI, Lucide icons
+- **Backend** - Supabase (auth, database)
+- **Build** - Vite
+- **Deployment** - Vercel
+- **Other** - Chart.js, Day.js, dnd-kit, Sonner (toasts)
+
+## Getting Started
 
 ### Prerequisites
 
-- A modern web browser
-- Internet connection (of course)
+- Node.js (v18+)
+- A [Supabase](https://supabase.com) project
 
 ### Installation
 
 1. Clone the repository
 
 ```bash
-git clone https://github.com/sahi11k/zenten
+git clone https://github.com/sahi11k/pomodoro.git
+cd pomodoro
 ```
 
-2. Navigate to the project directory
+2. Install dependencies
 
 ```bash
-cd zenten
+npm install
 ```
 
-3. Open index.html in your browser
+3. Create a `.env` file in the root directory
 
-### Usage
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-1. Open the application in your web browser
-2. Add tasks using the "Add Task" button
-3. Select a task to work on
-4. Click "Start" to begin the Pomodoro timer
-5. Work until the timer ends
-6. Take a break when prompted
-7. Track your progress in the statistics section
+4. Start the dev server
+
+```bash
+npm run dev
+```
+
+The app will open at [http://localhost:3000](http://localhost:3000).
+
+> If running in WSL, add `VITE_WSL=true` to your `.env` to enable file-watching via polling.
+
+### Scripts
+
+| Command               | Description                  |
+| --------------------- | ---------------------------- |
+| `npm run dev`         | Start the development server |
+| `npm run build`       | Build for production         |
+| `npm run check-types` | Run TypeScript type checking |
+
+## Project Structure
+
+```
+src/
+├── app/              # App-level setup (router, layouts)
+├── features/         # Feature modules
+│   ├── auth/         # Login, signup, OTP, password management
+│   ├── pomodoro/     # Timer, tasks, sessions
+│   ├── journals/     # Journal entries
+│   ├── dashboard/    # Overview widgets
+│   ├── settings/     # User settings
+│   ├── analytics/    # Analytics (placeholder)
+│   ├── home/         # Landing page
+│   └── theme/        # Light/dark mode
+├── shared/           # Shared UI components, utils, constants
+├── assets/           # Static assets (icons, images, sounds)
+├── styles/           # Global styles
+└── index.jsx         # Entry point
+```
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ## Acknowledgments
 
 - [Francesco Cirillo](https://www.linkedin.com/in/cirillof/) for the Pomodoro Technique
-- [Vian Pua Meno](https://dribbble.com/vian_puameno) for the UI

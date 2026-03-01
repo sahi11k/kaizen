@@ -12,7 +12,6 @@ import { useNavigate } from "react-router";
 import useAuthStore from "@/features/auth/store/auth";
 import { signOut } from "@/features/auth/api/auth";
 import { Toast } from "@/shared/ui/toast";
-import { STATUS } from "@/shared/constants/db";
 import { getUserDisplayName } from "@/features/auth/utils/auth";
 import { SidebarMobile } from "@/app/layouts/components/Sidebar";
 import { Tooltip } from "@/shared/ui/tooltip";
@@ -26,7 +25,7 @@ const { toast } = Toast;
 
 const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   const navigate = useNavigate();
-  const { setUser, setUserFetchStatus, user } = useAuthStore();
+  const { user } = useAuthStore();
   const { setCurrentTask } = useTasksStore();
   const queryClient = useQueryClient();
   const userDisplayName = getUserDisplayName(user);
@@ -38,8 +37,6 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   const handleLogout = async () => {
     try {
       await signOut();
-      setUser(null);
-      setUserFetchStatus(STATUS.LOADING);
       setCurrentTask(null);
       queryClient.clear();
       useTimerStore.getState().resetTimer(0);

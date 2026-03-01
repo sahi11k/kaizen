@@ -1,29 +1,26 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router";
 import useAuthStore from "@/features/auth/store/auth";
-import { STATUS } from "@/shared/constants/db";
 import PipManager from "@/features/pomodoro/components/PipManager";
 import TimerManager from "@/features/pomodoro/components/TimerManager";
 import { Toast } from "@/shared/ui/toast";
 import { Fallback } from "@/shared/ui/fallback";
 
 const BaseLayout = () => {
-  const { userFetchStatus, loadUser, user } = useAuthStore();
+  const { isLoading, user } = useAuthStore();
 
-  useEffect(() => {
-    if (userFetchStatus === STATUS.LOADING && !user) {
-      loadUser();
-    }
-  }, [loadUser, userFetchStatus, user]);
-
-  if (userFetchStatus === STATUS.LOADING) {
+  if (isLoading) {
     return <Fallback />;
   }
 
   return (
     <>
-      <TimerManager />
-      <PipManager />
+      {user && (
+        <>
+          <TimerManager />
+          <PipManager />
+        </>
+      )}
       <Outlet />
       <Toast />
     </>

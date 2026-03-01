@@ -1,22 +1,16 @@
 import { create } from "zustand";
-import { STATUS } from "@/shared/constants/db";
-import { getUserSession } from "@/features/auth/api/auth";
+import { supabase } from "@/shared/api/supabase";
 
-const useAuthStore = create((set, get) => ({
+const useAuthStore = create(() => ({
   user: null,
-  userFetchStatus: STATUS.LOADING,
-  setUser: (user) => set(() => ({ user })),
-  setUserFetchStatus: (status) => set(() => ({ userFetchStatus: status })),
-  loadUser: async () => {
-    if (get().user) return;
-    try {
-      const response = await getUserSession();
-      const userData = response.data?.session?.user ?? null;
-      set(() => ({ user: userData, userFetchStatus: STATUS.FETCHED }));
-    } catch {
-      set(() => ({ user: null, userFetchStatus: STATUS.FETCHED }));
-    }
-  },
+  isLoading: true,
 }));
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  useAuthStore.setState({
+    user: session?.user ?? null,
+    isLoading: false,
+  });
+});
 
 export default useAuthStore;
