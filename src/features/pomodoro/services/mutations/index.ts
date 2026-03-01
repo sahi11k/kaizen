@@ -151,7 +151,7 @@ export const useRecordPomodoroCompletionMutation = () => {
 
       queryClient.setQueryData<TaskSession[]>(
         queryKeys.taskSessions.all(userId),
-        (old) => [...(old ?? []), ...sessions],
+        (old) => [...(old ?? []), ...(sessions as TaskSession[])],
       );
     },
   });
