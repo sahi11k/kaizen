@@ -3,7 +3,7 @@ import { Sun, Moon } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { cn } from "@/shared/lib/utils";
-import useThemeStore from "@/features/theme/store/theme";
+import useThemeStore from "@/features/theme/store";
 import { THEME, THEME_TOOLTIP_TEXT } from "@/features/theme/constants";
 
 const ThemeToggle = ({ tooltipSide = "bottom", tooltipLevel, className }) => {

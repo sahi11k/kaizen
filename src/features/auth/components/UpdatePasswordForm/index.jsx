@@ -4,7 +4,7 @@ import { Toast } from "@/shared/ui/toast";
 import { updatePassword } from "@/features/auth/services/api";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
-import { validateField } from "@/features/auth/utils/validators";
+import { validateField } from "@/features/auth/utils";
 import { ErrorText } from "@/features/auth/components/ErrorText";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 

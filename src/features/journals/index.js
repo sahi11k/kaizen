@@ -1,2 +1,2 @@
-export { default as useJournalsStore } from "./store/journals";
+export { default as useJournalsStore } from "./store";
 export * from "./constants";

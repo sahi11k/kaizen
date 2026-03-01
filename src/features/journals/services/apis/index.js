@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import {
   transformJournalsFromDb,
   transformJournalToDb,
-} from "@/features/journals/utils/transformers/journals";
+} from "@/features/journals/utils/transformers";
 
 export const fetchJournals = async (userId) => {
   const response = await supabase

@@ -1,4 +1,4 @@
-import usePipStore from "@/features/pomodoro/store/pip";
+import { usePipStore } from "@/features/pomodoro/store";
 import { THEME } from "@/features/theme/constants";
 
 /**

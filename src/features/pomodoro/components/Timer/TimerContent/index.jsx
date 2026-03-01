@@ -3,11 +3,15 @@ import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
-import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
-import useSound from "@/features/pomodoro/hooks/useSound";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import useAuthStore from "@/features/auth/store/auth";
+import {
+  getCurrentTime,
+  getFormattedTime,
+  openPipWindow,
+  isPipSupported,
+} from "@/features/pomodoro/helpers";
+import { useSound } from "@/features/pomodoro/hooks";
+import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
+import useAuthStore from "@/features/auth/store";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import { useUserSettingsQuery } from "@/features/settings/services/queries";
 
@@ -15,8 +19,6 @@ import { Button } from "@/shared/ui/button";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Play, Square, TimerResetIcon, PictureInPicture2 } from "lucide-react";
-import { getFormattedTime } from "@/features/pomodoro/helpers/timer";
-import { openPipWindow, isPipSupported } from "@/features/pomodoro/helpers/pip";
 import PomoSettings from "@/features/pomodoro/components/PomoSettings";
 import { Tooltip } from "@/shared/ui/tooltip";
 

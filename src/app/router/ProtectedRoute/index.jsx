@@ -1,5 +1,5 @@
 import React from "react";
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import { Fallback } from "@/shared/ui/fallback";
 import { Navigate } from "react-router";
 

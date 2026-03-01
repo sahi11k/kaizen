@@ -1,5 +1,5 @@
 import { getFormattedTime, getTabLabel } from "@/features/pomodoro/helpers";
-import useTimerStore from "@/features/pomodoro/store/timer";
+import { useTimerStore } from "@/features/pomodoro/store";
 import { useEffect } from "react";
 
 const useDocumentTitle = () => {

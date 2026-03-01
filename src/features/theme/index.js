@@ -1,2 +1,2 @@
-export { default as useThemeStore } from "./store/theme";
+export { default as useThemeStore } from "./store";
 export { ThemeToggle } from "./components/ThemeToggle";

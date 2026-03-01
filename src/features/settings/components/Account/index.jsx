@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "../style.module.css";
 
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import { toast } from "sonner"; // Assuming you're using sonner for toasts
 import { updateUserMetadata } from "@/features/auth/services/api";
 

@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/features/auth";
 import { getCurrentTime } from "@/features/pomodoro/helpers";
 import { useUserSettingsQuery } from "@/features/settings/services/queries";
-import useTimerStore from "@/features/pomodoro/store/timer";
+import { useTimerStore } from "@/features/pomodoro/store";
 import { useEffect } from "react";
 
 const useDurationSync = () => {

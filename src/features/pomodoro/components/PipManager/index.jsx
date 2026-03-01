@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useLocation } from "react-router";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import usePipStore from "@/features/pomodoro/store/pip";
-import { openPipWindow } from "@/features/pomodoro/helpers/pip";
+import { useTimerStore, usePipStore } from "@/features/pomodoro/store";
+import { openPipWindow } from "@/features/pomodoro/helpers";
 import PipTimerContent from "@/features/pomodoro/components/PipTimerContent";
 
 const POMODORO_PATH = "/dashboard/pomodoro";
