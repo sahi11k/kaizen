@@ -1,7 +1,13 @@
+import { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { supabase } from "@/shared/supabase";
 
-const useAuthStore = create(() => ({
+interface AuthState {
+  user: User | null;
+  isLoading: boolean;
+}
+
+const useAuthStore = create<AuthState>(() => ({
   user: null,
   isLoading: true,
 }));
