@@ -2,13 +2,13 @@ import Button from "@/shared/ui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "@/shared/ui/popover";
 import { Slider } from "@/shared/ui/slider";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import { useUserSettingsQuery } from "@/features/settings/services/queries";
 import { useUpsertUserSettingsMutation } from "@/features/settings/services/mutations";
 import {
   getLongBreakInterval,
   getTimerDurations,
-} from "@/features/pomodoro/utils/timer";
+} from "@/features/pomodoro/utils";
 import { Settings } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Toast } from "@/shared/ui/toast";

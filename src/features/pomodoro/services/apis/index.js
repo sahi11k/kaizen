@@ -4,7 +4,7 @@ import {
   transformTasksToDb,
   transformTaskSessionsFromDb,
   transformTaskSessionToDb,
-} from "@/features/pomodoro/utils/transformers/tasks";
+} from "@/features/pomodoro/utils/transformers";
 import { parseApiResponse, ApiError } from "@/shared/lib/api";
 import dayjs from "dayjs";
 

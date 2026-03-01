@@ -1,16 +1,14 @@
 import React, { useMemo } from "react";
 import JournalListItem from "@/features/journals/components/JournalListItem";
-import useJournalsStore from "@/features/journals/store/journals";
-import useAuthStore from "@/features/auth/store/auth";
-import { FileText } from "lucide-react";
+import useJournalsStore from "@/features/journals/store";
+import useAuthStore from "@/features/auth/store";
+import { FileText, SquarePen } from "lucide-react";
 import { Skeleton } from "@/shared/ui/skeleton";
 import Button from "@/shared/ui/button";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { useShallow } from "zustand/react/shallow";
 import { Toast } from "@/shared/ui/toast";
 import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants";
-
-import { SquarePen } from "lucide-react";
 import { groupByMonth } from "@/features/journals/helpers";
 import { useJournalsQuery } from "@/features/journals/services/queries";
 import { useDeleteJournalMutation } from "@/features/journals/services/mutations";

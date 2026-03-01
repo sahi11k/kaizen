@@ -1,6 +1,6 @@
 import React from "react";
 
-import useTasksStore from "@/features/pomodoro/store/tasks";
+import { useTasksStore } from "@/features/pomodoro/store";
 import { CheckCircle, Clock, Coffee, Play } from "lucide-react";
 
 const PomodoroWidget = () => {

@@ -1,7 +1,7 @@
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import React from "react";
 import CoverImage from "@/assets/images/cover.jpg";
-import { getUserDisplayName } from "@/features/auth/utils/auth";
+import { getUserDisplayName } from "@/features/auth/utils";
 
 const GreetingsWidget = () => {
   const { user } = useAuthStore();

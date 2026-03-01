@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LoginForm from "@/features/auth/components/LoginForm";
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import { Navigate } from "react-router";
 import { AUTH_HEADER_TEXT } from "@/features/auth/constants";
 import AuthFormContainer from "@/features/auth/components/AuthFormContainer";

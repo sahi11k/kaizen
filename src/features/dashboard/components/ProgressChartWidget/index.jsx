@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Card, CardHeader, CardContent, CardTitle } from "@/shared/ui/card";
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import { useTaskSessionsQuery } from "@/features/pomodoro/services/queries";
 import { generatePomodoroChartData } from "./data";
 import Button from "@/shared/ui/button";

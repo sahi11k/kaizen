@@ -1,9 +1,8 @@
 import { Play, Square } from "lucide-react";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import useAuthStore from "@/features/auth/store/auth";
+import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
+import useAuthStore from "@/features/auth/store";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
-import { getFormattedTime } from "@/features/pomodoro/helpers/timer";
+import { getFormattedTime } from "@/features/pomodoro/helpers";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;

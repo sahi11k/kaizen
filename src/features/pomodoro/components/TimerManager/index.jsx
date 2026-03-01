@@ -1,6 +1,8 @@
-import useDurationSync from "@/features/pomodoro/hooks/useDurationSync";
-import useDocumentTitle from "@/features/pomodoro/hooks/useDocumentTitle";
-import useTimerCompletion from "@/features/pomodoro/hooks/useTimerCompletion";
+import {
+  useDurationSync,
+  useDocumentTitle,
+  useTimerCompletion,
+} from "@/features/pomodoro/hooks";
 
 /**
  * Headless component that manages timer side effects globally:

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router";
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import PipManager from "@/features/pomodoro/components/PipManager";
 import TimerManager from "@/features/pomodoro/components/TimerManager";
 import { Toast } from "@/shared/ui/toast";

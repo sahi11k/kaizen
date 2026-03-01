@@ -3,7 +3,7 @@ import { parseApiResponse, ApiError } from "@/shared/lib/api";
 import {
   transformUserSettingsFromDb,
   transformUserSettingsToDb,
-} from "@/features/settings/utils/transformers/userSettings";
+} from "@/features/settings/utils/transformers";
 
 export const fetchUserSettings = async (userId) => {
   if (!userId) throw new ApiError("User authentication required");

@@ -6,7 +6,7 @@ import OtpVerification from "@/features/auth/components/OtpVerification";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { ErrorText } from "@/features/auth/components/ErrorText";
-import { validateField } from "@/features/auth/utils/validators";
+import { validateField } from "@/features/auth/utils";
 
 const { toast } = Toast;
 

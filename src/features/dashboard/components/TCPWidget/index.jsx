@@ -1,4 +1,4 @@
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";

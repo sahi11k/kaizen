@@ -1,12 +1,11 @@
 import React, { useState, useRef } from "react";
 import TaskItem from "@/features/pomodoro/components/Tasks/TaskItem";
 import AddForm from "@/features/pomodoro/components/Tasks/AddForm";
-import { CREATE, EDIT } from "@/shared/constants";
+import { CREATE, EDIT, queryKeys } from "@/shared/constants";
 import SortableContainer from "@/features/pomodoro/components/Tasks/SortableContainer";
 import { arraysEqual, deepCopy } from "@/shared/lib/utils";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import useAuthStore from "@/features/auth/store/auth";
+import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
+import useAuthStore from "@/features/auth/store";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import {
   useCreateTaskMutation,
@@ -14,8 +13,7 @@ import {
   useDeleteTaskMutation,
   useSortTasksMutation,
 } from "@/features/pomodoro/services/mutations";
-import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
-import { queryKeys } from "@/shared/constants";
+import { getCurrentTime } from "@/features/pomodoro/helpers";
 import { useQueryClient } from "@tanstack/react-query";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";

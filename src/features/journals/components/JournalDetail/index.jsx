@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import useAuthStore from "@/features/auth/store/auth";
-import useJournalsStore from "@/features/journals/store/journals";
+import useAuthStore from "@/features/auth/store";
+import useJournalsStore from "@/features/journals/store";
 import { getWordCount } from "@/features/journals/helpers";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
