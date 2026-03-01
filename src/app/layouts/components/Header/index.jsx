@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import useAuthStore from "@/features/auth/store";
+import { useAuthStore } from "@/features/auth";
 import { Button } from "@/shared/ui/button";
 import { Logo } from "@/shared/ui/logo";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants";

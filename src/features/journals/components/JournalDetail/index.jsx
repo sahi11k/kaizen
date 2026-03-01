@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import useAuthStore from "@/features/auth/store";
+import { useAuthStore } from "@/features/auth";
 import useJournalsStore from "@/features/journals/store";
 import { getWordCount } from "@/features/journals/helpers";
 import { Input } from "@/shared/ui/input";

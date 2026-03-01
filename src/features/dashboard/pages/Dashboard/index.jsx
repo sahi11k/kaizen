@@ -3,9 +3,9 @@ import { CARD_GRID } from "@/features/dashboard/constants";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useTabTitle from "@/shared/hooks/useTabTitle";
 import { cn } from "@/shared/lib/utils";
-import useAuthStore from "@/features/auth/store";
-import { useTasksQuery } from "@/features/pomodoro/services/queries";
-import { useJournalsQuery } from "@/features/journals/services/queries";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro";
+import { useJournalsQuery } from "@/features/journals";
 
 const Dashboard = () => {
   const { user } = useAuthStore();
