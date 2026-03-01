@@ -1,5 +1,5 @@
 import React from "react";
-import { FOOTER_LINKS } from "@/shared/constants/footer";
+import { FOOTER_LINKS } from "@/app/layouts/components/Footer/constants";
 import { Link } from "react-router";
 
 const FooterMain = () => {

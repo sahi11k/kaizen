@@ -1,2 +1,2 @@
 // Dashboard feature exports
-export * from "./constants/dashboards";
+export * from "./constants";

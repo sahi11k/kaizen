@@ -1,2 +1,2 @@
 // Home feature exports
-export * from "./constants/aboutCards";
+export * from "./constants";

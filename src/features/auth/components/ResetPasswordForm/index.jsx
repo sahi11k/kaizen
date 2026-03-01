@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { resetPassword } from "@/features/auth/api/auth";
+import { resetPassword } from "@/features/auth/services/api";
 import { Toast } from "@/shared/ui/toast";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
@@ -16,7 +16,7 @@ const ResetPasswordForm = ({ onBack, defaultEmail = "" }) => {
     try {
       await resetPassword({ email });
       toast.success(
-        "Please check your email for a link to reset your password."
+        "Please check your email for a link to reset your password.",
       );
     } catch (error) {
       toast.error(error.message);

@@ -5,14 +5,14 @@ import { getWordCount } from "@/features/journals/helpers";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { DatePicker } from "@/shared/ui/date-picker";
-import { debounce } from "@/shared/utils/jsUtils";
+import { debounce } from "@/shared/lib/utils";
 import EmptyJournal from "../EmptyJournal";
 import {
   AUTO_SAVE_DEBOUNCE_TIME,
   AUTO_SAVE_STATUS,
   DATEPICKER_DATE_FORMAT,
   DEFAULT_JOURNAL_STATE,
-} from "@/features/journals/constants/journals";
+} from "@/features/journals/constants";
 import { useSaveJournalMutation } from "@/features/journals/services/mutations";
 import SavingStatus from "@/features/journals/components/SavingStatus";
 

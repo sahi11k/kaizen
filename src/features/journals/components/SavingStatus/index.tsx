@@ -1,4 +1,4 @@
-import { AUTO_SAVE_STATUS } from "@/features/journals/constants/journals";
+import { AUTO_SAVE_STATUS } from "@/features/journals/constants";
 import { RefreshCcw, CloudCheck, CloudAlertIcon } from "lucide-react";
 import dayjs from "dayjs";
 

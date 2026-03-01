@@ -15,7 +15,7 @@ import {
 
 import React from "react";
 import { Link } from "react-router";
-import { JOURNAL_CONTENT_TRUNCATION_LENGTH } from "@/features/journals/constants/journals";
+import { JOURNAL_CONTENT_TRUNCATION_LENGTH } from "@/features/journals/constants";
 import { useJournalsQuery } from "@/features/journals/services/queries";
 
 import { useAuthStore } from "@/features/auth";

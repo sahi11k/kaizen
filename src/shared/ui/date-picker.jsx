@@ -11,7 +11,7 @@ import {
 } from "@/shared/ui/popover";
 import { Calendar } from "@/shared/ui/calendar";
 import { cn } from "@/shared/lib/utils";
-import { formatDate } from "@/shared/utils/date";
+import { formatDate } from "@/shared/lib/date";
 import { Tooltip } from "@/shared/ui/tooltip";
 
 const DatePicker = ({

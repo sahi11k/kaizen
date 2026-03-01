@@ -4,7 +4,7 @@ import useTasksStore from "@/features/pomodoro/store/tasks";
 import useAuthStore from "@/features/auth/store/auth";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import { getFormattedTime } from "@/features/pomodoro/helpers/timer";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;
 

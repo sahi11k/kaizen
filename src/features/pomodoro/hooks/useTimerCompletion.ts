@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/features/auth";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import { getCurrentTime, getNextTab } from "@/features/pomodoro/helpers";
 import useSound from "@/features/pomodoro/hooks/useSound";
 import { useRecordPomodoroCompletionMutation } from "@/features/pomodoro/services/mutations";
@@ -7,7 +7,7 @@ import useTasksStore from "@/features/pomodoro/store/tasks";
 import useTimerStore from "@/features/pomodoro/store/timer";
 import { Task } from "@/features/pomodoro/types";
 import { getLongBreakInterval } from "@/features/pomodoro/utils/timer";
-import { queryKeys } from "@/shared/constants/queryKeys";
+import { queryKeys } from "@/shared/constants";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 const { POMODORO_TAB } = TIMER_CONSTANTS;

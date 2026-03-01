@@ -4,7 +4,7 @@ export const APP_URL =
     ? "http://localhost:3000/"
     : "https://www.gokaizen.app/";
 
-export const TAB_TITLES = {
+export const BROWSER_TAB_TITLES = {
   POMODORO: "Pomodoro",
   JOURNALS: "Journals",
   LOGIN: "Login",

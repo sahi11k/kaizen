@@ -1,4 +1,4 @@
-import { deepCopy } from "@/shared/utils/jsUtils";
+import { deepCopy } from "@/shared/lib/utils";
 import dayjs from "dayjs";
 
 export const groupByMonth = (journals = []) => {

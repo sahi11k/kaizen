@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { supabase } from "@/shared/api/supabase";
+import { supabase } from "@/shared/supabase";
 
 const useAuthStore = create(() => ({
   user: null,

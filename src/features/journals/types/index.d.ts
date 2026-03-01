@@ -1,4 +1,4 @@
-import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants/journals";
+import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants";
 
 export type DefaultJournalState = typeof DEFAULT_JOURNAL_STATE;
 

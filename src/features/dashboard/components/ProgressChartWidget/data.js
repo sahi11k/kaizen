@@ -1,4 +1,4 @@
-import { WEEKLY_DATE_FORMAT } from "@/shared/constants/global";
+import { WEEKLY_DATE_FORMAT } from "@/shared/constants";
 import dayjs from "dayjs";
 
 /**

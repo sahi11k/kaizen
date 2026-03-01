@@ -1,4 +1,4 @@
-import { SUCCESS_STATUS_CODES } from "@/shared/constants/db";
+import { SUCCESS_STATUS_CODES } from "@/shared/constants";
 
 export class ApiError extends Error {
   constructor(message, status) {

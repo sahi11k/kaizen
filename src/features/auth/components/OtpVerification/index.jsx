@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { verifyOTP, resendOTP } from "@/features/auth/api/auth";
+import { verifyOTP, resendOTP } from "@/features/auth/services/api";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
 import { InputOTP } from "@/shared/ui/input-otp";
-import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
+import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 
 const { toast } = Toast;
 

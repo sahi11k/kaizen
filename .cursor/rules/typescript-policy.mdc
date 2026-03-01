@@ -1,0 +1,17 @@
+---
+description: TypeScript-first policy for all new code in the project
+alwaysApply: true
+---
+
+## TypeScript Policy
+
+- **New files**: Always create in TypeScript (`.ts` / `.tsx`).
+- **Existing JS files**: Edit in-place as `.js` / `.jsx` — do NOT convert to TS as part of an unrelated change.
+- **Migrations**: Only convert a JS file to TS when explicitly asked to.
+
+### Conventions
+
+- Prefer `interface` over `type` for object shapes.
+- Use explicit return types on exported functions.
+- Avoid `any` — use `unknown` and narrow, or define a proper type.
+- Colocate types in the feature's `types/` folder when shared across multiple files; inline when local to one file.

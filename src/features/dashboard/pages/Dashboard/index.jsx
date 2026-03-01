@@ -1,6 +1,6 @@
 import { Skeleton } from "@/shared/ui/skeleton";
-import { CARD_GRID } from "@/features/dashboard/constants/dashboards";
-import { TAB_TITLES } from "@/shared/constants/routes";
+import { CARD_GRID } from "@/features/dashboard/constants";
+import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useTabTitle from "@/shared/hooks/useTabTitle";
 import { cn } from "@/shared/lib/utils";
 import useAuthStore from "@/features/auth/store/auth";
@@ -13,7 +13,7 @@ const Dashboard = () => {
   const { isLoading: isTasksLoading } = useTasksQuery(user?.id);
   const { isLoading: isJournalsLoading } = useJournalsQuery(user?.id);
 
-  useTabTitle(TAB_TITLES.DASHBOARD);
+  useTabTitle(BROWSER_TAB_TITLES.DASHBOARD);
 
   const loading = isTasksLoading || isJournalsLoading;
 

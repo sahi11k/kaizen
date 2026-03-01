@@ -2,7 +2,7 @@ import {
   fetchTasks,
   getLastWeekTaskSessions,
 } from "@/features/pomodoro/services/apis";
-import { queryKeys } from "@/shared/constants/queryKeys";
+import { queryKeys } from "@/shared/constants";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 

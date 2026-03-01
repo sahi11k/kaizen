@@ -1,12 +1,11 @@
-import { supabase } from "@/shared/api/supabase";
-import { SUPABASE_TABLES } from "@/shared/constants/db";
+import { supabase, SUPABASE_TABLES } from "@/shared/supabase";
 import {
   transformTasksFromDb,
   transformTasksToDb,
   transformTaskSessionsFromDb,
   transformTaskSessionToDb,
 } from "@/features/pomodoro/utils/transformers/tasks";
-import { parseApiResponse, ApiError } from "@/shared/api/db";
+import { parseApiResponse, ApiError } from "@/shared/lib/api";
 import dayjs from "dayjs";
 
 export const fetchTasks = async (userId) => {

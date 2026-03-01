@@ -1,8 +1,8 @@
 import {
   TASK_FIELD_MAPPING,
   TASK_SESSION_FIELD_MAPPING,
-} from "@/features/pomodoro/constants/pomodoro";
-import { transformKeys, reverseMapping } from "@/shared/transformers/common";
+} from "@/features/pomodoro/constants";
+import { transformKeys, reverseMapping } from "@/shared/lib/transformers";
 
 // Mapping configuration for snake_case to camelCase transformation
 

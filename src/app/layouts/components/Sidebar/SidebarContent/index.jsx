@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router";
 import { Logo } from "@/shared/ui/logo";
-import { SIDEBAR_LINKS } from "@/shared/constants/sidebar";
+import { SIDEBAR_LINKS } from "@/app/layouts/components/Sidebar/constants";
 import { Tooltip } from "@/shared/ui/tooltip";
 
 const SidebarContent = ({ isCollapsed, setOpen, isMobile = false }) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { Button } from "@/shared/ui/button";
-import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
+import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 
 const Testamonials = () => {
   return (

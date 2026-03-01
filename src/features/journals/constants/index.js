@@ -19,3 +19,10 @@ export const AUTO_SAVE_STATUS = {
 };
 
 export const JOURNAL_CONTENT_TRUNCATION_LENGTH = 180;
+
+export const JOURNAL_FIELD_MAPPING = {
+  created_at: "createdAt",
+  updated_at: "updatedAt",
+  created_by: "createdBy",
+  word_count: "wordCount",
+};

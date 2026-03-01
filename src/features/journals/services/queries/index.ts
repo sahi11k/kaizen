@@ -1,4 +1,4 @@
-import { queryKeys } from "@/shared/constants/queryKeys";
+import { queryKeys } from "@/shared/constants";
 import { useQuery } from "@tanstack/react-query";
 import { fetchJournals } from "../apis";
 

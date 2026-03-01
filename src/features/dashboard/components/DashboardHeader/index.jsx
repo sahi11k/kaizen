@@ -10,7 +10,7 @@ import {
 } from "@/shared/ui/dropdown-menu";
 import { useNavigate } from "react-router";
 import useAuthStore from "@/features/auth/store/auth";
-import { signOut } from "@/features/auth/api/auth";
+import { signOut } from "@/features/auth/services/api";
 import { Toast } from "@/shared/ui/toast";
 import { getUserDisplayName } from "@/features/auth/utils/auth";
 import { SidebarMobile } from "@/app/layouts/components/Sidebar";

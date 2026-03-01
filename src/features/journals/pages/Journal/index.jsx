@@ -2,11 +2,11 @@ import React from "react";
 import JournalDetail from "@/features/journals/components/JournalDetail";
 import { JournalListLaptop } from "@/features/journals/components/JournalList";
 import JournalsMobile from "@/features/journals/components/JournalsMobile";
-import { TAB_TITLES } from "@/shared/constants/routes";
+import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useTabTitle from "@/shared/hooks/useTabTitle";
 
 const Journal = () => {
-  useTabTitle(TAB_TITLES.JOURNALS);
+  useTabTitle(BROWSER_TAB_TITLES.JOURNALS);
 
   return (
     <>

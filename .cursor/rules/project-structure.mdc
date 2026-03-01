@@ -62,12 +62,12 @@ features/[feature-name]/
 ### Shared Code
 
 - **UI Components**: [src/shared/ui/](mdc:src/shared/ui/) - Radix/Shadcn primitives
-- **Constants**: [src/shared/constants/](mdc:src/shared/constants/) - db.js, routes.js, global.js, queryKeys.ts
+- **Constants**: [src/shared/constants/](mdc:src/shared/constants/) - routes.js, global.js, queryKeys.ts
 - **Utils**: [src/shared/utils/](mdc:src/shared/utils/) - date.js, jsUtils.js (upsertById, deleteById, debounce)
 - **Transformers**: [src/shared/transformers/](mdc:src/shared/transformers/) - common.js
-- **API Utilities**: [src/shared/api/](mdc:src/shared/api/) - supabase.js, db.js (parseApiResponse, ApiError)
+- **Supabase**: [src/shared/supabase/](mdc:src/shared/supabase/) - Client initialization, table names
+- **Lib**: [src/shared/lib/](mdc:src/shared/lib/) - cn() utility, api.js (parseApiResponse, ApiError)
 - **Hooks**: [src/shared/hooks/](mdc:src/shared/hooks/) - useTabTitle
-- **Lib**: [src/shared/lib/](mdc:src/shared/lib/) - cn() utility
 
 ### Import Aliases
 
