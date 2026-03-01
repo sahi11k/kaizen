@@ -1,10 +1,4 @@
-/**
- * Validates a form field based on field type
- * @param {string} field - The field name (name, email, password)
- * @param {string} value - The field value to validate
- * @returns {string} Error message or empty string if valid
- */
-export const validateField = (field, value) => {
+export const validateField = (field: string, value: string): string => {
   const trimmedValue = value?.trim();
   switch (field) {
     case "name":

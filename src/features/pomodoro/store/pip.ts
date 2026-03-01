@@ -1,6 +1,13 @@
 import { create } from "zustand";
 
-const usePipStore = create((set) => ({
+interface PipState {
+  pipWindow: Window | null;
+  pipContainer: HTMLElement | null;
+  setPipState: (pipWindow: Window, pipContainer: HTMLElement) => void;
+  clearPipState: () => void;
+}
+
+const usePipStore = create<PipState>((set) => ({
   pipWindow: null,
   pipContainer: null,
 
