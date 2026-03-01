@@ -6,7 +6,7 @@ import { toast } from "sonner"; // Assuming you're using sonner for toasts
 import { updateUserMetadata } from "@/features/auth/api/auth";
 
 const Account = () => {
-  const { user, setUser } = useAuthStore();
+  const { user } = useAuthStore();
   const [accountFormValues, setAccountFormValues] = useState({
     email: "",
     displayName: "",
@@ -35,7 +35,6 @@ const Account = () => {
         display_name: accountFormValues.displayName,
       });
       if (res.data.user) {
-        setUser(res.data.user);
         toast.success("Profile updated successfully");
       }
     } catch (error) {

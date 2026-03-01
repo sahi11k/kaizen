@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router";
 import { Toast } from "@/shared/ui/toast";
 import { EMAIL_NOT_VERIFIED_ERROR } from "@/shared/constants/db";
 import OtpVerification from "@/features/auth/components/OtpVerification";
-import useAuthStore from "@/features/auth/store/auth";
 import ResetPasswordForm from "@/features/auth/components/ResetPasswordForm";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
@@ -27,7 +26,6 @@ const LoginForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useAuthStore();
 
   const resetForm = () => {
     setFormValues(DEFAULT_FORM_VALUES);
@@ -41,7 +39,6 @@ const LoginForm = ({
     try {
       const response = await loginWithEmail(formValues);
       if (response.data.user) {
-        setUser(response.data.user);
         resetForm();
         navigate(DEFAULT_NAV_ROUTE, { replace: true });
       }

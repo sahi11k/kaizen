@@ -1,13 +1,12 @@
 import React from "react";
 import useAuthStore from "@/features/auth/store/auth";
-import { STATUS } from "@/shared/constants/db";
 import { Fallback } from "@/shared/ui/fallback";
 import { Navigate } from "react-router";
 
 const ProtectedRoute = ({ children }) => {
-  const { user, userFetchStatus } = useAuthStore();
+  const { user, isLoading } = useAuthStore();
 
-  if (userFetchStatus === STATUS.LOADING) {
+  if (isLoading) {
     return <Fallback />;
   }
 
