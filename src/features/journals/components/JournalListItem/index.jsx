@@ -1,5 +1,5 @@
 import React from "react";
-import { getDayOfMonth, getDayOfWeek } from "@/shared/utils/date";
+import { getDayOfMonth, getDayOfWeek } from "@/shared/lib/date";
 import { MoreOptions } from "@/shared/ui/more-options";
 
 const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {

@@ -7,7 +7,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/shared/ui/card";
-import { ABOUT_CARDS } from "@/features/home/constants/aboutCards";
+import { ABOUT_CARDS } from "@/features/home/constants";
 import { cn } from "@/shared/lib/utils";
 import Button from "@/shared/ui/button";
 import { ArrowUpRight } from "lucide-react";

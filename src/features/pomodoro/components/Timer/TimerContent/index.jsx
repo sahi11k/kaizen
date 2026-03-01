@@ -12,7 +12,7 @@ import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import { useUserSettingsQuery } from "@/features/settings/services/queries";
 
 import { Button } from "@/shared/ui/button";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Play, Square, TimerResetIcon, PictureInPicture2 } from "lucide-react";
 import { getFormattedTime } from "@/features/pomodoro/helpers/timer";

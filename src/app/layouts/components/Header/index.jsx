@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import useAuthStore from "@/features/auth/store/auth";
 import { Button } from "@/shared/ui/button";
 import { Logo } from "@/shared/ui/logo";
-import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
+import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 import { ThemeToggle } from "@/features/theme";
 
 const HeaderMain = () => {

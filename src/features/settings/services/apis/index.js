@@ -1,6 +1,5 @@
-import { supabase } from "@/shared/api/supabase";
-import { SUPABASE_TABLES } from "@/shared/constants/db";
-import { parseApiResponse, ApiError } from "@/shared/api/db";
+import { supabase, SUPABASE_TABLES } from "@/shared/supabase";
+import { parseApiResponse, ApiError } from "@/shared/lib/api";
 import {
   transformUserSettingsFromDb,
   transformUserSettingsToDb,

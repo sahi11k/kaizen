@@ -1,11 +1,11 @@
 import PomodoroMobile from "@/features/pomodoro/components/PomodoroMobile";
 import { TaskListLaptop } from "@/features/pomodoro/components/Tasks";
 import { TimerLaptop } from "@/features/pomodoro/components/Timer";
-import { TAB_TITLES } from "@/shared/constants/routes";
+import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useTabTitle from "@/shared/hooks/useTabTitle";
 
 const Pomodoro = () => {
-  useTabTitle(TAB_TITLES.POMODORO);
+  useTabTitle(BROWSER_TAB_TITLES.POMODORO);
 
   return (
     <>

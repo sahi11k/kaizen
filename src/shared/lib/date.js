@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { DATE_FORMAT } from "@/shared/constants/global";
+import { DATE_FORMAT } from "@/shared/constants";
 
 export const formatDate = (dateInput, format = DATE_FORMAT) => {
   return dayjs(dateInput).format(format);

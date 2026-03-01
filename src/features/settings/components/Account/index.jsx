@@ -3,7 +3,7 @@ import styles from "../style.module.css";
 
 import useAuthStore from "@/features/auth/store/auth";
 import { toast } from "sonner"; // Assuming you're using sonner for toasts
-import { updateUserMetadata } from "@/features/auth/api/auth";
+import { updateUserMetadata } from "@/features/auth/services/api";
 
 const Account = () => {
   const { user } = useAuthStore();

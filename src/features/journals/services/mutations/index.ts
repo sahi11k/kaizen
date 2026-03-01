@@ -1,7 +1,7 @@
 import { deleteJournal, saveJournal } from "@/features/journals/services/apis";
 import { DefaultJournalState, Journal } from "@/features/journals/types";
-import { queryKeys } from "@/shared/constants/queryKeys";
-import { deleteById, upsertById } from "@/shared/utils/jsUtils";
+import { queryKeys } from "@/shared/constants";
+import { deleteById, upsertById } from "@/shared/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type SaveJournalMutationPayload = {

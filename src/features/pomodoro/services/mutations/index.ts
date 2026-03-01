@@ -16,8 +16,8 @@ import {
   RecordPomodoroCompletionPayload,
 } from "@/features/pomodoro/types";
 
-import { queryKeys } from "@/shared/constants/queryKeys";
-import { upsertById, deleteById } from "@/shared/utils/jsUtils";
+import { queryKeys } from "@/shared/constants";
+import { upsertById, deleteById } from "@/shared/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useCreateTaskMutation = () => {

@@ -1,5 +1,5 @@
 import { upsertUserSettings } from "@/features/settings/services/apis";
-import { queryKeys } from "@/shared/constants/queryKeys";
+import { queryKeys } from "@/shared/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type UpsertUserSettingsMutationPayload = {

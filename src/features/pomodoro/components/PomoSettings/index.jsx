@@ -1,7 +1,7 @@
 import Button from "@/shared/ui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "@/shared/ui/popover";
 import { Slider } from "@/shared/ui/slider";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import useAuthStore from "@/features/auth/store/auth";
 import { useUserSettingsQuery } from "@/features/settings/services/queries";
 import { useUpsertUserSettingsMutation } from "@/features/settings/services/mutations";

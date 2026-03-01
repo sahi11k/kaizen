@@ -1,11 +1,11 @@
-import { TAB_TITLES } from "@/shared/constants/routes";
+import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import { useEffect } from "react";
 
 const useTabTitle = (title = "") => {
   const titleUppercased = title.toUpperCase();
 
   useEffect(() => {
-    document.title = TAB_TITLES[titleUppercased] || "Kaizen";
+    document.title = BROWSER_TAB_TITLES[titleUppercased] || "Kaizen";
   }, [titleUppercased]);
 };
 

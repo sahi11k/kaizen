@@ -1,11 +1,5 @@
-import { transformKeys, reverseMapping } from "@/shared/transformers/common";
-
-const JOURNAL_FIELD_MAPPING = {
-  created_at: "createdAt",
-  updated_at: "updatedAt",
-  created_by: "createdBy",
-  word_count: "wordCount",
-};
+import { JOURNAL_FIELD_MAPPING } from "@/features/journals/constants";
+import { transformKeys, reverseMapping } from "@/shared/lib/transformers";
 
 export const transformJournalFromDb = (journal) => {
   return transformKeys(journal, JOURNAL_FIELD_MAPPING);

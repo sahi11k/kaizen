@@ -1,7 +1,7 @@
-import { supabase } from "@/shared/api/supabase";
-import { EMAIL_NOT_VERIFIED_ERROR } from "@/shared/constants/db";
-import { parseApiResponse } from "@/shared/api/db";
-import { APP_URL } from "@/shared/constants/routes";
+import { supabase } from "@/shared/supabase";
+import { EMAIL_NOT_VERIFIED_ERROR } from "@/features/auth/constants";
+import { parseApiResponse } from "@/shared/lib/api";
+import { APP_URL } from "@/shared/constants";
 
 export async function signUpNewUser(payload) {
   let res = await supabase.auth.signUp({

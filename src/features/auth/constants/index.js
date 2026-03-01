@@ -1,3 +1,5 @@
+export const EMAIL_NOT_VERIFIED_ERROR = "email_not_confirmed";
+
 export const AUTH_HEADER_TEXT = {
   login: "Welcome Back!",
   signup: "Let's Get Started",

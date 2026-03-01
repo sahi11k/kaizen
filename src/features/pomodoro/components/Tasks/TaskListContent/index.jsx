@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import TaskItem from "@/features/pomodoro/components/Tasks/TaskItem";
 import AddForm from "@/features/pomodoro/components/Tasks/AddForm";
-import { CREATE, EDIT } from "@/shared/constants/global";
+import { CREATE, EDIT } from "@/shared/constants";
 import SortableContainer from "@/features/pomodoro/components/Tasks/SortableContainer";
-import { arraysEqual, deepCopy } from "@/shared/utils/jsUtils";
+import { arraysEqual, deepCopy } from "@/shared/lib/utils";
 import useTasksStore from "@/features/pomodoro/store/tasks";
 import useTimerStore from "@/features/pomodoro/store/timer";
 import useAuthStore from "@/features/auth/store/auth";
@@ -15,14 +15,14 @@ import {
   useSortTasksMutation,
 } from "@/features/pomodoro/services/mutations";
 import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
-import { queryKeys } from "@/shared/constants/queryKeys";
+import { queryKeys } from "@/shared/constants";
 import { useQueryClient } from "@tanstack/react-query";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
 import TaskSwitchDialog from "@/features/pomodoro/components/Tasks/TaskSwitchDialog";
 import { FolderOpen, Plus } from "lucide-react";
 import { Skeleton } from "@/shared/ui/skeleton";
-import { MIN_SESSIONS } from "@/features/pomodoro/constants/pomodoro";
+import { MIN_SESSIONS } from "@/features/pomodoro/constants";
 import { Tooltip } from "@/shared/ui/tooltip";
 
 const { toast } = Toast;

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { THEME, THEME_STORAGE_KEY } from "@/features/theme/constants/theme";
+import { THEME, THEME_STORAGE_KEY } from "@/features/theme/constants";
 import { syncPipTheme } from "@/features/pomodoro/helpers/pip";
 
 const getInitialTheme = () => {

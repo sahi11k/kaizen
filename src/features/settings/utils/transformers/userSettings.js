@@ -1,15 +1,5 @@
-import { transformKeys, reverseMapping } from "@/shared/transformers/common";
-
-// Mapping configuration for snake_case to camelCase transformation
-const USER_SETTINGS_FIELD_MAPPING = {
-  pomodoro_duration: "pomodoroDuration",
-  short_break_duration: "shortBreakDuration",
-  long_break_duration: "longBreakDuration",
-  long_break_interval: "longBreakInterval",
-  user_id: "userId",
-  created_at: "createdAt",
-  updated_at: "updatedAt",
-};
+import { USER_SETTINGS_FIELD_MAPPING } from "@/features/settings/constants";
+import { transformKeys, reverseMapping } from "@/shared/lib/transformers";
 
 export const transformUserSettingsFromDb = (userSettings) => {
   return transformKeys(userSettings, USER_SETTINGS_FIELD_MAPPING);

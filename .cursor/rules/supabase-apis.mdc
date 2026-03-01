@@ -52,5 +52,5 @@ features/{feature}/services/
 - Use `useMutation` from `@tanstack/react-query`.
 - `mutationFn` calls the corresponding function from `services/apis/`.
 - Update cache in `onSuccess` via `queryClient.setQueryData(queryKeys.X.all(userId), ...)`.
-- Use `upsertById` / `deleteById` from `@/shared/utils/jsUtils` for cache array updates.
+- Use `upsertById` / `deleteById` from `@/shared/lib/utils` for cache array updates.
 - Use `onMutate` / `onError` for optimistic updates with rollback where needed.
