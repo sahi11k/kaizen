@@ -11,9 +11,9 @@ import {
 } from "@/features/pomodoro/helpers";
 import { useSound } from "@/features/pomodoro/hooks";
 import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
-import useAuthStore from "@/features/auth/store";
+import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
-import { useUserSettingsQuery } from "@/features/settings/services/queries";
+import { useUserSettingsQuery } from "@/features/settings";
 
 import { Button } from "@/shared/ui/button";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";

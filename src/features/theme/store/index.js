@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { THEME, THEME_STORAGE_KEY } from "@/features/theme/constants";
-import { syncPipTheme } from "@/features/pomodoro/helpers";
 
 const getInitialTheme = () => {
   const stored = localStorage.getItem(THEME_STORAGE_KEY);
@@ -16,7 +15,6 @@ const applyTheme = (theme) => {
   } else {
     root.classList.remove(THEME.DARK);
   }
-  syncPipTheme(isDark);
 };
 
 const useThemeStore = create((set) => {

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import JournalListItem from "@/features/journals/components/JournalListItem";
 import useJournalsStore from "@/features/journals/store";
-import useAuthStore from "@/features/auth/store";
+import { useAuthStore } from "@/features/auth";
 import { FileText, SquarePen } from "lucide-react";
 import { Skeleton } from "@/shared/ui/skeleton";
 import Button from "@/shared/ui/button";

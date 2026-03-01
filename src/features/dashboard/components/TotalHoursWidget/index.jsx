@@ -1,8 +1,8 @@
 import React from "react";
 import { Card, CardContent, CardFooter } from "@/shared/ui/card";
 import HoursInvestedIllustration from "@/assets/illustrations/hours-invested.svg?react";
-import useAuthStore from "@/features/auth/store";
-import { useTasksQuery } from "@/features/pomodoro/services/queries";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro";
 import { Info } from "lucide-react";
 import { Tooltip } from "@/shared/ui/tooltip";
 

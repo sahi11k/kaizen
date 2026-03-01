@@ -1,5 +1,5 @@
 import { usePipStore } from "@/features/pomodoro/store";
-import { THEME } from "@/features/theme/constants";
+import { THEME } from "@/features/theme";
 
 /**
  * Checks whether the Document Picture-in-Picture API is available.

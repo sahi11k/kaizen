@@ -7,8 +7,8 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 import { Tooltip } from "@/shared/ui/tooltip";
-import useAuthStore from "@/features/auth/store";
-import { useTasksQuery } from "@/features/pomodoro/services/queries";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro";
 import { FolderOpen, Play } from "lucide-react";
 import { Link } from "react-router";
 

@@ -9,15 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 import { useNavigate } from "react-router";
-import useAuthStore from "@/features/auth/store";
-import { signOut } from "@/features/auth/services/api";
+import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
 import { Toast } from "@/shared/ui/toast";
-import { getUserDisplayName } from "@/features/auth/utils";
 import { SidebarMobile } from "@/app/layouts/components/Sidebar";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { ThemeToggle } from "@/features/theme";
-import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
-import { closePipWindow } from "@/features/pomodoro/helpers";
+import { useTasksStore, useTimerStore, closePipWindow } from "@/features/pomodoro";
 import { useQueryClient } from "@tanstack/react-query";
 
 const { toast } = Toast;

@@ -5,7 +5,7 @@ import { CREATE, EDIT, queryKeys } from "@/shared/constants";
 import SortableContainer from "@/features/pomodoro/components/Tasks/SortableContainer";
 import { arraysEqual, deepCopy } from "@/shared/lib/utils";
 import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
-import useAuthStore from "@/features/auth/store";
+import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro/services/queries";
 import {
   useCreateTaskMutation,
