@@ -37,22 +37,22 @@ function TooltipContent({
     level === "overlay"
       ? "z-[var(--z-tooltip-overlay)]"
       : level === "header"
-      ? "z-[var(--z-tooltip-header)]"
-      : "z-[var(--z-tooltip-image)]";
+        ? "z-[var(--z-tooltip-header)]"
+        : "z-[var(--z-tooltip-image)]";
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
-          "bg-neutral-950 text-white animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-sm text-balance",
+          "bg-neutral-950 text-white dark:bg-popover dark:text-popover-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-sm text-balance dark:shadow-md",
           levelZ,
-          className
+          className,
         )}
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="bg-neutral-950 fill-neutral-950 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+        <TooltipPrimitive.Arrow className="bg-neutral-950 fill-neutral-950 dark:bg-popover dark:fill-popover size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

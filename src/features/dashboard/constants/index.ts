@@ -11,6 +11,12 @@ import JournalFilled from "@/assets/icons/journal.filled.svg?react";
 import GridOutline from "@/assets/icons/grid-outline.svg?react";
 import GridFilled from "@/assets/icons/grid-filled.svg?react";
 
+export const TCP_CHART = {
+  RING_WIDTH_PX: 16,
+  SIZE_MOBILE: 216,
+  SIZE_DESKTOP: 280,
+} as const;
+
 export const SIDEBAR_LINKS = [
   {
     to: "/dashboard",
@@ -43,30 +49,30 @@ export const WIDGET_GRID = [
     span: "col-span-12 lg:col-span-4",
     Content: TotalHoursWidget,
     key: "total-hours",
-    height: "h-100",
+    height: "min-h-100",
   },
   {
     span: "col-span-12 md:col-span-6 lg:col-span-4",
     Content: JournalsWidget,
     key: "journals",
-    height: "h-100",
+    height: "min-h-100",
   },
   {
     span: "col-span-12 md:col-span-6 lg:col-span-4",
     Content: TaskListWidget,
     key: "tasks",
-    height: "h-100",
+    height: "min-h-100",
   },
   {
     span: "col-span-12 lg:col-span-8",
     Content: ProgressChartWidget,
     key: "progress",
-    height: "h-100",
+    height: "min-h-100",
   },
   {
     span: "col-span-12 lg:col-span-4",
     Content: TCPWidget,
     key: "taskCompletionPercentage",
-    height: "h-100",
+    height: "min-h-100",
   },
 ];

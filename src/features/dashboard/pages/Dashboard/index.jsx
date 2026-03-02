@@ -35,7 +35,12 @@ const Dashboard = () => {
 
 const DashboardCard = ({ children, className, loading, height }) => {
   return (
-    <div className={cn("rounded-lg overflow-hidden", className)}>
+    <div
+      className={cn(
+        "rounded-lg overflow-hidden border border-border",
+        className,
+      )}
+    >
       {loading ? (
         <Skeleton
           className={cn("border-none shadow-none rounded-lg", height)}
