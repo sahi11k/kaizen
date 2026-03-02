@@ -13,7 +13,7 @@ const Testamonials = () => {
         </p>
       </div>
       <Link to={DEFAULT_NAV_ROUTE}>
-        <Button variant="secondary" rounded className="mt-4">
+        <Button variant="secondary" className="shadow-none mt-4">
           Get Started
         </Button>
       </Link>

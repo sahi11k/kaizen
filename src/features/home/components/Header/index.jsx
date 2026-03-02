@@ -21,11 +21,11 @@ const HeaderMain = () => {
         <div className="h-6 w-px bg-border" />
         {user ? (
           <Link to={DEFAULT_NAV_ROUTE}>
-            <Button rounded>Dashboard</Button>
+            <Button className="shadow-none">Dashboard</Button>
           </Link>
         ) : (
           <Link to="/auth/signup">
-            <Button rounded>Sign Up</Button>
+            <Button className="shadow-none">Sign Up</Button>
           </Link>
         )}
       </div>
