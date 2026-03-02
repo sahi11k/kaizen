@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Toast } from "@/shared/ui/toast";
-import { updatePassword } from "@/features/auth/services/api";
+import { updatePassword } from "@/features/auth/api";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import { validateField } from "@/features/auth/utils";

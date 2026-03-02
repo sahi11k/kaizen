@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useAuthStore } from "@/features/auth";
 import useJournalsStore from "@/features/journals/store";
-import { getWordCount } from "@/features/journals/helpers";
+import { getWordCount } from "@/features/journals/utils";
 import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { DatePicker } from "@/shared/ui/date-picker";
@@ -13,7 +13,7 @@ import {
   DATEPICKER_DATE_FORMAT,
   DEFAULT_JOURNAL_STATE,
 } from "@/features/journals/constants";
-import { useSaveJournalMutation } from "@/features/journals/services/mutations";
+import { useSaveJournalMutation } from "@/features/journals/mutations";
 import SavingStatus from "@/features/journals/components/SavingStatus";
 
 const JournalDetail = () => {

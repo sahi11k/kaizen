@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router";
-import HeaderMain from "@/app/layouts/components/Header";
-import FooterMain from "@/app/layouts/components/Footer";
+import { HeaderMain, FooterMain } from "@/features/home";
 
 const HomePageLayout = () => {
   return (

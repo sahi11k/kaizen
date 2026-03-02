@@ -1,5 +1,5 @@
 import { Skeleton } from "@/shared/ui/skeleton";
-import { CARD_GRID } from "@/features/dashboard/constants";
+import { WIDGET_GRID } from "@/features/dashboard/constants";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useTabTitle from "@/shared/hooks/useTabTitle";
 import { cn } from "@/shared/lib/utils";
@@ -19,14 +19,14 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 grid grid-cols-12 gap-6">
-      {CARD_GRID.map(({ span, content, key, height }) => (
+      {WIDGET_GRID.map(({ span, Content, key, height }) => (
         <DashboardCard
           className={span}
           key={key}
           loading={loading}
           height={height}
         >
-          {content}
+          <Content />
         </DashboardCard>
       ))}
     </div>

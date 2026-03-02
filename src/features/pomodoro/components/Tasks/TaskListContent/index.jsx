@@ -6,14 +6,14 @@ import SortableContainer from "@/features/pomodoro/components/Tasks/SortableCont
 import { arraysEqual, deepCopy } from "@/shared/lib/utils";
 import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
 import { useAuthStore } from "@/features/auth";
-import { useTasksQuery } from "@/features/pomodoro/services/queries";
+import { useTasksQuery } from "@/features/pomodoro/queries";
 import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
   useDeleteTaskMutation,
   useSortTasksMutation,
-} from "@/features/pomodoro/services/mutations";
-import { getCurrentTime } from "@/features/pomodoro/helpers";
+} from "@/features/pomodoro/mutations";
+import { getCurrentTime } from "@/features/pomodoro/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";

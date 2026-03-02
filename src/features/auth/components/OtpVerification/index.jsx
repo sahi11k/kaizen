@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { verifyOTP, resendOTP } from "@/features/auth/services/api";
+import { verifyOTP, resendOTP } from "@/features/auth/api";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
 import { InputOTP } from "@/shared/ui/input-otp";

@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/features/auth";
-import { getCurrentTime } from "@/features/pomodoro/helpers";
+import { getCurrentTime } from "@/features/pomodoro/utils";
 import { useUserSettingsQuery } from "@/features/settings";
 import { useTimerStore } from "@/features/pomodoro/store";
 import { useEffect } from "react";

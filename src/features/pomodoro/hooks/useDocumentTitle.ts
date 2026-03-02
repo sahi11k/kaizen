@@ -1,4 +1,4 @@
-import { getFormattedTime, getTabLabel } from "@/features/pomodoro/helpers";
+import { getFormattedTime, getTabLabel } from "@/features/pomodoro/utils";
 import { useTimerStore } from "@/features/pomodoro/store";
 import { useEffect } from "react";
 

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useLocation } from "react-router";
 import { useTimerStore, usePipStore } from "@/features/pomodoro/store";
-import { openPipWindow, syncPipTheme } from "@/features/pomodoro/helpers";
+import { openPipWindow, syncPipTheme } from "@/features/pomodoro/services/pip";
 import PipTimerContent from "@/features/pomodoro/components/PipTimerContent";
 import { useThemeStore, THEME } from "@/features/theme";
 
