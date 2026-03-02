@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Toast } from "@/shared/ui/toast";
-import { updatePassword } from "@/features/auth/api/auth";
+import { updatePassword } from "@/features/auth/api";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
-import { validateField } from "@/features/auth/utils/validators";
+import { validateField } from "@/features/auth/utils";
 import { ErrorText } from "@/features/auth/components/ErrorText";
-import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
+import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 
 const { toast } = Toast;
 
@@ -27,16 +27,16 @@ const UpdatePasswordForm = () => {
     const hasErrors = Object.values(errors).some((error) => error !== "");
     if (hasErrors) return;
     setIsLoading(true);
-    const response = await updatePassword(formValues);
-    if (response.error) {
-      toast.error(response.error);
-    } else {
+    try {
+      const response = await updatePassword(formValues);
       toast.success(response.message);
       setTimeout(() => {
         setFormValues(DEFAULT_FORM_VALUES);
         setErrors({});
         navigate(DEFAULT_NAV_ROUTE);
       }, 1000);
+    } catch (error) {
+      toast.error(error.message);
     }
     setIsLoading(false);
   };

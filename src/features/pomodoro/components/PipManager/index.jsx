@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useLocation } from "react-router";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import usePipStore from "@/features/pomodoro/store/pip";
-import { openPipWindow } from "@/features/pomodoro/helpers/pip";
+import { useTimerStore, usePipStore } from "@/features/pomodoro/store";
+import { openPipWindow, syncPipTheme } from "@/features/pomodoro/services/pip";
 import PipTimerContent from "@/features/pomodoro/components/PipTimerContent";
+import { useThemeStore, THEME } from "@/features/theme";
 
 const POMODORO_PATH = "/dashboard/pomodoro";
 
@@ -53,7 +53,13 @@ const PipManager = () => {
       document.removeEventListener("visibilitychange", handleVisibility);
   }, [timerStarted]);
 
-  // PIP stays open on /pomodoro — user closes it manually if needed.
+  // --- Sync PiP window theme when theme changes ---
+  useEffect(() => {
+    const unsub = useThemeStore.subscribe((state) => {
+      syncPipTheme(state.theme === THEME.DARK);
+    });
+    return unsub;
+  }, []);
 
   // --- Render PipTimerContent into the PIP window via portal ---
   if (!pipContainer) return null;

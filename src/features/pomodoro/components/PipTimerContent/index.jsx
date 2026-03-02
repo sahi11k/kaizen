@@ -1,8 +1,9 @@
 import { Play, Square } from "lucide-react";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import { getFormattedTime } from "@/features/pomodoro/helpers/timer";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro/queries";
+import { getFormattedTime } from "@/features/pomodoro/utils";
+import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;
 
@@ -20,7 +21,8 @@ const PipTimerContent = () => {
   const startTimer = useTimerStore((s) => s.startTimer);
   const stopTimer = useTimerStore((s) => s.stopTimer);
 
-  const tasks = useTasksStore((s) => s.tasks);
+  const { user } = useAuthStore();
+  const { data: tasks = [] } = useTasksQuery(user?.id);
   const currentTask = useTasksStore((s) => s.currentTask);
   const timerTask = timerTaskId
     ? (tasks.find((t) => t.id === timerTaskId) ?? currentTask)

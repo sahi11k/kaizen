@@ -6,17 +6,17 @@
 
 :root {
   /* ─── Neutral (achromatic) ─── */
-  --neutral-50: oklch(98.5% 0 0);
-  --neutral-100: oklch(96% 0 0);
-  --neutral-200: oklch(92% 0 0);
-  --neutral-300: oklch(87% 0 0);
-  --neutral-400: oklch(70.8% 0 0);
-  --neutral-500: oklch(55.6% 0 0);
-  --neutral-600: oklch(43.9% 0 0);
-  --neutral-700: oklch(37.1% 0 0);
-  --neutral-800: oklch(26.9% 0 0);
-  --neutral-900: oklch(20.5% 0 0);
-  --neutral-950: oklch(14.5% 0 0);
+  --neutral-50: #fafafa;
+  --neutral-100: #f2f2f2;
+  --neutral-200: #e4e4e4;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a1a1a1;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #161616;
+  --neutral-950: #0a0a0a;
 
   /* ─── Teal ─── */
   --teal-50: #d1d8d7;

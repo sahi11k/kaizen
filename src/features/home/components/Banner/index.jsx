@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { Button } from "@/shared/ui/button";
-import { DEFAULT_NAV_ROUTE } from "@/shared/constants/routes";
+import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 import BannerIllustration from "@/assets/illustrations/banner.svg?react";
 
 const Banner = () => {
@@ -22,7 +22,7 @@ const Banner = () => {
           productivity techniques.
         </p>
         <Link to={DEFAULT_NAV_ROUTE} className="mx-auto lg:mx-0 lg:-mt-3">
-          <Button rounded size="lg">
+          <Button className="shadow-none" size="lg">
             Start Your Journey
           </Button>
         </Link>

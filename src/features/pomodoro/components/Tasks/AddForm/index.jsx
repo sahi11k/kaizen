@@ -14,8 +14,8 @@ import {
 import {
   MAX_SESSIONS,
   MIN_SESSIONS,
-} from "@/features/pomodoro/constants/pomodoro";
-import { CREATE } from "@/shared/constants/global";
+} from "@/features/pomodoro/constants";
+import { CREATE } from "@/shared/constants";
 
 const AddForm = ({
   formValues,

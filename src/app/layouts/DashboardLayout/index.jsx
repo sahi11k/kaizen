@@ -1,6 +1,5 @@
-import { SidebarLaptop } from "@/app/layouts/components/Sidebar";
+import { SidebarLaptop, DashboardHeader } from "@/features/dashboard";
 import { Outlet } from "react-router";
-import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
 import { useState } from "react";
 
 const DashboardLayout = () => {
