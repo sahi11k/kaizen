@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { loginWithEmail, resendOTP } from "@/features/auth/services/api";
+import { loginWithEmail, resendOTP } from "@/features/auth/api";
 import { Link, useNavigate } from "react-router";
 import { Toast } from "@/shared/ui/toast";
 import { EMAIL_NOT_VERIFIED_ERROR } from "@/features/auth/constants";

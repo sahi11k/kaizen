@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
-import { signUpNewUser } from "@/features/auth/services/api";
+import { signUpNewUser } from "@/features/auth/api";
 import { Toast } from "@/shared/ui/toast";
 import OtpVerification from "@/features/auth/components/OtpVerification";
 import { Input } from "@/shared/ui/input";

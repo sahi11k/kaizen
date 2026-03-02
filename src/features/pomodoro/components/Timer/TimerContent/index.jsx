@@ -3,16 +3,15 @@ import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
+import { getCurrentTime, getFormattedTime } from "@/features/pomodoro/utils";
 import {
-  getCurrentTime,
-  getFormattedTime,
   openPipWindow,
   isPipSupported,
-} from "@/features/pomodoro/helpers";
+} from "@/features/pomodoro/services/pip";
 import { useSound } from "@/features/pomodoro/hooks";
 import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
 import { useAuthStore } from "@/features/auth";
-import { useTasksQuery } from "@/features/pomodoro/services/queries";
+import { useTasksQuery } from "@/features/pomodoro/queries";
 import { useUserSettingsQuery } from "@/features/settings";
 
 import { Button } from "@/shared/ui/button";

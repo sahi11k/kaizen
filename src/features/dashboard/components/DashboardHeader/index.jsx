@@ -11,10 +11,14 @@ import {
 import { useNavigate } from "react-router";
 import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
 import { Toast } from "@/shared/ui/toast";
-import { SidebarMobile } from "@/app/layouts/components/Sidebar";
+import { SidebarMobile } from "@/features/dashboard";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { ThemeToggle } from "@/features/theme";
-import { useTasksStore, useTimerStore, closePipWindow } from "@/features/pomodoro";
+import {
+  useTasksStore,
+  useTimerStore,
+  closePipWindow,
+} from "@/features/pomodoro";
 import { useQueryClient } from "@tanstack/react-query";
 
 const { toast } = Toast;

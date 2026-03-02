@@ -1,6 +1,6 @@
 export { default as useJournalsStore } from "./store";
 export * from "./constants";
-export * from "./helpers";
-export * from "./services/queries";
-export * from "./services/mutations";
+export * from "./utils";
+export * from "./queries";
+export * from "./mutations";
 export type { Journal, DefaultJournalState, DefaultJournalKeys } from "./types";

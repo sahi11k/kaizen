@@ -9,9 +9,9 @@ import { Tooltip } from "@/shared/ui/tooltip";
 import { useShallow } from "zustand/react/shallow";
 import { Toast } from "@/shared/ui/toast";
 import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants";
-import { groupByMonth } from "@/features/journals/helpers";
-import { useJournalsQuery } from "@/features/journals/services/queries";
-import { useDeleteJournalMutation } from "@/features/journals/services/mutations";
+import { groupByMonth } from "@/features/journals/utils";
+import { useJournalsQuery } from "@/features/journals/queries";
+import { useDeleteJournalMutation } from "@/features/journals/mutations";
 
 const { toast } = Toast;
 
