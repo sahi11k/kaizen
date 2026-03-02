@@ -22,7 +22,7 @@ const Banner = () => {
           productivity techniques.
         </p>
         <Link to={DEFAULT_NAV_ROUTE} className="mx-auto lg:mx-0 lg:-mt-3">
-          <Button rounded size="lg">
+          <Button className="shadow-none" size="lg">
             Start Your Journey
           </Button>
         </Link>

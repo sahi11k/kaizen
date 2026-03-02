@@ -8,7 +8,7 @@ import { Tooltip } from "@/shared/ui/tooltip";
 import { MoreOptions } from "@/shared/ui/more-options";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-md transition-colors bg-background";
+  "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors bg-background";
 const hover = "hover:bg-muted";
 const activeClass =
   "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground";

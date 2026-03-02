@@ -85,7 +85,7 @@ const JournalsWidget = () => {
 
 const MetricItem = ({ label, value }) => {
   return (
-    <div className="rounded-md px-6 py-2 flex-1 bg-primary-container h-full">
+    <div className="rounded-lg px-6 py-2 flex-1 bg-primary-container h-full">
       <span className="text-primary-container-foreground font-medium block text-sm">
         {label}
       </span>
