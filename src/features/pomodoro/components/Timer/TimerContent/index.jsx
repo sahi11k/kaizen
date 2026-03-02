@@ -3,18 +3,21 @@ import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
-import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
-import useSound from "@/features/pomodoro/hooks/useSound";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import useAuthStore from "@/features/auth/store/auth";
+import { getCurrentTime, getFormattedTime } from "@/features/pomodoro/utils";
+import {
+  openPipWindow,
+  isPipSupported,
+} from "@/features/pomodoro/services/pip";
+import { useSound } from "@/features/pomodoro/hooks";
+import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro/queries";
+import { useUserSettingsQuery } from "@/features/settings";
 
 import { Button } from "@/shared/ui/button";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Play, Square, TimerResetIcon, PictureInPicture2 } from "lucide-react";
-import { getFormattedTime } from "@/features/pomodoro/helpers/timer";
-import { openPipWindow, isPipSupported } from "@/features/pomodoro/helpers/pip";
 import PomoSettings from "@/features/pomodoro/components/PomoSettings";
 import { Tooltip } from "@/shared/ui/tooltip";
 
@@ -45,7 +48,8 @@ const TABS = [
 ];
 
 const TimerContent = () => {
-  const userSettings = useAuthStore((s) => s.userSettings);
+  const user = useAuthStore((s) => s.user);
+  const { data: userSettings } = useUserSettingsQuery(user?.id);
   const currentTask = useTasksStore((s) => s.currentTask);
 
   const timerValue = useTimerStore((s) => s.timerValue);
@@ -59,8 +63,7 @@ const TimerContent = () => {
   const setTab = useTimerStore((s) => s.setTab);
   const setTimerValue = useTimerStore((s) => s.setTimerValue);
 
-  // The task the timer is running for (may differ from selected currentTask)
-  const tasks = useTasksStore((s) => s.tasks);
+  const { data: tasks = [] } = useTasksQuery(user?.id);
   const timerTask = timerTaskId
     ? (tasks.find((t) => t.id === timerTaskId) ?? currentTask)
     : currentTask;

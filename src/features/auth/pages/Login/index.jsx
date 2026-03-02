@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import LoginForm from "@/features/auth/components/LoginForm";
-import useAuthStore from "@/features/auth/store/auth";
+import useAuthStore from "@/features/auth/store";
 import { Navigate } from "react-router";
-import { AUTH_HEADER_TEXT } from "@/features/auth/constants/auth";
+import { AUTH_HEADER_TEXT } from "@/features/auth/constants";
 import AuthFormContainer from "@/features/auth/components/AuthFormContainer";
-import { DEFAULT_NAV_ROUTE, TAB_TITLES } from "@/shared/constants/routes";
+import { DEFAULT_NAV_ROUTE, BROWSER_TAB_TITLES } from "@/shared/constants";
 import useTabTitle from "@/shared/hooks/useTabTitle";
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   const [showResetPasswordScreen, setShowResetPasswordScreen] = useState(false);
   const { user } = useAuthStore();
 
-  useTabTitle(TAB_TITLES.LOGIN);
+  useTabTitle(BROWSER_TAB_TITLES.LOGIN);
 
   if (user) {
     return <Navigate to={DEFAULT_NAV_ROUTE} replace />;

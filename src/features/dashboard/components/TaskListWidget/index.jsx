@@ -7,23 +7,14 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 import { Tooltip } from "@/shared/ui/tooltip";
-import useTasksStore from "@/features/pomodoro/store/tasks";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro";
 import { FolderOpen, Play } from "lucide-react";
 import { Link } from "react-router";
-import { useShallow } from "zustand/react/shallow";
 
 const TaskListWidget = () => {
-  const { tasks } = useTasksStore(
-    useShallow((state) => ({
-      tasks: state.tasks,
-      setTasks: state.setTasks,
-      setCurrentTask: state.setCurrentTask,
-      currentTask: state.currentTask,
-      updateTaskInStore: state.updateTask,
-      tasksFetchStatus: state.tasksFetchStatus,
-      setTasksFetchStatus: state.setTasksFetchStatus,
-    })),
-  );
+  const { user } = useAuthStore();
+  const { data: tasks = [] } = useTasksQuery(user?.id);
 
   const pendingTasks = getPendingTasks(tasks);
 
@@ -65,7 +56,7 @@ const TaskListWidget = () => {
 
 const TaskItem = ({ task }) => {
   return (
-    <li className="flex items-center justify-between border border-border rounded-md px-4 py-2 gap-2">
+    <li className="flex items-center justify-between border border-border rounded-lg px-4 py-2 gap-2">
       <span className="font-medium truncate min-w-0">{task.title}</span>
       <Tooltip content="Openwith Pomodoro">
         <Link to="/dashboard/pomodoro">

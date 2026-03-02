@@ -9,26 +9,25 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 import { useNavigate } from "react-router";
-import useAuthStore from "@/features/auth/store/auth";
-import { signOut } from "@/features/auth/api/auth";
+import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
 import { Toast } from "@/shared/ui/toast";
-import { STATUS } from "@/shared/constants/db";
-import { getUserDisplayName } from "@/features/auth/utils/auth";
-import { SidebarMobile } from "@/app/layouts/components/Sidebar";
+import { SidebarMobile } from "@/features/dashboard";
 import { Tooltip } from "@/shared/ui/tooltip";
 import { ThemeToggle } from "@/features/theme";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import useJournalsStore from "@/features/journals/store/journals";
-import { closePipWindow } from "@/features/pomodoro/helpers/pip";
+import {
+  useTasksStore,
+  useTimerStore,
+  closePipWindow,
+} from "@/features/pomodoro";
+import { useQueryClient } from "@tanstack/react-query";
 
 const { toast } = Toast;
 
 const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   const navigate = useNavigate();
-  const { setUser, setUserFetchStatus, user } = useAuthStore();
-  const { setTasks, setTasksFetchStatus } = useTasksStore();
-  const { setJournals, setJournalsFetchStatus } = useJournalsStore();
+  const { user } = useAuthStore();
+  const { setCurrentTask } = useTasksStore();
+  const queryClient = useQueryClient();
   const userDisplayName = getUserDisplayName(user);
 
   const handleCollapse = () => {
@@ -36,19 +35,15 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   };
 
   const handleLogout = async () => {
-    const res = await signOut();
-    if (res.error) {
-      toast.error(res.error);
-    } else {
-      setUser(null);
-      setUserFetchStatus(STATUS.LOADING);
-      setTasks([]);
-      setTasksFetchStatus(STATUS.LOADING);
-      setJournals([]);
-      setJournalsFetchStatus(STATUS.LOADING);
+    try {
+      await signOut();
+      setCurrentTask(null);
+      queryClient.clear();
       useTimerStore.getState().resetTimer(0);
       closePipWindow();
       navigate("/", { replace: true });
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 

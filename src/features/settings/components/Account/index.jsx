@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "../style.module.css";
 
-import useAuthStore from "@/features/auth/store/auth";
+import { useAuthStore } from "@/features/auth";
 import { toast } from "sonner"; // Assuming you're using sonner for toasts
-import { updateUserMetadata } from "@/features/auth/api/auth";
+import { updateUserMetadata } from "@/features/auth";
 
 const Account = () => {
-  const { user, setUser } = useAuthStore();
+  const { user } = useAuthStore();
   const [accountFormValues, setAccountFormValues] = useState({
     email: "",
     displayName: "",
@@ -30,15 +30,15 @@ const Account = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const res = await updateUserMetadata({
-      display_name: accountFormValues.displayName,
-    });
-
-    if (res.error) {
-      toast.error(res.errorMessage || "Failed to update profile");
-    } else if (res.data.user) {
-      setUser(res.data.user);
-      toast.success("Profile updated successfully");
+    try {
+      const res = await updateUserMetadata({
+        display_name: accountFormValues.displayName,
+      });
+      if (res.data.user) {
+        toast.success("Profile updated successfully");
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update profile");
     }
     setIsLoading(false);
   };

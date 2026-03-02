@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 
 import { Bar } from "react-chartjs-2";
 import {
@@ -11,12 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import { Card, CardHeader, CardContent, CardTitle } from "@/shared/ui/card";
-import useAuthStore from "@/features/auth/store/auth";
-import { getLastWeekTaskSessions } from "@/features/pomodoro/api/tasks";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import { useShallow } from "zustand/react/shallow";
-import { STATUS } from "@/shared/constants/db";
-import dayjs from "dayjs";
+import { useAuthStore } from "@/features/auth";
+import { useTaskSessionsQuery } from "@/features/pomodoro";
 import { generatePomodoroChartData } from "./data";
 import Button from "@/shared/ui/button";
 import { Link } from "react-router";
@@ -33,46 +29,10 @@ ChartJS.register(
 
 const ProgressChartWidget = () => {
   const { user } = useAuthStore();
-  const {
-    setTaskSessions,
-    taskSessionsFetchStatus,
-    setTaskSessionsFetchStatus,
-    taskSessions,
-  } = useTasksStore(
-    useShallow((state) => ({
-      setTaskSessions: state.setTaskSessions,
-      taskSessionsFetchStatus: state.taskSessionsFetchStatus,
-      setTaskSessionsFetchStatus: state.setTaskSessionsFetchStatus,
-      taskSessions: state.taskSessions,
-    })),
-  );
-
-  useEffect(() => {
-    const loadSessions = async () => {
-      if (!user?.id) return;
-      const tasks = await getLastWeekTaskSessions(
-        {
-          startDate: dayjs().subtract(7, "day").toISOString(),
-          endDate: dayjs().toISOString(),
-        },
-        user.id,
-      );
-      setTaskSessions(tasks.data);
-      setTaskSessionsFetchStatus(STATUS.FETCHED);
-    };
-
-    if (taskSessionsFetchStatus === STATUS.LOADING) {
-      loadSessions();
-    }
-  }, [
-    setTaskSessions,
-    user?.id,
-    taskSessionsFetchStatus,
-    setTaskSessionsFetchStatus,
-  ]);
+  const { data: taskSessions = [] } = useTaskSessionsQuery(user?.id);
 
   const { data, options } = useMemo(() => {
-    return generatePomodoroChartData(taskSessions || []);
+    return generatePomodoroChartData(taskSessions);
   }, [taskSessions]);
 
   return (

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants/pomodoro";
+import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;
 

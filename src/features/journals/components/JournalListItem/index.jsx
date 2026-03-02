@@ -1,5 +1,5 @@
 import React from "react";
-import { getDayOfMonth, getDayOfWeek } from "@/shared/utils/date";
+import { getDayOfMonth, getDayOfWeek } from "@/shared/lib/date";
 import { MoreOptions } from "@/shared/ui/more-options";
 
 const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
@@ -17,7 +17,7 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
 
   return (
     <li
-      className={`group flex gap-4 mb-1 px-3 py-2  hover:bg-muted rounded-md cursor-pointer transition-colors ${activeClass}`}
+      className={`group flex gap-4 mb-1 px-3 py-2  hover:bg-muted rounded-lg cursor-pointer transition-colors ${activeClass}`}
       onClick={onClick}
       onKeyDown={onKeyDown}
       role="option"

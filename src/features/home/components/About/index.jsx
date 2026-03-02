@@ -7,7 +7,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/shared/ui/card";
-import { ABOUT_CARDS } from "@/features/home/constants/aboutCards";
+import { ABOUT_CARDS } from "@/features/home/constants";
 import { cn } from "@/shared/lib/utils";
 import Button from "@/shared/ui/button";
 import { ArrowUpRight } from "lucide-react";
@@ -31,7 +31,7 @@ const About = () => {
   );
 };
 
-const AboutCard = ({ title, description, icon, link }) => {
+const AboutCard = ({ title, description, Icon, link }) => {
   return (
     <Card
       className={cn(
@@ -41,7 +41,7 @@ const AboutCard = ({ title, description, icon, link }) => {
     >
       <CardHeader>
         <CardTitle className="text-muted-foreground size-10 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-[1.25]">
-          {icon}
+          <Icon />
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1">

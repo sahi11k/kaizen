@@ -3,7 +3,9 @@ import {
   getTotalWordsWritten,
   getJournalStreak,
   getSelfReflectionDate,
-} from "@/features/journals/helpers";
+  JOURNAL_CONTENT_TRUNCATION_LENGTH,
+  useJournalsQuery,
+} from "@/features/journals";
 import Button from "@/shared/ui/button";
 import {
   Card,
@@ -12,13 +14,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/ui/card";
-import useJournalsStore from "@/features/journals/store/journals";
+
 import React from "react";
 import { Link } from "react-router";
-import { JOURNAL_CONTENT_TRUNCATION_LENGTH } from "@/features/journals/constants/journals";
+
+import { useAuthStore } from "@/features/auth";
 
 const JournalsWidget = () => {
-  const { journals } = useJournalsStore();
+  const { user } = useAuthStore();
+
+  const { data: journals } = useJournalsQuery(user.id);
+
   const sortedJournals = getSortedJournals(journals);
 
   const latestJournal = sortedJournals[0];
@@ -42,7 +48,7 @@ const JournalsWidget = () => {
         <CardTitle>
           {latestJournal
             ? `Self Reflections from ${getSelfReflectionDate(
-                latestJournal?.created_at,
+                latestJournal?.createdAt,
               )}`
             : "Take a moment to reflect"}
         </CardTitle>
@@ -79,7 +85,7 @@ const JournalsWidget = () => {
 
 const MetricItem = ({ label, value }) => {
   return (
-    <div className="rounded-md px-6 py-2 flex-1 bg-primary-container h-full">
+    <div className="rounded-lg px-6 py-2 flex-1 bg-primary-container h-full">
       <span className="text-primary-container-foreground font-medium block text-sm">
         {label}
       </span>

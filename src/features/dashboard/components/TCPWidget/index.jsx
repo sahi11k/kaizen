@@ -1,4 +1,5 @@
-import useTasksStore from "@/features/pomodoro/store/tasks";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro";
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 import { Doughnut } from "react-chartjs-2";
@@ -11,11 +12,21 @@ import {
 
 ChartJS.register(ArcElement, ChartTooltip, Legend);
 
+import { TCP_CHART } from "@/features/dashboard/constants";
+
+const getCutout = (diameter) => {
+  const radius = diameter / 2;
+  return `${((radius - TCP_CHART.RING_WIDTH_PX) / radius) * 100}%`;
+};
+
 const TCPWidget = () => {
-  const { tasks } = useTasksStore();
+  const { user } = useAuthStore();
+  const { data: tasks = [] } = useTasksQuery(user?.id);
   const tcp = getTCP(tasks);
   const completed = Math.max(0, Math.min(100, tcp));
   const remaining = 100 - completed;
+
+  const isMobile = window.innerWidth < 768;
 
   const styles = getComputedStyle(document.documentElement);
 
@@ -38,7 +49,9 @@ const TCPWidget = () => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    cutout: "85%",
+    cutout: getCutout(
+      isMobile ? TCP_CHART.SIZE_MOBILE : TCP_CHART.SIZE_DESKTOP,
+    ),
     plugins: {
       legend: { display: false },
       tooltip: { enabled: false },
@@ -51,12 +64,14 @@ const TCPWidget = () => {
         <CardTitle>Task Completion Percentage</CardTitle>
       </CardHeader>
       <CardContent className="py-6">
-        <div className="relative w-70 h-70 mx-auto">
+        <div className="relative w-54 h-54 md:w-70 md:h-70 mx-auto">
           <Doughnut data={data} options={options} />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="heading-1">
-              <strong className="text-foreground">{completed}</strong>
-              <span className="heading-2">%</span>
+            <div className="font-semibold leading-tight">
+              <strong className="text-foreground text-4xl md:text-5xl xl:text-6xl">
+                {completed}
+              </strong>
+              <span className="text-3xl lg:text-5xl">%</span>
             </div>
           </div>
         </div>

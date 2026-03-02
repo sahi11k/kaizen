@@ -1,29 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import TaskItem from "@/features/pomodoro/components/Tasks/TaskItem";
 import AddForm from "@/features/pomodoro/components/Tasks/AddForm";
-import { CREATE, EDIT } from "@/shared/constants/global";
+import { CREATE, EDIT, queryKeys } from "@/shared/constants";
 import SortableContainer from "@/features/pomodoro/components/Tasks/SortableContainer";
-import { arraysEqual, deepCopy } from "@/shared/utils/jsUtils";
-import useTasksStore from "@/features/pomodoro/store/tasks";
-import useTimerStore from "@/features/pomodoro/store/timer";
-import useAuthStore from "@/features/auth/store/auth";
-import { useShallow } from "zustand/react/shallow";
+import { arraysEqual, deepCopy } from "@/shared/lib/utils";
+import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
+import { useAuthStore } from "@/features/auth";
+import { useTasksQuery } from "@/features/pomodoro/queries";
 import {
-  createTask,
-  deleteTask,
-  fetchTasks,
-  sortTasks,
-  updateTask,
-} from "@/features/pomodoro/api/tasks";
-import { getCurrentTime } from "@/features/pomodoro/helpers/timer";
+  useCreateTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+  useSortTasksMutation,
+} from "@/features/pomodoro/mutations";
+import { getCurrentTime } from "@/features/pomodoro/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
 import TaskSwitchDialog from "@/features/pomodoro/components/Tasks/TaskSwitchDialog";
 import { FolderOpen, Plus } from "lucide-react";
 import { Skeleton } from "@/shared/ui/skeleton";
-import { MIN_SESSIONS } from "@/features/pomodoro/constants/pomodoro";
+import { MIN_SESSIONS } from "@/features/pomodoro/constants";
 import { Tooltip } from "@/shared/ui/tooltip";
-import { STATUS } from "@/shared/constants/db";
 
 const { toast } = Toast;
 
@@ -40,46 +38,19 @@ const TaskListContent = ({ onItemClick }) => {
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
-  const [isLoading, setIsLoading] = useState(false);
 
   const currentOrder = useRef([]);
 
   const { user } = useAuthStore();
-  const {
-    tasks,
-    setTasks,
-    setCurrentTask,
-    currentTask,
-    updateTaskInStore,
-    tasksFetchStatus,
-    setTasksFetchStatus,
-  } = useTasksStore(
-    useShallow((state) => ({
-      tasks: state.tasks,
-      setTasks: state.setTasks,
-      setCurrentTask: state.setCurrentTask,
-      currentTask: state.currentTask,
-      updateTaskInStore: state.updateTask,
-      tasksFetchStatus: state.tasksFetchStatus,
-      setTasksFetchStatus: state.setTasksFetchStatus,
-    })),
-  );
+  const { currentTask, setCurrentTask } = useTasksStore();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const loadTasks = async () => {
-      if (!user?.id) return;
-      setIsLoading(true);
-      const tasks = await fetchTasks(user.id);
-      setTasks(tasks);
-      currentOrder.current = tasks.map((task) => task.id);
-      setIsLoading(false);
-      setTasksFetchStatus(STATUS.FETCHED);
-    };
+  const { data: tasks = [], isLoading } = useTasksQuery(user?.id);
 
-    if (tasksFetchStatus === STATUS.LOADING) {
-      loadTasks();
-    }
-  }, [setTasks, user?.id, tasksFetchStatus, setTasksFetchStatus]);
+  const createTaskMutation = useCreateTaskMutation();
+  const updateTaskMutation = useUpdateTaskMutation();
+  const deleteTaskMutation = useDeleteTaskMutation();
+  const sortTasksMutation = useSortTasksMutation();
 
   const formSubmitHandler = () => {
     if (mode === CREATE) {
@@ -89,10 +60,9 @@ const TaskListContent = ({ onItemClick }) => {
     }
   };
 
-  const addTask = async () => {
+  const addTask = () => {
     const { title, ...rest } = formValues;
 
-    // Handle case when no tasks exist - start rank from 1
     const maxRank =
       tasks.length > 0 ? Math.max(...tasks.map((task) => task.rank)) : 0;
 
@@ -104,34 +74,43 @@ const TaskListContent = ({ onItemClick }) => {
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     };
 
-    const res = await createTask(task, user.id);
-    if (res.error) {
-      return toast.error(res.error);
-    }
-
-    setTasks([...tasks, ...res.data]);
-    toast.success("Task Created");
-    handleCancel();
+    createTaskMutation.mutate(
+      { payload: task, userId: user.id },
+      {
+        onSuccess: () => {
+          toast.success("Task Created");
+          handleCancel();
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    );
   };
 
-  const editTask = async () => {
+  const editTask = () => {
     const { title } = formValues;
     const task = {
       ...formValues,
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     };
 
-    const res = await updateTask(task, user.id);
-    if (res.error) {
-      return toast.error(res.error);
-    }
-
-    updateTaskInStore(res.data[0]);
-    if (currentTask?.id === task.id) {
-      setCurrentTask(res.data[0]);
-    }
-    toast.success("Task Updated");
-    handleCancel();
+    updateTaskMutation.mutate(
+      { payload: task, userId: user.id },
+      {
+        onSuccess: (res) => {
+          const updatedTask = res.data?.[0];
+          if (currentTask?.id === task.id && updatedTask) {
+            setCurrentTask(updatedTask);
+          }
+          toast.success("Task Updated");
+          handleCancel();
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    );
   };
 
   const handleCancel = () => {
@@ -140,33 +119,40 @@ const TaskListContent = ({ onItemClick }) => {
     setMode(CREATE);
   };
 
-  const taskRemoveHandler = async (taskId) => {
-    const res = await deleteTask(taskId, user.id);
-    if (res.error) {
-      return toast.error(res.error);
-    }
-    const updatedTasks = tasks.filter((t) => t.id !== taskId);
-    setTasks(updatedTasks);
-    if (currentTask?.id === taskId) {
-      setCurrentTask(null);
-    }
-    toast.success("Task Deleted");
+  const taskRemoveHandler = (taskId) => {
+    deleteTaskMutation.mutate(
+      { taskId, userId: user.id },
+      {
+        onSuccess: () => {
+          if (currentTask?.id === taskId) {
+            setCurrentTask(null);
+          }
+          toast.success("Task Deleted");
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    );
   };
 
-  const taskCompleteHandler = async (taskId) => {
+  const taskCompleteHandler = (taskId) => {
     const task = tasks.find((t) => t.id === taskId);
-    const res = await updateTask(
+
+    updateTaskMutation.mutate(
       {
-        id: taskId,
-        completed: !task.completed,
+        payload: { id: taskId, completed: !task.completed },
+        userId: user.id,
       },
-      user.id,
+      {
+        onSuccess: () => {
+          toast.success("Task Updated");
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
     );
-    if (res.error) {
-      return toast.error(res.error);
-    }
-    updateTaskInStore(res.data[0]);
-    toast.success("Task Updated");
   };
 
   const taskEditHandler = (task) => {
@@ -175,36 +161,24 @@ const TaskListContent = ({ onItemClick }) => {
     setMode(EDIT);
   };
 
-  const taskDragHandler = async (updatedTasks) => {
+  const taskDragHandler = (updatedTasks) => {
     const newOrder = updatedTasks.map((task) => task.id);
     if (arraysEqual(newOrder, currentOrder.current)) {
-      setTasks(updatedTasks);
       return;
     }
 
-    // Optimistic update
-    setTasks(updatedTasks);
-
-    const payload = updatedTasks.map((task, index) => ({
-      id: task.id,
-      rank: index + 1,
-    }));
-
-    const res = await sortTasks(payload, user.id);
-    if (res.error) {
-      // Rollback to previous order
-      const taskMap = new Map(updatedTasks.map((task) => [task.id, task]));
-      const revertedTasks = currentOrder.current
-        .map((id) => taskMap.get(id))
-        .filter(Boolean);
-      setTasks(revertedTasks);
-      return toast.error(res.error);
-    }
-
-    const newTasks = res.data?.slice() || [];
-    currentOrder.current = newTasks.map((task) => task.id);
-    setTasks(newTasks);
-    toast.success("Task Order Updated");
+    sortTasksMutation.mutate(
+      { payload: updatedTasks, userId: user.id },
+      {
+        onSuccess: () => {
+          currentOrder.current = newOrder;
+          toast.success("Task Order Updated");
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    );
   };
 
   const getCompletedTasks = () => {
@@ -216,7 +190,6 @@ const TaskListContent = ({ onItemClick }) => {
   const handleTaskClick = (task) => {
     if (currentTask?.id === task.id) return;
 
-    // If timer is running AND a task is currently selected, ask for confirmation
     const { timerStarted } = useTimerStore.getState();
     if (timerStarted && currentTask) {
       setPendingTask(task);
@@ -232,7 +205,9 @@ const TaskListContent = ({ onItemClick }) => {
   const confirmTaskSwitch = () => {
     if (!pendingTask) return;
     const { currentTab } = useTimerStore.getState();
-    const userSettings = useAuthStore.getState().userSettings;
+    const userSettings = queryClient.getQueryData(
+      queryKeys.userSettings.all(user?.id),
+    );
     const value = getCurrentTime(currentTab, userSettings);
     useTimerStore.getState().resetTimer(value);
     setCurrentTask(pendingTask);
