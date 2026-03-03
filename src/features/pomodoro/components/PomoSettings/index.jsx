@@ -1,13 +1,17 @@
-import Button from "@/shared/ui/button";
-import { Popover, PopoverTrigger, PopoverContent } from "@/shared/ui/popover";
 import {
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/shared/ui/drawer";
-import { Slider } from "@/shared/ui/slider";
+  Slider,
+  Toast,
+  Tooltip,
+} from "@/shared/ui";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import { useAuthStore } from "@/features/auth";
 import {
@@ -20,8 +24,6 @@ import {
 } from "@/features/pomodoro/utils";
 import { Settings } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
-import { Toast } from "@/shared/ui/toast";
-import { Tooltip } from "@/shared/ui/tooltip";
 import useIsMobile from "@/shared/hooks/useIsMobile";
 
 const { toast } = Toast;

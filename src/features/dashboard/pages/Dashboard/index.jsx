@@ -1,4 +1,4 @@
-import { Skeleton } from "@/shared/ui/skeleton";
+import { Skeleton } from "@/shared/ui";
 import { WIDGET_GRID } from "@/features/dashboard/constants";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useDocumentTitle from "@/shared/hooks/useDocumentTitle";

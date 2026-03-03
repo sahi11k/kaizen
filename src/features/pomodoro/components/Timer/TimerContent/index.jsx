@@ -15,12 +15,17 @@ import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro/queries";
 import { useUserSettingsQuery } from "@/features/settings";
 
-import { Button } from "@/shared/ui/button";
+import {
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Tooltip,
+} from "@/shared/ui";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Play, Square, TimerResetIcon, PictureInPicture2 } from "lucide-react";
 import PomoSettings from "@/features/pomodoro/components/PomoSettings";
-import { Tooltip } from "@/shared/ui/tooltip";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
 

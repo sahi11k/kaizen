@@ -10,14 +10,12 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Card } from "@/shared/ui/card";
+import { Card, Button, EmptyState } from "@/shared/ui";
 import { useAuthStore } from "@/features/auth";
 import { useTaskSessionsQuery } from "@/features/pomodoro";
 import { generatePomodoroChartData } from "./data";
-import Button from "@/shared/ui/button";
 import { Link } from "react-router";
 import EmptyProgressIllustration from "@/assets/illustrations/empty-progress.svg?react";
-import { EmptyState } from "@/shared/ui/empty-state";
 
 ChartJS.register(
   CategoryScale,

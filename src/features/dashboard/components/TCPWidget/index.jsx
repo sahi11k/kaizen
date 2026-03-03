@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro";
 import React from "react";
-import { Card } from "@/shared/ui/card";
+import { Card } from "@/shared/ui";
 import { Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,

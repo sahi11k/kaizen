@@ -1,5 +1,5 @@
 import JournalListContent from "../JournalListContent";
-import { SidebarPanel } from "@/shared/ui/sidebar-panel";
+import { SidebarPanel } from "@/shared/ui";
 
 const JournalListLaptop = () => {
   return (

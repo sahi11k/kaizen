@@ -1,10 +1,7 @@
-import { Button } from "@/shared/ui/button";
-import { Card } from "@/shared/ui/card";
-import { Tooltip } from "@/shared/ui/tooltip";
+import { Button, Card, Tooltip, EmptyState } from "@/shared/ui";
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro";
 import { FolderOpen, Play } from "lucide-react";
-import { EmptyState } from "@/shared/ui/empty-state";
 import { Link } from "react-router";
 import { getPendingTasks } from "@/features/dashboard/utils/taskListWidgetHelper";
 

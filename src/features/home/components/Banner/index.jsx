@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 import BannerIllustration from "@/assets/illustrations/banner.svg?react";
 

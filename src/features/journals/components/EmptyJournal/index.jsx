@@ -1,8 +1,7 @@
 import React from "react";
 import EmptyJournalIllustration from "@/assets/illustrations/empty-journal.svg?react";
-import { Button } from "@/shared/ui/button";
+import { Button, EmptyState } from "@/shared/ui";
 import { SquarePen } from "lucide-react";
-import { EmptyState } from "@/shared/ui/empty-state";
 
 const EmptyJournal = ({ onClick }) => {
   return (

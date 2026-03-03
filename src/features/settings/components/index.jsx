@@ -3,7 +3,7 @@ import styles from "./style.module.css";
 
 import Account from "@/features/settings/components/Account";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui";
 
 const TABS = [
   {

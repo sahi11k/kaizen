@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { loginWithEmail, resendOTP } from "@/features/auth/api";
 import { Link, useNavigate } from "react-router";
-import { Toast } from "@/shared/ui/toast";
+import { Toast, Input, Button } from "@/shared/ui";
 import { EMAIL_NOT_VERIFIED_ERROR } from "@/features/auth/constants";
 import OtpVerification from "@/features/auth/components/OtpVerification";
 import ResetPasswordForm from "@/features/auth/components/ResetPasswordForm";
-import { Input } from "@/shared/ui/input";
-import { Button } from "@/shared/ui/button";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 
 const { toast } = Toast;

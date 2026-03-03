@@ -3,13 +3,15 @@ import JournalListItem from "@/features/journals/components/JournalListItem";
 import useJournalsStore from "@/features/journals/store";
 import { useAuthStore } from "@/features/auth";
 import { FileText, SquarePen } from "lucide-react";
-import { EmptyState } from "@/shared/ui/empty-state";
-import { FloatingButton } from "@/shared/ui/floating-button";
-import { Skeleton } from "@/shared/ui/skeleton";
-import Button from "@/shared/ui/button";
-import { Tooltip } from "@/shared/ui/tooltip";
+import {
+  EmptyState,
+  FloatingButton,
+  Skeleton,
+  Button,
+  Tooltip,
+  Toast,
+} from "@/shared/ui";
 import { useShallow } from "zustand/react/shallow";
-import { Toast } from "@/shared/ui/toast";
 import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants";
 import { groupByMonth } from "@/features/journals/utils";
 import { useJournalsQuery } from "@/features/journals/queries";

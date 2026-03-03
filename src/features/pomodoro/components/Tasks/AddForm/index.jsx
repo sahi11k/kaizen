@@ -1,10 +1,6 @@
 import React from "react";
 
-import { Input } from "@/shared/ui/input";
-import { Textarea } from "@/shared/ui/textarea";
-
-import { Button } from "@/shared/ui/button";
-import { ResponsiveDialog } from "@/shared/ui/responsive-dialog";
+import { Input, Textarea, Button, ResponsiveDialog } from "@/shared/ui";
 import { MAX_SESSIONS, MIN_SESSIONS } from "@/features/pomodoro/constants";
 import { CREATE } from "@/shared/constants";
 

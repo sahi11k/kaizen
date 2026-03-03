@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router";
-import { Logo } from "@/shared/ui/logo";
+import { Logo } from "@/shared/ui";
 import { SIDEBAR_LINKS } from "@/features/dashboard/constants";
 
 const SidebarContent = ({ setOpen, isMobile = false }) => {
@@ -28,14 +28,7 @@ const SidebarContent = ({ setOpen, isMobile = false }) => {
   );
 };
 
-const LinkItem = ({
-  to,
-  label,
-  Icon,
-  IconFilled,
-  setOpen,
-  isMobile,
-}) => {
+const LinkItem = ({ to, label, Icon, IconFilled, setOpen, isMobile }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
   const ActiveIcon = isActive ? IconFilled : Icon;
