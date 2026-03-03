@@ -8,7 +8,7 @@ import {
   openPipWindow,
   isPipSupported,
 } from "@/features/pomodoro/services/pip";
-import { useSound } from "@/features/pomodoro/hooks";
+import { useTimerSound } from "@/features/pomodoro/hooks";
 import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro/queries";
@@ -69,7 +69,7 @@ const TimerContent = () => {
     : currentTask;
 
   // Play "timerStart" sound only on false → true transition (not on mount/navigation)
-  const { play } = useSound();
+  const { play } = useTimerSound();
   const prevStartedRef = useRef(timerStarted);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { Skeleton } from "@/shared/ui/skeleton";
 import { WIDGET_GRID } from "@/features/dashboard/constants";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
-import useTabTitle from "@/shared/hooks/useTabTitle";
+import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
 import { cn } from "@/shared/lib/utils";
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro";
@@ -13,7 +13,7 @@ const Dashboard = () => {
   const { isLoading: isTasksLoading } = useTasksQuery(user?.id);
   const { isLoading: isJournalsLoading } = useJournalsQuery(user?.id);
 
-  useTabTitle(BROWSER_TAB_TITLES.DASHBOARD);
+  useDocumentTitle(BROWSER_TAB_TITLES.DASHBOARD);
 
   const loading = isTasksLoading || isJournalsLoading;
 

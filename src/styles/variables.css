@@ -59,7 +59,8 @@
 
   /* ─── Z-Index Scale ─── */
   --z-image: 10;
-  --z-header: 200;
+  --z-header: 100;
+  --z-sidebar: 200;
   --z-popover: 700;
   --z-dropdown: 700;
   --z-drawer-overlay: 800;
