@@ -20,6 +20,14 @@ export const TASK_FIELD_MAPPING = {
   deleted_at: "deletedAt",
 };
 
+export const TIMER_WARNING = {
+  TITLE: "Timer in Progress",
+  DESCRIPTION:
+    "You have a timer running. This action will stop it and your current session progress will be lost.",
+  CANCEL_LABEL: "Keep Working",
+  CONFIRM_LABEL: "Continue Anyway",
+};
+
 export const TASK_SESSION_FIELD_MAPPING = {
   task_id: "taskId",
   created_by: "createdBy",

@@ -1,5 +1,12 @@
 import Button from "@/shared/ui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "@/shared/ui/popover";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/shared/ui/drawer";
 import { Slider } from "@/shared/ui/slider";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import { useAuthStore } from "@/features/auth";
@@ -15,6 +22,7 @@ import { Settings } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { Toast } from "@/shared/ui/toast";
 import { Tooltip } from "@/shared/ui/tooltip";
+import useIsMobile from "@/shared/hooks/useIsMobile";
 
 const { toast } = Toast;
 
@@ -87,90 +95,112 @@ const PomoSettings = () => {
     }));
   };
 
+  const isMobile = useIsMobile();
+
+  const settingsForm = (
+    <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
+      <FormItem
+        label="Pomodoro Timer Duration"
+        value={pomodoroFormValues.pomodoroDuration}
+        timeUnit="min"
+      >
+        <Slider
+          value={[pomodoroFormValues.pomodoroDuration]}
+          min={3}
+          max={60}
+          step={1}
+          onValueChange={(value) => {
+            handleFormChange("pomodoroDuration", value[0]);
+          }}
+        />
+      </FormItem>
+      <FormItem
+        label="Short Break Duration"
+        value={pomodoroFormValues.shortBreakDuration}
+        timeUnit="min"
+      >
+        <Slider
+          value={[pomodoroFormValues.shortBreakDuration]}
+          min={3}
+          max={15}
+          step={1}
+          onValueChange={(value) => {
+            handleFormChange("shortBreakDuration", value[0]);
+          }}
+        />
+      </FormItem>
+      <FormItem
+        label="Long Break Duration"
+        value={pomodoroFormValues.longBreakDuration}
+        timeUnit="min"
+      >
+        <Slider
+          value={[pomodoroFormValues.longBreakDuration]}
+          min={5}
+          max={30}
+          step={1}
+          onValueChange={(value) => {
+            handleFormChange("longBreakDuration", value[0]);
+          }}
+        />
+      </FormItem>
+      <FormItem
+        label="Long Break Interval"
+        value={pomodoroFormValues.longBreakInterval}
+        timeUnit=""
+      >
+        <Slider
+          value={[pomodoroFormValues.longBreakInterval]}
+          min={2}
+          max={10}
+          step={1}
+          onValueChange={(value) => {
+            handleFormChange("longBreakInterval", value[0]);
+          }}
+        />
+      </FormItem>
+      <div className="flex justify-end gap-6 mt-6 [&>*]:flex-1 md:[&>*]:flex-none">
+        <Button type="button" variant="outline" onClick={handleFormCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" loading={isPending} disabled={isPending}>
+          Save Settings
+        </Button>
+      </div>
+    </form>
+  );
+
+  const triggerButton = (
+    <Button
+      icon={<Settings />}
+      className="rounded-full w-12 !h-12"
+      variant="icon"
+      aria-label="Pomodoro Settings"
+    />
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={setOpen} direction="bottom">
+        <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
+        <DrawerContent className="border-border px-6 pb-6">
+          <DrawerHeader className="px-0">
+            <DrawerTitle className="">Pomodoro Settings</DrawerTitle>
+          </DrawerHeader>
+          {settingsForm}
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <Tooltip content="Pomodoro Settings">
-        <PopoverTrigger asChild>
-          <Button
-            icon={<Settings />}
-            className="rounded-full w-12 !h-12"
-            variant="icon"
-            aria-label="Pomodoro Settings"
-          />
-        </PopoverTrigger>
+        <PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
       </Tooltip>
       <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-lg bg-background">
         <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>
-        <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
-          <FormItem
-            label="Pomodoro Timer Duration"
-            value={pomodoroFormValues.pomodoroDuration}
-            timeUnit="min"
-          >
-            <Slider
-              value={[pomodoroFormValues.pomodoroDuration]}
-              min={3}
-              max={60}
-              step={1}
-              onValueChange={(value) => {
-                handleFormChange("pomodoroDuration", value[0]);
-              }}
-            />
-          </FormItem>
-          <FormItem
-            label="Short Break Duration"
-            value={pomodoroFormValues.shortBreakDuration}
-            timeUnit="min"
-          >
-            <Slider
-              value={[pomodoroFormValues.shortBreakDuration]}
-              min={3}
-              max={15}
-              step={1}
-              onValueChange={(value) => {
-                handleFormChange("shortBreakDuration", value[0]);
-              }}
-            />
-          </FormItem>
-          <FormItem
-            label="Long Break Duration"
-            value={pomodoroFormValues.longBreakDuration}
-            timeUnit="min"
-          >
-            <Slider
-              value={[pomodoroFormValues.longBreakDuration]}
-              min={5}
-              max={30}
-              step={1}
-              onValueChange={(value) => {
-                handleFormChange("longBreakDuration", value[0]);
-              }}
-            />
-          </FormItem>
-          <FormItem
-            label="Long Break Interval"
-            value={pomodoroFormValues.longBreakInterval}
-            timeUnit=""
-          >
-            <Slider
-              value={[pomodoroFormValues.longBreakInterval]}
-              min={2}
-              max={10}
-              step={1}
-              onValueChange={(value) => {
-                handleFormChange("longBreakInterval", value[0]);
-              }}
-            />
-          </FormItem>
-          <div className="flex justify-end gap-4 mt-6">
-            <Button type="button" variant="outline" onClick={handleFormCancel}>
-              Cancel
-            </Button>
-            <Button type="submit" loading={isPending} disabled={isPending}>
-              Save Settings
-            </Button>
-          </div>
-        </form>
+        {settingsForm}
       </PopoverContent>
     </Popover>
   );
