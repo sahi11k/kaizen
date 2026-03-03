@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { resetPassword } from "@/features/auth/api";
-import { Toast } from "@/shared/ui/toast";
-import { Input } from "@/shared/ui/input";
-import { Button } from "@/shared/ui/button";
+import { Toast, Input, Button } from "@/shared/ui";
 
 const { toast } = Toast;
 

@@ -1,11 +1,10 @@
 import React from "react";
-import { Card } from "@/shared/ui/card";
+import { Card, Tooltip } from "@/shared/ui";
 import HoursInvestedIllustration from "@/assets/illustrations/hours-invested.svg?react";
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro";
 import { getTotalTimeInvested } from "@/features/dashboard/utils/totalHoursWidgetHelper";
 import { Info } from "lucide-react";
-import { Tooltip } from "@/shared/ui/tooltip";
 
 const TotalHoursWidget = () => {
   const { user } = useAuthStore();

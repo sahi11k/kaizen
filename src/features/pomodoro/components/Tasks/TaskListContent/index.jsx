@@ -15,15 +15,17 @@ import {
 } from "@/features/pomodoro/mutations";
 import { getCurrentTime } from "@/features/pomodoro/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { Toast } from "@/shared/ui/toast";
-import { Button } from "@/shared/ui/button";
+import {
+  Toast,
+  Button,
+  EmptyState,
+  FloatingButton,
+  Skeleton,
+  Tooltip,
+} from "@/shared/ui";
 import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import { FolderOpen, Plus } from "lucide-react";
-import { EmptyState } from "@/shared/ui/empty-state";
-import { FloatingButton } from "@/shared/ui/floating-button";
-import { Skeleton } from "@/shared/ui/skeleton";
 import { MIN_SESSIONS } from "@/features/pomodoro/constants";
-import { Tooltip } from "@/shared/ui/tooltip";
 
 const { toast } = Toast;
 

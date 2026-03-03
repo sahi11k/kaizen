@@ -3,8 +3,7 @@ import { Outlet } from "react-router";
 import { useAuthStore } from "@/features/auth";
 import PipManager from "@/features/pomodoro/components/PipManager";
 import TimerManager from "@/features/pomodoro/components/TimerManager";
-import { Toast } from "@/shared/ui/toast";
-import { Fallback } from "@/shared/ui/fallback";
+import { Toast, Fallback } from "@/shared/ui";
 
 const BaseLayout = () => {
   const { isLoading, user } = useAuthStore();

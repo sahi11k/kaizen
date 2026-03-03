@@ -1,15 +1,17 @@
 import React from "react";
 import { ChevronDown } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
+  Toast,
+} from "@/shared/ui";
 import { useNavigate } from "react-router";
 import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
-import { Toast } from "@/shared/ui/toast";
 import { SidebarMobile } from "@/features/dashboard";
 import { ThemeToggle } from "@/features/theme";
 import {

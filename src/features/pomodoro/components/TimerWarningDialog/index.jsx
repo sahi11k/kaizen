@@ -1,5 +1,4 @@
-import { Button } from "@/shared/ui/button";
-import { ResponsiveDialog } from "@/shared/ui/responsive-dialog";
+import { Button, ResponsiveDialog } from "@/shared/ui";
 import { TIMER_WARNING } from "@/features/pomodoro/constants";
 
 const TimerWarningDialog = ({ open, onConfirm, onCancel }) => {

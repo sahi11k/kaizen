@@ -1,7 +1,6 @@
 import React from "react";
-import { Card } from "@/shared/ui/card";
+import { Card, Button } from "@/shared/ui";
 import { ABOUT_CARDS } from "@/features/home/constants";
-import Button from "@/shared/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 

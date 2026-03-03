@@ -2,9 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useAuthStore } from "@/features/auth";
 import useJournalsStore from "@/features/journals/store";
 import { getWordCount } from "@/features/journals/utils";
-import { Input } from "@/shared/ui/input";
-import { Textarea } from "@/shared/ui/textarea";
-import { DatePicker } from "@/shared/ui/date-picker";
+import { Input, Textarea, DatePicker } from "@/shared/ui";
 import { debounce } from "@/shared/lib/utils";
 import EmptyJournal from "../EmptyJournal";
 import {

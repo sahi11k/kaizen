@@ -1,13 +1,13 @@
 import SidebarContent from "../SidebarContent";
-import { Button } from "@/shared/ui/button";
 import {
+  Button,
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/shared/ui/drawer";
+} from "@/shared/ui";
 import { Menu, PanelLeftClose } from "lucide-react";
 import React, { useEffect, useState } from "react";
 

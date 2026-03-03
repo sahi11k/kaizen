@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../style.module.css";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui";
 
 const SettingsFooter = ({
   cancelBtnText = "Cancel",

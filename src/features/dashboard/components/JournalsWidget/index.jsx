@@ -1,7 +1,6 @@
 import { getSelfReflectionDate, useJournalsQuery } from "@/features/journals";
 import { getJournalsWidgetData } from "@/features/dashboard/utils/journalsWidgetHelper";
-import Button from "@/shared/ui/button";
-import { Card } from "@/shared/ui/card";
+import { Button, Card } from "@/shared/ui";
 
 import React from "react";
 import { Link } from "react-router";
