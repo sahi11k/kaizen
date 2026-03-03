@@ -2,9 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router";
 import { Logo } from "@/shared/ui/logo";
 import { SIDEBAR_LINKS } from "@/features/dashboard/constants";
-import { Tooltip } from "@/shared/ui/tooltip";
 
-const SidebarContent = ({ isCollapsed, setOpen, isMobile = false }) => {
+const SidebarContent = ({ setOpen, isMobile = false }) => {
   return (
     <>
       <div className="h-16 flex justify-between items-center">
@@ -19,7 +18,6 @@ const SidebarContent = ({ isCollapsed, setOpen, isMobile = false }) => {
         {SIDEBAR_LINKS.map((link) => (
           <LinkItem
             key={link.to}
-            isCollapsed={isCollapsed}
             setOpen={setOpen}
             isMobile={isMobile}
             {...link}
@@ -35,7 +33,6 @@ const LinkItem = ({
   label,
   Icon,
   IconFilled,
-  isCollapsed,
   setOpen,
   isMobile,
 }) => {
@@ -44,21 +41,19 @@ const LinkItem = ({
   const ActiveIcon = isActive ? IconFilled : Icon;
   return (
     <Link to={to} key={to}>
-      <Tooltip content={isCollapsed ? label : null} side="right">
-        <li
-          className={`p-2 rounded-lg hover:bg-muted font-medium flex items-center gap-2 ${
-            isActive
-              ? "bg-primary-container text-primary-container-foreground hover:!bg-primary-container"
-              : "text-muted-foreground"
-          }`}
-          onClick={() => isMobile && setOpen((prev) => !prev)}
-        >
-          <span>
-            <ActiveIcon fill="currentColor" />
-          </span>
-          <span hidden={isCollapsed}>{label}</span>
-        </li>
-      </Tooltip>
+      <li
+        className={`p-2 rounded-lg hover:bg-muted font-medium flex items-center gap-2 ${
+          isActive
+            ? "bg-primary-container text-primary-container-foreground hover:!bg-primary-container"
+            : "text-muted-foreground"
+        }`}
+        onClick={() => isMobile && setOpen((prev) => !prev)}
+      >
+        <span>
+          <ActiveIcon fill="currentColor" />
+        </span>
+        <span className="whitespace-nowrap">{label}</span>
+      </li>
     </Link>
   );
 };
