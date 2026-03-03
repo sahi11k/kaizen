@@ -4,7 +4,7 @@ import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 
 import { Button } from "@/shared/ui/button";
-import { Dialog } from "@/shared/ui/dialog";
+import { ResponsiveDialog } from "@/shared/ui/responsive-dialog";
 import { MAX_SESSIONS, MIN_SESSIONS } from "@/features/pomodoro/constants";
 import { CREATE } from "@/shared/constants";
 
@@ -22,20 +22,20 @@ const AddForm = ({
   };
 
   return (
-    <Dialog
+    <ResponsiveDialog
       open={showModal}
       onOpenChange={setShowModal}
       title={mode === CREATE ? "Add Task" : "Edit Task"}
       contentClassName="w-lg p-6 overflow-y-auto scrollbar-thin shadow-md"
       footer={
-        <div className="flex items-center gap-4 self-end">
+        <>
           <Button variant="outline" onClick={onCancel}>
             Cancel
           </Button>
           <Button type="submit" onClick={onSave}>
             Save Changes
           </Button>
-        </div>
+        </>
       }
     >
       <form className="flex flex-col gap-4">
@@ -83,7 +83,7 @@ const AddForm = ({
           ></Textarea>
         </div>
       </form>
-    </Dialog>
+    </ResponsiveDialog>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
@@ -8,6 +8,7 @@ import {
   openPipWindow,
   isPipSupported,
 } from "@/features/pomodoro/services/pip";
+import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import { useTimerSound } from "@/features/pomodoro/hooks";
 import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
 import { useAuthStore } from "@/features/auth";
@@ -98,9 +99,26 @@ const TimerContent = () => {
     resetTimer(value);
   }, [currentTask?.id]);
 
+  const [pendingTab, setPendingTab] = useState(null);
+
   const handleTabChange = (key) => {
+    if (timerStarted) {
+      setPendingTab(key);
+      return;
+    }
     const value = getCurrentTime(key, userSettings);
     setTab(key, value);
+  };
+
+  const confirmTabSwitch = () => {
+    if (!pendingTab) return;
+    const value = getCurrentTime(pendingTab, userSettings);
+    setTab(pendingTab, value);
+    setPendingTab(null);
+  };
+
+  const cancelTabSwitch = () => {
+    setPendingTab(null);
   };
 
   const handleResetTimer = () => {
@@ -189,6 +207,11 @@ const TimerContent = () => {
           </div>
         )}
       </div>
+      <TimerWarningDialog
+        open={!!pendingTab}
+        onConfirm={confirmTabSwitch}
+        onCancel={cancelTabSwitch}
+      />
     </>
   );
 };

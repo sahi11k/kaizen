@@ -17,7 +17,7 @@ import { getCurrentTime } from "@/features/pomodoro/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { Toast } from "@/shared/ui/toast";
 import { Button } from "@/shared/ui/button";
-import TaskSwitchDialog from "@/features/pomodoro/components/Tasks/TaskSwitchDialog";
+import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import { FolderOpen, Plus } from "lucide-react";
 import { EmptyState } from "@/shared/ui/empty-state";
 import { FloatingButton } from "@/shared/ui/floating-button";
@@ -193,7 +193,7 @@ const TaskListContent = ({ onItemClick }) => {
     if (currentTask?.id === task.id) return;
 
     const { timerStarted } = useTimerStore.getState();
-    if (timerStarted && currentTask) {
+    if (timerStarted) {
       setPendingTask(task);
       return;
     }
@@ -316,8 +316,8 @@ const TaskListContent = ({ onItemClick }) => {
         mode={mode}
       />
 
-      <TaskSwitchDialog
-        task={pendingTask}
+      <TimerWarningDialog
+        open={!!pendingTask}
         onConfirm={confirmTaskSwitch}
         onCancel={cancelTaskSwitch}
       />
