@@ -3,6 +3,8 @@ import { Link } from "react-router";
 import { signUpNewUser } from "@/features/auth/api";
 import { Toast, Input, Button } from "@/shared/ui";
 import OtpVerification from "@/features/auth/components/OtpVerification";
+import GoogleSignInButton from "@/features/auth/components/GoogleSignInButton";
+import AuthDivider from "@/features/auth/components/AuthDivider";
 import { ErrorText } from "@/features/auth/components/ErrorText";
 import { validateField } from "@/features/auth/utils";
 
@@ -59,6 +61,8 @@ const SignupForm = ({ showOtpScreen, setShowOtpScreen }) => {
 
   return (
     <div className="flex flex-col gap-6">
+      <GoogleSignInButton />
+      <AuthDivider />
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input
           type="text"
