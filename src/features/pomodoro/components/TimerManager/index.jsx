@@ -1,6 +1,6 @@
 import {
   useDurationSync,
-  useDocumentTitle,
+  useTimerDocumentTitle,
   useTimerCompletion,
 } from "@/features/pomodoro/hooks";
 
@@ -15,7 +15,7 @@ import {
  */
 const TimerManager = () => {
   useDurationSync();
-  useDocumentTitle();
+  useTimerDocumentTitle();
   useTimerCompletion();
   return null;
 };

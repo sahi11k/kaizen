@@ -15,13 +15,17 @@ import {
 } from "@/features/pomodoro/mutations";
 import { getCurrentTime } from "@/features/pomodoro/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { Toast } from "@/shared/ui/toast";
-import { Button } from "@/shared/ui/button";
-import TaskSwitchDialog from "@/features/pomodoro/components/Tasks/TaskSwitchDialog";
+import {
+  Toast,
+  Button,
+  EmptyState,
+  FloatingButton,
+  Skeleton,
+  Tooltip,
+} from "@/shared/ui";
+import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import { FolderOpen, Plus } from "lucide-react";
-import { Skeleton } from "@/shared/ui/skeleton";
 import { MIN_SESSIONS } from "@/features/pomodoro/constants";
-import { Tooltip } from "@/shared/ui/tooltip";
 
 const { toast } = Toast;
 
@@ -191,7 +195,7 @@ const TaskListContent = ({ onItemClick }) => {
     if (currentTask?.id === task.id) return;
 
     const { timerStarted } = useTimerStore.getState();
-    if (timerStarted && currentTask) {
+    if (timerStarted) {
       setPendingTask(task);
       return;
     }
@@ -289,26 +293,20 @@ const TaskListContent = ({ onItemClick }) => {
             ))}
         </div>
         {tasks.length === 0 && !showModal && !isLoading && (
-          <div className="flex justify-center items-center h-full">
-            <div className="flex flex-col items-center gap-3 text-muted-foreground">
-              <FolderOpen className="size-8" />
-              <div className="flex flex-col items-center">
-                <h3 className="heading-3">No Tasks</h3>
-                <p className="body-description">Add a task to get started.</p>
-              </div>
-            </div>
-          </div>
+          <EmptyState
+            icon={<FolderOpen className="size-8" />}
+            title="No Tasks"
+            description="Add a task to get started."
+          />
         )}
       </div>
 
-      <Button
+      <FloatingButton
         onClick={() => setShowModal(true)}
-        className="rounded-full justify-end absolute right-8 bottom-20 h-12  px-6 flex items-center justify-center md:hidden"
+        className="md:hidden"
         icon={<Plus className="size-4" />}
-        variant="secondary"
-      >
-        Task
-      </Button>
+        label="Task"
+      />
 
       <AddForm
         setFormValues={setFormValues}
@@ -320,8 +318,8 @@ const TaskListContent = ({ onItemClick }) => {
         mode={mode}
       />
 
-      <TaskSwitchDialog
-        task={pendingTask}
+      <TimerWarningDialog
+        open={!!pendingTask}
         onConfirm={confirmTaskSwitch}
         onCancel={cancelTaskSwitch}
       />

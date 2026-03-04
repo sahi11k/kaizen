@@ -4,7 +4,7 @@ import { XIcon } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 
-function Dialog({ ...props }) {
+function BaseDialog({ ...props }) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
 
@@ -108,15 +108,36 @@ function DialogDescription({ className, ...props }) {
   );
 }
 
-export {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle,
-  DialogTrigger,
-};
+function Dialog({
+  open,
+  onOpenChange,
+  title,
+  description,
+  children,
+  footer,
+  showCloseButton = true,
+  className,
+  contentClassName,
+}) {
+  return (
+    <BaseDialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        showCloseButton={showCloseButton}
+        className={cn(contentClassName)}
+      >
+        {(title || description) && (
+          <DialogHeader className={className}>
+            {title && <DialogTitle>{title}</DialogTitle>}
+            {description && (
+              <DialogDescription>{description}</DialogDescription>
+            )}
+          </DialogHeader>
+        )}
+        {children}
+        {footer && <DialogFooter>{footer}</DialogFooter>}
+      </DialogContent>
+    </BaseDialog>
+  );
+}
+
+export { Dialog };

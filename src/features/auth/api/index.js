@@ -3,6 +3,16 @@ import { EMAIL_NOT_VERIFIED_ERROR } from "@/features/auth/constants";
 import { parseApiResponse } from "@/shared/lib/api";
 import { APP_URL } from "@/shared/constants";
 
+export async function signInWithGoogle() {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${APP_URL}dashboard`,
+    },
+  });
+  if (error) throw error;
+}
+
 export async function signUpNewUser(payload) {
   let res = await supabase.auth.signUp({
     email: payload.email,

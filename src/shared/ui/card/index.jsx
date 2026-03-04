@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/shared/lib/utils";
 
-function Card({ className, ...props }) {
+function BaseCard({ className, ...props }) {
   return (
     <div
       data-slot="card"
@@ -38,29 +38,6 @@ function CardTitle({ className, ...props }) {
   );
 }
 
-function CardDescription({ className, ...props }) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn("body-description", className)}
-      {...props}
-    />
-  );
-}
-
-function CardAction({ className, ...props }) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
 function CardContent({ className, ...props }) {
   return (
     <div
@@ -81,12 +58,26 @@ function CardFooter({ className, ...props }) {
   );
 }
 
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
-  CardContent,
-};
+function Card({
+  title,
+  children,
+  footer,
+  className,
+  contentClassName,
+  footerClassName,
+  titleClassName,
+}) {
+  return (
+    <BaseCard className={className}>
+      {title && (
+        <CardHeader>
+          <CardTitle className={titleClassName}>{title}</CardTitle>
+        </CardHeader>
+      )}
+      <CardContent className={contentClassName}>{children}</CardContent>
+      {footer && <CardFooter className={footerClassName}>{footer}</CardFooter>}
+    </BaseCard>
+  );
+}
+
+export { Card };

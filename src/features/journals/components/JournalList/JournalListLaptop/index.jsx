@@ -1,11 +1,11 @@
-import React from "react";
 import JournalListContent from "../JournalListContent";
+import { SidebarPanel } from "@/shared/ui";
 
 const JournalListLaptop = () => {
   return (
-    <div className="flex flex-1 px-4 xl:px-6 md:flex-none md:w-72 xl:w-92 flex-col border-r border-border">
+    <SidebarPanel>
       <JournalListContent />
-    </div>
+    </SidebarPanel>
   );
 };
 

@@ -1,15 +1,6 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/shared/ui/card";
+import { Card, Button } from "@/shared/ui";
 import { ABOUT_CARDS } from "@/features/home/constants";
-import { cn } from "@/shared/lib/utils";
-import Button from "@/shared/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 
@@ -34,23 +25,11 @@ const About = () => {
 const AboutCard = ({ title, description, Icon, link }) => {
   return (
     <Card
-      className={cn(
-        "flex-1 flex flex-col gap-4 lg:gap-8 px-3 py-6 bg-background border border-border shadow-none basis-80",
-      )}
-      key={title}
-    >
-      <CardHeader>
-        <CardTitle className="text-muted-foreground size-10 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-[1.25]">
-          <Icon />
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1">
-        <h3 className="heading-3 text-foreground mb-3">{title}</h3>
-        <CardDescription className="body-description">
-          {description}
-        </CardDescription>
-      </CardContent>
-      <CardFooter>
+      className="flex-1 flex flex-col gap-4 lg:gap-8 px-3 py-6 bg-background border border-border shadow-none basis-80"
+      title={<Icon />}
+      titleClassName="text-muted-foreground size-10 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-[1.25]"
+      contentClassName="flex-1"
+      footer={
         <Link to={link}>
           <Button
             variant="outline"
@@ -58,7 +37,10 @@ const AboutCard = ({ title, description, Icon, link }) => {
             className="rounded-full w-12 !h-12"
           />
         </Link>
-      </CardFooter>
+      }
+    >
+      <h3 className="heading-3 text-foreground mb-3">{title}</h3>
+      <p className="body-description">{description}</p>
     </Card>
   );
 };

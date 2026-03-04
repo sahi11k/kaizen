@@ -1,16 +1,9 @@
-import { Button } from "@/shared/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/card";
-import { Tooltip } from "@/shared/ui/tooltip";
+import { Button, Card, Tooltip, EmptyState } from "@/shared/ui";
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro";
 import { FolderOpen, Play } from "lucide-react";
 import { Link } from "react-router";
+import { getPendingTasks } from "@/features/dashboard/utils/taskListWidgetHelper";
 
 const TaskListWidget = () => {
   const { user } = useAuthStore();
@@ -21,35 +14,30 @@ const TaskListWidget = () => {
   const noPendingTasks = pendingTasks.length === 0;
 
   return (
-    <Card className="border-none shadow-none h-full">
-      <CardHeader>
-        <CardTitle>Pending Tasks</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1">
-        <ul className="space-y-2">
-          {pendingTasks.map((task) => {
-            return <TaskItem key={task.id} task={task} />;
-          })}
-        </ul>
-        {noPendingTasks && (
-          <div className="flex justify-center items-center h-full">
-            <div className="flex flex-col items-center gap-3 text-muted-foreground">
-              <FolderOpen className="size-8" />
-              <div className="flex flex-col items-center">
-                <h3 className="heading-3">Hurray!</h3>
-                <p className="body-description">You have no pending tasks.</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </CardContent>
-      <CardFooter>
+    <Card
+      title="Pending Tasks"
+      className="border-none shadow-none h-full"
+      contentClassName="flex-1"
+      footer={
         <Link to="/dashboard/pomodoro" className="w-full block">
           <Button className="w-full">
             {noPendingTasks ? "Plan your day" : "Focus on pending tasks"}
           </Button>
         </Link>
-      </CardFooter>
+      }
+    >
+      <ul className="space-y-2">
+        {pendingTasks.map((task) => {
+          return <TaskItem key={task.id} task={task} />;
+        })}
+      </ul>
+      {noPendingTasks && (
+        <EmptyState
+          icon={<FolderOpen className="size-8" />}
+          title="Hurray!"
+          description="You have no pending tasks."
+        />
+      )}
     </Card>
   );
 };
@@ -70,19 +58,6 @@ const TaskItem = ({ task }) => {
       </Tooltip>
     </li>
   );
-};
-
-const getPendingTasks = (tasks = []) => {
-  let count = 0;
-  let filteredTasks = [];
-  for (const task of tasks) {
-    if (!task.completed) {
-      count++;
-      filteredTasks.push(task);
-    }
-    if (count === 5) break;
-  }
-  return filteredTasks;
 };
 
 export default TaskListWidget;

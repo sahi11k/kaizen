@@ -3,10 +3,10 @@ import JournalDetail from "@/features/journals/components/JournalDetail";
 import { JournalListLaptop } from "@/features/journals/components/JournalList";
 import JournalsMobile from "@/features/journals/components/JournalsMobile";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
-import useTabTitle from "@/shared/hooks/useTabTitle";
+import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
 
 const Journal = () => {
-  useTabTitle(BROWSER_TAB_TITLES.JOURNALS);
+  useDocumentTitle(BROWSER_TAB_TITLES.JOURNALS);
 
   return (
     <>

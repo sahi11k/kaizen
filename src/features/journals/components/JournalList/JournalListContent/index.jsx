@@ -3,11 +3,15 @@ import JournalListItem from "@/features/journals/components/JournalListItem";
 import useJournalsStore from "@/features/journals/store";
 import { useAuthStore } from "@/features/auth";
 import { FileText, SquarePen } from "lucide-react";
-import { Skeleton } from "@/shared/ui/skeleton";
-import Button from "@/shared/ui/button";
-import { Tooltip } from "@/shared/ui/tooltip";
+import {
+  EmptyState,
+  FloatingButton,
+  Skeleton,
+  Button,
+  Tooltip,
+  Toast,
+} from "@/shared/ui";
 import { useShallow } from "zustand/react/shallow";
-import { Toast } from "@/shared/ui/toast";
 import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants";
 import { groupByMonth } from "@/features/journals/utils";
 import { useJournalsQuery } from "@/features/journals/queries";
@@ -152,28 +156,20 @@ const JournalListContent = ({ onItemClick }) => {
             ))}
         </div>
         {allJournals.length === 0 && !isLoading && (
-          <div className="flex justify-center items-center h-full">
-            <div className="flex flex-col items-center gap-3 text-muted-foreground">
-              <FileText className="size-8" />
-              <div className="flex flex-col items-center">
-                <h3 className="heading-3">No Journals</h3>
-                <p className="body-description">
-                  Write a journal to get started.
-                </p>
-              </div>
-            </div>
-          </div>
+          <EmptyState
+            icon={<FileText className="size-8" />}
+            title="No Journals"
+            description="Write a journal to get started."
+          />
         )}
       </div>
 
-      <Button
+      <FloatingButton
         onClick={newJournal}
-        className="rounded-full justify-end absolute right-8 bottom-20 h-12  px-6 flex items-center justify-center md:hidden"
         icon={<SquarePen className="size-4" color="currentColor" />}
-        variant="secondary"
-      >
-        New
-      </Button>
+        className="md:hidden"
+        label="New"
+      />
     </>
   );
 };

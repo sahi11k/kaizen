@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import NotFoundIllustration from "@/assets/illustrations/not-found.svg?react";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@/shared/ui";
 
 const NotFound = () => {
   return (

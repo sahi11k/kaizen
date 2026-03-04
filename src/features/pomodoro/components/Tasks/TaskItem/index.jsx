@@ -1,11 +1,9 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button } from "@/shared/ui/button";
+import { Button, Tooltip, MoreOptions } from "@/shared/ui";
 import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
-import { Tooltip } from "@/shared/ui/tooltip";
-import { MoreOptions } from "@/shared/ui/more-options";
 
 const base =
   "group flex items-center gap-4 cursor-pointer mb-1 px-3 py-2 rounded-lg transition-colors bg-background";

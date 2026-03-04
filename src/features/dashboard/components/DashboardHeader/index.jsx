@@ -1,18 +1,18 @@
 import React from "react";
-import { Button } from "@/shared/ui/button";
-import { PanelLeftOpen, PanelLeftClose, ChevronDown } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
+import { ChevronDown } from "lucide-react";
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
+  Toast,
+} from "@/shared/ui";
 import { useNavigate } from "react-router";
 import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
-import { Toast } from "@/shared/ui/toast";
 import { SidebarMobile } from "@/features/dashboard";
-import { Tooltip } from "@/shared/ui/tooltip";
 import { ThemeToggle } from "@/features/theme";
 import {
   useTasksStore,
@@ -23,16 +23,12 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const { toast } = Toast;
 
-const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
+const DashboardHeader = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { setCurrentTask } = useTasksStore();
   const queryClient = useQueryClient();
   const userDisplayName = getUserDisplayName(user);
-
-  const handleCollapse = () => {
-    setIsCollapsed((prev) => !prev);
-  };
 
   const handleLogout = async () => {
     try {
@@ -48,23 +44,9 @@ const DashboardHeader = ({ setIsCollapsed, isCollapsed }) => {
   };
 
   return (
-    <div className="h-16 px-4 xl:px-6 flex items-center justify-between border-b border-border sticky top-0 bg-background z-[var(--z-header)]">
-      <Tooltip
-        content={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-        side="right"
-        arrow={false}
-        level="header"
-      >
-        <Button
-          onClick={handleCollapse}
-          variant="icon"
-          className="hidden xl:flex -ml-2 w-12 !h-12"
-          icon={isCollapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
-        />
-      </Tooltip>
-
+    <div className="h-16 px-4 xl:px-6 flex items-center border-b border-border sticky top-0 bg-background z-[var(--z-header)]">
       <SidebarMobile />
-      <div className="flex items-center gap-4 xl:gap-6">
+      <div className="flex items-center gap-4 xl:gap-6 ml-auto">
         <ThemeToggle
           tooltipSide="bottom"
           tooltipLevel="header"
