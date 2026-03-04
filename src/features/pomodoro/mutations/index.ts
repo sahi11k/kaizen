@@ -137,14 +137,13 @@ export const useRecordPomodoroCompletionMutation = () => {
           id: task.id,
           completedSessions,
           completed,
-          timeSpent: task.timeSpent + durationMinutes,
         },
         userId,
       );
 
       return { tasks: taskRes, sessions: sessionRes };
     },
-    onSuccess: ({ tasks, sessions }, { userId }) => {
+    onSuccess: ({ tasks, sessions }, { userId, duration }) => {
       queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), (old) =>
         upsertById(old, tasks?.[0]),
       );
@@ -152,6 +151,12 @@ export const useRecordPomodoroCompletionMutation = () => {
       queryClient.setQueryData<TaskSession[]>(
         queryKeys.taskSessions.all(userId),
         (old) => [...(old ?? []), ...(sessions as TaskSession[])],
+      );
+
+      const durationMinutes = duration / 60;
+      queryClient.setQueryData<number>(
+        queryKeys.taskSessions.totalDuration(userId),
+        (old) => (old ?? 0) + durationMinutes,
       );
     },
   });
