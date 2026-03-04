@@ -1,12 +1,11 @@
-export const getTotalTimeInvested = (tasks = []) => {
-  const totalMinutes = Array.isArray(tasks)
-    ? tasks.reduce((sum, t) => sum + (Number(t?.timeSpent) || 0), 0)
-    : 0;
+export const formatDuration = (totalMinutes = 0) => {
+  const minutes = Number(totalMinutes) || 0;
 
-  let unit = totalMinutes < 60 ? "m" : "h";
-  const value = unit === "m" ? totalMinutes : totalMinutes / 60;
-
-  let rounded = Number.isInteger(value) ? value : Math.round(value * 10) / 10;
+  const unit = minutes < 60 ? "m" : "h";
+  const value = unit === "m" ? minutes : minutes / 60;
+  const rounded = Number.isInteger(value)
+    ? value
+    : Math.round(value * 10) / 10;
 
   return {
     value: rounded === 0 ? "NA" : rounded,

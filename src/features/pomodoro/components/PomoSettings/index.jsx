@@ -22,6 +22,7 @@ import {
   getLongBreakInterval,
   getTimerDurations,
 } from "@/features/pomodoro/utils";
+import { useTimerStore } from "@/features/pomodoro/store";
 import { Settings } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import useIsMobile from "@/shared/hooks/useIsMobile";
@@ -38,6 +39,7 @@ const DEFAULT_POMODORO_FORM_VALUES = {
 };
 
 const PomoSettings = () => {
+  const timerStarted = useTimerStore((s) => s.timerStarted);
   const user = useAuthStore((s) => s.user);
   const { data: userSettings } = useUserSettingsQuery(user?.id);
   const { mutate: upsertSettings, isPending } = useUpsertUserSettingsMutation();
@@ -178,12 +180,17 @@ const PomoSettings = () => {
       className="rounded-full w-12 !h-12"
       variant="icon"
       aria-label="Pomodoro Settings"
+      disabled={timerStarted}
     />
   );
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={setOpen} direction="bottom">
+      <Drawer
+        open={open}
+        onOpenChange={(v) => !timerStarted && setOpen(v)}
+        direction="bottom"
+      >
         <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
         <DrawerContent className="border-border px-6 pb-6">
           <DrawerHeader className="px-0">
@@ -196,9 +203,17 @@ const PomoSettings = () => {
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <Tooltip content="Pomodoro Settings">
-        <PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
+    <Popover open={open} onOpenChange={(v) => !timerStarted && setOpen(v)}>
+      <Tooltip
+        content={
+          timerStarted
+            ? "Pause or reset the timer to edit settings"
+            : "Pomodoro Settings"
+        }
+      >
+        <PopoverTrigger asChild>
+          <span className="inline-flex">{triggerButton}</span>
+        </PopoverTrigger>
       </Tooltip>
       <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-lg bg-background">
         <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>

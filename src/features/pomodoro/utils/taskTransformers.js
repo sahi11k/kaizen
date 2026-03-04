@@ -40,3 +40,6 @@ export const transformTaskSessionsFromDb = (sessions) => {
 export const transformTaskSessionToDb = (session = {}) => {
   return transformKeys(session, reverseMapping(TASK_SESSION_FIELD_MAPPING));
 };
+
+export const sumDurations = (rows) =>
+  rows.reduce((sum, row) => sum + (row.duration || 0), 0);

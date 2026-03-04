@@ -14,7 +14,7 @@ const SidebarContent = ({ setOpen, isMobile = false }) => {
           link="/"
         />
       </div>
-      <ul className="flex-1 flex flex-col space-y-1 overflow-y-auto -mx-2 cursor-pointer">
+      <ul className="flex-1 flex flex-col space-y-1 overflow-y-auto no-scrollbar -mx-2 cursor-pointer">
         {SIDEBAR_LINKS.map((link) => (
           <LinkItem
             key={link.to}
