@@ -19,12 +19,13 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 grid grid-cols-12 gap-6">
-      {WIDGET_GRID.map(({ span, Content, key, height }) => (
+      {WIDGET_GRID.map(({ span, Content, key, height, img }) => (
         <DashboardCard
           className={span}
           key={key}
           loading={loading}
           height={height}
+          img={img}
         >
           <Content />
         </DashboardCard>
@@ -33,12 +34,13 @@ const Dashboard = () => {
   );
 };
 
-const DashboardCard = ({ children, className, loading, height }) => {
+const DashboardCard = ({ children, className, loading, height, img }) => {
   return (
     <div
       className={cn(
-        "rounded-lg overflow-hidden border border-border",
+        "rounded-lg overflow-hidden",
         className,
+        !img && "bg-card border border-border",
       )}
     >
       {loading ? (

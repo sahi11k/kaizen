@@ -4,6 +4,8 @@ export const queryKeys = {
   },
   taskSessions: {
     all: (userId: string) => ["taskSessions", userId] as const,
+    totalDuration: (userId: string) =>
+      ["taskSessions", userId, "totalDuration"] as const,
   },
   userSettings: {
     all: (userId: string) => ["userSettings", userId] as const,

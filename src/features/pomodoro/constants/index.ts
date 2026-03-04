@@ -14,10 +14,8 @@ export const TASK_FIELD_MAPPING = {
   completed_sessions: "completedSessions",
   total_sessions: "totalSessions",
   created_by: "createdBy",
-  time_spent: "timeSpent",
   created_at: "createdAt",
   updated_at: "updatedAt",
-  deleted_at: "deletedAt",
 };
 
 export const TIMER_WARNING = {

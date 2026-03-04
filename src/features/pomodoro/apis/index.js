@@ -4,16 +4,15 @@ import {
   transformTasksToDb,
   transformTaskSessionsFromDb,
   transformTaskSessionToDb,
+  sumDurations,
 } from "@/features/pomodoro/utils";
 import { parseApiResponse, ApiError } from "@/shared/lib/api";
-import dayjs from "dayjs";
 
 export const fetchTasks = async (userId) => {
   const response = await supabase
     .from(SUPABASE_TABLES.TASKS)
     .select("*")
     .eq("created_by", userId)
-    .is("deleted_at", null)
     .order("rank", { ascending: true });
 
   const res = parseApiResponse({ response });
@@ -65,16 +64,12 @@ export const deleteTask = async (taskId, userId) => {
 
   const response = await supabase
     .from(SUPABASE_TABLES.TASKS)
-    .update({ deleted_at: dayjs().toISOString() })
+    .delete()
     .eq("id", taskId)
     .eq("created_by", userId);
 
-  const status =
-    response.status === 200 && response.data.length === 0
-      ? 404
-      : response.status;
   parseApiResponse({
-    response: { ...response, status },
+    response,
     errorMessage: "Task not found or you don't have permission to delete it",
   });
 };
@@ -112,6 +107,16 @@ export const addTaskSession = async (payload = {}, userId) => {
     errorMessage: "Task session addition failed",
   });
   return transformTaskSessionsFromDb(res.data ?? []);
+};
+
+export const getTotalSessionDuration = async (userId) => {
+  const response = await supabase
+    .from(SUPABASE_TABLES.TASK_SESSIONS)
+    .select("duration")
+    .eq("created_by", userId);
+
+  const res = parseApiResponse({ response });
+  return sumDurations(res.data ?? []);
 };
 
 export const getLastWeekTaskSessions = async (payload = {}, userId) => {

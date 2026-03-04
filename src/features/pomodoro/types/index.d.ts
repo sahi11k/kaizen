@@ -10,16 +10,14 @@ export type DefaultTask = {
 
 export type Task = DefaultTask & {
   id: string;
-  timeSpent: number;
   createdBy: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string;
 };
 
 export type TaskSession = {
   id: string;
-  taskId: string;
+  taskId: string | null;
   duration: number;
   status: boolean;
   createdBy: string;
