@@ -1,13 +1,13 @@
 import SidebarContent from "../SidebarContent";
-import { Button } from "@/shared/ui/button";
 import {
+  Button,
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/shared/ui/drawer";
+} from "@/shared/ui";
 import { Menu, PanelLeftClose } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -47,11 +47,7 @@ const SidebarMobile = () => {
 
       <DrawerContent className="!w-72 border-border">
         <aside className="px-6 flex flex-col space-y-6 h-full">
-          <SidebarContent
-            isCollapsed={false}
-            setOpen={setOpen}
-            isMobile={true}
-          />
+          <SidebarContent setOpen={setOpen} isMobile={true} />
         </aside>
         <DrawerClose className="absolute top-2 right-4" asChild>
           <Button variant="icon" className="-mr-2 w-12 !h-12">

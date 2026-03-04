@@ -1,6 +1,6 @@
 import React from "react";
 import { getDayOfMonth, getDayOfWeek } from "@/shared/lib/date";
-import { MoreOptions } from "@/shared/ui/more-options";
+import { MoreOptions } from "@/shared/ui";
 
 const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
   const { title, date, content } = journal;

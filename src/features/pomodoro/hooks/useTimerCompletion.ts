@@ -5,7 +5,7 @@ import {
   getNextTab,
   getLongBreakInterval,
 } from "@/features/pomodoro/utils";
-import { useSound } from "@/features/pomodoro/hooks";
+import { useTimerSound } from "@/features/pomodoro/hooks";
 import { useRecordPomodoroCompletionMutation } from "@/features/pomodoro/mutations";
 import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
 import { Task } from "@/features/pomodoro/types";
@@ -15,7 +15,7 @@ import { useEffect, useRef } from "react";
 const { POMODORO_TAB } = TIMER_CONSTANTS;
 
 const useTimerCompletion = () => {
-  const { play } = useSound();
+  const { play } = useTimerSound();
   const completingRef = useRef(false);
   const queryClient = useQueryClient();
   const { mutate: recordPomodoroCompletion } =

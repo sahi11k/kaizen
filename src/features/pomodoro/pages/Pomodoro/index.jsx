@@ -1,11 +1,12 @@
 import PomodoroMobile from "@/features/pomodoro/components/PomodoroMobile";
+import TimerNavigationGuard from "@/features/pomodoro/components/TimerNavigationGuard";
 import { TaskListLaptop } from "@/features/pomodoro/components/Tasks";
 import { TimerLaptop } from "@/features/pomodoro/components/Timer";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
-import useTabTitle from "@/shared/hooks/useTabTitle";
+import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
 
 const Pomodoro = () => {
-  useTabTitle(BROWSER_TAB_TITLES.POMODORO);
+  useDocumentTitle(BROWSER_TAB_TITLES.POMODORO);
 
   return (
     <>
@@ -14,6 +15,7 @@ const Pomodoro = () => {
         <TimerLaptop />
       </div>
       <PomodoroMobile />
+      <TimerNavigationGuard />
     </>
   );
 };

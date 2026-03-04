@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
 import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
@@ -8,18 +8,24 @@ import {
   openPipWindow,
   isPipSupported,
 } from "@/features/pomodoro/services/pip";
-import { useSound } from "@/features/pomodoro/hooks";
+import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
+import { useTimerSound } from "@/features/pomodoro/hooks";
 import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro/queries";
 import { useUserSettingsQuery } from "@/features/settings";
 
-import { Button } from "@/shared/ui/button";
+import {
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Tooltip,
+} from "@/shared/ui";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Play, Square, TimerResetIcon, PictureInPicture2 } from "lucide-react";
 import PomoSettings from "@/features/pomodoro/components/PomoSettings";
-import { Tooltip } from "@/shared/ui/tooltip";
 
 const { POMODORO_TAB, SHORT_BREAK_TAB, LONG_BREAK_TAB } = TIMER_CONSTANTS;
 
@@ -69,7 +75,7 @@ const TimerContent = () => {
     : currentTask;
 
   // Play "timerStart" sound only on false → true transition (not on mount/navigation)
-  const { play } = useSound();
+  const { play } = useTimerSound();
   const prevStartedRef = useRef(timerStarted);
 
   useEffect(() => {
@@ -98,9 +104,26 @@ const TimerContent = () => {
     resetTimer(value);
   }, [currentTask?.id]);
 
+  const [pendingTab, setPendingTab] = useState(null);
+
   const handleTabChange = (key) => {
+    if (timerStarted) {
+      setPendingTab(key);
+      return;
+    }
     const value = getCurrentTime(key, userSettings);
     setTab(key, value);
+  };
+
+  const confirmTabSwitch = () => {
+    if (!pendingTab) return;
+    const value = getCurrentTime(pendingTab, userSettings);
+    setTab(pendingTab, value);
+    setPendingTab(null);
+  };
+
+  const cancelTabSwitch = () => {
+    setPendingTab(null);
   };
 
   const handleResetTimer = () => {
@@ -189,6 +212,11 @@ const TimerContent = () => {
           </div>
         )}
       </div>
+      <TimerWarningDialog
+        open={!!pendingTab}
+        onConfirm={confirmTabSwitch}
+        onCancel={cancelTabSwitch}
+      />
     </>
   );
 };
