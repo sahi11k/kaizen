@@ -2,14 +2,14 @@ import React from "react";
 import { Card, Tooltip } from "@/shared/ui";
 import HoursInvestedIllustration from "@/assets/illustrations/hours-invested.svg?react";
 import { useAuthStore } from "@/features/auth";
-import { useTasksQuery } from "@/features/pomodoro";
-import { getTotalTimeInvested } from "@/features/dashboard/utils/totalHoursWidgetHelper";
+import { useTotalSessionDurationQuery } from "@/features/pomodoro";
+import { formatDuration } from "@/features/dashboard/utils/totalHoursWidgetHelper";
 import { Info } from "lucide-react";
 
 const TotalHoursWidget = () => {
   const { user } = useAuthStore();
-  const { data: tasks = [] } = useTasksQuery(user?.id);
-  const totalTimeInvested = getTotalTimeInvested(tasks);
+  const { data: totalMinutes = 0 } = useTotalSessionDurationQuery(user?.id);
+  const totalTimeInvested = formatDuration(totalMinutes);
 
   return (
     <Card
