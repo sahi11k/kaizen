@@ -8,7 +8,7 @@ const FooterMain = () => {
       <div className="flex flex-col  xl:max-w-7xl mx-auto">
         <div className="flex justify-between py-12 w-full gap-12">
           <div className="flex flex-col gap-2">
-            <div className="heading-3">kaïzen.</div>
+            <div className="heading-3">Kaizen.</div>
             <p className="body-description">
               Bringing you the best of the best.
             </p>
