@@ -10,6 +10,6 @@ export const BROWSER_TAB_TITLES = {
   LOGIN: "Login",
   SIGNUP: "Signup",
   UPDATE_PASSWORD: "Update Password",
-  DASHBOARD: "kaïzen",
-  HOME: "kaïzen",
+  DASHBOARD: "Kaizen",
+  HOME: "Kaizen",
 };

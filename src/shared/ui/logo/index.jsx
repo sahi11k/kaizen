@@ -56,7 +56,7 @@ const Logo = ({
       <span className={cn(iconVariants({ size }), iconClassName)}>
         <LogoIcon className="!w-full !h-full fill-current" />
       </span>
-      {showText && <span className={cn(textVariants({ size }))}>kaïzen</span>}
+      {showText && <span className={cn(textVariants({ size }))}>Kaizen</span>}
     </Button>
   );
 
