@@ -51,7 +51,7 @@ const useTimerCompletion = () => {
         if (currentTab === POMODORO_TAB) {
           useTimerStore.getState().incrementPomodoroCount();
 
-          if (timerTask && user?.id) {
+          if (user?.id) {
             recordPomodoroCompletion({
               task: timerTask,
               userId: user.id,

@@ -1,7 +1,6 @@
+import PomodoroDesktop from "@/features/pomodoro/components/PomodoroDesktop";
 import PomodoroMobile from "@/features/pomodoro/components/PomodoroMobile";
-import TimerNavigationGuard from "@/features/pomodoro/components/TimerNavigationGuard";
-import { TaskListLaptop } from "@/features/pomodoro/components/Tasks";
-import { TimerLaptop } from "@/features/pomodoro/components/Timer";
+import TimerNavigationGuard from "@/features/pomodoro/components/NavigationGuard";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
 
@@ -10,10 +9,7 @@ const Pomodoro = () => {
 
   return (
     <>
-      <div className="hidden md:flex h-[calc(100vh-64px)] overflow-hidden">
-        <TaskListLaptop />
-        <TimerLaptop />
-      </div>
+      <PomodoroDesktop />
       <PomodoroMobile />
       <TimerNavigationGuard />
     </>

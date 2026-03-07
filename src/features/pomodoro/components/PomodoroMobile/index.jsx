@@ -1,7 +1,7 @@
 import TimerFilled from "@/assets/icons/timer-filled.svg?react";
 import TimerOutline from "@/assets/icons/timer-outline.svg?react";
-import TaskListContent from "@/features/pomodoro/components/Tasks/TaskListContent";
-import TimerContent from "@/features/pomodoro/components/Timer/TimerContent";
+import TaskList from "@/features/pomodoro/components/TaskList";
+import TimerContainer from "@/features/pomodoro/components/TimerContainer";
 import { MobileTabLayout } from "@/app/layouts";
 import { useTimerStore } from "@/features/pomodoro/store";
 import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
@@ -51,14 +51,14 @@ const PomodoroMobile = () => {
         label: "Tasks",
         icon: <List />,
         iconFilled: <List />,
-        content: <TaskListContent onItemClick={onItemClick} />,
+        content: <TaskList onItemClick={onItemClick} showHeader={false} />,
       },
       {
         key: FOCUS_TAB,
         label: "Focus",
         icon: <TimerOutline fill="currentColor" />,
         iconFilled: <TimerFilled fill="currentColor" />,
-        content: <TimerContent />,
+        content: <TimerContainer />,
       },
     ],
     [onItemClick],
@@ -70,7 +70,6 @@ const PomodoroMobile = () => {
         tabs={TABS}
         currentTab={currentTab}
         onTabChange={handleTabChange}
-        contentClassName="p-6"
       />
       <TimerWarningDialog
         open={!!pendingTab}
