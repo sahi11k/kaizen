@@ -19,7 +19,6 @@ export type TaskSession = {
   id: string;
   taskId: string | null;
   duration: number;
-  status: boolean;
   createdBy: string;
   createdAt: string;
 };
@@ -50,7 +49,7 @@ type AddTaskSessionMutationPayload = {
 };
 
 type RecordPomodoroCompletionPayload = {
-  task: Task;
+  task: Task | null;
   userId: string;
   duration: number;
 };
