@@ -91,16 +91,29 @@ export const useSortTasksMutation = () => {
         queryKeys.tasks.all(userId),
       );
 
+      const sortedIds = new Set(payload.map((t) => t.id));
+      const untouched = (previousTasks ?? []).filter(
+        (t) => !sortedIds.has(t.id),
+      );
       const optimistic = payload.map((task, i) => ({ ...task, rank: i + 1 }));
-      queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), optimistic);
+      queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), [
+        ...optimistic,
+        ...untouched,
+      ]);
 
       return { previousTasks };
     },
     onSuccess: (data: Task[], variables) => {
+      const returnedIds = new Set(data.map((t) => t.id));
+      const previousTasks =
+        queryClient.getQueryData<Task[]>(
+          queryKeys.tasks.all(variables.userId),
+        ) ?? [];
+      const untouched = previousTasks.filter((t) => !returnedIds.has(t.id));
       const sorted = [...data].sort((a, b) => a.rank - b.rank);
       queryClient.setQueryData<Task[]>(
         queryKeys.tasks.all(variables.userId),
-        sorted,
+        [...sorted, ...untouched],
       );
     },
     onError: (error, variables, context) => {
@@ -123,30 +136,34 @@ export const useRecordPomodoroCompletionMutation = () => {
       userId,
       duration,
     }: RecordPomodoroCompletionPayload) => {
-      const completedSessions = task.completedSessions + 1;
-      const completed = completedSessions >= task.totalSessions;
       const durationMinutes = duration / 60;
 
       const sessionRes = await addTaskSession(
-        { taskId: task.id, duration: durationMinutes, status: completed },
-        userId,
-      );
-
-      const taskRes = await updateTask(
         {
-          id: task.id,
-          completedSessions,
-          completed,
+          taskId: task?.id ?? null,
+          duration: durationMinutes,
         },
         userId,
       );
 
+      let taskRes: Task[] = [];
+      if (task) {
+        const completedSessions = task.completedSessions + 1;
+        const completed = completedSessions >= task.totalSessions;
+        taskRes = (await updateTask(
+          { id: task.id, completedSessions, completed },
+          userId,
+        )) as Task[];
+      }
+
       return { tasks: taskRes, sessions: sessionRes };
     },
     onSuccess: ({ tasks, sessions }, { userId, duration }) => {
-      queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), (old) =>
-        upsertById(old, tasks?.[0]),
-      );
+      if (tasks.length > 0) {
+        queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), (old) =>
+          upsertById(old, tasks[0]),
+        );
+      }
 
       queryClient.setQueryData<TaskSession[]>(
         queryKeys.taskSessions.all(userId),

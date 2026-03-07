@@ -10,6 +10,24 @@ export const TIMER_CONSTANTS = {
   LONG_BREAK_TIME: 900,
 };
 
+export const POMODORO_TABS = [
+  {
+    key: TIMER_CONSTANTS.POMODORO_TAB,
+    label: "Pomodoro",
+    icon: "hourglass-filled",
+  },
+  {
+    key: TIMER_CONSTANTS.SHORT_BREAK_TAB,
+    label: "Short Break",
+    icon: "hourglass-half",
+  },
+  {
+    key: TIMER_CONSTANTS.LONG_BREAK_TAB,
+    label: "Long Break",
+    icon: "hourglass-outline",
+  },
+] as const;
+
 export const TASK_FIELD_MAPPING = {
   completed_sessions: "completedSessions",
   total_sessions: "totalSessions",

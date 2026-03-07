@@ -1,7 +1,7 @@
 import JournalOutline from "@/assets/icons/journal-outline.svg?react";
 import JournalFilled from "@/assets/icons/journal.filled.svg?react";
-import JournalListContent from "@/features/journals/components/JournalList/JournalListContent";
-import JournalDetail from "@/features/journals/components/JournalDetail";
+import JournalList from "@/features/journals/components/JournalList";
+import JournalEditor from "@/features/journals/components/JournalEditor";
 import { MobileTabLayout } from "@/app/layouts";
 import { useMemo, useState, useCallback } from "react";
 import { List } from "lucide-react";
@@ -23,14 +23,14 @@ const JournalsMobile = () => {
         label: "Journals",
         icon: <List />,
         iconFilled: <List />,
-        content: <JournalListContent onItemClick={onItemClick} />,
+        content: <JournalList onItemClick={onItemClick} showHeader={false} />,
       },
       {
         key: REFLECT_TAB,
         label: "Reflect",
         icon: <JournalOutline fill="currentColor" />,
         iconFilled: <JournalFilled fill="currentColor" />,
-        content: <JournalDetail />,
+        content: <JournalEditor />,
       },
     ],
     [onItemClick],
