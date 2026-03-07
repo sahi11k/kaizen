@@ -1,4 +1,9 @@
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./accordion";
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "./accordion";
 export { Avatar, AvatarImage, AvatarFallback } from "./avatar";
 export { Button, buttonVariants } from "./button";
 export { Calendar, CalendarDayButton } from "./calendar";
@@ -39,14 +44,24 @@ export type { EmptyStateProps } from "./empty-state";
 export { Fallback } from "./fallback";
 export { FloatingButton } from "./floating-button";
 export { Input } from "./input";
+export { ListHeader } from "./list-header";
+export type { ListHeaderProps, ListHeaderButtonProps } from "./list-header";
 export { InputOTP } from "./input-otp";
 export { Logo } from "./logo";
 export { MoreOptions } from "./more-options";
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "./popover";
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+} from "./popover";
 export { ResponsiveDialog } from "./responsive-dialog";
 export type { ResponsiveDialogProps } from "./responsive-dialog";
-export { SidebarPanel } from "./sidebar-panel";
-export type { SidebarPanelProps } from "./sidebar-panel";
+export { SectionedList } from "./sectioned-list";
+export type {
+  SectionedListProps,
+  SectionedListSection,
+} from "./sectioned-list";
 export { Skeleton } from "./skeleton";
 export { Slider } from "./slider";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
