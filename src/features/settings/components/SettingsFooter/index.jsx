@@ -12,13 +12,14 @@ const SettingsFooter = ({
 }) => {
   return (
     <div className={styles.settingsFooter}>
-      <button
+      <Button
         className={`btn ${styles.cancelBtn}`}
+        variant="outline"
         onClick={onCancel}
         disabled={isLoading}
       >
         {cancelBtnText}
-      </button>
+      </Button>
       <Button
         className={`btn ${styles.saveBtn}`}
         onClick={onSave}
