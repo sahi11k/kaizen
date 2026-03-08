@@ -9,6 +9,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
   Slider,
+  Switch,
   Toast,
   Tooltip,
 } from "@/shared/ui";
@@ -36,6 +37,7 @@ const DEFAULT_POMODORO_FORM_VALUES = {
   shortBreakDuration: SHORT_BREAK_TIME / 60,
   longBreakDuration: LONG_BREAK_TIME / 60,
   longBreakInterval: 4,
+  soundEnabled: false,
 };
 
 const PomoSettings = () => {
@@ -58,6 +60,7 @@ const PomoSettings = () => {
       shortBreakDuration: shortBreakTime / 60,
       longBreakDuration: longBreakTime / 60,
       longBreakInterval: getLongBreakInterval(userSettings),
+      soundEnabled: userSettings?.soundEnabled ?? false,
     };
   }, [userSettings]);
 
@@ -163,6 +166,21 @@ const PomoSettings = () => {
           }}
         />
       </FormItem>
+      <div className="flex items-center justify-between">
+        <label
+          htmlFor="sound-toggle"
+          className="text-sm font-medium text-muted-foreground"
+        >
+          Timer Sound Effects
+        </label>
+        <Switch
+          id="sound-toggle"
+          checked={pomodoroFormValues.soundEnabled}
+          onCheckedChange={(checked) => {
+            handleFormChange("soundEnabled", checked);
+          }}
+        />
+      </div>
       <div className="flex justify-end gap-6 mt-6 [&>*]:flex-1 md:[&>*]:flex-none">
         <Button type="button" variant="outline" onClick={handleFormCancel}>
           Cancel
