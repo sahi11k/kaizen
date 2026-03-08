@@ -1,11 +1,6 @@
-import { Play, Square } from "lucide-react";
-import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
-import { useAuthStore } from "@/features/auth";
-import { useTasksQuery } from "@/features/pomodoro/queries";
-import { getFormattedTime } from "@/features/pomodoro/utils";
-import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
-
-const { POMODORO_TAB } = TIMER_CONSTANTS;
+import { usePomodoroTimer } from "@/features/pomodoro/hooks";
+import ProgressBar from "@/features/pomodoro/components/ProgressBar";
+import { PlayPauseButton } from "@/features/pomodoro/components/TimerControls";
 
 /**
  * Compact timer UI rendered inside the Document PiP window.
@@ -13,40 +8,18 @@ const { POMODORO_TAB } = TIMER_CONSTANTS;
  * and a progress bar fixed at the bottom.
  */
 const PipTimerContent = () => {
-  const timerValue = useTimerStore((s) => s.timerValue);
-  const timerStarted = useTimerStore((s) => s.timerStarted);
-  const currentTab = useTimerStore((s) => s.currentTab);
-  const duration = useTimerStore((s) => s.duration);
-  const timerTaskId = useTimerStore((s) => s.timerTaskId);
-  const startTimer = useTimerStore((s) => s.startTimer);
-  const stopTimer = useTimerStore((s) => s.stopTimer);
-
-  const { user } = useAuthStore();
-  const { data: tasks = [] } = useTasksQuery(user?.id);
-  const currentTask = useTasksStore((s) => s.currentTask);
-  const timerTask = timerTaskId
-    ? (tasks.find((t) => t.id === timerTaskId) ?? currentTask)
-    : currentTask;
-
-  const { minutes, seconds } = getFormattedTime(timerValue);
-  const progress =
-    duration > 0 ? ((duration - timerValue) / duration) * 100 : 0;
-
-  const isPomodoro = currentTab === POMODORO_TAB;
-  const barColor = isPomodoro
-    ? "var(--pomodoro-filled)"
-    : "var(--break-filled)";
-  const barBg = isPomodoro
-    ? "var(--pomodoro-unfilled)"
-    : "var(--break-unfilled)";
-
-  const handleToggle = () => {
-    if (timerStarted) {
-      stopTimer();
-    } else {
-      startTimer(timerTask?.id);
-    }
-  };
+  const {
+    timerStarted,
+    startTimer,
+    stopTimer,
+    timerTask,
+    minutes,
+    seconds,
+    percentage,
+    isPomodoro,
+    fillColor,
+    unfilledColor,
+  } = usePomodoroTimer();
 
   return (
     <div className="relative flex flex-col justify-center items-center gap-6 h-full bg-background text-foreground p-5 pb-7 select-none">
@@ -75,28 +48,20 @@ const PipTimerContent = () => {
         {minutes}:{seconds}
       </span>
 
-      {/* Play / Pause */}
-      <button
-        onClick={handleToggle}
-        className="flex flex-shrink-0 items-center justify-center size-12 rounded-full bg-primary text-primary-foreground cursor-pointer hover:opacity-90 transition-opacity text-sm font-semibold"
-      >
-        {timerStarted ? (
-          <Square className="size-4" fill="currentColor" />
-        ) : (
-          <Play className="size-4" fill="currentColor" />
-        )}
-      </button>
+      <PlayPauseButton
+        timerStarted={timerStarted}
+        onStart={() => startTimer(timerTask?.id)}
+        onStop={stopTimer}
+        className="!size-12"
+        showLabel={false}
+      />
 
-      {/* Progress bar — fixed at bottom */}
-      <div
-        className="absolute top-0 left-0 w-full h-2 overflow-hidden"
-        style={{ backgroundColor: barBg }}
-      >
-        <div
-          className="h-full transition-all duration-1000 ease-linear"
-          style={{ width: `${progress}%`, backgroundColor: barColor }}
-        />
-      </div>
+      <ProgressBar
+        percentage={percentage}
+        fillColor={fillColor}
+        unfilledColor={unfilledColor}
+        className="absolute top-0 left-0"
+      />
     </div>
   );
 };

@@ -35,7 +35,9 @@ const SignupForm = ({ showOtpScreen, setShowOtpScreen }) => {
     setLoading(true);
     try {
       await signUpNewUser(formValues);
-      toast.success("Account created successfully! Please verify your email.");
+      toast.success(
+        "OTP sent! Please check your email to verify your account.",
+      );
       setShowOtpScreen(true);
     } catch (error) {
       toast.error(error.message);
