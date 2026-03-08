@@ -1,5 +1,6 @@
 import { usePomodoroTimer } from "@/features/pomodoro/hooks";
 import ProgressBar from "@/features/pomodoro/components/ProgressBar";
+import SessionBadge from "@/features/pomodoro/components/SessionBadge";
 import { PlayPauseButton } from "@/features/pomodoro/components/TimerControls";
 
 /**
@@ -23,25 +24,11 @@ const PipTimerContent = () => {
 
   return (
     <div className="relative flex flex-col justify-center items-center gap-6 h-full bg-background text-foreground p-5 pb-7 select-none">
-      {/* Task info pill */}
-      <div className="bg-muted py-1.5 px-4 rounded-full max-w-[90%]">
-        <div className="flex items-center justify-center gap-1 text-sm font-semibold">
-          {isPomodoro ? (
-            <>
-              <span className="text-muted-foreground shrink-0">
-                {timerTask
-                  ? `Session #${timerTask.completedSessions + 1} : `
-                  : ""}
-              </span>
-              <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-                {timerTask?.title || "Focus Time!"}
-              </span>
-            </>
-          ) : (
-            <span>Yay! Break Time</span>
-          )}
-        </div>
-      </div>
+      <SessionBadge
+        isPomodoro={isPomodoro}
+        currentTask={timerTask}
+        className="py-1.5 px-4 max-w-[90%] text-sm"
+      />
 
       {/* Timer display */}
       <span className="text-6xl font-semibold tabular-nums leading-none">
