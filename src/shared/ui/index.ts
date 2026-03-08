@@ -64,6 +64,7 @@ export type {
 } from "./sectioned-list";
 export { Skeleton } from "./skeleton";
 export { Slider } from "./slider";
+export { Switch } from "./switch";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
 export { Textarea } from "./textarea";
 export { Toast } from "./toast";

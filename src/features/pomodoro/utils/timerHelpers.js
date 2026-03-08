@@ -39,3 +39,6 @@ export const getCurrentTime = (tabKey, userSettings) => {
 
   return taskTime;
 };
+
+export const isFullscreenSupported = () =>
+  typeof document !== "undefined" && !!document.fullscreenEnabled;

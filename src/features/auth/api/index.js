@@ -23,6 +23,11 @@ export async function signUpNewUser(payload) {
       },
     },
   });
+  if (res.data?.user?.identities?.length === 0) {
+    throw new Error(
+      "An account with this email already exists. Please login instead.",
+    );
+  }
   const status = res.error ? 400 : 200;
   res = parseApiResponse({
     response: {

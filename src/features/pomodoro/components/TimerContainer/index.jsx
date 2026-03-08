@@ -4,17 +4,23 @@ import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
 import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
 
 import { getCurrentTime } from "@/features/pomodoro/utils";
-import TimerControls from "@/features/pomodoro/components/TimerContainer/TimerControls";
+import {
+  FocusModeButton,
+  ResetTimerButton,
+  PlayPauseButton,
+  PipButton,
+} from "@/features/pomodoro/components/TimerControls";
+import PomoSettings from "@/features/pomodoro/components/PomodoroSettings";
 import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
-import { useTimerSound } from "@/features/pomodoro/hooks";
-import { useTimerStore, useTasksStore } from "@/features/pomodoro/store";
+import FocusMode from "@/features/pomodoro/components/FocusMode";
+import { useTimerSound, usePomodoroTimer } from "@/features/pomodoro/hooks";
+import { useTimerStore } from "@/features/pomodoro/store";
 import { useAuthStore } from "@/features/auth";
-import { useTasksQuery } from "@/features/pomodoro/queries";
 import { useUserSettingsQuery } from "@/features/settings";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui";
 import { TIMER_CONSTANTS, POMODORO_TABS } from "@/features/pomodoro/constants";
-import TimerDisplay from "@/features/pomodoro/components/TimerContainer/TimerDisplay";
+import TimerDisplay from "@/features/pomodoro/components/TimerDisplay";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;
 
@@ -31,25 +37,23 @@ const TabIcon = ({ name }) => {
 };
 
 const TimerContainer = () => {
-  const user = useAuthStore((s) => s.user);
-  const { data: userSettings } = useUserSettingsQuery(user?.id);
-  const currentTask = useTasksStore((s) => s.currentTask);
+  const {
+    timerValue,
+    timerStarted,
+    currentTab,
+    duration,
+    startTimer,
+    stopTimer,
+    resetTimer,
+    currentTask,
+    timerTask,
+  } = usePomodoroTimer();
 
-  const timerValue = useTimerStore((s) => s.timerValue);
-  const timerStarted = useTimerStore((s) => s.timerStarted);
-  const currentTab = useTimerStore((s) => s.currentTab);
-  const duration = useTimerStore((s) => s.duration);
-  const timerTaskId = useTimerStore((s) => s.timerTaskId);
-  const startTimer = useTimerStore((s) => s.startTimer);
-  const stopTimer = useTimerStore((s) => s.stopTimer);
-  const resetTimer = useTimerStore((s) => s.resetTimer);
   const setTab = useTimerStore((s) => s.setTab);
   const setTimerValue = useTimerStore((s) => s.setTimerValue);
 
-  const { data: tasks = [] } = useTasksQuery(user?.id);
-  const timerTask = timerTaskId
-    ? (tasks.find((t) => t.id === timerTaskId) ?? currentTask)
-    : currentTask;
+  const user = useAuthStore((s) => s.user);
+  const { data: userSettings } = useUserSettingsQuery(user?.id);
 
   // Play "timerStart" sound only on false → true transition (not on mount/navigation)
   const { play } = useTimerSound();
@@ -81,6 +85,7 @@ const TimerContainer = () => {
     resetTimer(value);
   }, [currentTask?.id]);
 
+  const [focusModeOpen, setFocusModeOpen] = useState(false);
   const [pendingTab, setPendingTab] = useState(null);
 
   const handleTabChange = (key) => {
@@ -145,12 +150,18 @@ const TimerContainer = () => {
           ))}
         </>
       </Tabs>
-      <TimerControls
-        timerStarted={timerStarted}
-        onReset={handleResetTimer}
-        onStart={() => startTimer(currentTask?.id)}
-        onStop={stopTimer}
-      />
+      <div className="flex justify-center items-center gap-4 rounded-full w-fit mx-auto px-6">
+        <FocusModeButton onClick={() => setFocusModeOpen(true)} />
+        <PomoSettings />
+        <PlayPauseButton
+          timerStarted={timerStarted}
+          onStart={() => startTimer(currentTask?.id)}
+          onStop={stopTimer}
+        />
+        <ResetTimerButton onClick={handleResetTimer} />
+        <PipButton />
+      </div>
+      {focusModeOpen && <FocusMode onExit={() => setFocusModeOpen(false)} />}
       <TimerWarningDialog
         open={!!pendingTab}
         onConfirm={confirmTabSwitch}
