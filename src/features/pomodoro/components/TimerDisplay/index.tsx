@@ -1,6 +1,7 @@
 import { getFormattedTime } from "@/features/pomodoro/utils";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import ProgressRing from "@/features/pomodoro/components/ProgressRing";
+import SessionBadge from "@/features/pomodoro/components/SessionBadge";
 import React, { ReactNode } from "react";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;
@@ -37,24 +38,11 @@ const TimerDisplay = ({
 
   return (
     <>
-      <div className="mx-auto bg-muted py-2 px-6 rounded-full max-w-100">
-        <div className="flex items-center justify-center gap-2 font-semibold">
-          {currentTab === POMODORO_TAB ? (
-            <>
-              <span className="text-muted-foreground shrink-0">
-                {currentTask
-                  ? `Session #${currentTask?.completedSessions + 1} : `
-                  : ""}
-              </span>
-              <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-                {currentTask?.title || "Focus Time!"}
-              </span>
-            </>
-          ) : (
-            <span>Yay! Break Time</span>
-          )}
-        </div>
-      </div>
+      <SessionBadge
+        isPomodoro={currentTab === POMODORO_TAB}
+        currentTask={currentTask}
+        className="mx-auto max-w-100"
+      />
 
       <ProgressRing
         percentage={percentage}

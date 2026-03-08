@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { X, Minimize } from "lucide-react";
-import { getTabLabel } from "@/features/pomodoro/utils";
 import { usePomodoroTimer } from "@/features/pomodoro/hooks";
 import { Button } from "@/shared/ui";
 import ProgressRing from "@/features/pomodoro/components/ProgressRing";
@@ -8,6 +7,7 @@ import {
   ResetTimerButton,
   PlayPauseButton,
 } from "@/features/pomodoro/components/TimerControls";
+import SessionBadge from "@/features/pomodoro/components/SessionBadge";
 
 interface FocusModeProps {
   onExit: () => void;
@@ -83,24 +83,11 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
         aria-label="Exit Focus Mode"
       />
 
-      <span className="text-muted-foreground text-sm font-medium tracking-wide uppercase mb-8">
-        {getTabLabel(currentTab)}
-      </span>
-
-      {isPomodoro && (
-        <div className="bg-muted py-2 px-6 rounded-full max-w-[80%] mb-10">
-          <div className="flex items-center justify-center gap-2 font-semibold">
-            <span className="text-muted-foreground shrink-0">
-              {timerTask
-                ? `Session #${timerTask.completedSessions + 1} : `
-                : ""}
-            </span>
-            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-              {timerTask?.title || "Focus Time!"}
-            </span>
-          </div>
-        </div>
-      )}
+      <SessionBadge
+        isPomodoro={isPomodoro}
+        currentTask={timerTask}
+        className="max-w-[80%] mb-10"
+      />
 
       <ProgressRing
         percentage={percentage}
