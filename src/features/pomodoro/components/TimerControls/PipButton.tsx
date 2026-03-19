@@ -17,7 +17,7 @@ const PipButton = (): React.ReactNode => (
     <Button
       onClick={openPipWindow}
       icon={<PictureInPicture2 />}
-      className="rounded-full w-12 !h-12"
+      className="rounded-full w-12 !h-12 hidden sm:block"
       variant="icon"
       aria-label="Floating Timer"
       disabled={!supported}

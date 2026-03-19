@@ -17,6 +17,7 @@ import {
 } from "@/features/pomodoro/types";
 
 import { queryKeys } from "@/shared/constants";
+import { useTasksStore } from "@/features/pomodoro/store";
 import { upsertById, deleteById } from "@/shared/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -160,9 +161,14 @@ export const useRecordPomodoroCompletionMutation = () => {
     },
     onSuccess: ({ tasks, sessions }, { userId, duration }) => {
       if (tasks.length > 0) {
+        const updatedTask = tasks[0];
         queryClient.setQueryData<Task[]>(queryKeys.tasks.all(userId), (old) =>
-          upsertById(old, tasks[0]),
+          upsertById(old, updatedTask),
         );
+        const { currentTask, setCurrentTask } = useTasksStore.getState();
+        if (currentTask?.id === updatedTask.id) {
+          setCurrentTask(updatedTask);
+        }
       }
 
       queryClient.setQueryData<TaskSession[]>(

@@ -53,8 +53,8 @@ export const openPipWindow = async () => {
 
   try {
     const pipWindow = await documentPictureInPicture.requestWindow({
-      width: 420,
-      height: 240,
+      width: 320,
+      height: 150,
     });
 
     copyStyles(pipWindow);

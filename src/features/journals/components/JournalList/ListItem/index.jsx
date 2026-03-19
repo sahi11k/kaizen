@@ -1,12 +1,22 @@
 import React from "react";
 import { getDayOfMonth, getDayOfWeek } from "@/shared/lib/date";
 import { MoreOptions } from "@/shared/ui";
+import { cn } from "@/shared/lib/utils";
+
+const base =
+  "group flex items-center gap-4 cursor-pointer px-3 py-2 rounded-lg transition-colors bg-background";
+const hover = "hover:bg-muted";
+const activeClass =
+  "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground";
 
 const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
   const { title, date, content } = journal;
-  const activeClass = isActive
-    ? "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground"
-    : "text-muted-foreground";
+
+  const getItemClass = () => {
+    return cn(base, hover, {
+      [activeClass]: isActive,
+    });
+  };
 
   const onKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " " || e.code === "Space") {
@@ -17,14 +27,14 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
 
   return (
     <li
-      className={`group flex gap-4 px-3 py-2 hover:bg-muted rounded-lg cursor-pointer transition-colors ${activeClass}`}
+      className={getItemClass()}
       onClick={onClick}
       onKeyDown={onKeyDown}
       role="option"
       aria-selected={isActive}
       tabIndex={0}
     >
-      <div className="flex flex-col gap-1 xl:gap-0.5 items-center ">
+      <div className="flex flex-col gap-1 xl:gap-0.5 items-center shrink-0">
         <span className="text-lg xl:text-xl leading-tight">
           {getDayOfMonth(date)}
         </span>
@@ -32,15 +42,17 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
           {getDayOfWeek(date)}
         </span>
       </div>
-      <div className="flex-1 flex flex-col">
-        <div
-          className={`text-base font-semibold line-clamp-1 ${
-            isActive && "text-primary-container-foreground"
-          }`}
-        >
+      <div className="flex-1 w-0 flex flex-col">
+        <div className="text-base font-semibold truncate">
           {title || "Untitled"}
         </div>
-        <div className="text-[13px] tracking-wide line-clamp-1">{content}</div>
+        <div
+          className={`text-[13px] tracking-wide line-clamp-1 ${
+            !isActive && "text-muted-foreground"
+          }`}
+        >
+          {content}
+        </div>
       </div>
 
       <MoreOptions
