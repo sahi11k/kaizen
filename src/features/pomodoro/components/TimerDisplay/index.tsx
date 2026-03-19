@@ -1,6 +1,5 @@
 import { getFormattedTime } from "@/features/pomodoro/utils";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
-import ProgressRing from "@/features/pomodoro/components/ProgressRing";
 import SessionBadge from "@/features/pomodoro/components/SessionBadge";
 import React, { ReactNode } from "react";
 
@@ -24,39 +23,33 @@ const TimerDisplay = ({
   currentTab,
   currentTask,
 }: TimerDisplayProps): ReactNode => {
-  const percentage = ((duration - timerValue) / duration) * 100;
-  const fillColor =
-    currentTab === POMODORO_TAB
-      ? "var(--pomodoro-filled)"
-      : "var(--break-filled)";
-  const unfilledColor =
-    currentTab === POMODORO_TAB
-      ? "var(--pomodoro-unfilled)"
-      : "var(--break-unfilled)";
-
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <>
+    <div className="w-full max-w-120 flex flex-col items-center gap-2">
       <SessionBadge
         isPomodoro={currentTab === POMODORO_TAB}
         currentTask={currentTask}
-        className="mx-auto max-w-100"
+        className="w-full"
       />
-
-      <ProgressRing
-        percentage={percentage}
-        fillColor={fillColor}
-        unfilledColor={unfilledColor}
-        className="w-64 h-64 md:h-72 md:w-72 lg:h-80 lg:w-80 xl:h-96 xl:w-96"
-      >
-        <div className="heading-1">
-          <span>{minutes}</span>
-          <span className="vertical-line">:</span>
-          <span>{seconds}</span>
-        </div>
-      </ProgressRing>
-    </>
+      <div className="flex items-center justify-center text-[clamp(100px,16vw,160px)] font-semibold">
+        {minutes}
+        <span className="mx-1 -mt-2">:</span>
+        {seconds}
+      </div>
+      <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+        <div
+          style={{
+            width: `${duration > 0 ? ((duration - timerValue) / duration) * 100 : 0}%`,
+            backgroundColor:
+              currentTab === POMODORO_TAB
+                ? "var(--primary)"
+                : "var(--break-filled)",
+          }}
+          className="h-full rounded-full transition-[width] duration-500 ease-linear"
+        />
+      </div>
+    </div>
   );
 };
 

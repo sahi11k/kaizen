@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { X, Minimize } from "lucide-react";
 import { usePomodoroTimer } from "@/features/pomodoro/hooks";
 import { Button } from "@/shared/ui";
-import ProgressRing from "@/features/pomodoro/components/ProgressRing";
 import {
   ResetTimerButton,
   PlayPauseButton,
@@ -18,7 +17,7 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
 
   const {
     timerStarted,
-    currentTab,
+    timerValue,
     duration,
     startTimer,
     stopTimer,
@@ -26,19 +25,14 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
     timerTask,
     minutes,
     seconds,
-    percentage,
     isPomodoro,
-    fillColor,
-    unfilledColor,
   } = usePomodoroTimer();
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
-    el.requestFullscreen?.().catch(() => {
-      // Fullscreen denied (e.g. user gesture requirement) — stay as overlay
-    });
+    el.requestFullscreen?.().catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -70,10 +64,13 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
     }
   };
 
+  const progressPercent =
+    duration > 0 ? ((duration - timerValue) / duration) * 100 : 0;
+
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[var(--z-modal)] bg-background flex flex-col items-center justify-center select-none"
+      className="fixed inset-0 z-[var(--z-modal)] bg-background flex flex-col items-center justify-center select-none gap-20 px-8"
     >
       <Button
         onClick={handleExit}
@@ -83,24 +80,31 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
         aria-label="Exit Focus Mode"
       />
 
-      <SessionBadge
-        isPomodoro={isPomodoro}
-        currentTask={timerTask}
-        className="max-w-[80%] mb-10"
-      />
+      <div className="flex flex-col items-center gap-16 w-full max-w-2xl">
+        <SessionBadge
+          isPomodoro={isPomodoro}
+          currentTask={timerTask}
+          className="w-full text-xl"
+        />
 
-      <ProgressRing
-        percentage={percentage}
-        fillColor={fillColor}
-        unfilledColor={unfilledColor}
-        className="w-72 h-72 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem] mb-12"
-      >
-        <span className="text-6xl md:text-7xl lg:text-8xl font-semibold tabular-nums">
+        <span className="text-[clamp(6rem,20vw,14rem)] font-semibold tabular-nums tracking-tight leading-none">
           {minutes}
-          <span className="mx-1">:</span>
+          <span className="mx-2">:</span>
           {seconds}
         </span>
-      </ProgressRing>
+
+        <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+          <div
+            style={{
+              width: `${progressPercent}%`,
+              backgroundColor: isPomodoro
+                ? "var(--primary)"
+                : "var(--break-filled)",
+            }}
+            className="h-full rounded-full transition-[width] duration-500 ease-linear"
+          />
+        </div>
+      </div>
 
       <div className="flex items-center gap-6">
         <Button
@@ -114,7 +118,6 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
           timerStarted={timerStarted}
           onStart={handleToggle}
           onStop={handleToggle}
-          showTooltip={false}
         />
         <ResetTimerButton
           onClick={() => resetTimer(duration)}
