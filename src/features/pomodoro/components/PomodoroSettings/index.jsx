@@ -233,7 +233,7 @@ const PomoSettings = () => {
           <span className="inline-flex">{triggerButton}</span>
         </PopoverTrigger>
       </Tooltip>
-      <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-lg bg-background">
+      <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-2xl bg-background">
         <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>
         {settingsForm}
       </PopoverContent>

@@ -1,8 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import HourglassOutline from "@/assets/icons/hourglass-outline.svg?react";
-import HourglassFilled from "@/assets/icons/hourglass-filled.svg?react";
-import HourglassHalf from "@/assets/icons/hourglass-half.svg?react";
-
 import { getCurrentTime } from "@/features/pomodoro/utils";
 import {
   FocusModeButton,
@@ -23,18 +19,6 @@ import { TIMER_CONSTANTS, POMODORO_TABS } from "@/features/pomodoro/constants";
 import TimerDisplay from "@/features/pomodoro/components/TimerDisplay";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;
-
-const ICON_COMPONENTS = {
-  "hourglass-filled": HourglassFilled,
-  "hourglass-half": HourglassHalf,
-  "hourglass-outline": HourglassOutline,
-};
-
-const TabIcon = ({ name }) => {
-  const Icon = ICON_COMPONENTS[name];
-  if (!Icon) return null;
-  return <Icon className="size-5 mr-1 hidden sm:block fill-current" />;
-};
 
 const TimerContainer = () => {
   const {
@@ -114,21 +98,20 @@ const TimerContainer = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col flex-1 md:m-auto w-full lg:w-160 md:p-0 p-6">
       <Tabs
         defaultValue={POMODORO_TAB}
         value={currentTab}
         onValueChange={handleTabChange}
         className="flex-1"
       >
-        <TabsList className="w-full h-12">
+        <TabsList className="w-full h-12 rounded-lg">
           {POMODORO_TABS.map((tab) => (
             <TabsTrigger
               key={tab.key}
               value={tab.key}
-              className="cursor-pointer text-sm xl:text-base"
+              className="cursor-pointer text-sm xl:text-base rounded-lg"
             >
-              <TabIcon name={tab.icon} />
               {tab.label}
             </TabsTrigger>
           ))}
@@ -138,7 +121,7 @@ const TimerContainer = () => {
             <TabsContent
               key={tab.key}
               value={tab.key}
-              className="flex justify-center items-center flex-col gap-6 xl:gap-12"
+              className="flex justify-center items-center flex-col gap-4 md:gap-6 xl:gap-12"
             >
               <TimerDisplay
                 timerValue={timerValue}
@@ -150,16 +133,16 @@ const TimerContainer = () => {
           ))}
         </>
       </Tabs>
-      <div className="flex justify-center items-center gap-4 rounded-full w-fit mx-auto px-6">
+      <div className="flex justify-center items-center gap-4 lg:gap-6 px-6">
         <FocusModeButton onClick={() => setFocusModeOpen(true)} />
-        <PomoSettings />
+        <ResetTimerButton onClick={handleResetTimer} />
         <PlayPauseButton
           timerStarted={timerStarted}
           onStart={() => startTimer(currentTask?.id)}
           onStop={stopTimer}
         />
-        <ResetTimerButton onClick={handleResetTimer} />
         <PipButton />
+        <PomoSettings />
       </div>
       {focusModeOpen && <FocusMode onExit={() => setFocusModeOpen(false)} />}
       <TimerWarningDialog
@@ -167,7 +150,7 @@ const TimerContainer = () => {
         onConfirm={confirmTabSwitch}
         onCancel={cancelTabSwitch}
       />
-    </>
+    </div>
   );
 };
 

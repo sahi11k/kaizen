@@ -74,17 +74,20 @@ const TaskItem = ({
         </Tooltip>
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="flex flex-col flex-1 w-0">
         <div
-          className="text-base font-semibold line-clamp-1"
-          style={{ textDecoration: task.completed ? "line-through" : "none" }}
+          className={cn(
+            "text-base font-semibold truncate",
+            task.completed && "line-through",
+          )}
         >
           {task.title}
         </div>
         <div
-          className={`text-[13px] tracking-wide ${
-            !isActive && "text-muted-foreground"
-          }`}
+          className={cn(
+            "text-[13px] tracking-wide",
+            !isActive && "text-muted-foreground",
+          )}
         >
           {task.completed
             ? "Done"
