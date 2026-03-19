@@ -1,5 +1,4 @@
 import React from "react";
-import { cn } from "@/shared/lib/utils";
 
 interface SessionBadgeProps {
   isPomodoro: boolean;
@@ -13,8 +12,8 @@ const SessionBadge = ({
   className,
 }: SessionBadgeProps): React.ReactNode => {
   return (
-    <div className={cn("bg-muted py-2 px-6 rounded-full", className)}>
-      <div className="flex items-center justify-center gap-2 font-semibold">
+    <div className={className}>
+      <div className="flex justify-center gap-2 font-semibold">
         {isPomodoro ? (
           <>
             <span className="text-muted-foreground shrink-0">
@@ -27,7 +26,7 @@ const SessionBadge = ({
             </span>
           </>
         ) : (
-          <span>Yay! Break Time</span>
+          <span>Time to Relax</span>
         )}
       </div>
     </div>

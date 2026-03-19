@@ -41,9 +41,12 @@ export default function usePomodoroTimer(): PomodoroTimerReturn {
   const user = useAuthStore((s) => s.user);
   const { data: tasks = [] } = useTasksQuery(user?.id) as { data: Task[] };
   const currentTask = useTasksStore((s) => s.currentTask);
-  const timerTask = timerTaskId
-    ? (tasks.find((t) => t.id === timerTaskId) ?? currentTask)
+  const resolvedCurrentTask = currentTask?.id
+    ? (tasks.find((t) => t.id === currentTask.id) ?? currentTask)
     : currentTask;
+  const timerTask = timerTaskId
+    ? (tasks.find((t) => t.id === timerTaskId) ?? resolvedCurrentTask)
+    : resolvedCurrentTask;
 
   const { minutes, seconds } = getFormattedTime(timerValue);
   const percentage =
@@ -65,7 +68,7 @@ export default function usePomodoroTimer(): PomodoroTimerReturn {
     startTimer,
     stopTimer,
     resetTimer,
-    currentTask,
+    currentTask: resolvedCurrentTask,
     timerTask,
     minutes,
     seconds,

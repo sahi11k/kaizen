@@ -1,7 +1,7 @@
 import { Button, Card, Tooltip, EmptyState } from "@/shared/ui";
 import { useAuthStore } from "@/features/auth";
 import { useTasksQuery } from "@/features/pomodoro";
-import { FolderOpen, Play } from "lucide-react";
+import { FolderOpen } from "lucide-react";
 import { Link } from "react-router";
 import { getPendingTasks } from "@/features/dashboard/utils/taskListWidgetHelper";
 
@@ -21,7 +21,7 @@ const TaskListWidget = () => {
       footer={
         <Link to="/dashboard/pomodoro" className="w-full block">
           <Button className="w-full">
-            {noPendingTasks ? "Plan your day" : "Focus on pending tasks"}
+            {noPendingTasks ? "Plan your day" : "Complete pending tasks now"}
           </Button>
         </Link>
       }
@@ -44,18 +44,8 @@ const TaskListWidget = () => {
 
 const TaskItem = ({ task }) => {
   return (
-    <li className="flex items-center justify-between border border-border rounded-lg px-4 py-2 gap-2">
+    <li className="flex items-center justify-between border border-border rounded-lg px-4 py-3">
       <span className="font-medium truncate min-w-0">{task.title}</span>
-      <Tooltip content="Openwith Pomodoro">
-        <Link to="/dashboard/pomodoro">
-          <Button
-            rounded
-            variant="outline"
-            className="!h-6 w-6 !p-3 border bg-transparent hover:text-primary hover:bg-transparent hover:border-primary"
-            icon={<Play className="size-2.5" fill="currentColor" />}
-          />
-        </Link>
-      </Tooltip>
     </li>
   );
 };

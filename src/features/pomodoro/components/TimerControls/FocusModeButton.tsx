@@ -7,12 +7,14 @@ interface FocusModeButtonProps {
   onClick: () => void;
 }
 
-const FocusModeButton = ({ onClick }: FocusModeButtonProps): React.ReactNode => (
+const FocusModeButton = ({
+  onClick,
+}: FocusModeButtonProps): React.ReactNode => (
   <Tooltip content="Focus Mode">
     <Button
       onClick={onClick}
       icon={<Maximize />}
-      className="rounded-full w-12 !h-12"
+      className="rounded-full w-12 !h-12 hidden sm:block"
       variant="icon"
       aria-label="Focus Mode"
       disabled={!isFullscreenSupported()}
