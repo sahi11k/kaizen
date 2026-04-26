@@ -1,5 +1,7 @@
 import React from "react";
 import { getDayOfMonth, getDayOfWeek } from "@/shared/lib/date";
+import { JOURNAL_DEFAULT_BACKEND_TITLE } from "@/features/journals/constants";
+import { getJournalPlainText } from "@/features/journals/utils";
 import { MoreOptions } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 
@@ -11,12 +13,13 @@ const activeClass =
 
 const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
   const { title, date, content } = journal;
-
-  const getItemClass = () => {
-    return cn(base, hover, {
-      [activeClass]: isActive,
-    });
-  };
+  const preview = getJournalPlainText(content);
+  const legacyTitle = title?.trim?.() ? String(title).trim() : "";
+  const displayTitle =
+    legacyTitle && legacyTitle !== JOURNAL_DEFAULT_BACKEND_TITLE
+      ? legacyTitle
+      : "";
+  const primaryLine = displayTitle || JOURNAL_DEFAULT_BACKEND_TITLE;
 
   const onKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " " || e.code === "Space") {
@@ -27,7 +30,7 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
 
   return (
     <li
-      className={getItemClass()}
+      className={cn(base, hover, { [activeClass]: isActive })}
       onClick={onClick}
       onKeyDown={onKeyDown}
       role="option"
@@ -43,16 +46,17 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
         </span>
       </div>
       <div className="flex-1 w-0 flex flex-col">
-        <div className="text-base font-semibold truncate">
-          {title || "Untitled"}
-        </div>
-        <div
-          className={`text-[13px] tracking-wide line-clamp-1 ${
-            !isActive && "text-muted-foreground"
-          }`}
-        >
-          {content}
-        </div>
+        <div className="text-base font-semibold truncate">{primaryLine}</div>
+        {preview ? (
+          <div
+            className={cn(
+              "text-[13px] tracking-wide line-clamp-1",
+              !isActive && "text-muted-foreground",
+            )}
+          >
+            {preview}
+          </div>
+        ) : null}
       </div>
 
       <MoreOptions

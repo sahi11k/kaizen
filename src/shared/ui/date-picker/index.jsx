@@ -15,23 +15,24 @@ import { formatDate } from "@/shared/lib/date";
 import { Tooltip } from "@/shared/ui/tooltip";
 
 const DatePicker = ({
-  defautDate,
+  defaultDate,
   onDateChange,
   triggerClassName,
   popoverClassName,
   format = "LL",
   showIcon = true,
   tooltip,
+  tooltipContentClassName,
   side = "bottom",
   align = "center",
 }) => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
-    if (defautDate) {
-      setDate(new Date(defautDate));
+    if (defaultDate) {
+      setDate(new Date(defaultDate));
     }
-  }, [defautDate]);
+  }, [defaultDate]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate || new Date());
@@ -42,7 +43,7 @@ const DatePicker = ({
 
   return (
     <Popover>
-      <Tooltip content={tooltip}>
+      <Tooltip content={tooltip} contentClassName={tooltipContentClassName}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"

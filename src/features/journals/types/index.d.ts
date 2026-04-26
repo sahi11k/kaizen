@@ -8,4 +8,6 @@ export type Journal = DefaultJournalState & {
   createdAt: string;
   createdBy: string;
   updatedAt: string;
+  /** Legacy column; cleared on save after TipTap migration */
+  title?: string;
 };

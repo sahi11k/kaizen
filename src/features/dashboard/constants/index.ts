@@ -7,7 +7,7 @@ import TotalHoursWidget from "@/features/dashboard/components/TotalHoursWidget";
 import TimerOutline from "@/assets/icons/timer-outline.svg?react";
 import TimerFilled from "@/assets/icons/timer-filled.svg?react";
 import JournalOutline from "@/assets/icons/journal-outline.svg?react";
-import JournalFilled from "@/assets/icons/journal.filled.svg?react";
+import JournalFilled from "@/assets/icons/journal-filled.svg?react";
 import GridOutline from "@/assets/icons/grid-outline.svg?react";
 import GridFilled from "@/assets/icons/grid-filled.svg?react";
 

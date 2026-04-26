@@ -1,7 +1,7 @@
 import { JOURNAL_FIELD_MAPPING } from "@/features/journals/constants";
 import { transformKeys, reverseMapping } from "@/shared/lib/transformers";
 
-export const transformJournalFromDb = (journal: Record<string, unknown>): Record<string, unknown> => {
+const transformJournalFromDb = (journal: Record<string, unknown>): Record<string, unknown> => {
   return transformKeys(journal, JOURNAL_FIELD_MAPPING);
 };
 

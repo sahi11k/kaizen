@@ -1,8 +1,17 @@
 import { deleteJournal, saveJournal } from "@/features/journals/apis";
+import useJournalsStore from "@/features/journals/store";
 import { DefaultJournalState, Journal } from "@/features/journals/types";
 import { queryKeys } from "@/shared/constants";
 import { deleteById, upsertById } from "@/shared/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+function logJournalMutationError(
+  mutationName: string,
+  error: Error,
+  variables: unknown,
+) {
+  console.error(`[${mutationName}]`, { error, variables });
+}
 
 type SaveJournalMutationPayload = {
   payload: Record<string, DefaultJournalState>;
@@ -28,9 +37,14 @@ export const useSaveJournalMutation = () => {
         queryKeys.journals.all(variables.userId),
         (old) => upsertById(old, updatedJournal),
       );
+
+      const { currentJournal, setCurrentJournal } = useJournalsStore.getState();
+      if (currentJournal?.id === updatedJournal.id) {
+        setCurrentJournal({ ...currentJournal, ...updatedJournal });
+      }
     },
     onError: (error: Error, variables) => {
-      console.error({ error, variables });
+      logJournalMutationError("useSaveJournalMutation", error, variables);
     },
   });
 };
@@ -48,7 +62,7 @@ export const useDeleteJournalMutation = () => {
       );
     },
     onError: (error: Error, variables) => {
-      console.error({ error, variables });
+      logJournalMutationError("useDeleteJournalMutation", error, variables);
     },
   });
 };

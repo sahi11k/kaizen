@@ -3,6 +3,7 @@ import {
   getTotalWordsWritten,
   getJournalStreak,
   JOURNAL_CONTENT_TRUNCATION_LENGTH,
+  getJournalPlainText,
 } from "@/features/journals";
 
 export const getJournalsWidgetData = (journals) => {
@@ -11,15 +12,13 @@ export const getJournalsWidgetData = (journals) => {
   const totalWordsWritten = getTotalWordsWritten(journals);
   const journalStreak = getJournalStreak(sortedJournals);
 
-  const contentLength = latestJournal?.content.length;
-  const truncatedContent = latestJournal?.content
-    ?.slice(
-      0,
-      contentLength > JOURNAL_CONTENT_TRUNCATION_LENGTH
-        ? JOURNAL_CONTENT_TRUNCATION_LENGTH
-        : contentLength,
-    )
-    .concat(contentLength > JOURNAL_CONTENT_TRUNCATION_LENGTH ? "..." : "");
+  const plain = latestJournal?.content
+    ? getJournalPlainText(latestJournal.content)
+    : "";
+  const truncatedContent =
+    plain.length > JOURNAL_CONTENT_TRUNCATION_LENGTH
+      ? `${plain.slice(0, JOURNAL_CONTENT_TRUNCATION_LENGTH)}...`
+      : plain;
 
   return { latestJournal, totalWordsWritten, journalStreak, truncatedContent };
 };
