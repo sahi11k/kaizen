@@ -1,4 +1,5 @@
 import { deepCopy } from "@/shared/lib/utils";
+import { plainTextFromStoredJournalContent } from "@/shared/lib/tiptap-editor-content";
 import dayjs from "dayjs";
 
 export const groupByMonth = (journals = []) => {
@@ -104,9 +105,43 @@ export const getSelfReflectionDate = (dateInput) => {
  * @param {string} content - The text content to count words from
  * @returns {number} The word count
  */
+export const getJournalPlainText = (content) =>
+  plainTextFromStoredJournalContent(content);
+
 export const getWordCount = (content) => {
-  const text = content || "";
+  const text = getJournalPlainText(content);
   const trimmed = text.trim();
   if (!trimmed) return 0;
   return trimmed.split(/\s+/).length;
+};
+
+/**
+ * Recursively collects all image `src` values from a TipTap JSON document.
+ * Handles both `image` nodes and `imageUpload` nodes.
+ * @param {string|object} content - Serialised JSON string or already-parsed doc
+ * @returns {Set<string>} Set of src URLs found in the document
+ */
+export const extractImageSrcsFromJson = (content) => {
+  const srcs = new Set();
+  if (!content) return srcs;
+
+  let doc;
+  try {
+    doc = typeof content === "string" ? JSON.parse(content) : content;
+  } catch {
+    return srcs;
+  }
+
+  const walk = (node) => {
+    if (!node || typeof node !== "object") return;
+    if ((node.type === "image" || node.type === "imageUpload") && node.attrs?.src) {
+      srcs.add(node.attrs.src);
+    }
+    if (Array.isArray(node.content)) {
+      node.content.forEach(walk);
+    }
+  };
+
+  walk(doc);
+  return srcs;
 };

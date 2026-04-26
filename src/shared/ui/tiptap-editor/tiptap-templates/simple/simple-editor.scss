@@ -1,0 +1,91 @@
+@import "../../styles/tiptap-variables";
+@import "../../styles/tiptap-keyframe-animations";
+
+/* TipTap shell only — do not set body/html/#root (that overrides the app shell). */
+.simple-editor-wrapper {
+  --tt-toolbar-height: 44px;
+  --tt-theme-text: var(--foreground);
+  color: var(--foreground);
+  font-family: var(--font-sans), "Manrope", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding-inline: 2rem;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.tiptap.ProseMirror {
+  font-family: inherit;
+}
+
+/* Journal: toolbar controls flush left, full border (demo template keeps centered flex spacers). */
+.simple-editor-wrapper--journal {
+  /*
+   * JournalEditor meta block bottom padding must equal this gap plus journal
+   * ProseMirror padding-top (see rules below; 1rem desktop / 0.75rem ≤480px).
+   */
+  gap: 0.75rem;
+
+  .tiptap-toolbar[data-variant="fixed"] {
+    align-self: flex-start;
+    width: auto;
+    max-width: 100%;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    border: 1px solid var(--tt-toolbar-border-color);
+    border-radius: var(--tt-radius-md, 0.5rem);
+  }
+
+  /* Overrides default mobile toolbar top-only border so the journal bar stays fully bordered. */
+  @media (max-width: 480px) {
+    .tiptap-toolbar[data-variant="fixed"] {
+      border: 1px solid var(--tt-toolbar-border-color);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .simple-editor-wrapper {
+    padding-inline: 4rem;
+  }
+}
+
+/* Width + horizontal inset come from JournalEditor column; fill that column. */
+.simple-editor-content {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  min-height: 0;
+}
+
+.simple-editor-content .tiptap.ProseMirror.simple-editor {
+  flex: 1 0 auto;
+  /* No extra horizontal inset — parent already uses px-6 lg:px-12 */
+  padding: 1.5rem 0 30vh;
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-content .tiptap.ProseMirror.simple-editor {
+    padding: 1rem 0 30vh;
+  }
+}
+
+/* Journal: tighter vertical rhythm; keep in sync with JournalEditor header `pb-[calc(...)]`. */
+.simple-editor-wrapper--journal
+  .simple-editor-content
+  .tiptap.ProseMirror.simple-editor {
+  padding: 1rem 0 30vh;
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-wrapper--journal
+    .simple-editor-content
+    .tiptap.ProseMirror.simple-editor {
+    padding: 0.75rem 0 30vh;
+  }
+}
