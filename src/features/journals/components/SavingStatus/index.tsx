@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
-import { AUTO_SAVE_STATUS } from "@/features/journals/constants";
+import { cn } from "@/shared/lib/utils";
+import {
+  AUTO_SAVE_STATUS,
+  JOURNAL_META_ROW_TEXT_CLASS,
+} from "@/features/journals/constants";
 import { RefreshCcw, CloudCheck, CloudAlertIcon } from "lucide-react";
 import dayjs from "dayjs";
 
@@ -48,11 +52,14 @@ const SavingStatus = ({ status, updatedAt }: SavingStatusProps) => {
   if (text == null) return null;
 
   return (
-    <div className="flex self-start md:self-center items-center gap-2">
+    <div
+      className={cn(
+        "flex self-start md:self-center items-center gap-2",
+        JOURNAL_META_ROW_TEXT_CLASS,
+      )}
+    >
       {config.icon}
-      <span className="text-xs md:text-sm text-muted-foreground font-medium">
-        {text}
-      </span>
+      <span>{text}</span>
     </div>
   );
 };
