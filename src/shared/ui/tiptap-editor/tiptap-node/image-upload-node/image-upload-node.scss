@@ -32,9 +32,43 @@
 
 .tiptap-image-upload {
   margin: 2rem 0;
+  position: relative;
 
   input[type="file"] {
     display: none;
+  }
+
+  .tiptap-image-upload-dismiss {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.625rem;
+    z-index: 2;
+    color: var(--tiptap-image-upload-subtext-color);
+    background-color: color-mix(in srgb, var(--tt-bg-color) 88%, transparent);
+    border: 1px solid var(--tiptap-image-upload-border);
+    box-shadow: 0 0.25rem 0.875rem rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateY(-0.125rem);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease,
+      background-color 0.18s ease,
+      border-color 0.18s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--tiptap-image-upload-text-color);
+      border-color: var(--tiptap-image-upload-border-hover);
+      background-color: var(--tt-bg-color);
+    }
+  }
+
+  &:hover,
+  &:focus-within {
+    .tiptap-image-upload-dismiss {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .tiptap-image-upload-dropzone {
@@ -101,7 +135,7 @@
   }
 
   .tiptap-image-upload-drag-area {
-    padding: 2rem 1.5rem;
+    padding: 2rem 3.5rem 2rem 1.5rem;
     border: 1.5px dashed var(--tiptap-image-upload-border);
     border-radius: var(--tt-radius-md, 0.5rem);
     text-align: center;
@@ -112,6 +146,7 @@
 
     &:hover {
       border-color: var(--tiptap-image-upload-border-hover);
+      background-color: color-mix(in srgb, var(--tiptap-image-upload-border) 6%, transparent);
     }
 
     &.drag-active {
@@ -146,6 +181,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    padding-top: 0.25rem;
   }
 
   .tiptap-image-upload-header {
@@ -184,6 +220,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 0.75rem;
+      min-width: 0;
     }
 
     .tiptap-image-upload-file-info {
@@ -191,6 +229,8 @@
       align-items: center;
       gap: 0.75rem;
       height: 2rem;
+      min-width: 0;
+      flex: 1;
 
       .tiptap-image-upload-file-icon {
         padding: 0.5rem;
@@ -208,17 +248,35 @@
     .tiptap-image-upload-details {
       display: flex;
       flex-direction: column;
+      min-width: 0;
+
+      .tiptap-image-upload-text,
+      .tiptap-image-upload-subtext {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
 
     .tiptap-image-upload-actions {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      flex-shrink: 0;
 
       .tiptap-image-upload-progress-text {
         font-size: 0.75rem;
         color: var(--tiptap-image-upload-border-active);
         font-weight: 600;
+      }
+
+      .tiptap-image-upload-remove-file {
+        color: var(--tiptap-image-upload-subtext-color);
+
+        &:hover,
+        &:focus-visible {
+          color: var(--tiptap-image-upload-text-color);
+        }
       }
     }
   }
@@ -233,7 +291,7 @@
 @media (max-width: 480px) {
   .tiptap-image-upload {
     .tiptap-image-upload-drag-area {
-      padding: 1.5rem 1rem;
+      padding: 1.5rem 3rem 1.5rem 1rem;
     }
 
     .tiptap-image-upload-header {

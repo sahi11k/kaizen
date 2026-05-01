@@ -3,7 +3,6 @@ import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit";
-import { Image } from "@tiptap/extension-image";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
@@ -18,6 +17,7 @@ import { Toolbar } from "@/shared/ui/tiptap-editor/tiptap-ui-primitive/toolbar";
 
 // --- Tiptap Node ---
 import { ImageUploadNode } from "@/shared/ui/tiptap-editor/tiptap-node/image-upload-node/image-upload-node-extension";
+import { ImageNode } from "@/shared/ui/tiptap-editor/tiptap-node/image-node/image-node-extension";
 import { HorizontalRule } from "@/shared/ui/tiptap-editor/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension";
 import "@/shared/ui/tiptap-editor/tiptap-node/blockquote-node/blockquote-node.scss";
 import "@/shared/ui/tiptap-editor/tiptap-node/code-block-node/code-block-node.scss";
@@ -103,7 +103,7 @@ export function TipTapEditor({
         TaskList,
         TaskItem.configure({ nested: true }),
         Highlight.configure({ multicolor: true }),
-        Image,
+        ImageNode,
         Typography,
         Superscript,
         Subscript,
