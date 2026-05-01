@@ -1,4 +1,51 @@
 .tiptap.ProseMirror {
+  .tiptap-image-node {
+    position: relative;
+    display: table;
+    width: fit-content;
+    max-width: 100%;
+    margin: 2rem 0;
+    outline: 0.125rem solid transparent;
+    border-radius: var(--tt-radius-xs, 0.25rem);
+
+    &.is-selected {
+      outline-color: var(--tt-brand-color-500);
+    }
+
+    &:hover,
+    &:focus-within,
+    &.is-selected {
+      .tiptap-image-node-remove {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  .tiptap-image-node-remove {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 2;
+    color: var(--tt-gray-dark-a-900);
+    background-color: color-mix(in srgb, var(--tt-bg-color) 90%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tt-gray-light-a-400) 60%, transparent);
+    box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translateY(-0.125rem);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease,
+      background-color 0.18s ease,
+      color 0.18s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--tt-gray-dark-a-900);
+      background-color: var(--tt-bg-color);
+    }
+  }
+
   img {
     max-width: 100%;
     max-height: 70vh;
@@ -10,16 +57,6 @@
 
   p > img {
     display: inline-block;
-  }
-
-  > img:not([data-type="emoji"] img) {
-    margin: 2rem 0;
-    outline: 0.125rem solid transparent;
-    border-radius: var(--tt-radius-xs, 0.25rem);
-  }
-
-  img:not([data-type="emoji"] img).ProseMirror-selectednode {
-    outline-color: var(--tt-brand-color-500);
   }
 
   // Thread image handling

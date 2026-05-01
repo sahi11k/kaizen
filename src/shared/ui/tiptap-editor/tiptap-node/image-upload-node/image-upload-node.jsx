@@ -226,6 +226,10 @@ const ImageUploadPreview = ({
           <Button
             type="button"
             variant="ghost"
+            size="small"
+            className="tiptap-image-upload-remove-file"
+            aria-label={`Remove ${fileItem.file.name}`}
+            tooltip="Remove file"
             onClick={(e) => {
               e.stopPropagation()
               onRemove()
@@ -329,12 +333,41 @@ export const ImageUploadNode = (props) => {
     }
   }
 
+  const handleRemoveUploadNode = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    clearAllFiles()
+
+    const pos = props.getPos()
+
+    if (!isValidPosition(pos)) return
+
+    props.editor
+      .chain()
+      .focus()
+      .deleteRange({ from: pos, to: pos + props.node.nodeSize })
+      .run()
+
+    focusNextNode(props.editor)
+  }
+
   const hasFiles = fileItems.length > 0
 
   return (
     <NodeViewWrapper className="tiptap-image-upload" tabIndex={0} onClick={handleClick}>
       {!hasFiles && (
         <ImageUploadDragArea onFile={handleUpload}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="small"
+            className="tiptap-image-upload-dismiss"
+            aria-label="Remove image upload"
+            tooltip="Remove image upload"
+            onClick={handleRemoveUploadNode}>
+            <CloseIcon className="tiptap-button-icon" />
+          </Button>
           <DropZoneContent maxSize={maxSize} limit={limit} />
         </ImageUploadDragArea>
       )}
