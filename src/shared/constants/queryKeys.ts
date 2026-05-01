@@ -13,4 +13,8 @@ export const queryKeys = {
   journals: {
     all: (userId: string) => ["journals", userId] as const,
   },
+  moods: {
+    today: (userId: string, dateKey: string) =>
+      ["moods", "today", userId, dateKey] as const,
+  },
 };

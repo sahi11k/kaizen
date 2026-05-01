@@ -1,5 +1,5 @@
 import JournalOutline from "@/assets/icons/journal-outline.svg?react";
-import JournalFilled from "@/assets/icons/journal.filled.svg?react";
+import JournalFilled from "@/assets/icons/journal-filled.svg?react";
 import JournalList from "@/features/journals/components/JournalList";
 import JournalEditor from "@/features/journals/components/JournalEditor";
 import { MobileTabLayout } from "@/app/layouts";

@@ -1,21 +1,20 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useAuthStore } from "@/features/auth";
+import React from "react";
 import useJournalsStore from "@/features/journals/store";
-import { getWordCount } from "@/features/journals/utils";
-import { Input, Textarea, DatePicker } from "@/shared/ui";
-import { debounce } from "@/shared/lib/utils";
 import EmptyJournal from "../EmptyJournal";
 import {
-  AUTO_SAVE_DEBOUNCE_TIME,
-  AUTO_SAVE_STATUS,
   DATEPICKER_DATE_FORMAT,
   DEFAULT_JOURNAL_STATE,
+  JOURNAL_DAY_TITLE_PLACEHOLDER,
+  JOURNAL_EDITOR_BODY_PLACEHOLDER,
+  JOURNAL_META_ROW_TEXT_CLASS,
 } from "@/features/journals/constants";
-import { useSaveJournalMutation } from "@/features/journals/mutations";
+import { cn } from "@/shared/lib/utils";
 import SavingStatus from "@/features/journals/components/SavingStatus";
+import { TipTapEditor } from "@/shared/ui/tiptap-editor";
+import { DatePicker } from "@/shared/ui";
+import { useJournalPersistence } from "@/features/journals/hooks/use-journal-persistence";
 
 const JournalEditor = () => {
-  const { user } = useAuthStore();
   const {
     unsavedJournal,
     setUnsavedJournal,
@@ -23,56 +22,17 @@ const JournalEditor = () => {
     setCurrentJournal,
   } = useJournalsStore();
 
-  const [formValues, setFormValues] = useState(DEFAULT_JOURNAL_STATE);
-  const [saveStatus, setSaveStatus] = useState(AUTO_SAVE_STATUS.PENDING);
-
-  const { mutate: saveJournal } = useSaveJournalMutation();
-
-  useEffect(() => {
-    if (currentJournal) {
-      setFormValues({
-        title: currentJournal.title,
-        content: currentJournal.content,
-        date: currentJournal.date,
-      });
-    }
-  }, [currentJournal?.id]);
-
-  const handleSave = (payload) => {
-    const isNewJournal = !currentJournal?.createdAt;
-    setSaveStatus(AUTO_SAVE_STATUS.SAVING);
-    saveJournal(
-      { payload, userId: user?.id },
-      {
-        onSuccess: () => {
-          if (isNewJournal) setUnsavedJournal(null);
-          setSaveStatus(AUTO_SAVE_STATUS.SAVED);
-        },
-        onError: () => setSaveStatus(AUTO_SAVE_STATUS.ERROR),
-      },
-    );
-  };
-
-  const debouncedSave = useMemo(
-    () =>
-      debounce((payload) => {
-        handleSave(payload);
-      }, AUTO_SAVE_DEBOUNCE_TIME),
-    [],
-  );
-
-  const handleChange = (key, value) => {
-    const payload = {
-      ...formValues,
-      [key]: value,
-    };
-    setFormValues(payload);
-    debouncedSave({
-      ...currentJournal,
-      ...payload,
-      wordCount: getWordCount(payload.content),
-    });
-  };
+  const {
+    journalParts,
+    journalDate,
+    journalTitle,
+    handleEditorUpdate,
+    handleTitleChange,
+    handleJournalDateChange,
+    showSaveStatus,
+    saveStatus,
+    lastSavedAt,
+  } = useJournalPersistence();
 
   const handleNewJournalClick = () => {
     if (unsavedJournal) {
@@ -89,49 +49,58 @@ const JournalEditor = () => {
   }
 
   return (
-    <div className="flex h-full flex-1 px-6 lg:px-12 flex flex-col">
-      <div className="flex flex-col  flex-1  py-4 h-full ">
-        <div className="flex flex-col-reverse items-start md:flex-row md:gap-4 md:items-center justify-between">
+    <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-y-auto pt-4 pb-4 md:overflow-hidden md:pt-0 md:pb-0">
+      <div
+        className={cn(
+          "shrink-0 bg-background md:sticky md:top-0 md:z-10",
+          "px-8 pt-5 pb-2 max-[480px]:pt-4 max-[480px]:pb-2 md:pt-6 md:pb-2.5 lg:px-16",
+        )}
+      >
+        <label className="sr-only" htmlFor={`journal-day-title-${currentJournal.id}`}>
+          Journal title
+        </label>
+        <input
+          id={`journal-day-title-${currentJournal.id}`}
+          type="text"
+          value={journalTitle}
+          onChange={handleTitleChange}
+          placeholder={JOURNAL_DAY_TITLE_PLACEHOLDER}
+          className="w-full border-0 bg-transparent p-0 text-2xl font-semibold leading-tight tracking-tight text-foreground placeholder:text-muted-foreground/55 focus:outline-none focus-visible:ring-0 md:text-3xl"
+          autoComplete="off"
+          maxLength={200}
+        />
+        <div className="mt-1.5 flex flex-col items-start gap-y-1 md:flex-row md:flex-wrap md:items-center md:gap-x-4 md:gap-y-2">
           <DatePicker
-            defautDate={formValues.date}
-            onDateChange={(date) => handleChange("date", date)}
-            triggerClassName="border-none !px-0 !text-xs xl:!text-sm font-medium tracking-wide shadow-none text-muted-foreground hover:bg-transparent"
+            defaultDate={journalDate}
+            onDateChange={handleJournalDateChange}
             format={DATEPICKER_DATE_FORMAT}
-            tooltip="Click to update"
             showIcon={false}
-            popoverClassName="border-border"
-            side="bottom"
-            align="start"
+            tooltip="Click to edit"
+            tooltipContentClassName="block"
+            triggerClassName={cn(
+              "h-auto min-h-0 border-0 bg-transparent p-0 shadow-none hover:bg-transparent hover:text-foreground/80 focus-visible:ring-0 focus-visible:ring-offset-0 md:h-auto md:p-0 md:px-0 md:py-0 lg:h-auto lg:p-0 lg:px-0 lg:py-0",
+              JOURNAL_META_ROW_TEXT_CLASS,
+            )}
           />
-          <SavingStatus
-            status={saveStatus}
-            updatedAt={currentJournal.updatedAt}
-          />
+          {showSaveStatus ? (
+            <>
+              <span
+                className="hidden h-3 w-px shrink-0 self-center bg-border md:block"
+                aria-hidden
+              />
+              <SavingStatus status={saveStatus} updatedAt={lastSavedAt} />
+            </>
+          ) : null}
         </div>
-        <form
-          className="flex flex-col flex-1"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <div className="flex flex-col border-b border-border pb-1">
-            <Input
-              label="Title"
-              placeholder="Give your day a title"
-              value={formValues.title}
-              onChange={(e) => handleChange("title", e.target.value)}
-              maxLength={50}
-              className="-mt-1 text-2xl xl:!text-3xl !h-auto !font-normal !px-0 border-none  focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent "
-            />
-          </div>
-          <div className="flex-1 ">
-            <Textarea
-              placeholder="Write about your day..."
-              value={formValues.content}
-              onChange={(e) => handleChange("content", e.target.value)}
-              className="h-full !px-1 !pt-4 border-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:border-transparent resize-none"
-            />
-          </div>
-        </form>
       </div>
+      <TipTapEditor
+        key={currentJournal.id}
+        journalId={currentJournal.id}
+        initialContent={journalParts.bodyForEditor}
+        onPersistentUpdate={handleEditorUpdate}
+        showThemeToggle={false}
+        bodyPlaceholder={JOURNAL_EDITOR_BODY_PLACEHOLDER}
+      />
     </div>
   );
 };

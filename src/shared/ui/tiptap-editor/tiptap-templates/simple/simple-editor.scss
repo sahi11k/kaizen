@@ -1,0 +1,152 @@
+@import "../../styles/tiptap-variables";
+@import "../../styles/tiptap-keyframe-animations";
+
+/* TipTap shell only — do not set body/html/#root (that overrides the app shell). */
+.simple-editor-wrapper {
+  --tt-toolbar-height: 44px;
+  --tt-theme-text: var(--foreground);
+  color: var(--foreground);
+  font-family: var(--font-sans), "Manrope", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  min-width: 0;
+  padding-inline: 2rem;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.tiptap.ProseMirror {
+  font-family: inherit;
+}
+
+/* Journal: toolbar controls flush left, full border (demo template keeps centered flex spacers). */
+.simple-editor-wrapper--journal {
+  gap: 0.5rem;
+  flex: 0 0 auto;
+
+  .tiptap-toolbar[data-variant="fixed"] {
+    align-self: flex-start;
+    width: auto;
+    max-width: 100%;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    border: 1px solid var(--tt-toolbar-border-color);
+    border-radius: var(--tt-radius-md, 0.5rem);
+    margin-block: 0.25rem;
+  }
+
+  /* Tablet/desktop: keep title, status, and toolbar fixed while only the document body scrolls. */
+  @media (min-width: 768px) {
+    flex: 1 1 auto;
+    padding-inline: 0;
+    overflow: hidden;
+
+    .tiptap-toolbar[data-variant="fixed"] {
+      position: relative;
+      top: auto;
+      z-index: 9;
+      flex: 0 0 auto;
+      margin-inline: 2rem;
+      max-width: calc(100% - 4rem);
+    }
+
+    .simple-editor-content {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  /* Floating toolbar: anchor above bottom tab bar while JournalsMobile tab layout is active (max-width matches Tailwind md / useIsMobile). */
+  @media (max-width: 767px) {
+    position: relative;
+
+    /* Tabs (4rem) + extra gap so the bar sits a bit higher. Keep tab height in sync with MobileTabLayout TabsList h-16. */
+    --tt-mobile-tab-clearance: calc(4rem + 0.75rem);
+    /* Equal horizontal inset from the journal column edges (narrower bar). */
+    --tt-journal-toolbar-inline: 0.75rem;
+
+    .tiptap-toolbar[data-variant="fixed"] {
+      /* Fixed + bottom is set in JS; reset sticky top so the bar is not stretched top→bottom. */
+      top: auto;
+      left: var(--tt-journal-toolbar-inline);
+      right: var(--tt-journal-toolbar-inline);
+      width: auto;
+      min-width: 0;
+      max-width: none;
+      border: 1px solid var(--tt-toolbar-border-color);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .simple-editor-wrapper {
+    padding-inline: 4rem;
+  }
+
+  .simple-editor-wrapper--journal {
+    padding-inline: 0;
+
+    .tiptap-toolbar[data-variant="fixed"] {
+      margin-inline: 4rem;
+      max-width: calc(100% - 8rem);
+    }
+  }
+}
+
+/* Width + horizontal inset come from JournalEditor column; fill that column. */
+.simple-editor-content {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.simple-editor-content .tiptap.ProseMirror.simple-editor {
+  flex: 1 0 auto;
+  /* No extra horizontal inset — parent already uses px-6 lg:px-12 */
+  padding: 1.5rem 0 30vh;
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-content .tiptap.ProseMirror.simple-editor {
+    padding: 1rem 0 30vh;
+  }
+}
+
+/* Journal: tighter vertical rhythm; keep in sync with JournalEditor header `pb-[calc(...)]`. */
+.simple-editor-wrapper--journal
+  .simple-editor-content
+  .tiptap.ProseMirror.simple-editor {
+  padding: 0.625rem 0 30vh;
+}
+
+@media (min-width: 768px) {
+  .simple-editor-wrapper--journal
+    .simple-editor-content
+    .tiptap.ProseMirror.simple-editor {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .simple-editor-wrapper--journal
+    .simple-editor-content
+    .tiptap.ProseMirror.simple-editor {
+    padding-inline: 4rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .simple-editor-wrapper--journal
+    .simple-editor-content
+    .tiptap.ProseMirror.simple-editor {
+    padding: 0.625rem 0 30vh;
+  }
+}
