@@ -34,7 +34,7 @@ const MobileTabLayout = ({
           <TabsContent
             key={tab.key}
             value={tab.key}
-            className={cn("flex flex-col min-h-0", contentClassName)}
+            className={cn("flex flex-col min-h-0 overflow-hidden", contentClassName)}
           >
             {tab.content}
           </TabsContent>
