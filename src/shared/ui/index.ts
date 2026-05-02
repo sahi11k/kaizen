@@ -41,6 +41,12 @@ export {
 } from "./dropdown-menu";
 export { EmptyState } from "./empty-state";
 export type { EmptyStateProps } from "./empty-state";
+export {
+  ErrorBoundary,
+  ErrorFallback,
+  RouteErrorBoundary,
+  reportError,
+} from "./error-boundary";
 export { Fallback } from "./fallback";
 export { FloatingButton } from "./floating-button";
 export { Input } from "./input";
