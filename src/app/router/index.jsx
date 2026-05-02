@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router";
+import * as Sentry from "@sentry/react";
 import Home from "@/features/home/pages/Home";
 import Pomodoro from "@/features/pomodoro/pages/Pomodoro";
 import Journal from "@/features/journals/pages/Journal";
@@ -15,11 +16,16 @@ import {
   DashboardLayout,
   BaseLayout,
 } from "@/app/layouts";
+import { RouteErrorBoundary } from "@/shared/ui";
 import ProtectedRoute from "./ProtectedRoute";
 
-const router = createBrowserRouter([
+const sentryCreateBrowserRouter =
+  Sentry.wrapCreateBrowserRouterV7(createBrowserRouter);
+
+const router = sentryCreateBrowserRouter([
   {
     element: <BaseLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       {
         path: "/",
