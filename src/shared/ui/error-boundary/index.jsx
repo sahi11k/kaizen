@@ -1,21 +1,7 @@
 import React from "react";
-import { AlertTriangle, Home, RotateCcw } from "lucide-react";
-import { isRouteErrorResponse, useRouteError } from "react-router";
+import { useRouteError } from "react-router";
 import * as Sentry from "@sentry/react";
-import { Button } from "@/shared/ui/button";
-import { EmptyState } from "@/shared/ui/empty-state";
-
-const getErrorMessage = (error) => {
-  if (isRouteErrorResponse(error)) {
-    return error.statusText || error.data?.message || `Route failed: ${error.status}`;
-  }
-
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return "An unexpected error interrupted the app.";
-};
+import ErrorBoundaryIllustration from "@/assets/illustrations/errorBoundary.svg?react";
 
 const reportError = (error, errorInfo) => {
   if (error) {
@@ -35,33 +21,23 @@ const reportError = (error, errorInfo) => {
   }
 };
 
-const ErrorFallback = ({ error, onReset }) => {
-  const handleGoHome = () => {
-    window.location.assign("/");
-  };
-
+const ErrorFallback = () => {
   return (
-    <main className="min-h-screen w-full flex items-center justify-center p-6 bg-background">
-      <EmptyState
-        className="min-h-[420px]"
-        icon={<AlertTriangle className="size-12 text-destructive" />}
-        title="Something went wrong"
-        description={getErrorMessage(error)}
-        action={
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button icon={<RotateCcw size={16} />} onClick={onReset}>
-              Try again
-            </Button>
-            <Button
-              variant="outline"
-              icon={<Home size={16} />}
-              onClick={handleGoHome}
-            >
-              Go home
-            </Button>
+    <main className="min-h-screen w-full bg-background text-foreground">
+      <div className="flex min-h-screen w-full items-center justify-center px-5 py-10">
+        <div className="flex w-full max-w-3xl flex-col items-center justify-center gap-6">
+          <div className="w-96 max-w-full md:w-[38rem]">
+            <ErrorBoundaryIllustration />
           </div>
-        }
-      />
+
+          <div className="flex flex-col items-center justify-center">
+            <h2 className="heading-2 text-center">Something went wrong</h2>
+            <p className="body-description max-w-lg text-center">
+              Refresh this tab, or try again later if the issue continues.
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
   );
 };
@@ -88,9 +64,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.error) {
-      return (
-        <ErrorFallback error={this.state.error} onReset={this.handleReset} />
-      );
+      return <ErrorFallback />;
     }
 
     return this.props.children;
@@ -104,7 +78,7 @@ const RouteErrorBoundary = () => {
     reportError(error);
   }, [error]);
 
-  return <ErrorFallback error={error} onReset={() => window.location.reload()} />;
+  return <ErrorFallback />;
 };
 
 export { ErrorBoundary, ErrorFallback, RouteErrorBoundary, reportError };
