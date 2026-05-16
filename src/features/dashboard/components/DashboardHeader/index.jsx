@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router";
 import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
 import { SidebarMobile } from "@/features/dashboard";
 import { ThemeToggle } from "@/features/theme";
+import { DashboardDailyMoodPrompt } from "@/features/mood";
 import {
   useTasksStore,
   useTimerStore,
@@ -50,12 +51,15 @@ const DashboardHeader = () => {
   return (
     <div className="h-16 px-4 xl:px-6 flex items-center border-b border-border sticky top-0 bg-background z-[var(--z-header)]">
       <SidebarMobile />
-      <div className="flex items-center gap-4 xl:gap-6 ml-auto">
-        <ThemeToggle
-          tooltipSide="bottom"
-          tooltipLevel="header"
-          className="-mr-2"
-        />
+      <div className="flex items-center gap-3 xl:gap-6 ml-auto">
+        <div className="flex items-center xl:gap-2">
+          <DashboardDailyMoodPrompt />
+          <ThemeToggle
+            tooltipSide="bottom"
+            tooltipLevel="header"
+            className="-mr-2"
+          />
+        </div>
         <div className="h-6 w-px bg-border" />
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-3">

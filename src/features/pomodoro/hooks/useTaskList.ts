@@ -31,6 +31,17 @@ interface UseTaskListOptions {
   onItemClick?: () => void;
 }
 
+const normalizeSessionGoal = (value: unknown) => {
+  const parsedValue =
+    typeof value === "number" ? value : parseInt(String(value), 10);
+
+  if (!Number.isFinite(parsedValue) || parsedValue < MIN_SESSIONS) {
+    return MIN_SESSIONS;
+  }
+
+  return Math.floor(parsedValue);
+};
+
 export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
@@ -62,6 +73,7 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
       ...rest,
       completed: false,
       completedSessions: 0,
+      totalSessions: normalizeSessionGoal(rest.totalSessions),
       rank: maxRank + 1,
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     } as unknown as DefaultTask;
@@ -84,6 +96,7 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
     const title = formValues.title as string;
     const task = {
       ...formValues,
+      totalSessions: normalizeSessionGoal(formValues.totalSessions),
       title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
     } as Task;
 

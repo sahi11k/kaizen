@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Input, Textarea, Button, ResponsiveDialog } from "@/shared/ui";
-import { MAX_SESSIONS, MIN_SESSIONS } from "@/features/pomodoro/constants";
+import { MIN_SESSIONS } from "@/features/pomodoro/constants";
 import { CREATE } from "@/shared/constants";
 
 const TaskForm = ({
@@ -53,7 +53,7 @@ const TaskForm = ({
             htmlFor="total-sessions"
             className="text-description text-sm w-full pl-2"
           >
-            Total Sessions (Max {MAX_SESSIONS})
+            Session Goal
           </label>
           <Input
             type="number"
@@ -61,7 +61,6 @@ const TaskForm = ({
             id="total-sessions"
             value={formValues.totalSessions}
             min={MIN_SESSIONS}
-            max={MAX_SESSIONS}
             onChange={(e) => handleChange("totalSessions", e.target.value)}
           />
         </div>

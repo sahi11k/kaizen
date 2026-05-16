@@ -1,7 +1,6 @@
 import React from "react";
 import JournalsDesktop from "@/features/journals/components/JournalsDesktop";
 import JournalsMobile from "@/features/journals/components/JournalsMobile";
-import { JournalDailyMoodPrompt } from "@/features/mood";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
 
@@ -10,7 +9,6 @@ const Journal = () => {
 
   return (
     <>
-      <JournalDailyMoodPrompt />
       <JournalsDesktop />
       <JournalsMobile />
     </>
