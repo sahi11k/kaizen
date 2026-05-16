@@ -182,7 +182,12 @@ const PomoSettings = () => {
         />
       </div>
       <div className="flex justify-end gap-6 mt-6 [&>*]:flex-1 md:[&>*]:flex-none">
-        <Button type="button" variant="outline" onClick={handleFormCancel}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleFormCancel}
+          className="bg-popover text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+        >
           Cancel
         </Button>
         <Button type="submit" loading={isPending} disabled={isPending}>
@@ -233,7 +238,7 @@ const PomoSettings = () => {
           <span className="inline-flex">{triggerButton}</span>
         </PopoverTrigger>
       </Tooltip>
-      <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-2xl bg-background">
+      <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-2xl">
         <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>
         {settingsForm}
       </PopoverContent>

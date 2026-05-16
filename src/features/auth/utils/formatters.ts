@@ -1,5 +1,10 @@
 interface UserLike {
-  user_metadata?: { display_name?: string; name?: string };
+  user_metadata?: {
+    display_name?: string;
+    name?: string;
+    avatar_url?: string;
+    avatar_path?: string;
+  };
   email?: string;
 }
 

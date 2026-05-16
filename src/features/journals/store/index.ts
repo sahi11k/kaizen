@@ -6,6 +6,7 @@ interface JournalsState {
   setCurrentJournal: (journal: Journal | null) => void;
   unsavedJournal: Journal | null;
   setUnsavedJournal: (journal: Journal | null) => void;
+  resetJournals: () => void;
 }
 
 const useJournalsStore = create<JournalsState>((set) => ({
@@ -13,6 +14,11 @@ const useJournalsStore = create<JournalsState>((set) => ({
   setCurrentJournal: (journal) => set(() => ({ currentJournal: journal })),
   unsavedJournal: null,
   setUnsavedJournal: (journal) => set(() => ({ unsavedJournal: journal })),
+  resetJournals: () =>
+    set(() => ({
+      currentJournal: null,
+      unsavedJournal: null,
+    })),
 }));
 
 export default useJournalsStore;
