@@ -1,4 +1,3 @@
-export const MAX_SESSIONS = 10;
 export const MIN_SESSIONS = 1;
 
 export const TIMER_CONSTANTS = {

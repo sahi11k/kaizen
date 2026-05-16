@@ -2,87 +2,58 @@ import type { ReactElement } from "react";
 import { MOOD_OPTIONS } from "@/features/mood/constants";
 import type { MoodValue } from "@/features/mood/types";
 import { cn } from "@/shared/lib/utils";
-import { Button, ResponsiveDialog } from "@/shared/ui";
+import { ResponsiveDialog } from "@/shared/ui";
 
 export interface DailyMoodPopoverProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  value: MoodValue | null;
-  onValueChange: (value: MoodValue | null) => void;
-  submitLabel: string;
+  value?: MoodValue | null;
   isSubmitting: boolean;
-  onSubmit: () => void;
+  onMoodSelect: (value: MoodValue) => void;
 }
 
 export function DailyMoodPopover({
   open,
   onOpenChange,
   value,
-  onValueChange,
-  submitLabel,
   isSubmitting,
-  onSubmit,
+  onMoodSelect,
 }: DailyMoodPopoverProps): ReactElement {
-  const handleCancel = (): void => {
-    onOpenChange(false);
-  };
-
   return (
     <ResponsiveDialog
       open={open}
       onOpenChange={onOpenChange}
       title="How are you feeling today?"
       contentClassName="w-lg p-6 overflow-y-auto scrollbar-thin shadow-md"
-      footer={
-        <>
-          <Button variant="outline" type="button" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button
-            type="button"
-            disabled={value == null || isSubmitting}
-            loading={isSubmitting}
-            onClick={onSubmit}
-          >
-            {submitLabel}
-          </Button>
-        </>
-      }
     >
       <div
-        className="my-6 flex flex-row gap-2 sm:gap-3"
+        className="my-5 flex flex-row"
         role="radiogroup"
         aria-label="Mood for today"
       >
         {MOOD_OPTIONS.map((opt) => {
           const selected = value === opt.value;
           return (
-            <Button
+            <button
               key={opt.value}
               type="button"
               role="radio"
               aria-checked={selected}
               aria-label={`${opt.label} mood`}
-              variant="outline"
-              size="sm"
+              disabled={isSubmitting}
               className={cn(
-                "flex h-auto min-h-[4.25rem] min-w-0 flex-1 basis-0 flex-col items-center justify-center whitespace-normal border border-border !px-0 py-2 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:min-h-[4.75rem] sm:!px-0.5 sm:py-2.5",
-                selected && "bg-primary/25 hover:bg-primary/30",
+                "flex flex-1 flex-col items-center gap-2 rounded-lg py-2 hover:bg-muted focus:outline-none disabled:opacity-60",
+                selected && "text-primary",
               )}
-              onClick={() => onValueChange(opt.value)}
+              onClick={() => onMoodSelect(opt.value)}
             >
-              <span className="grid w-full min-w-0 justify-items-center gap-2">
-                <span
-                  className="flex justify-center whitespace-normal text-xl leading-none sm:text-2xl"
-                  aria-hidden
-                >
-                  {opt.emoji}
-                </span>
-                <span className="w-full min-w-0 max-w-full whitespace-nowrap text-center text-[0.58rem] leading-tight tracking-tight font-normal sm:text-[0.7rem] md:text-xs">
-                  {opt.label}
-                </span>
+              <span className="text-3xl leading-none" aria-hidden>
+                {opt.emoji}
               </span>
-            </Button>
+              <span className="max-w-full truncate text-[0.65rem] font-medium leading-tight sm:text-xs">
+                {opt.label}
+              </span>
+            </button>
           );
         })}
       </div>
