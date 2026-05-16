@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
   Toast,
 } from "@/shared/ui";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
 import { SidebarMobile } from "@/features/dashboard";
 import { ThemeToggle } from "@/features/theme";
@@ -19,6 +19,7 @@ import {
   useTimerStore,
   closePipWindow,
 } from "@/features/pomodoro";
+import useJournalsStore from "@/features/journals/store";
 import { useQueryClient } from "@tanstack/react-query";
 
 const { toast } = Toast;
@@ -27,13 +28,16 @@ const DashboardHeader = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { setCurrentTask } = useTasksStore();
+  const resetJournals = useJournalsStore((state) => state.resetJournals);
   const queryClient = useQueryClient();
   const userDisplayName = getUserDisplayName(user);
+  const userAvatarUrl = user?.user_metadata?.avatar_url || "";
 
   const handleLogout = async () => {
     try {
       await signOut();
       setCurrentTask(null);
+      resetJournals();
       queryClient.clear();
       useTimerStore.getState().resetTimer(0);
       closePipWindow();
@@ -56,7 +60,7 @@ const DashboardHeader = () => {
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-3">
             <Avatar>
-              <AvatarImage src="" />
+              <AvatarImage src={userAvatarUrl} alt={userDisplayName} />
               <AvatarFallback className="uppercase bg-secondary text-secondary-foreground font-semibold">
                 {userDisplayName?.charAt(0)}
               </AvatarFallback>
@@ -67,14 +71,14 @@ const DashboardHeader = () => {
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="border-border shadow-md w-30 font-medium"
+            className="border-border shadow-md w-36 font-medium"
             align="end"
           >
-            {/* <Link to="/dashboard/settings">
+            <Link to="/dashboard/settings">
               <DropdownMenuItem className="cursor-pointer">
                 Settings
               </DropdownMenuItem>
-            </Link> */}
+            </Link>
             <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
               Logout
             </DropdownMenuItem>

@@ -11,5 +11,6 @@ export const BROWSER_TAB_TITLES = {
   SIGNUP: "Signup",
   UPDATE_PASSWORD: "Update Password",
   DASHBOARD: "Kaizen",
+  SETTINGS: "Settings",
   HOME: "Kaizen",
 };
