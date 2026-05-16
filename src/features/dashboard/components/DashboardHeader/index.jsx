@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router";
 import { useAuthStore, signOut, getUserDisplayName } from "@/features/auth";
 import { SidebarMobile } from "@/features/dashboard";
 import { ThemeToggle } from "@/features/theme";
-import { DashboardDailyMoodPrompt } from "@/features/mood";
+import { DailyMoodLogger } from "@/features/mood";
 import {
   useTasksStore,
   useTimerStore,
@@ -53,7 +53,7 @@ const DashboardHeader = () => {
       <SidebarMobile />
       <div className="flex items-center gap-3 xl:gap-6 ml-auto">
         <div className="flex items-center xl:gap-2">
-          <DashboardDailyMoodPrompt />
+          <DailyMoodLogger />
           <ThemeToggle
             tooltipSide="bottom"
             tooltipLevel="header"

@@ -12,13 +12,13 @@ import { cn } from "@/shared/lib/utils";
 
 const { toast } = Toast;
 
-interface DashboardDailyMoodPromptProps {
+interface DailyMoodLoggerProps {
   className?: string;
 }
 
-export function DashboardDailyMoodPrompt({
+export function DailyMoodLogger({
   className,
-}: DashboardDailyMoodPromptProps): ReactElement {
+}: DailyMoodLoggerProps): ReactElement {
   const { user, isLoading: authLoading } = useAuthStore();
   const userId = user?.id;
   const dateKey = dayjs().format("YYYY-MM-DD");
