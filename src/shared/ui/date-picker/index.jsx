@@ -25,6 +25,7 @@ const DatePicker = ({
   tooltipContentClassName,
   side = "bottom",
   align = "center",
+  portalled = true,
 }) => {
   const [date, setDate] = useState(new Date());
 
@@ -62,6 +63,7 @@ const DatePicker = ({
         className={cn("w-auto p-0", popoverClassName)}
         side={side}
         align={align}
+        portalled={portalled}
       >
         <Calendar mode="single" selected={date} onSelect={handleDateChange} />
       </PopoverContent>

@@ -124,6 +124,7 @@ function Dialog({
       <DialogContent
         showCloseButton={showCloseButton}
         className={cn(contentClassName)}
+        aria-describedby={description ? undefined : undefined}
       >
         {(title || description) && (
           <DialogHeader className={className}>

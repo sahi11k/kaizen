@@ -70,7 +70,9 @@ const InputNumber = ({
   ...rest
 }) => {
   const handleChange = (e) => {
-    const numValue = parseInt(e.target.value, 10);
+    const rawValue = e.target.value;
+    const numValue = rawValue === "" ? "" : Number(rawValue);
+
     onChange({
       target: {
         name,
@@ -80,16 +82,40 @@ const InputNumber = ({
   };
 
   const handleIncrement = () => {
-    if (max === undefined || value < max) {
-      onChange({ target: { name, value: value + step } });
+    const numericValue = Number(value);
+    const currentValue = Number.isFinite(numericValue) ? numericValue : 0;
+    const stepValue = Number(step);
+    const maxValue = max === undefined ? undefined : Number(max);
+    const nextValue = currentValue + stepValue;
+
+    if (maxValue === undefined || nextValue <= maxValue) {
+      onChange({ target: { name, value: nextValue } });
     }
   };
 
   const handleDecrement = () => {
-    if (min === undefined || value > min) {
-      onChange({ target: { name, value: value - step } });
+    const numericValue = Number(value);
+    const currentValue = Number.isFinite(numericValue) ? numericValue : 0;
+    const stepValue = Number(step);
+    const minValue = min === undefined ? undefined : Number(min);
+    const nextValue = currentValue - stepValue;
+
+    if (minValue === undefined || nextValue >= minValue) {
+      onChange({ target: { name, value: nextValue } });
     }
   };
+
+  const numericValue = Number(value);
+  const minValue = min === undefined ? undefined : Number(min);
+  const maxValue = max === undefined ? undefined : Number(max);
+  const canDecrement =
+    value !== "" &&
+    Number.isFinite(numericValue) &&
+    (minValue === undefined || numericValue > minValue);
+  const canIncrement =
+    value !== "" &&
+    Number.isFinite(numericValue) &&
+    (maxValue === undefined || numericValue < maxValue);
 
   return (
     <div className="relative">
@@ -112,7 +138,7 @@ const InputNumber = ({
           type="button"
           aria-label="Decrement"
           onClick={handleDecrement}
-          disabled={min !== undefined && value <= min}
+          disabled={!canDecrement}
           variant="icon"
           className="w-9 border border-border rounded-none disabled:opacity-50 disabled:bg-accent !h-full"
         >
@@ -122,7 +148,7 @@ const InputNumber = ({
           type="button"
           aria-label="Increment"
           onClick={handleIncrement}
-          disabled={max !== undefined && value >= max}
+          disabled={!canIncrement}
           variant="icon"
           className="w-9 border border-border rounded-l-none border-l-0 rounded-r-md disabled:opacity-50 disabled:bg-accent !h-full"
         >
