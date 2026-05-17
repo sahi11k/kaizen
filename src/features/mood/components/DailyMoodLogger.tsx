@@ -37,19 +37,31 @@ export function DailyMoodLogger({
     [currentMood],
   );
 
+  const handleOpenChange = (nextOpen: boolean): void => {
+    if (nextOpen && upsertMutation.isPending) return;
+    setOpen(nextOpen);
+  };
+
   useEffect(() => {
     if (hasAutoOpenedRef.current) return;
     if (authLoading || !userId) return;
+    if (upsertMutation.isPending) return;
     if (!todayQuery.isFetched) return;
     hasAutoOpenedRef.current = true;
     if (todayQuery.data != null) return;
     setOpen(true);
-  }, [authLoading, userId, todayQuery.isFetched, todayQuery.data]);
+  }, [
+    authLoading,
+    userId,
+    upsertMutation.isPending,
+    todayQuery.isFetched,
+    todayQuery.data,
+  ]);
 
   const handleMoodSelect = async (mood: MoodValue): Promise<void> => {
     if (!userId) return;
 
-    const hadExistingMood = Boolean(todayQuery.data);
+    setOpen(false);
 
     try {
       await upsertMutation.mutateAsync({
@@ -57,8 +69,6 @@ export function DailyMoodLogger({
         entryDate: dateKey,
         userId,
       });
-      toast.success(hadExistingMood ? "Mood updated" : "Mood saved for today");
-      setOpen(false);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Could not save your mood";
@@ -89,14 +99,13 @@ export function DailyMoodLogger({
               <SmilePlus size={24} />
             )
           }
-          onClick={() => setOpen(true)}
+          onClick={() => handleOpenChange(true)}
         />
       </Tooltip>
       <DailyMoodPopover
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={handleOpenChange}
         value={currentMood}
-        isSubmitting={upsertMutation.isPending}
         onMoodSelect={(mood) => void handleMoodSelect(mood)}
       />
     </>
