@@ -17,4 +17,14 @@ export const queryKeys = {
     today: (userId: string, dateKey: string) =>
       ["moods", "today", userId, dateKey] as const,
   },
+  habits: {
+    all: (userId: string, lifecycleFilter = "active") =>
+      ["habits", userId, lifecycleFilter] as const,
+  },
+  habitEntries: {
+    byDate: (userId: string, dateKey: string) =>
+      ["habitEntries", "byDate", userId, dateKey] as const,
+    today: (userId: string, dateKey: string) =>
+      ["habitEntries", "byDate", userId, dateKey] as const,
+  },
 };

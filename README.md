@@ -7,7 +7,6 @@ A personal growth and productivity web app built with React, Supabase, and Tailw
 - **Pomodoro Timer** - 25-minute focus sessions with short/long breaks, task management, session tracking, and Picture-in-Picture mode
 - **Journals** - Create, edit, and manage journal entries to reflect on your day
 - **Dashboard** - Overview widgets including total hours, task list, progress chart, and task completion percentage
-- **Analytics** - Coming soon
 - **Auth** - Email signup, login, OTP verification, and password reset via Supabase Auth
 - **Settings** - Account and profile management
 - **Theme** - Light and dark mode toggle
@@ -79,7 +78,6 @@ src/
 │   ├── journals/     # Journal entries
 │   ├── dashboard/    # Overview widgets
 │   ├── settings/     # User settings
-│   ├── analytics/    # Analytics (placeholder)
 │   ├── home/         # Landing page
 │   └── theme/        # Light/dark mode
 ├── shared/           # Shared UI components, utils, constants

@@ -2,9 +2,9 @@ import { createBrowserRouter } from "react-router";
 import * as Sentry from "@sentry/react";
 import Home from "@/features/home/pages/Home";
 import Pomodoro from "@/features/pomodoro/pages/Pomodoro";
+import Habits from "@/features/habits/pages/Habits";
 import Journal from "@/features/journals/pages/Journal";
 import Settings from "@/features/settings/pages/Settings";
-import Analytics from "@/features/analytics/pages/Analytics";
 import Dashboard from "@/features/dashboard/pages/Dashboard";
 import Login from "@/features/auth/pages/Login";
 import Signup from "@/features/auth/pages/Signup";
@@ -84,18 +84,18 @@ const router = sentryCreateBrowserRouter([
             ),
           },
           {
-            path: "/dashboard/settings",
+            path: "/dashboard/habits",
             element: (
               <ProtectedRoute>
-                <Settings />
+                <Habits />
               </ProtectedRoute>
             ),
           },
           {
-            path: "/dashboard/analytics",
+            path: "/dashboard/settings",
             element: (
               <ProtectedRoute>
-                <Analytics />
+                <Settings />
               </ProtectedRoute>
             ),
           },

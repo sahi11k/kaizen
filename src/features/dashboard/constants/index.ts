@@ -10,6 +10,8 @@ import JournalOutline from "@/assets/icons/journal-outline.svg?react";
 import JournalFilled from "@/assets/icons/journal-filled.svg?react";
 import GridOutline from "@/assets/icons/grid-outline.svg?react";
 import GridFilled from "@/assets/icons/grid-filled.svg?react";
+import CalendarCheckFilled from "@/assets/icons/calendar-check-filled.svg?react";
+import CalendarCheckOutline from "@/assets/icons/calendar-check-outline.svg?react";
 
 export const TCP_CHART = {
   RING_WIDTH_PX: 16,
@@ -29,6 +31,12 @@ export const SIDEBAR_LINKS = [
     label: "Pomodoro",
     Icon: TimerOutline,
     IconFilled: TimerFilled,
+  },
+  {
+    to: "/dashboard/habits",
+    label: "Habits",
+    Icon: CalendarCheckOutline,
+    IconFilled: CalendarCheckFilled,
   },
   {
     to: "/dashboard/journals",
