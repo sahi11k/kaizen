@@ -8,7 +8,6 @@ export interface DailyMoodPopoverProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   value?: MoodValue | null;
-  isSubmitting: boolean;
   onMoodSelect: (value: MoodValue) => void;
 }
 
@@ -16,7 +15,6 @@ export function DailyMoodPopover({
   open,
   onOpenChange,
   value,
-  isSubmitting,
   onMoodSelect,
 }: DailyMoodPopoverProps): ReactElement {
   return (
@@ -24,10 +22,10 @@ export function DailyMoodPopover({
       open={open}
       onOpenChange={onOpenChange}
       title="How are you feeling today?"
-      contentClassName="w-lg p-6 overflow-y-auto scrollbar-thin shadow-md"
+      contentClassName="w-100 max-w-[calc(100vw-2rem)] p-5 overflow-y-auto scrollbar-thin shadow-md"
     >
       <div
-        className="my-5 flex flex-row"
+        className="my-4 flex flex-row"
         role="radiogroup"
         aria-label="Mood for today"
       >
@@ -40,9 +38,8 @@ export function DailyMoodPopover({
               role="radio"
               aria-checked={selected}
               aria-label={`${opt.label} mood`}
-              disabled={isSubmitting}
               className={cn(
-                "flex flex-1 flex-col items-center gap-2 rounded-lg py-2 hover:bg-muted focus:outline-none disabled:opacity-60",
+                "flex flex-1 flex-col items-center gap-2 rounded-lg py-2 hover:bg-muted focus:outline-none",
                 selected && "text-primary",
               )}
               onClick={() => onMoodSelect(opt.value)}
