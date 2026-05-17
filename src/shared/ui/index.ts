@@ -68,6 +68,8 @@ export type {
   SectionedListProps,
   SectionedListSection,
 } from "./sectioned-list";
+export { Select } from "./select";
+export type { SelectOption, SelectProps } from "./select";
 export { Skeleton } from "./skeleton";
 export { Slider } from "./slider";
 export { Switch } from "./switch";
