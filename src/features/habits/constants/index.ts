@@ -28,6 +28,9 @@ export const HABIT_FIELD_MAPPING = {
   is_paused: "isPaused",
   archived_at: "archivedAt",
   start_date: "startDate",
+  current_streak: "currentStreak",
+  longest_streak: "longestStreak",
+  last_completed_date: "lastCompletedDate",
   created_at: "createdAt",
   updated_at: "updatedAt",
 } as const;

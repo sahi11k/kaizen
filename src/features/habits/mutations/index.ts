@@ -11,6 +11,15 @@ import { queryKeys } from "@/shared/constants";
 import { deleteById, upsertById } from "@/shared/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+type CompleteHabitResult = {
+  habit: Habit;
+  entry: HabitEntry;
+};
+
+type UncompleteHabitResult = {
+  habit: Habit;
+};
+
 export const useCreateHabitMutation = () => {
   const queryClient = useQueryClient();
 
@@ -137,7 +146,7 @@ export const useCompleteHabitMutation = () => {
 
       return { previousEntries, queryKey };
     },
-    onSuccess: (data: HabitEntry[], variables) => {
+    onSuccess: (data: CompleteHabitResult, variables) => {
       queryClient.setQueryData<HabitEntry[]>(
         queryKeys.habitEntries.byDate(
           variables.userId ?? "",
@@ -151,9 +160,15 @@ export const useCompleteHabitMutation = () => {
                 entry.entryDate === variables.payload.entryDate
               ),
           ),
-          ...data,
+          data.entry,
         ],
       );
+      ["active", "completed", "all"].forEach((lifecycleFilter) => {
+        queryClient.setQueryData<Habit[]>(
+          queryKeys.habits.all(variables.userId ?? "", lifecycleFilter),
+          (old) => (old ? upsertById(old, data.habit) : old),
+        );
+      });
     },
     onError: (_error, _variables, context) => {
       if (context?.queryKey) {
@@ -195,7 +210,7 @@ export const useUncompleteHabitMutation = () => {
 
       return { previousEntries, queryKey };
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: (data: UncompleteHabitResult, variables) => {
       queryClient.setQueryData<HabitEntry[]>(
         queryKeys.habitEntries.byDate(
           variables.userId ?? "",
@@ -210,6 +225,12 @@ export const useUncompleteHabitMutation = () => {
               ),
           ),
       );
+      ["active", "completed", "all"].forEach((lifecycleFilter) => {
+        queryClient.setQueryData<Habit[]>(
+          queryKeys.habits.all(variables.userId ?? "", lifecycleFilter),
+          (old) => (old ? upsertById(old, data.habit) : old),
+        );
+      });
     },
     onError: (_error, _variables, context) => {
       if (context?.queryKey) {

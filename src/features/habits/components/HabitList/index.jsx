@@ -63,6 +63,7 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
     user?.id,
     selectedDateKey,
   );
+  const habits = isCompletedTab ? completedHabits : activeHabits;
 
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(CREATE);
@@ -80,7 +81,6 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
   const { mutate: uncompleteHabit } = useUncompleteHabitMutation();
 
   const isSaving = isCreating || isUpdating;
-  const habits = isCompletedTab ? completedHabits : activeHabits;
   const isLoading = isCompletedTab ? isCompletedLoading : isActiveLoading;
   const isError = isCompletedTab ? isCompletedError : isActiveError;
   const isEmpty = habits.length === 0;
@@ -224,6 +224,7 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
       habit={habit}
       entries={selectedDateEntries}
       dateKey={selectedDateKey}
+      streakCount={habit.currentStreak ?? 0}
       isActive={selectedHabitId === habit.id}
       isLifecycleCompleted={!!habit.archivedAt}
       onClick={() => onHabitSelect?.(habit)}
@@ -300,7 +301,7 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
         }
         format="dddd, MMM D"
         showIcon
-        triggerClassName="!h-auto !w-auto !justify-end !gap-1 !border-0 !bg-transparent !px-0 !py-0 text-right !text-[14px] font-medium text-muted-foreground shadow-none hover:!bg-transparent hover:text-primary lg:!text-[14px] [&_svg]:size-3.5"
+        triggerClassName="!h-auto !w-40 shrink-0 !justify-end !gap-1 !border-0 !bg-transparent !px-0 !py-0 text-right !text-[14px] font-medium whitespace-nowrap text-muted-foreground shadow-none hover:!bg-transparent hover:text-primary lg:!text-[14px] [&_svg]:size-3.5"
         align="start"
         tooltip="Select habit date"
       />

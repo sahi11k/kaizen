@@ -2,12 +2,12 @@ import { supabase, SUPABASE_TABLES } from "@/shared/supabase";
 import { ApiError, parseApiResponse } from "@/shared/lib/api";
 import {
   transformHabitEntriesFromDb,
-  transformHabitEntryToDb,
+  transformHabitEntryFromDb,
   transformHabitsFromDb,
+  transformHabitFromDb,
   transformHabitToDb,
 } from "@/features/habits/utils";
 import {
-  HABIT_ENTRY_STATUS,
   HABIT_FREQUENCY_TYPES,
   HABIT_TARGET_TYPES,
 } from "@/features/habits/constants";
@@ -65,6 +65,10 @@ export const updateHabit = async (payload = {}, userId) => {
   if (!userId) throw new ApiError("User authentication required");
 
   const dbPayload = transformHabitToDb(payload);
+  delete dbPayload.current_streak;
+  delete dbPayload.longest_streak;
+  delete dbPayload.last_completed_date;
+
   const response = await supabase
     .from(SUPABASE_TABLES.HABITS)
     .update(dbPayload)
@@ -144,40 +148,39 @@ export const fetchTodayHabitEntries = fetchHabitEntriesForDate;
 export const completeHabitForDate = async (payload = {}, userId) => {
   if (!userId) throw new ApiError("User authentication required");
 
-  const dbPayload = transformHabitEntryToDb({
-    habitId: payload.habitId,
-    createdBy: userId,
-    entryDate: payload.entryDate,
-    status: HABIT_ENTRY_STATUS.COMPLETED,
-    progressValue: payload.progressValue ?? 1,
+  const response = await supabase.rpc("complete_habit_entry_for_date", {
+    target_habit_id: payload.habitId,
+    target_user_id: userId,
+    target_entry_date: payload.entryDate,
+    target_progress_value: payload.progressValue ?? 1,
   });
-
-  const response = await supabase
-    .from(SUPABASE_TABLES.HABIT_ENTRIES)
-    .upsert(dbPayload, {
-      onConflict: "created_by,habit_id,entry_date",
-    })
-    .select();
 
   const res = parseApiResponse({
     response,
     errorMessage: "Habit completion failed",
   });
-  return transformHabitEntriesFromDb(res.data ?? []);
+
+  return {
+    habit: transformHabitFromDb(res.data?.habit ?? {}),
+    entry: transformHabitEntryFromDb(res.data?.entry ?? {}),
+  };
 };
 
 export const uncompleteHabitForDate = async (payload = {}, userId) => {
   if (!userId) throw new ApiError("User authentication required");
 
-  const response = await supabase
-    .from(SUPABASE_TABLES.HABIT_ENTRIES)
-    .delete()
-    .eq("created_by", userId)
-    .eq("habit_id", payload.habitId)
-    .eq("entry_date", payload.entryDate);
+  const response = await supabase.rpc("uncomplete_habit_entry_for_date", {
+    target_habit_id: payload.habitId,
+    target_user_id: userId,
+    target_entry_date: payload.entryDate,
+  });
 
-  parseApiResponse({
+  const res = parseApiResponse({
     response,
     errorMessage: "Habit completion removal failed",
   });
+
+  return {
+    habit: transformHabitFromDb(res.data?.habit ?? {}),
+  };
 };

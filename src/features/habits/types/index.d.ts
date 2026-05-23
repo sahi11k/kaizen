@@ -26,6 +26,9 @@ export type Habit = {
   isPaused: boolean;
   archivedAt: string | null;
   startDate: string;
+  currentStreak: number;
+  longestStreak: number;
+  lastCompletedDate: string | null;
   rank: number;
   createdAt: string;
   updatedAt: string;

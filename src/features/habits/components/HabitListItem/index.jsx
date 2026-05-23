@@ -1,10 +1,9 @@
 import React from "react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Flame } from "lucide-react";
 
 import { Button, MoreOptions, Tooltip } from "@/shared/ui";
 import {
-  getFrequencyLabel,
-  getGoalLabel,
+  getNextHabitDueDateLabel,
   isHabitCompletedForDate,
   isHabitStarted,
 } from "@/features/habits/utils";
@@ -23,6 +22,7 @@ const HabitListItem = ({
   dateKey,
   isActive,
   isLifecycleCompleted,
+  streakCount = 0,
   onClick,
   onEdit,
   onDelete,
@@ -30,6 +30,7 @@ const HabitListItem = ({
 }) => {
   const completed = isHabitCompletedForDate(habit.id, entries, dateKey);
   const canComplete = !isLifecycleCompleted && isHabitStarted(habit, dateKey);
+  const nextDueLabel = getNextHabitDueDateLabel(habit, dateKey, completed);
   const completeTooltip = isLifecycleCompleted
     ? "Habit completed"
     : completed
@@ -83,7 +84,7 @@ const HabitListItem = ({
         />
       </Tooltip>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div
           className={cn(
             "truncate text-base font-semibold",
@@ -94,12 +95,23 @@ const HabitListItem = ({
         </div>
         <div
           className={cn(
-            "truncate text-[13px] tracking-wide",
+            "truncate text-[13px]",
             !isActive && "text-muted-foreground",
           )}
         >
-          {getFrequencyLabel(habit)} - {getGoalLabel(habit)}
+          {nextDueLabel}
         </div>
+      </div>
+
+      <div
+        className={cn(
+          "flex shrink-0 items-center gap-1 text-xs font-medium text-amber-500",
+          isActive && "text-primary-container-foreground",
+        )}
+        aria-label={`${streakCount} day streak`}
+      >
+        <span>{streakCount}</span>
+        <Flame className="size-4" aria-hidden="true" />
       </div>
 
       <MoreOptions

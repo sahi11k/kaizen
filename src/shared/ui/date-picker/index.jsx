@@ -28,6 +28,7 @@ const DatePicker = ({
   portalled = true,
 }) => {
   const [date, setDate] = useState(new Date());
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (defaultDate) {
@@ -36,14 +37,16 @@ const DatePicker = ({
   }, [defaultDate]);
 
   const handleDateChange = (newDate) => {
-    setDate(newDate || new Date());
+    const nextDate = newDate || new Date();
+    setDate(nextDate);
     if (onDateChange) {
-      onDateChange(newDate || new Date());
+      onDateChange(nextDate);
     }
+    if (newDate) setIsOpen(false);
   };
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <Tooltip content={tooltip} contentClassName={tooltipContentClassName}>
         <PopoverTrigger asChild>
           <Button

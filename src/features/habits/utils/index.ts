@@ -89,6 +89,48 @@ export const isHabitDueToday = (habit: Habit): boolean => {
   return isHabitDueForDate(habit, getTodayDateKey());
 };
 
+export const getNextHabitDueDate = (
+  habit: Habit,
+  dateKey = getTodayDateKey(),
+  completedForDate = false,
+): string | null => {
+  const selectedDate = dayjs(dateKey).startOf("day");
+  const startDate = dayjs(habit.startDate).startOf("day");
+  const startsLater = startDate.isAfter(selectedDate, "day");
+  const shouldStartAfterSelected =
+    !startsLater && isHabitDueForDate(habit, dateKey) && completedForDate;
+  let cursor = startsLater
+    ? startDate
+    : selectedDate.add(shouldStartAfterSelected ? 1 : 0, "day");
+
+  for (let offset = 0; offset < 370; offset += 1) {
+    const cursorKey = cursor.format("YYYY-MM-DD");
+    if (isHabitDueForDate(habit, cursorKey)) return cursorKey;
+    cursor = cursor.add(1, "day");
+  }
+
+  return null;
+};
+
+export const getNextHabitDueDateLabel = (
+  habit: Habit,
+  dateKey = getTodayDateKey(),
+  completedForDate = false,
+): string => {
+  if (!isHabitStarted(habit, dateKey)) {
+    return `Starts ${dayjs(habit.startDate).format("MMM D")}`;
+  }
+
+  const nextDueDate = getNextHabitDueDate(habit, dateKey, completedForDate);
+  if (!nextDueDate) return "No upcoming due date";
+
+  const today = dayjs(getTodayDateKey()).startOf("day");
+  const dueDate = dayjs(nextDueDate).startOf("day");
+  if (dueDate.isSame(today, "day")) return "Due Today";
+  if (dueDate.isSame(today.add(1, "day"), "day")) return "Next Due: Tomorrow";
+  return `Next Due: ${dueDate.format("MMM D")}`;
+};
+
 export const getFrequencyLabel = (habit: Habit): string => {
   if (habit.repeatMode === "daily") return "Daily";
   if (habit.repeatMode === "weekdays") return "Weekdays";
