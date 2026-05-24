@@ -23,6 +23,8 @@ const DatePicker = ({
   showIcon = true,
   tooltip,
   tooltipContentClassName,
+  tooltipAlign = "center",
+  tooltipSide = "top",
   side = "bottom",
   align = "center",
   portalled = true,
@@ -47,7 +49,12 @@ const DatePicker = ({
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <Tooltip content={tooltip} contentClassName={tooltipContentClassName}>
+      <Tooltip
+        content={tooltip}
+        contentClassName={tooltipContentClassName}
+        align={tooltipAlign}
+        side={tooltipSide}
+      >
         <PopoverTrigger asChild>
           <Button
             variant="outline"

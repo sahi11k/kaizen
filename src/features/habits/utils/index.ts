@@ -11,6 +11,10 @@ import { reverseMapping, transformKeys } from "@/shared/lib/transformers";
 
 export const getTodayDateKey = (): string => dayjs().format("YYYY-MM-DD");
 
+export const getHabitColor = (color?: string | null): string => {
+  return color || "var(--primary)";
+};
+
 export const transformHabitFromDb = (habit: Record<string, unknown>) => {
   return transformKeys(habit, HABIT_FIELD_MAPPING) as Habit;
 };
@@ -167,7 +171,7 @@ export const validateHabitForm = (values: HabitFormValues) => {
   const name = values.name.trim();
 
   if (!name) errors.name = "Habit name is required";
-  if (name.length > 80) errors.name = "Habit name must be 80 characters or less";
+  if (name.length > 50) errors.name = "Habit name must be 50 characters or less";
 
   if (
     values.repeatMode === "custom_days" &&
@@ -205,6 +209,7 @@ export const buildHabitPayload = (values: HabitFormValues) => {
 
   return {
     name: values.name.trim(),
+    color: values.color || null,
     repeatMode: values.repeatMode,
     frequencyType,
     frequencyDays:

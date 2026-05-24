@@ -49,6 +49,7 @@ export type HabitEntry = {
 
 export type HabitFormValues = {
   name: string;
+  color: string;
   repeatMode: HabitRepeatMode;
   frequencyType: HabitFrequencyType;
   frequencyDays: number[];

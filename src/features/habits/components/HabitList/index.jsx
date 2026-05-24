@@ -2,21 +2,17 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 import { CalendarCheck, Plus } from "lucide-react";
 
-import HabitForm from "@/features/habits/components/HabitForm";
 import HabitListItem from "@/features/habits/components/HabitListItem";
 import {
   HABIT_TARGET_TYPES,
-  useArchiveHabitMutation,
   useCompleteHabitMutation,
-  useCreateHabitMutation,
-  useDeleteHabitMutation,
   useHabitEntriesForDateQuery,
   useHabitsQuery,
   useUncompleteHabitMutation,
-  useUpdateHabitMutation,
 } from "@/features/habits";
 import {
   getTodayDateKey,
+  getNextHabitDueDate,
   isHabitDueForDate,
   isHabitCompletedForDate,
 } from "@/features/habits/utils";
@@ -26,7 +22,6 @@ import {
   DatePicker,
   EmptyState,
   FloatingButton,
-  ResponsiveDialog,
   SectionedList,
   Skeleton,
   Tabs,
@@ -35,7 +30,6 @@ import {
   Tooltip,
   Toast,
 } from "@/shared/ui";
-import { CREATE, EDIT } from "@/shared/constants";
 
 const { toast } = Toast;
 const HABIT_TABS = {
@@ -43,7 +37,14 @@ const HABIT_TABS = {
   COMPLETED: "completed",
 };
 
-const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
+const HabitList = ({
+  showHeader = true,
+  selectedHabitId,
+  onHabitSelect,
+  onCreateHabit,
+  onEditHabit,
+  onDeleteHabit,
+}) => {
   const { user } = useAuthStore();
   const [selectedDateKey, setSelectedDateKey] = useState(getTodayDateKey());
   const [activeTab, setActiveTab] = useState(HABIT_TABS.ACTIVE);
@@ -65,22 +66,9 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
   );
   const habits = isCompletedTab ? completedHabits : activeHabits;
 
-  const [showModal, setShowModal] = useState(false);
-  const [mode, setMode] = useState(CREATE);
-  const [editingHabit, setEditingHabit] = useState(null);
-  const [habitToDelete, setHabitToDelete] = useState(null);
-
-  const { mutate: createHabit, isPending: isCreating } =
-    useCreateHabitMutation();
-  const { mutate: updateHabit, isPending: isUpdating } =
-    useUpdateHabitMutation();
-  const { mutate: archiveHabit } = useArchiveHabitMutation();
-  const { mutate: deleteHabit, isPending: isDeleting } =
-    useDeleteHabitMutation();
   const { mutate: completeHabit } = useCompleteHabitMutation();
   const { mutate: uncompleteHabit } = useUncompleteHabitMutation();
 
-  const isSaving = isCreating || isUpdating;
   const isLoading = isCompletedTab ? isCompletedLoading : isActiveLoading;
   const isError = isCompletedTab ? isCompletedError : isActiveError;
   const isEmpty = habits.length === 0;
@@ -98,90 +86,32 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
   const doneHabits = dueActiveHabits.filter((habit) =>
     isHabitCompletedForDate(habit.id, selectedDateEntries, selectedDateKey),
   );
-
-  const openCreateForm = () => {
-    setMode(CREATE);
-    setEditingHabit(null);
-    setShowModal(true);
-  };
-
-  const openEditForm = (habit) => {
-    setMode(EDIT);
-    setEditingHabit(habit);
-    setShowModal(true);
-  };
-
-  const handleSave = (payload) => {
-    if (!user?.id) {
-      toast.error("User authentication required");
-      return;
-    }
-
-    if (mode === CREATE) {
-      createHabit(
-        { payload, userId: user.id },
-        {
-          onSuccess: (data) => {
-            toast.success("Habit created");
-            setShowModal(false);
-            if (data?.[0]) onHabitSelect?.(data[0]);
-          },
-          onError: () => toast.error("Could not create habit"),
-        },
+  const pendingHabitIds = new Set(pendingHabits.map((habit) => habit.id));
+  const doneHabitIds = new Set(doneHabits.map((habit) => habit.id));
+  const upcomingHabits = [...habits]
+    .filter(
+      (habit) => !pendingHabitIds.has(habit.id) && !doneHabitIds.has(habit.id),
+    )
+    .sort((firstHabit, secondHabit) => {
+      const firstCompleted = isHabitCompletedForDate(
+        firstHabit.id,
+        selectedDateEntries,
+        selectedDateKey,
       );
-      return;
-    }
+      const secondCompleted = isHabitCompletedForDate(
+        secondHabit.id,
+        selectedDateEntries,
+        selectedDateKey,
+      );
+      const firstDueDate =
+        getNextHabitDueDate(firstHabit, selectedDateKey, firstCompleted) ??
+        "9999-12-31";
+      const secondDueDate =
+        getNextHabitDueDate(secondHabit, selectedDateKey, secondCompleted) ??
+        "9999-12-31";
 
-    updateHabit(
-      {
-        payload: { ...editingHabit, ...payload },
-        userId: user.id,
-      },
-      {
-        onSuccess: (data) => {
-          toast.success("Habit updated");
-          setShowModal(false);
-          if (data?.[0]) onHabitSelect?.(data[0]);
-        },
-        onError: () => toast.error("Could not update habit"),
-      },
-    );
-  };
-
-  const handleCompleteHabit = (habit) => {
-    if (!user?.id) {
-      toast.error("User authentication required");
-      return;
-    }
-
-    archiveHabit(
-      { habitId: habit.id, userId: user.id },
-      {
-        onSuccess: () => {
-          toast.success("Habit completed");
-          if (selectedHabitId === habit.id) onHabitSelect?.(null);
-          setShowModal(false);
-        },
-        onError: () => toast.error("Could not complete habit"),
-      },
-    );
-  };
-
-  const handleDeleteHabit = () => {
-    if (!user?.id || !habitToDelete) return;
-
-    deleteHabit(
-      { habitId: habitToDelete.id, userId: user.id },
-      {
-        onSuccess: () => {
-          toast.success("Habit deleted");
-          if (selectedHabitId === habitToDelete.id) onHabitSelect?.(null);
-          setHabitToDelete(null);
-        },
-        onError: () => toast.error("Could not delete habit"),
-      },
-    );
-  };
+      return firstDueDate.localeCompare(secondDueDate);
+    });
 
   const handleCompleteToggle = (habit) => {
     if (!user?.id) {
@@ -228,9 +158,27 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
       isActive={selectedHabitId === habit.id}
       isLifecycleCompleted={!!habit.archivedAt}
       onClick={() => onHabitSelect?.(habit)}
-      onEdit={() => openEditForm(habit)}
-      onDelete={() => setHabitToDelete(habit)}
+      onEdit={() => onEditHabit?.(habit)}
+      onDelete={() => onDeleteHabit?.(habit)}
       onCompleteToggle={() => handleCompleteToggle(habit)}
+    />
+  );
+
+  const renderUpcomingHabitItem = (habit) => (
+    <HabitListItem
+      key={habit.id}
+      habit={habit}
+      entries={selectedDateEntries}
+      dateKey={selectedDateKey}
+      streakCount={habit.currentStreak ?? 0}
+      isActive={selectedHabitId === habit.id}
+      isLifecycleCompleted={!!habit.archivedAt}
+      isMuted
+      canCompleteOverride={false}
+      disabledCompleteTooltip="Only today's habits can be checked off"
+      onClick={() => onHabitSelect?.(habit)}
+      onEdit={() => onEditHabit?.(habit)}
+      onDelete={() => onDeleteHabit?.(habit)}
     />
   );
 
@@ -251,12 +199,35 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
           },
         ]
       : []),
-    ...(isActiveTab && doneHabits.length > 0
+    ...(isActiveTab
       ? [
           {
             key: "done",
             label: `Done ${selectedDateLabel} (${doneHabits.length})`,
-            content: doneHabits.map(renderHabitItem),
+            content:
+              doneHabits.length === 0 ? (
+                <li className="list-none px-2 py-2 text-sm text-muted-foreground">
+                  No completed habits for this date.
+                </li>
+              ) : (
+                doneHabits.map(renderHabitItem)
+              ),
+          },
+        ]
+      : []),
+    ...(isActiveTab
+      ? [
+          {
+            key: "upcoming",
+            label: `Upcoming (${upcomingHabits.length})`,
+            content:
+              upcomingHabits.length === 0 ? (
+                <li className="list-none px-2 py-2 text-sm text-muted-foreground">
+                  No upcoming habits.
+                </li>
+              ) : (
+                upcomingHabits.map(renderUpcomingHabitItem)
+              ),
           },
         ]
       : []),
@@ -304,6 +275,8 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
         triggerClassName="!h-auto !w-40 shrink-0 !justify-end !gap-1 !border-0 !bg-transparent !px-0 !py-0 text-right !text-[14px] font-medium whitespace-nowrap text-muted-foreground shadow-none hover:!bg-transparent hover:text-primary lg:!text-[14px] [&_svg]:size-3.5"
         align="start"
         tooltip="Select habit date"
+        tooltipAlign="center"
+        tooltipSide="top"
       />
     </div>
   );
@@ -318,7 +291,7 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
               <Button
                 icon={<Plus className="size-4" />}
                 size="sm"
-                onClick={openCreateForm}
+                onClick={onCreateHabit}
               >
                 Habit
               </Button>
@@ -383,64 +356,11 @@ const HabitList = ({ showHeader = true, selectedHabitId, onHabitSelect }) => {
       </div>
 
       <FloatingButton
-        onClick={openCreateForm}
+        onClick={onCreateHabit}
         className="md:hidden"
         icon={<Plus className="size-4" />}
         label="Habit"
       />
-
-      <HabitForm
-        open={showModal}
-        onOpenChange={setShowModal}
-        mode={mode}
-        habit={editingHabit}
-        onSave={handleSave}
-        onCompleteHabit={
-          mode === EDIT && editingHabit && !editingHabit.archivedAt
-            ? () => handleCompleteHabit(editingHabit)
-            : undefined
-        }
-        isSaving={isSaving}
-      />
-
-      <ResponsiveDialog
-        open={!!habitToDelete}
-        onOpenChange={(open) => {
-          if (!open && !isDeleting) setHabitToDelete(null);
-        }}
-        title="Delete habit"
-        description={null}
-        footer={
-          <>
-            <Button
-              variant="outline"
-              onClick={() => setHabitToDelete(null)}
-              disabled={isDeleting}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              loading={isDeleting}
-              onClick={handleDeleteHabit}
-            >
-              Delete
-            </Button>
-          </>
-        }
-      >
-        {habitToDelete && (
-          <p className="text-sm text-muted-foreground">
-            Removing the habit{" "}
-            <strong className="mx-1 font-semibold text-foreground">
-              {habitToDelete.name}
-            </strong>{" "}
-            will delete all its completion history.
-            <br />
-            Are you sure you want to delete?
-          </p>
-        )}
-      </ResponsiveDialog>
     </div>
   );
 };

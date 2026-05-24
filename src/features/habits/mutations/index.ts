@@ -3,6 +3,7 @@ import {
   completeHabitForDate,
   createHabit,
   deleteHabit,
+  unarchiveHabit,
   uncompleteHabitForDate,
   updateHabit,
 } from "@/features/habits/apis";
@@ -45,10 +46,25 @@ export const useUpdateHabitMutation = () => {
       const updatedHabit = data?.[0];
       if (!updatedHabit) return;
 
-      queryClient.setQueryData<Habit[]>(
-        queryKeys.habits.all(variables.userId ?? "", "active"),
-        (old) => upsertById(old, updatedHabit),
-      );
+      if (updatedHabit.archivedAt) {
+        queryClient.setQueryData<Habit[]>(
+          queryKeys.habits.all(variables.userId ?? "", "active"),
+          (old) => deleteById(old ?? [], updatedHabit.id),
+        );
+        queryClient.setQueryData<Habit[]>(
+          queryKeys.habits.all(variables.userId ?? "", "completed"),
+          (old) => (old ? upsertById(old, updatedHabit) : old),
+        );
+      } else {
+        queryClient.setQueryData<Habit[]>(
+          queryKeys.habits.all(variables.userId ?? "", "active"),
+          (old) => (old ? upsertById(old, updatedHabit) : old),
+        );
+        queryClient.setQueryData<Habit[]>(
+          queryKeys.habits.all(variables.userId ?? "", "completed"),
+          (old) => deleteById(old ?? [], updatedHabit.id),
+        );
+      }
       queryClient.setQueryData<Habit[]>(
         queryKeys.habits.all(variables.userId ?? "", "all"),
         (old) => (old ? upsertById(old, updatedHabit) : old),
@@ -78,6 +94,32 @@ export const useArchiveHabitMutation = () => {
       queryClient.setQueryData<Habit[]>(
         queryKeys.habits.all(variables.userId ?? "", "all"),
         (old) => (old ? upsertById(old, completedHabit) : old),
+      );
+    },
+  });
+};
+
+export const useUnarchiveHabitMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ habitId, userId }: { habitId: string; userId?: string }) =>
+      unarchiveHabit(habitId, userId),
+    onSuccess: (data: Habit[], variables) => {
+      const activeHabit = data?.[0];
+      queryClient.setQueryData<Habit[]>(
+        queryKeys.habits.all(variables.userId ?? "", "completed"),
+        (old) => deleteById(old ?? [], variables.habitId),
+      );
+      if (!activeHabit) return;
+
+      queryClient.setQueryData<Habit[]>(
+        queryKeys.habits.all(variables.userId ?? "", "active"),
+        (old) => (old ? upsertById(old, activeHabit) : old),
+      );
+      queryClient.setQueryData<Habit[]>(
+        queryKeys.habits.all(variables.userId ?? "", "all"),
+        (old) => (old ? upsertById(old, activeHabit) : old),
       );
     },
   });
@@ -169,6 +211,12 @@ export const useCompleteHabitMutation = () => {
           (old) => (old ? upsertById(old, data.habit) : old),
         );
       });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.habitEntries.ranges(variables.userId ?? ""),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["habits", variables.userId ?? ""],
+      });
     },
     onError: (_error, _variables, context) => {
       if (context?.queryKey) {
@@ -230,6 +278,12 @@ export const useUncompleteHabitMutation = () => {
           queryKeys.habits.all(variables.userId ?? "", lifecycleFilter),
           (old) => (old ? upsertById(old, data.habit) : old),
         );
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.habitEntries.ranges(variables.userId ?? ""),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["habits", variables.userId ?? ""],
       });
     },
     onError: (_error, _variables, context) => {

@@ -1,9 +1,11 @@
 import React from "react";
+import dayjs from "dayjs";
 import { CheckCircle2, Flame } from "lucide-react";
 
 import { Button, MoreOptions, Tooltip } from "@/shared/ui";
 import {
-  getNextHabitDueDateLabel,
+  getNextHabitDueDate,
+  getTodayDateKey,
   isHabitCompletedForDate,
   isHabitStarted,
 } from "@/features/habits/utils";
@@ -16,12 +18,60 @@ const activeClass =
   "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground";
 const completedClass = "text-muted-foreground";
 
+const CompleteButton = ({
+  canComplete,
+  completeTooltip,
+  completed,
+  isActive,
+  onCompleteToggle,
+}) => {
+  const button = (
+    <Button
+      onClick={(e) => {
+        e.stopPropagation();
+        if (canComplete) onCompleteToggle();
+      }}
+      variant="icon"
+      icon={<CheckCircle2 className="size-5" color="currentColor" />}
+      className={cn(
+        "!p-0 hover:bg-transparent",
+        completed && "text-primary",
+        isActive && "text-primary-container-foreground",
+        !canComplete && "opacity-40",
+      )}
+      aria-label={completeTooltip}
+      aria-pressed={completed}
+      disabled={!canComplete}
+    />
+  );
+
+  return (
+    <Tooltip content={completeTooltip}>
+      {canComplete ? (
+        button
+      ) : (
+        <span
+          className="inline-flex shrink-0 rounded-full"
+          onClick={(e) => e.stopPropagation()}
+          role="presentation"
+        >
+          {button}
+        </span>
+      )}
+    </Tooltip>
+  );
+};
+
 const HabitListItem = ({
   habit,
   entries,
   dateKey,
   isActive,
   isLifecycleCompleted,
+  isMuted = false,
+  canCompleteOverride,
+  disabledCompleteTooltip,
+  hideCompleteButton = false,
   streakCount = 0,
   onClick,
   onEdit,
@@ -29,15 +79,19 @@ const HabitListItem = ({
   onCompleteToggle,
 }) => {
   const completed = isHabitCompletedForDate(habit.id, entries, dateKey);
-  const canComplete = !isLifecycleCompleted && isHabitStarted(habit, dateKey);
-  const nextDueLabel = getNextHabitDueDateLabel(habit, dateKey, completed);
+  const canComplete =
+    canCompleteOverride ??
+    (!isLifecycleCompleted && isHabitStarted(habit, dateKey));
+  const nextDueLabel = getCompactNextDueLabel(habit, dateKey, completed);
   const completeTooltip = isLifecycleCompleted
     ? "Habit completed"
-    : completed
-    ? "Mark pending for today"
-    : canComplete
-      ? "Mark done for today"
-      : "Habit starts later";
+    : !canComplete && disabledCompleteTooltip
+      ? disabledCompleteTooltip
+      : completed
+        ? "Undo check-in"
+        : canComplete
+          ? "Check in"
+          : "Habit starts later";
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " " || e.code === "Space") {
@@ -56,7 +110,8 @@ const HabitListItem = ({
     <li
       className={cn(base, hover, {
         [activeClass]: isActive,
-        [completedClass]: (completed || isLifecycleCompleted) && !isActive,
+        [completedClass]:
+          (completed || isLifecycleCompleted || isMuted) && !isActive,
       })}
       onClick={onClick}
       onKeyDown={handleKeyDown}
@@ -64,25 +119,15 @@ const HabitListItem = ({
       aria-selected={isActive}
       tabIndex={0}
     >
-      <Tooltip content={completeTooltip}>
-        <Button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (canComplete) onCompleteToggle();
-          }}
-          variant="icon"
-          icon={<CheckCircle2 className="size-5" color="currentColor" />}
-          className={cn(
-            "!p-0 hover:bg-transparent",
-            completed && "text-primary",
-            isActive && "text-primary-container-foreground",
-            !canComplete && "opacity-40",
-          )}
-          aria-label={completeTooltip}
-          aria-pressed={completed}
-          disabled={!canComplete}
+      {!hideCompleteButton && (
+        <CompleteButton
+          canComplete={canComplete}
+          completeTooltip={completeTooltip}
+          completed={completed}
+          isActive={isActive}
+          onCompleteToggle={onCompleteToggle}
         />
-      </Tooltip>
+      )}
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div
@@ -95,23 +140,23 @@ const HabitListItem = ({
         </div>
         <div
           className={cn(
-            "truncate text-[13px]",
+            "flex min-w-0 items-center gap-1.5 truncate text-[13px]",
             !isActive && "text-muted-foreground",
           )}
         >
-          {nextDueLabel}
+          <span className="truncate">{nextDueLabel}</span>
+          <span aria-hidden="true">·</span>
+          <span
+            className={cn(
+              "inline-flex shrink-0 items-center gap-1 text-xs font-medium text-amber-500",
+              isActive && "text-primary-container-foreground",
+            )}
+            aria-label={`${streakCount} day streak`}
+          >
+            <Flame className="size-4" aria-hidden="true" />
+            <span>{streakCount}</span>
+          </span>
         </div>
-      </div>
-
-      <div
-        className={cn(
-          "flex shrink-0 items-center gap-1 text-xs font-medium text-amber-500",
-          isActive && "text-primary-container-foreground",
-        )}
-        aria-label={`${streakCount} day streak`}
-      >
-        <span>{streakCount}</span>
-        <Flame className="size-4" aria-hidden="true" />
       </div>
 
       <MoreOptions
@@ -138,6 +183,18 @@ const HabitListItem = ({
       />
     </li>
   );
+};
+
+const getCompactNextDueLabel = (habit, dateKey, completedForDate) => {
+  const nextDueDate = getNextHabitDueDate(habit, dateKey, completedForDate);
+  if (!nextDueDate) return "No upcoming";
+
+  const today = dayjs(getTodayDateKey()).startOf("day");
+  const dueDate = dayjs(nextDueDate).startOf("day");
+
+  if (dueDate.isSame(today, "day")) return "Today";
+  if (dueDate.isSame(today.add(1, "day"), "day")) return "Tomorrow";
+  return dueDate.format("MMM D");
 };
 
 export default HabitListItem;

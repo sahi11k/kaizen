@@ -17,6 +17,7 @@ export const HABIT_ENTRY_STATUS = {
 
 export const HABIT_FIELD_MAPPING = {
   created_by: "createdBy",
+  color: "color",
   repeat_mode: "repeatMode",
   frequency_type: "frequencyType",
   frequency_days: "frequencyDays",
@@ -55,8 +56,19 @@ export const WEEK_DAYS = [
   { value: 7, label: "S" },
 ] as const;
 
+export const HABIT_COLOR_PALETTE = [
+  "#0f766e",
+  "#15803d",
+  "#b45309",
+  "#2563eb",
+  "#7c3aed",
+  "#be123c",
+  "#475569",
+] as const;
+
 export const DEFAULT_HABIT_FORM_VALUES = {
   name: "",
+  color: "",
   repeatMode: "daily",
   frequencyType: HABIT_FREQUENCY_TYPES.DAILY,
   frequencyDays: [1, 2, 3, 4, 5],

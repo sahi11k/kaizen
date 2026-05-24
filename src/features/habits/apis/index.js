@@ -104,6 +104,23 @@ export const archiveHabit = async (habitId, userId) => {
   return transformHabitsFromDb(res.data ?? []);
 };
 
+export const unarchiveHabit = async (habitId, userId) => {
+  if (!userId) throw new ApiError("User authentication required");
+
+  const response = await supabase
+    .from(SUPABASE_TABLES.HABITS)
+    .update({ archived_at: null })
+    .eq("id", habitId)
+    .eq("created_by", userId)
+    .select();
+
+  const res = parseApiResponse({
+    response,
+    errorMessage: "Habit restore failed",
+  });
+  return transformHabitsFromDb(res.data ?? []);
+};
+
 export const deleteHabit = async (habitId, userId) => {
   if (!userId) throw new ApiError("User authentication required");
 
@@ -138,6 +155,28 @@ export const fetchHabitEntriesForDate = async (dateKey, userId) => {
     .select("*")
     .eq("created_by", userId)
     .eq("entry_date", dateKey);
+
+  const res = parseApiResponse({ response });
+  return transformHabitEntriesFromDb(res.data ?? []);
+};
+
+export const fetchHabitEntriesForRange = async ({
+  userId,
+  habitId,
+  startDate,
+  endDate,
+}) => {
+  if (!userId) throw new ApiError("User authentication required");
+  if (!habitId) return [];
+
+  const response = await supabase
+    .from(SUPABASE_TABLES.HABIT_ENTRIES)
+    .select("*")
+    .eq("created_by", userId)
+    .eq("habit_id", habitId)
+    .gte("entry_date", startDate)
+    .lte("entry_date", endDate)
+    .order("entry_date", { ascending: true });
 
   const res = parseApiResponse({ response });
   return transformHabitEntriesFromDb(res.data ?? []);

@@ -24,6 +24,14 @@ export const queryKeys = {
   habitEntries: {
     byDate: (userId: string, dateKey: string) =>
       ["habitEntries", "byDate", userId, dateKey] as const,
+    ranges: (userId: string) => ["habitEntries", "range", userId] as const,
+    byRange: (
+      userId: string,
+      habitId: string,
+      startDate: string,
+      endDate: string,
+    ) =>
+      ["habitEntries", "range", userId, habitId, startDate, endDate] as const,
     today: (userId: string, dateKey: string) =>
       ["habitEntries", "byDate", userId, dateKey] as const,
   },

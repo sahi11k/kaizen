@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { ChevronDown } from "lucide-react";
+import { HexColorInput, HexColorPicker } from "react-colorful";
 
 import {
   Button,
@@ -10,17 +11,25 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   ResponsiveDialog,
   Select,
 } from "@/shared/ui";
 import { CREATE } from "@/shared/constants";
 import {
   DEFAULT_HABIT_FORM_VALUES,
+  HABIT_COLOR_PALETTE,
   HABIT_FREQUENCY_TYPES,
   HABIT_TARGET_TYPES,
   WEEK_DAYS,
 } from "@/features/habits/constants";
-import { buildHabitPayload, validateHabitForm } from "@/features/habits/utils";
+import {
+  buildHabitPayload,
+  getHabitColor,
+  validateHabitForm,
+} from "@/features/habits/utils";
 
 const DATE_KEY_FORMAT = "YYYY-MM-DD";
 const REPEAT_OPTIONS = {
@@ -53,6 +62,9 @@ const WEEKLY_TARGET_OPTIONS = Array.from({ length: 7 }).map((_, index) => {
 const isDefaultWeekdays = (days = []) =>
   days.length === 5 && [1, 2, 3, 4, 5].every((day) => days.includes(day));
 
+const getRandomHabitColor = () =>
+  HABIT_COLOR_PALETTE[Math.floor(Math.random() * HABIT_COLOR_PALETTE.length)];
+
 const getInitialRepeatMode = (habit) => {
   if (habit.repeatMode) return habit.repeatMode;
 
@@ -71,7 +83,6 @@ const HabitForm = ({
   mode = CREATE,
   habit,
   onSave,
-  onCompleteHabit,
   isSaving = false,
 }) => {
   const initialValues = useMemo(() => {
@@ -84,6 +95,7 @@ const HabitForm = ({
 
     return {
       name: habit.name ?? "",
+      color: habit.color ?? "",
       repeatMode: getInitialRepeatMode(habit),
       frequencyType: habit.frequencyType ?? HABIT_FREQUENCY_TYPES.DAILY,
       frequencyDays: habit.frequencyDays ?? [1, 2, 3, 4, 5],
@@ -100,10 +112,17 @@ const HabitForm = ({
 
   useEffect(() => {
     if (open) {
-      setFormValues(initialValues);
+      setFormValues(
+        habit
+          ? initialValues
+          : {
+              ...initialValues,
+              color: getRandomHabitColor(),
+            },
+      );
       setSubmitted(false);
     }
-  }, [initialValues, open]);
+  }, [habit, initialValues, open]);
 
   const errors = validateHabitForm(formValues);
   const showErrors = submitted && Object.keys(errors).length > 0;
@@ -185,11 +204,6 @@ const HabitForm = ({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          {mode !== CREATE && onCompleteHabit && (
-            <Button variant="secondary" onClick={onCompleteHabit}>
-              Complete habit
-            </Button>
-          )}
           <Button type="submit" onClick={handleSubmit} loading={isSaving}>
             Save Changes
           </Button>
@@ -201,16 +215,22 @@ const HabitForm = ({
         onSubmit={(e) => e.preventDefault()}
       >
         <Field error={showErrors ? errors.name : null}>
-          <Input
-            id="habit-name"
-            name="habit-name"
-            value={formValues.name}
-            placeholder="What habit do you want to build?"
-            aria-label="Habit name"
-            autoFocus
-            maxLength={80}
-            onChange={(e) => handleChange("name", e.target.value)}
-          />
+          <div className="flex items-center gap-3">
+            <HabitColorPicker
+              value={formValues.color}
+              onChange={(color) => handleChange("color", color)}
+            />
+            <Input
+              id="habit-name"
+              name="habit-name"
+              value={formValues.name}
+              placeholder="What habit do you want to build?"
+              aria-label="Habit name"
+              autoFocus
+              maxLength={50}
+              onChange={(e) => handleChange("name", e.target.value)}
+            />
+          </div>
         </Field>
 
         <Field
@@ -306,6 +326,56 @@ const Field = ({ label, error, children }) => (
     {error && <span className="text-xs text-destructive">{error}</span>}
   </div>
 );
+
+const HabitColorPicker = ({ value, onChange }) => {
+  const selectedColor = getHabitColor(value);
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full outline-none transition-opacity hover:opacity-90 focus-visible:ring-[3px] focus-visible:ring-ring/50 xl:size-9"
+          aria-label="Choose habit color"
+        >
+          <span
+            className="size-full rounded-full"
+            style={{ backgroundColor: selectedColor }}
+            aria-hidden="true"
+          />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="start"
+        portalled={false}
+        className="z-[1000] w-auto border-border p-3"
+      >
+        <div className="flex flex-col gap-3">
+          <HexColorPicker
+            color={selectedColor}
+            onChange={onChange}
+            className="!h-40 !w-56"
+          />
+          <div className="flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2">
+            <span
+              className="size-4 shrink-0 rounded-full"
+              style={{ backgroundColor: selectedColor }}
+              aria-hidden="true"
+            />
+            <span className="text-sm text-muted-foreground">#</span>
+            <HexColorInput
+              color={selectedColor}
+              onChange={onChange}
+              prefixed={false}
+              aria-label="Habit color hex value"
+              className="min-w-0 flex-1 bg-transparent text-sm font-medium text-foreground outline-none"
+            />
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+};
 
 const RepeatDetailsDropdown = ({
   repeatValue,
