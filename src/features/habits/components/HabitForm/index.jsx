@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
   ResponsiveDialog,
   Select,
+  Switch,
 } from "@/shared/ui";
 import { CREATE } from "@/shared/constants";
 import {
@@ -104,6 +105,9 @@ const HabitForm = ({
       targetValue: habit.targetValue ?? "",
       targetUnit: habit.targetUnit ?? "",
       startDate: habit.startDate ?? dayjs().format(DATE_KEY_FORMAT),
+      endDate:
+        habit.endDate ?? habit.startDate ?? dayjs().format(DATE_KEY_FORMAT),
+      neverEnds: !habit.endDate,
     };
   }, [habit]);
 
@@ -130,6 +134,18 @@ const HabitForm = ({
 
   const handleChange = (key, value) => {
     setFormValues((current) => ({ ...current, [key]: value }));
+  };
+
+  const handleNeverEndsChange = (checked) => {
+    setFormValues((current) => ({
+      ...current,
+      neverEnds: checked,
+      endDate: checked
+        ? current.endDate
+        : current.endDate ||
+          current.startDate ||
+          dayjs().format(DATE_KEY_FORMAT),
+    }));
   };
 
   const handleFrequencyChange = (value) => {
@@ -299,7 +315,9 @@ const HabitForm = ({
               Start date
             </span>
             <DatePicker
-              defaultDate={formValues.startDate || dayjs().format(DATE_KEY_FORMAT)}
+              defaultDate={
+                formValues.startDate || dayjs().format(DATE_KEY_FORMAT)
+              }
               onDateChange={(date) =>
                 handleChange("startDate", dayjs(date).format(DATE_KEY_FORMAT))
               }
@@ -313,6 +331,45 @@ const HabitForm = ({
               align="end"
             />
           </div>
+        </Field>
+
+        <Field error={showErrors ? errors.endDate : null}>
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm font-medium text-muted-foreground">
+              Never ends
+            </span>
+            <Switch
+              checked={formValues.neverEnds}
+              onCheckedChange={handleNeverEndsChange}
+              aria-label="Never ends"
+            />
+          </div>
+
+          {!formValues.neverEnds && (
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-sm font-medium text-muted-foreground">
+                End date
+              </span>
+              <DatePicker
+                defaultDate={
+                  formValues.endDate ||
+                  formValues.startDate ||
+                  dayjs().format(DATE_KEY_FORMAT)
+                }
+                onDateChange={(date) =>
+                  handleChange("endDate", dayjs(date).format(DATE_KEY_FORMAT))
+                }
+                format="MMM D, YYYY"
+                showIcon={false}
+                tooltip="Click to edit"
+                tooltipContentClassName="block"
+                triggerClassName="h-auto min-h-0 border-0 bg-transparent p-0 text-sm font-medium text-foreground shadow-none hover:bg-transparent hover:text-foreground/80 focus-visible:ring-0 focus-visible:ring-offset-0 md:h-auto md:p-0 lg:h-auto lg:p-0"
+                popoverClassName="z-[1000]"
+                portalled={false}
+                align="end"
+              />
+            </div>
+          )}
         </Field>
       </form>
     </ResponsiveDialog>

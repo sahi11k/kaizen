@@ -71,11 +71,26 @@ export const isHabitStarted = (
   return !dayjs(habit.startDate).startOf("day").isAfter(dayjs(dateKey), "day");
 };
 
+export const isHabitEndedForDate = (
+  habit: Habit,
+  dateKey = getTodayDateKey(),
+): boolean => {
+  if (!habit.endDate) return false;
+  return dayjs(dateKey).startOf("day").isAfter(dayjs(habit.endDate), "day");
+};
+
+export const isHabitInTrackingRange = (
+  habit: Habit,
+  dateKey = getTodayDateKey(),
+): boolean => {
+  return isHabitStarted(habit, dateKey) && !isHabitEndedForDate(habit, dateKey);
+};
+
 export const isHabitDueForDate = (
   habit: Habit,
   dateKey = getTodayDateKey(),
 ): boolean => {
-  if (!isHabitStarted(habit, dateKey)) return false;
+  if (!isHabitInTrackingRange(habit, dateKey)) return false;
 
   const selectedDay = dayjs(dateKey).day();
   const isoWeekday = selectedDay === 0 ? 7 : selectedDay;
@@ -100,6 +115,7 @@ export const getNextHabitDueDate = (
 ): string | null => {
   const selectedDate = dayjs(dateKey).startOf("day");
   const startDate = dayjs(habit.startDate).startOf("day");
+  const endDate = habit.endDate ? dayjs(habit.endDate).startOf("day") : null;
   const startsLater = startDate.isAfter(selectedDate, "day");
   const shouldStartAfterSelected =
     !startsLater && isHabitDueForDate(habit, dateKey) && completedForDate;
@@ -108,6 +124,7 @@ export const getNextHabitDueDate = (
     : selectedDate.add(shouldStartAfterSelected ? 1 : 0, "day");
 
   for (let offset = 0; offset < 370; offset += 1) {
+    if (endDate && cursor.isAfter(endDate, "day")) return null;
     const cursorKey = cursor.format("YYYY-MM-DD");
     if (isHabitDueForDate(habit, cursorKey)) return cursorKey;
     cursor = cursor.add(1, "day");
@@ -125,7 +142,14 @@ export const getNextHabitDueDateLabel = (
     return `Starts ${dayjs(habit.startDate).format("MMM D")}`;
   }
 
+  if (isHabitEndedForDate(habit, dateKey)) {
+    return `Ended ${dayjs(habit.endDate).format("MMM D")}`;
+  }
+
   const nextDueDate = getNextHabitDueDate(habit, dateKey, completedForDate);
+  if (!nextDueDate && habit.endDate) {
+    return `Ends ${dayjs(habit.endDate).format("MMM D")}`;
+  }
   if (!nextDueDate) return "No upcoming due date";
 
   const today = dayjs(getTodayDateKey()).startOf("day");
@@ -161,6 +185,9 @@ export const getHabitStatusLabel = (
   if (!isHabitStarted(habit, dateKey)) {
     return `Starts ${dayjs(habit.startDate).format("MMM D")}`;
   }
+  if (isHabitEndedForDate(habit, dateKey)) {
+    return `Ended ${dayjs(habit.endDate).format("MMM D")}`;
+  }
   return isHabitCompletedForDate(habit.id, entries, dateKey)
     ? "Done"
     : "Not done yet";
@@ -195,6 +222,18 @@ export const validateHabitForm = (values: HabitFormValues) => {
   }
 
   if (!values.startDate) errors.startDate = "Start date is required";
+  if (!values.neverEnds) {
+    if (!values.endDate) {
+      errors.endDate = "End date is required";
+    } else if (
+      values.startDate &&
+      dayjs(values.endDate)
+        .startOf("day")
+        .isBefore(dayjs(values.startDate), "day")
+    ) {
+      errors.endDate = "End date must be on or after start date";
+    }
+  }
 
   return errors;
 };
@@ -221,5 +260,6 @@ export const buildHabitPayload = (values: HabitFormValues) => {
     targetValue: isNumeric ? Number(values.targetValue) : null,
     targetUnit: isNumeric ? values.targetUnit.trim() || null : null,
     startDate: values.startDate,
+    endDate: values.neverEnds ? null : values.endDate,
   };
 };

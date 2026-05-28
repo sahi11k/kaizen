@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 import HabitDetailPlaceholder from "@/features/habits/components/HabitDetailPlaceholder";
 import HabitForm from "@/features/habits/components/HabitForm";
@@ -35,6 +36,7 @@ const Habits = () => {
   const [mode, setMode] = useState(CREATE);
   const [editingHabit, setEditingHabit] = useState(null);
   const [habitToDelete, setHabitToDelete] = useState(null);
+  const [selectedDateKey, setSelectedDateKey] = useState(getTodayDateKey());
   const { mutate: createHabit, isPending: isCreating } =
     useCreateHabitMutation();
   const { mutate: updateHabit, isPending: isUpdating } =
@@ -46,22 +48,18 @@ const Habits = () => {
   const { mutate: deleteHabit, isPending: isDeleting } =
     useDeleteHabitMutation();
   const { data: allHabits = [] } = useHabitsQuery(user?.id, "all");
-  const todayDateKey = getTodayDateKey();
-  const { data: todayEntries = [] } = useHabitEntriesForDateQuery(
+  const { data: selectedDateEntries = [] } = useHabitEntriesForDateQuery(
     user?.id,
-    todayDateKey,
+    selectedDateKey,
   );
   const isSaving = isCreating || isUpdating;
-  const isSelectedHabitDueToday = selectedHabit
-    ? isHabitDueForDate(selectedHabit, todayDateKey)
+  const isSelectedHabitDoneOnSelectedDate = selectedHabit
+    ? isHabitCompletedForDate(
+        selectedHabit.id,
+        selectedDateEntries,
+        selectedDateKey,
+      )
     : false;
-  const isSelectedHabitDoneToday = selectedHabit
-    ? isHabitCompletedForDate(selectedHabit.id, todayEntries, todayDateKey)
-    : false;
-  const todayActionLabel = isSelectedHabitDoneToday
-    ? "Undo check-in"
-    : "Check in";
-
   useDocumentTitle(BROWSER_TAB_TITLES.HABITS);
 
   useEffect(() => {
@@ -159,24 +157,26 @@ const Habits = () => {
     );
   };
 
-  const handleToggleToday = (habit) => {
+  const handleToggleSelectedDate = (habit) => {
     if (!user?.id) {
       toast.error("User authentication required");
       return;
     }
 
-    if (!isHabitDueForDate(habit, todayDateKey)) return;
+    if (dayjs(selectedDateKey).isAfter(dayjs(), "day")) return;
+
+    if (!isHabitDueForDate(habit, selectedDateKey)) return;
 
     const completed = isHabitCompletedForDate(
       habit.id,
-      todayEntries,
-      todayDateKey,
+      selectedDateEntries,
+      selectedDateKey,
     );
 
     if (completed) {
       uncompleteHabit(
         {
-          payload: { habitId: habit.id, entryDate: todayDateKey },
+          payload: { habitId: habit.id, entryDate: selectedDateKey },
           userId: user.id,
         },
         {
@@ -196,7 +196,7 @@ const Habits = () => {
       {
         payload: {
           habitId: habit.id,
-          entryDate: todayDateKey,
+          entryDate: selectedDateKey,
           progressValue,
         },
         userId: user.id,
@@ -231,6 +231,8 @@ const Habits = () => {
           <HabitList
             showHeader
             selectedHabitId={selectedHabit?.id}
+            selectedDateKey={selectedDateKey}
+            onSelectedDateChange={setSelectedDateKey}
             onHabitSelect={setSelectedHabit}
             onCreateHabit={openCreateForm}
             onEditHabit={openEditForm}
@@ -241,11 +243,11 @@ const Habits = () => {
           <HabitDetailPlaceholder
             habit={selectedHabit}
             onComplete={handleCompleteHabit}
-            onToggleToday={handleToggleToday}
-            todayActionDisabled={!isSelectedHabitDueToday}
-            todayActionLabel={todayActionLabel}
-            isCompletedToday={isSelectedHabitDoneToday}
+            onToggleDate={handleToggleSelectedDate}
+            selectedDateKey={selectedDateKey}
+            isCompletedOnSelectedDate={isSelectedHabitDoneOnSelectedDate}
             onEdit={openEditForm}
+            onCreateHabit={openCreateForm}
             onDelete={setHabitToDelete}
             onMarkIncomplete={handleMarkHabitIncomplete}
           />
@@ -257,10 +259,9 @@ const Habits = () => {
           <HabitDetailPlaceholder
             habit={selectedHabit}
             onComplete={handleCompleteHabit}
-            onToggleToday={handleToggleToday}
-            todayActionDisabled={!isSelectedHabitDueToday}
-            todayActionLabel={todayActionLabel}
-            isCompletedToday={isSelectedHabitDoneToday}
+            onToggleDate={handleToggleSelectedDate}
+            selectedDateKey={selectedDateKey}
+            isCompletedOnSelectedDate={isSelectedHabitDoneOnSelectedDate}
             onEdit={openEditForm}
             onDelete={setHabitToDelete}
             onMarkIncomplete={handleMarkHabitIncomplete}
@@ -270,6 +271,8 @@ const Habits = () => {
           <HabitList
             showHeader={false}
             selectedHabitId={selectedHabit?.id}
+            selectedDateKey={selectedDateKey}
+            onSelectedDateChange={setSelectedDateKey}
             onHabitSelect={setSelectedHabit}
             onCreateHabit={openCreateForm}
             onEditHabit={openEditForm}

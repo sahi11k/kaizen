@@ -7,7 +7,8 @@ import {
   getNextHabitDueDate,
   getTodayDateKey,
   isHabitCompletedForDate,
-  isHabitStarted,
+  isHabitEndedForDate,
+  isHabitInTrackingRange,
 } from "@/features/habits/utils";
 import { cn } from "@/shared/lib/utils";
 
@@ -79,19 +80,27 @@ const HabitListItem = ({
   onCompleteToggle,
 }) => {
   const completed = isHabitCompletedForDate(habit.id, entries, dateKey);
+  const isFutureDate = dayjs(dateKey).isAfter(dayjs(), "day");
+  const isEndedDate = isHabitEndedForDate(habit, dateKey);
   const canComplete =
     canCompleteOverride ??
-    (!isLifecycleCompleted && isHabitStarted(habit, dateKey));
+    (!isLifecycleCompleted &&
+      !isFutureDate &&
+      isHabitInTrackingRange(habit, dateKey));
   const nextDueLabel = getCompactNextDueLabel(habit, dateKey, completed);
   const completeTooltip = isLifecycleCompleted
     ? "Habit completed"
-    : !canComplete && disabledCompleteTooltip
-      ? disabledCompleteTooltip
-      : completed
-        ? "Undo check-in"
-        : canComplete
-          ? "Check in"
-          : "Habit starts later";
+    : isFutureDate
+      ? "Future dates can’t be checked in"
+      : isEndedDate
+        ? "Tracking ended for this habit"
+        : !canComplete && disabledCompleteTooltip
+          ? disabledCompleteTooltip
+          : completed
+            ? "Undo check-in"
+            : canComplete
+              ? "Check in"
+              : "Habit starts later";
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " " || e.code === "Space") {
@@ -186,7 +195,14 @@ const HabitListItem = ({
 };
 
 const getCompactNextDueLabel = (habit, dateKey, completedForDate) => {
+  if (isHabitEndedForDate(habit, dateKey)) {
+    return `Ended ${dayjs(habit.endDate).format("MMM D")}`;
+  }
+
   const nextDueDate = getNextHabitDueDate(habit, dateKey, completedForDate);
+  if (!nextDueDate && habit.endDate) {
+    return `Ends ${dayjs(habit.endDate).format("MMM D")}`;
+  }
   if (!nextDueDate) return "No upcoming";
 
   const today = dayjs(getTodayDateKey()).startOf("day");

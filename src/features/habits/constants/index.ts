@@ -29,6 +29,7 @@ export const HABIT_FIELD_MAPPING = {
   is_paused: "isPaused",
   archived_at: "archivedAt",
   start_date: "startDate",
+  end_date: "endDate",
   current_streak: "currentStreak",
   longest_streak: "longestStreak",
   last_completed_date: "lastCompletedDate",
@@ -77,4 +78,6 @@ export const DEFAULT_HABIT_FORM_VALUES = {
   targetValue: "",
   targetUnit: "",
   startDate: "",
+  endDate: "",
+  neverEnds: true,
 };

@@ -40,14 +40,20 @@ const HABIT_TABS = {
 const HabitList = ({
   showHeader = true,
   selectedHabitId,
+  selectedDateKey,
+  onSelectedDateChange,
   onHabitSelect,
   onCreateHabit,
   onEditHabit,
   onDeleteHabit,
 }) => {
   const { user } = useAuthStore();
-  const [selectedDateKey, setSelectedDateKey] = useState(getTodayDateKey());
+  const [internalSelectedDateKey, setInternalSelectedDateKey] = useState(
+    getTodayDateKey(),
+  );
   const [activeTab, setActiveTab] = useState(HABIT_TABS.ACTIVE);
+  const activeDateKey = selectedDateKey ?? internalSelectedDateKey;
+  const setSelectedDateKey = onSelectedDateChange ?? setInternalSelectedDateKey;
   const isActiveTab = activeTab === HABIT_TABS.ACTIVE;
   const isCompletedTab = activeTab === HABIT_TABS.COMPLETED;
   const {
@@ -62,7 +68,7 @@ const HabitList = ({
   } = useHabitsQuery(user?.id, HABIT_TABS.COMPLETED, isCompletedTab);
   const { data: selectedDateEntries = [] } = useHabitEntriesForDateQuery(
     user?.id,
-    selectedDateKey,
+    activeDateKey,
   );
   const habits = isCompletedTab ? completedHabits : activeHabits;
 
@@ -72,19 +78,19 @@ const HabitList = ({
   const isLoading = isCompletedTab ? isCompletedLoading : isActiveLoading;
   const isError = isCompletedTab ? isCompletedError : isActiveError;
   const isEmpty = habits.length === 0;
-  const showTodayReset = selectedDateKey !== getTodayDateKey();
+  const showTodayReset = activeDateKey !== getTodayDateKey();
   const selectedDateLabel = showTodayReset
-    ? dayjs(selectedDateKey).format("MMM D")
+    ? dayjs(activeDateKey).format("MMM D")
     : "today";
   const dueActiveHabits = habits.filter((habit) =>
-    isHabitDueForDate(habit, selectedDateKey),
+    isHabitDueForDate(habit, activeDateKey),
   );
   const pendingHabits = dueActiveHabits.filter(
     (habit) =>
-      !isHabitCompletedForDate(habit.id, selectedDateEntries, selectedDateKey),
+      !isHabitCompletedForDate(habit.id, selectedDateEntries, activeDateKey),
   );
   const doneHabits = dueActiveHabits.filter((habit) =>
-    isHabitCompletedForDate(habit.id, selectedDateEntries, selectedDateKey),
+    isHabitCompletedForDate(habit.id, selectedDateEntries, activeDateKey),
   );
   const pendingHabitIds = new Set(pendingHabits.map((habit) => habit.id));
   const doneHabitIds = new Set(doneHabits.map((habit) => habit.id));
@@ -96,18 +102,18 @@ const HabitList = ({
       const firstCompleted = isHabitCompletedForDate(
         firstHabit.id,
         selectedDateEntries,
-        selectedDateKey,
+        activeDateKey,
       );
       const secondCompleted = isHabitCompletedForDate(
         secondHabit.id,
         selectedDateEntries,
-        selectedDateKey,
+        activeDateKey,
       );
       const firstDueDate =
-        getNextHabitDueDate(firstHabit, selectedDateKey, firstCompleted) ??
+        getNextHabitDueDate(firstHabit, activeDateKey, firstCompleted) ??
         "9999-12-31";
       const secondDueDate =
-        getNextHabitDueDate(secondHabit, selectedDateKey, secondCompleted) ??
+        getNextHabitDueDate(secondHabit, activeDateKey, secondCompleted) ??
         "9999-12-31";
 
       return firstDueDate.localeCompare(secondDueDate);
@@ -119,11 +125,13 @@ const HabitList = ({
       return;
     }
 
-    const entryDate = selectedDateKey;
+    if (dayjs(activeDateKey).isAfter(dayjs(), "day")) return;
+
+    const entryDate = activeDateKey;
     const completed = isHabitCompletedForDate(
       habit.id,
       selectedDateEntries,
-      selectedDateKey,
+      activeDateKey,
     );
 
     if (completed) {
@@ -153,7 +161,7 @@ const HabitList = ({
       key={habit.id}
       habit={habit}
       entries={selectedDateEntries}
-      dateKey={selectedDateKey}
+      dateKey={activeDateKey}
       streakCount={habit.currentStreak ?? 0}
       isActive={selectedHabitId === habit.id}
       isLifecycleCompleted={!!habit.archivedAt}
@@ -169,7 +177,7 @@ const HabitList = ({
       key={habit.id}
       habit={habit}
       entries={selectedDateEntries}
-      dateKey={selectedDateKey}
+      dateKey={activeDateKey}
       streakCount={habit.currentStreak ?? 0}
       isActive={selectedHabitId === habit.id}
       isLifecycleCompleted={!!habit.archivedAt}
@@ -266,7 +274,7 @@ const HabitList = ({
         )}
       </div>
       <DatePicker
-        defaultDate={selectedDateKey}
+        defaultDate={activeDateKey}
         onDateChange={(date) =>
           setSelectedDateKey(dayjs(date).format("YYYY-MM-DD"))
         }

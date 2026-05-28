@@ -26,6 +26,7 @@ export type Habit = {
   isPaused: boolean;
   archivedAt: string | null;
   startDate: string;
+  endDate: string | null;
   currentStreak: number;
   longestStreak: number;
   lastCompletedDate: string | null;
@@ -58,4 +59,6 @@ export type HabitFormValues = {
   targetValue: string | number;
   targetUnit: string;
   startDate: string;
+  endDate: string;
+  neverEnds: boolean;
 };

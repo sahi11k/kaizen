@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
+import EmptyHabitIllustration from "@/assets/illustrations/empty-habit.svg?react";
 import {
   ArrowLeft,
   BadgeCheck,
@@ -9,6 +10,8 @@ import {
   ChevronDown,
   Edit3,
   Flame,
+  Moon,
+  Plus,
   Trophy,
   Trash2,
   Undo2,
@@ -21,6 +24,8 @@ import {
 import {
   getFrequencyLabel,
   getHabitColor,
+  getTodayDateKey,
+  isHabitEndedForDate,
   isHabitDueForDate,
 } from "@/features/habits/utils";
 import { useAuthStore } from "@/features/auth";
@@ -40,32 +45,39 @@ import { cn } from "@/shared/lib/utils";
 
 const DATE_KEY_FORMAT = "YYYY-MM-DD";
 const WEEKDAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const SCHEDULE_DAY_LABELS = {
-  1: "Mon",
-  2: "Tue",
-  3: "Wed",
-  4: "Thu",
-  5: "Fri",
-  6: "Sat",
-  7: "Sun",
-};
 const ACTIVITY_CARD_CLASS_NAME =
   "w-full rounded-2xl border border-border bg-card p-5 shadow-xs xl:p-6";
 
 const HabitDetailPlaceholder = ({
   habit,
   onComplete,
-  onToggleToday,
-  todayActionDisabled = false,
-  todayActionLabel = "Mark done today",
-  isCompletedToday = false,
+  onToggleDate,
+  selectedDateKey,
+  isCompletedOnSelectedDate = false,
   onEdit,
+  onCreateHabit,
   onDelete,
   onMarkIncomplete,
   onBack,
 }) => {
   const { user } = useAuthStore();
   const today = useMemo(() => dayjs().startOf("day"), []);
+  const activeDateKey = selectedDateKey ?? getTodayDateKey();
+  const selectedDate = useMemo(
+    () => dayjs(activeDateKey).startOf("day"),
+    [activeDateKey],
+  );
+  const isSelectedDateBeforeStart = habit
+    ? dayjs(habit.startDate).startOf("day").isAfter(selectedDate, "day")
+    : false;
+  const isSelectedDateAfterEnd = habit
+    ? isHabitEndedForDate(habit, activeDateKey)
+    : false;
+  const isSelectedDateFuture = selectedDate.isAfter(today, "day");
+  const isScheduledOnSelectedDate = useMemo(
+    () => (habit ? isHabitDueForDate(habit, activeDateKey) : false),
+    [habit, activeDateKey],
+  );
   const currentYear = today.year();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const firstYear = habit?.startDate
@@ -189,9 +201,22 @@ const HabitDetailPlaceholder = ({
     return (
       <div className="flex h-full items-center justify-center">
         <EmptyState
-          icon={<CalendarCheck className="size-8" />}
-          title="Select a habit"
-          description="Habit details will appear here."
+          icon={
+            <div className="w-80 md:w-100">
+              <EmptyHabitIllustration />
+            </div>
+          }
+          title="No Habit Selected"
+          description="Choose a habit from the list or create a new one."
+          action={
+            <Button
+              onClick={onCreateHabit}
+              className="mt-2"
+              icon={<Plus className="size-4" />}
+            >
+              New Habit
+            </Button>
+          }
         />
       </div>
     );
@@ -199,13 +224,14 @@ const HabitDetailPlaceholder = ({
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
-      <HabitHeader
+      <HabitDetailHeader
         habit={habit}
-        todayActionDisabled={todayActionDisabled}
-        todayActionLabel={todayActionLabel}
-        isCompletedToday={isCompletedToday}
+        isSelectedDateBeforeStart={isSelectedDateBeforeStart}
+        isSelectedDateAfterEnd={isSelectedDateAfterEnd}
+        isSelectedDateFuture={isSelectedDateFuture}
+        isScheduledOnSelectedDate={isScheduledOnSelectedDate}
+        isCompletedOnSelectedDate={isCompletedOnSelectedDate}
         onComplete={onComplete}
-        onToggleToday={onToggleToday}
         onEdit={onEdit}
         onDelete={onDelete}
         onMarkIncomplete={onMarkIncomplete}
@@ -213,11 +239,25 @@ const HabitDetailPlaceholder = ({
       />
 
       <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto p-5 xl:gap-6 xl:p-6">
+        {!habit.archivedAt && (
+          <SelectedDateActivityCard
+            selectedDateKey={activeDateKey}
+            habitStartDate={habit.startDate}
+            habitEndDate={habit.endDate}
+            isSelectedDateBeforeStart={isSelectedDateBeforeStart}
+            isSelectedDateAfterEnd={isSelectedDateAfterEnd}
+            isSelectedDateFuture={isSelectedDateFuture}
+            isScheduledOnSelectedDate={isScheduledOnSelectedDate}
+            isCompletedOnSelectedDate={isCompletedOnSelectedDate}
+            onCheckIn={() => onToggleDate?.(habit)}
+            onUndo={() => onToggleDate?.(habit)}
+          />
+        )}
+
         <MetricsGrid
           currentStreak={metrics.currentStreak}
           longestStreak={metrics.longestStreak}
           completionRate={metrics.completionRate}
-          completedThisMonth={monthStats.completedCount}
         />
 
         <YearlyActivityCard
@@ -233,13 +273,14 @@ const HabitDetailPlaceholder = ({
   );
 };
 
-const HabitHeader = ({
+const HabitDetailHeader = ({
   habit,
-  todayActionDisabled,
-  todayActionLabel,
-  isCompletedToday,
+  isSelectedDateBeforeStart,
+  isSelectedDateAfterEnd,
+  isSelectedDateFuture,
+  isScheduledOnSelectedDate,
+  isCompletedOnSelectedDate,
   onComplete,
-  onToggleToday,
   onEdit,
   onDelete,
   onMarkIncomplete,
@@ -268,31 +309,19 @@ const HabitHeader = ({
             {habit.name}
           </h1>
         </div>
-        <p className="mt-2 truncate text-sm text-muted-foreground">
-          {getScheduleSummary(habit)} · {getHabitStatusText(habit)}
-        </p>
+        <HabitHeaderStatusLine habit={habit} />
       </div>
     </div>
 
-    <div className="flex shrink-0 items-center gap-2 sm:w-auto">
+    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
       {!habit.archivedAt && (
-        <Button
-          size="sm"
-          className="h-9 flex-1 px-3 sm:flex-none sm:px-4"
-          icon={
-            isCompletedToday ? (
-              <Undo2 className="size-4" />
-            ) : (
-              <Check className="size-4" />
-            )
-          }
-          disabled={todayActionDisabled}
-          onClick={() => {
-            if (!todayActionDisabled) onToggleToday?.(habit);
-          }}
-        >
-          {todayActionLabel}
-        </Button>
+        <SelectedDateStatusBadge
+          isSelectedDateBeforeStart={isSelectedDateBeforeStart}
+          isSelectedDateAfterEnd={isSelectedDateAfterEnd}
+          isSelectedDateFuture={isSelectedDateFuture}
+          isScheduledOnSelectedDate={isScheduledOnSelectedDate}
+          isCompletedOnSelectedDate={isCompletedOnSelectedDate}
+        />
       )}
 
       <DropdownMenu>
@@ -347,11 +376,234 @@ const HabitHeader = ({
   </header>
 );
 
+const SelectedDateStatusBadge = ({
+  isSelectedDateBeforeStart,
+  isSelectedDateAfterEnd,
+  isSelectedDateFuture,
+  isScheduledOnSelectedDate,
+  isCompletedOnSelectedDate,
+}) => {
+  const isOutsideTrackingRange =
+    isSelectedDateBeforeStart || isSelectedDateAfterEnd;
+  const isRestDay = !isOutsideTrackingRange && !isScheduledOnSelectedDate;
+  const isCompleted =
+    !isSelectedDateFuture &&
+    isScheduledOnSelectedDate &&
+    isCompletedOnSelectedDate;
+  const isScheduledFuture = isSelectedDateFuture && isScheduledOnSelectedDate;
+  let label = "Not checked in";
+
+  if (isSelectedDateBeforeStart) label = "Not started";
+  else if (isSelectedDateAfterEnd) label = "Ended";
+  else if (isRestDay) label = "Rest day";
+  else if (isScheduledFuture) label = "Scheduled";
+  else if (isCompleted) label = "Checked in";
+
+  return (
+    <span
+      className={cn(
+        "inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-full border px-3 text-sm font-medium sm:flex-none",
+        isCompleted
+          ? "border-emerald-500/25 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
+          : isRestDay || isOutsideTrackingRange || isScheduledFuture
+            ? "border-border bg-muted/40 text-muted-foreground"
+            : "border-border bg-muted/40 text-foreground",
+      )}
+      aria-live="polite"
+    >
+      {isCompleted && <Check className="size-4 shrink-0" aria-hidden="true" />}
+      {isRestDay && <Moon className="size-4 shrink-0" aria-hidden="true" />}
+      {label}
+    </span>
+  );
+};
+
+const HabitStatusPill = ({ habit }) => {
+  const label = getHabitLifecycleStatusLabel(habit);
+  const variant = habit.archivedAt
+    ? "completed"
+    : habit.isPaused
+      ? "paused"
+      : "active";
+
+  const pillClassName =
+    variant === "active"
+      ? "border border-emerald-500/25 bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
+      : variant === "completed"
+        ? "border border-secondary/25 bg-secondary/10 text-[var(--warm-900)] dark:text-[var(--warm-400)]"
+        : "border border-border bg-muted/40 text-muted-foreground";
+
+  return (
+    <span
+      className={cn(
+        "inline-flex shrink-0 items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+        pillClassName,
+      )}
+    >
+      {label}
+    </span>
+  );
+};
+
+const HabitHeaderStatusLine = ({ habit }) => (
+  <p className="mt-2 flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1.5 text-sm text-muted-foreground">
+    <HabitStatusPill habit={habit} />
+    <span aria-hidden="true">·</span>
+    <span className="truncate">{getScheduleDescriptionLabel(habit)}</span>
+  </p>
+);
+
+const SelectedDateActivityCard = ({
+  selectedDateKey,
+  habitStartDate,
+  habitEndDate,
+  isSelectedDateBeforeStart,
+  isSelectedDateAfterEnd,
+  isSelectedDateFuture,
+  isScheduledOnSelectedDate,
+  isCompletedOnSelectedDate,
+  onCheckIn,
+  onUndo,
+}) => {
+  const isOutsideTrackingRange =
+    isSelectedDateBeforeStart || isSelectedDateAfterEnd;
+  const isRestDay = !isOutsideTrackingRange && !isScheduledOnSelectedDate;
+  const isCompleted =
+    !isSelectedDateFuture &&
+    isScheduledOnSelectedDate &&
+    isCompletedOnSelectedDate;
+  const isPending =
+    !isSelectedDateFuture &&
+    isScheduledOnSelectedDate &&
+    !isCompletedOnSelectedDate;
+  const isScheduledFuture = isSelectedDateFuture && isScheduledOnSelectedDate;
+  const dateLabel = getSelectedDateActivityLabel(selectedDateKey);
+  const dateReference = dateLabel.toLowerCase();
+  const startDateReference = getDateSentenceReference(habitStartDate);
+  const endDateReference = habitEndDate
+    ? getDateSentenceReference(habitEndDate)
+    : "";
+  const statusTitle = isSelectedDateBeforeStart
+    ? "Not started"
+    : isSelectedDateAfterEnd
+      ? "Tracking ended"
+      : isRestDay
+        ? "Rest day"
+        : isScheduledFuture
+          ? "Scheduled"
+          : isCompleted
+            ? "Checked in"
+            : "Not checked in";
+  const statusDescription = isSelectedDateBeforeStart
+    ? `This habit starts ${startDateReference}, so ${dateReference} is outside its tracking range.`
+    : isSelectedDateAfterEnd
+      ? `This habit ended ${endDateReference}, so ${dateReference} is outside its tracking range.`
+      : isRestDay
+        ? `This habit isn’t scheduled for ${dateReference}, so your streak won’t be affected.`
+        : isScheduledFuture
+          ? `Future check-ins are disabled. Come back on ${dateReference} to check in.`
+          : isCompleted
+            ? `This habit was checked in for ${dateReference}.`
+            : `This habit has not been checked in for ${dateReference}.`;
+
+  return (
+    <section
+      className={cn(
+        "w-full rounded-2xl border border-border p-5 shadow-xs xl:p-6",
+        (isRestDay || isOutsideTrackingRange) && "border-dashed bg-muted/20",
+        isCompleted && "bg-muted/25",
+        (isPending || isScheduledFuture) && "bg-accent/30",
+      )}
+    >
+      <div
+        className={cn(
+          "flex flex-col gap-4",
+          (isCompleted || isPending) &&
+            "sm:flex-row sm:items-center sm:justify-between",
+        )}
+      >
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-muted-foreground">
+            {dateLabel}
+          </p>
+          <div className="mt-2 flex items-start gap-3">
+            {isRestDay && (
+              <span
+                className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
+                aria-hidden="true"
+              >
+                <Moon className="size-4" />
+              </span>
+            )}
+            {isOutsideTrackingRange && (
+              <span
+                className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
+                aria-hidden="true"
+              >
+                <CalendarCheck className="size-4" />
+              </span>
+            )}
+            {isCompleted && (
+              <span
+                className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
+                aria-hidden="true"
+              >
+                <Check className="size-4" />
+              </span>
+            )}
+            <div className="min-w-0">
+              <p
+                className={cn(
+                  "text-base font-semibold",
+                  isRestDay || isOutsideTrackingRange || isScheduledFuture
+                    ? "text-muted-foreground"
+                    : "text-foreground",
+                )}
+              >
+                {statusTitle}
+              </p>
+              <p className="mt-1 text-sm leading-5 text-muted-foreground">
+                {statusDescription}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {isCompleted && (
+          <div className="shrink-0 sm:pl-4">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-9 w-full border-border text-muted-foreground hover:bg-muted/60 hover:text-foreground sm:w-auto"
+              icon={<Undo2 className="size-4" />}
+              onClick={onUndo}
+            >
+              Undo
+            </Button>
+          </div>
+        )}
+
+        {isPending && (
+          <div className="shrink-0 sm:pl-4">
+            <Button
+              size="sm"
+              className="h-9 w-full px-4 sm:w-auto"
+              icon={<Check className="size-4" />}
+              onClick={onCheckIn}
+            >
+              Check in
+            </Button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
 const MetricsGrid = ({
   currentStreak,
   longestStreak,
   completionRate,
-  completedThisMonth,
 }) => (
   <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
     <MetricCard
@@ -378,7 +630,7 @@ const MetricsGrid = ({
       title="Completion Rate"
       value={`${completionRate}%`}
       description={
-        completedThisMonth > 0
+        completionRate > 0
           ? "Completed this month"
           : "No completions this month yet"
       }
@@ -654,19 +906,49 @@ const getStreakDayAriaLabel = (day) => {
   return `${dateLabel}: Not scheduled`;
 };
 
-const getScheduleSummary = (habit) => {
-  if (habit.repeatMode === "custom_days" && habit.frequencyDays?.length) {
-    return habit.frequencyDays
-      .map((day) => SCHEDULE_DAY_LABELS[day])
-      .filter(Boolean)
-      .join(" · ");
+const getScheduleDescriptionLabel = (habit) => {
+  const endLabel = habit.endDate
+    ? ` · Ends ${dayjs(habit.endDate).format("MMM D")}`
+    : "";
+
+  if (habit.repeatMode === "custom_days") return `Custom schedule${endLabel}`;
+
+  if (habit.repeatMode === "daily") return `Scheduled daily${endLabel}`;
+  if (habit.repeatMode === "weekdays") {
+    return `Scheduled on weekdays${endLabel}`;
+  }
+  if (habit.repeatMode === "weekly_count" && habit.weeklyTargetCount) {
+    return `Scheduled ${habit.weeklyTargetCount}x per week${endLabel}`;
   }
 
-  if (habit.repeatMode === "custom_days") return "Custom schedule";
-  return getFrequencyLabel(habit);
+  const frequency = getFrequencyLabel(habit).toLowerCase();
+  return `Scheduled ${frequency}${endLabel}`;
 };
 
-const getHabitStatusText = (habit) => {
+const getSelectedDateActivityLabel = (dateKey) => {
+  const date = dayjs(dateKey).startOf("day");
+  const today = dayjs().startOf("day");
+
+  if (date.isSame(today, "day")) return "Today";
+  if (date.isSame(today.subtract(1, "day"), "day")) return "Yesterday";
+  if (date.isSame(today.add(1, "day"), "day")) return "Tomorrow";
+
+  return date.year() === today.year()
+    ? date.format("MMM D")
+    : date.format("MMM D, YYYY");
+};
+
+const getDateSentenceReference = (dateKey) => {
+  const label = getSelectedDateActivityLabel(dateKey);
+
+  if (["Today", "Yesterday", "Tomorrow"].includes(label)) {
+    return label.toLowerCase();
+  }
+
+  return `on ${label}`;
+};
+
+const getHabitLifecycleStatusLabel = (habit) => {
   if (habit.archivedAt) return "Completed";
   if (habit.isPaused) return "Paused";
   return "Active";
