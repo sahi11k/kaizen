@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  src:
+    local("Inter"),
+    local("Inter Regular"),
+    local("Inter-Regular");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  src:
+    local("Inter Italic"),
+    local("Inter-Italic");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local("Space Mono Regular"),
+    local("SpaceMono-Regular"),
+    local("Space Mono");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 600 700;
+  src:
+    local("Space Mono Bold"),
+    local("SpaceMono-Bold"),
+    local("Space Mono");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: italic;
+  font-weight: 400;
+  src:
+    local("Space Mono Italic"),
+    local("SpaceMono-Italic");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 200 800;
+  src:
+    local("Plus Jakarta Sans"),
+    local("Plus Jakarta Sans Regular"),
+    local("PlusJakartaSans-Regular");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: italic;
+  font-weight: 200 800;
+  src:
+    local("Plus Jakarta Sans Italic"),
+    local("PlusJakartaSans-Italic");
+}
