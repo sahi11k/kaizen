@@ -1,6 +1,8 @@
 import {
   fetchTasks,
   getLastWeekTaskSessions,
+  getTaskSessionsForRange,
+  getTotalSessionCount,
   getTotalSessionDuration,
 } from "@/features/pomodoro/apis";
 import { queryKeys } from "@/shared/constants";
@@ -23,6 +25,14 @@ export const useTotalSessionDurationQuery = (userId?: string) => {
   });
 };
 
+export const useTotalSessionCountQuery = (userId?: string) => {
+  return useQuery({
+    queryKey: queryKeys.taskSessions.totalCount(userId),
+    queryFn: () => getTotalSessionCount(userId),
+    enabled: !!userId,
+  });
+};
+
 export const useTaskSessionsQuery = (userId?: string) => {
   return useQuery({
     queryKey: queryKeys.taskSessions.all(userId),
@@ -35,5 +45,20 @@ export const useTaskSessionsQuery = (userId?: string) => {
         userId,
       ),
     enabled: !!userId,
+  });
+};
+
+export const useTaskSessionsForRangeQuery = (
+  userId?: string,
+  range?: { startDate: string; endDate: string },
+) => {
+  return useQuery({
+    queryKey: queryKeys.taskSessions.byRange(
+      userId,
+      range?.startDate ?? "",
+      range?.endDate ?? "",
+    ),
+    queryFn: () => getTaskSessionsForRange(range, userId),
+    enabled: !!userId && !!range?.startDate && !!range?.endDate,
   });
 };

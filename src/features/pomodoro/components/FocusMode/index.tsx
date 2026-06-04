@@ -1,12 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { X, Minimize } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { X } from "lucide-react";
 import { usePomodoroTimer } from "@/features/pomodoro/hooks";
 import { Button } from "@/shared/ui";
-import {
-  ResetTimerButton,
-  PlayPauseButton,
-} from "@/features/pomodoro/components/TimerControls";
 import SessionBadge from "@/features/pomodoro/components/SessionBadge";
+import TimerControlsFocusMode from "@/features/pomodoro/components/TimerActions/TimerControlsFocusMode";
 
 interface FocusModeProps {
   onExit: () => void;
@@ -76,7 +73,7 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
         onClick={handleExit}
         variant="icon"
         icon={<X className="size-6" />}
-        className="absolute top-6 right-6"
+        className="pomodoro-control-button absolute top-6 right-6"
         aria-label="Exit Focus Mode"
       />
 
@@ -87,7 +84,7 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
           className="w-full text-xl"
         />
 
-        <span className="text-[clamp(6rem,20vw,14rem)] font-semibold tabular-nums tracking-tight leading-none">
+        <span className="font-number text-[clamp(6rem,20vw,14rem)] tracking-tight leading-none">
           {minutes}
           <span className="mx-2">:</span>
           {seconds}
@@ -105,25 +102,13 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
           />
         </div>
       </div>
-
-      <div className="flex items-center gap-6">
-        <Button
-          onClick={handleExit}
-          variant="icon"
-          icon={<Minimize />}
-          className="rounded-full w-12 !h-12"
-          aria-label="Minimize"
-        />
-        <PlayPauseButton
-          timerStarted={timerStarted}
-          onStart={handleToggle}
-          onStop={handleToggle}
-        />
-        <ResetTimerButton
-          onClick={() => resetTimer(duration)}
-          showTooltip={false}
-        />
-      </div>
+      <TimerControlsFocusMode
+        timerStarted={timerStarted}
+        handleExit={handleExit}
+        handleToggle={handleToggle}
+        resetTimer={resetTimer}
+        duration={duration}
+      />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 export const MIN_SESSIONS = 1;
+export const MAX_SESSION_INDICATOR_DOTS = 10;
 
 export const TIMER_CONSTANTS = {
   POMODORO_TAB: "pomodoro",

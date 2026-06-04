@@ -14,7 +14,7 @@ const FocusModeButton = ({
     <Button
       onClick={onClick}
       icon={<Maximize />}
-      className="rounded-full w-12 !h-12 hidden sm:block"
+      className="pomodoro-control-button pomodoro-control-button-hidden"
       variant="icon"
       aria-label="Focus Mode"
       disabled={!isFullscreenSupported()}

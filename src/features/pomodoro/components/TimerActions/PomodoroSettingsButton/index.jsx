@@ -40,7 +40,7 @@ const DEFAULT_POMODORO_FORM_VALUES = {
   soundEnabled: false,
 };
 
-const PomoSettings = () => {
+const PomodoroSettingsButton = () => {
   const timerStarted = useTimerStore((s) => s.timerStarted);
   const user = useAuthStore((s) => s.user);
   const { data: userSettings } = useUserSettingsQuery(user?.id);
@@ -175,6 +175,7 @@ const PomoSettings = () => {
         </label>
         <Switch
           id="sound-toggle"
+          thumbClassName="bg-card"
           checked={pomodoroFormValues.soundEnabled}
           onCheckedChange={(checked) => {
             handleFormChange("soundEnabled", checked);
@@ -186,12 +187,12 @@ const PomoSettings = () => {
           type="button"
           variant="outline"
           onClick={handleFormCancel}
-          className="bg-popover text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+          className="border-border bg-dropdown-hover text-foreground hover:bg-control-inactive hover:text-foreground"
         >
           Cancel
         </Button>
         <Button type="submit" loading={isPending} disabled={isPending}>
-          Save Settings
+          Update
         </Button>
       </div>
     </form>
@@ -200,7 +201,7 @@ const PomoSettings = () => {
   const triggerButton = (
     <Button
       icon={<Settings />}
-      className="rounded-full w-12 !h-12"
+      className="pomodoro-control-button"
       variant="icon"
       aria-label="Pomodoro Settings"
       disabled={timerStarted}
@@ -256,7 +257,7 @@ const FormItem = ({ label, children, value = 0, timeUnit = "min" }) => {
         >
           {label}
         </label>
-        <strong className="text-sm text-muted-foreground">
+        <strong className="font-number text-sm text-muted-foreground">
           ({value} {timeUnit})
         </strong>
       </div>
@@ -266,4 +267,4 @@ const FormItem = ({ label, children, value = 0, timeUnit = "min" }) => {
   );
 };
 
-export default PomoSettings;
+export default PomodoroSettingsButton;

@@ -62,15 +62,15 @@ export const updateTask = async (payload = {}, userId) => {
 export const deleteTask = async (taskId, userId) => {
   if (!userId) throw new ApiError("User authentication required");
 
-  const response = await supabase
-    .from(SUPABASE_TABLES.TASKS)
-    .delete()
-    .eq("id", taskId)
-    .eq("created_by", userId);
+  const response = await supabase.rpc("delete_task_with_progress", {
+    target_task_id: taskId,
+    target_user_id: userId,
+  });
 
   parseApiResponse({
     response,
-    errorMessage: "Task not found or you don't have permission to delete it",
+    errorMessage:
+      "Task delete failed. The task may not exist or you may not have permission to delete it.",
   });
 };
 
@@ -119,7 +119,17 @@ export const getTotalSessionDuration = async (userId) => {
   return sumDurations(res.data ?? []);
 };
 
-export const getLastWeekTaskSessions = async (payload = {}, userId) => {
+export const getTotalSessionCount = async (userId) => {
+  const response = await supabase
+    .from(SUPABASE_TABLES.TASK_SESSIONS)
+    .select("id", { count: "exact", head: true })
+    .eq("created_by", userId);
+
+  parseApiResponse({ response });
+  return response.count ?? 0;
+};
+
+export const getTaskSessionsForRange = async (payload = {}, userId) => {
   const response = await supabase
     .from(SUPABASE_TABLES.TASK_SESSIONS)
     .select("*")
@@ -130,3 +140,5 @@ export const getLastWeekTaskSessions = async (payload = {}, userId) => {
   const res = parseApiResponse({ response });
   return transformTaskSessionsFromDb(res.data ?? []);
 };
+
+export const getLastWeekTaskSessions = getTaskSessionsForRange;

@@ -8,7 +8,6 @@ const TimerWarningDialog = ({ open, onConfirm, onCancel }) => {
       onOpenChange={(isOpen) => !isOpen && onCancel()}
       title={TIMER_WARNING.TITLE}
       description={TIMER_WARNING.DESCRIPTION}
-      showCloseButton={false}
       footer={
         <>
           <Button variant="outline" onClick={onCancel}>

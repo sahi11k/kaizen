@@ -3,7 +3,8 @@ import SessionBadge from "@/features/pomodoro/components/SessionBadge";
 import {
   PlayPauseButton,
   ResetTimerButton,
-} from "@/features/pomodoro/components/TimerControls";
+  TimerActionGroup,
+} from "@/features/pomodoro/components/TimerActions";
 
 const PipTimerContent = () => {
   const {
@@ -28,24 +29,24 @@ const PipTimerContent = () => {
         />
 
         <div className="flex-1 flex items-center gap-6 justify-between w-full">
-          <div className="text-5xl font-semibold tabular-nums tracking-tight leading-none">
+          <div className="font-number text-5xl tracking-tight leading-none">
             {minutes}
             <span className="mx-0.5">:</span>
             {seconds}
           </div>
-          <div className="flex items-center gap-4">
+          <TimerActionGroup>
             <PlayPauseButton
               timerStarted={timerStarted}
               onStart={() => startTimer(timerTask?.id)}
               onStop={stopTimer}
               showLabel={false}
-              className="p-4 !h-12"
+              className="h-12 p-4"
             />
             <ResetTimerButton
               onClick={() => resetTimer(duration)}
               showTooltip={false}
             />
-          </div>
+          </TimerActionGroup>
         </div>
       </div>
     </div>

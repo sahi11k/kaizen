@@ -1,15 +1,20 @@
 import TaskList from "@/features/pomodoro/components/TaskList";
 import TimerContainer from "@/features/pomodoro/components/TimerContainer";
+import PomodoroMetrics from "@/features/pomodoro/components/PomodoroMetrics";
+
+const layoutClass =
+  "hidden h-full min-h-0 w-full max-w-[1800px] grid-cols-[minmax(0,1fr)_22rem] gap-5 overflow-hidden p-5 md:mx-auto md:grid xl:grid-cols-[minmax(0,1fr)_26rem] xl:gap-6 xl:p-6";
 
 const PomodoroDesktop = () => {
   return (
-    <div className="hidden md:flex h-[calc(100vh-64px)] overflow-hidden">
-      <div className="flex md:flex-none md:w-72 xl:w-92 flex-col border-r border-border">
-        <TaskList showHeader />
-      </div>
-      <div className="hidden md:flex flex-1 flex-col p-4 xl:p-6 h-full">
+    <div className={layoutClass}>
+      <main className="grid min-h-0 grid-rows-[minmax(0,1fr)_auto] gap-5 xl:gap-6">
         <TimerContainer />
-      </div>
+        <PomodoroMetrics />
+      </main>
+      <aside className="surface-card flex h-full min-h-0 flex-col overflow-hidden rounded-xl">
+        <TaskList showHeader headerTitle="Focus Queue" />
+      </aside>
     </div>
   );
 };

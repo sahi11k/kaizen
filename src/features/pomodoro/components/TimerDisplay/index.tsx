@@ -8,6 +8,7 @@ const { POMODORO_TAB } = TIMER_CONSTANTS;
 interface CurrentTask {
   completedSessions: number;
   title: string;
+  totalSessions: number;
 }
 
 interface TimerDisplayProps {
@@ -26,18 +27,18 @@ const TimerDisplay = ({
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <div className="w-full max-w-120 flex flex-col items-center gap-2">
+    <div className="w-full max-w-lg flex flex-col items-center gap-1">
       <SessionBadge
         isPomodoro={currentTab === POMODORO_TAB}
         currentTask={currentTask}
         className="w-full"
       />
-      <div className="flex items-center justify-center text-[clamp(100px,16vw,160px)] font-semibold">
+      <div className="font-number flex items-center justify-center text-[clamp(100px,16vw,180px)] tracking-tight">
         {minutes}
-        <span className="mx-1 -mt-2">:</span>
+        <span className="-mt-4">:</span>
         {seconds}
       </div>
-      <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+      <div className="w-full h-2 rounded-full bg-[#262626] overflow-hidden">
         <div
           style={{
             width: `${duration > 0 ? ((duration - timerValue) / duration) * 100 : 0}%`,

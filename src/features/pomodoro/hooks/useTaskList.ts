@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CREATE, EDIT, queryKeys } from "@/shared/constants";
 import { arraysEqual } from "@/shared/lib/utils";
 import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
@@ -14,7 +14,12 @@ import { getCurrentTime } from "@/features/pomodoro/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { Toast } from "@/shared/ui";
 import { MIN_SESSIONS } from "@/features/pomodoro/constants";
-import { DefaultTask, Task } from "@/features/pomodoro/types";
+import type { Task } from "@/features/pomodoro/types";
+import {
+  buildCreateTaskPayload,
+  buildUpdateTaskPayload,
+  getTaskGroups,
+} from "@/features/pomodoro/components/TaskList/utils";
 
 const { toast } = Toast;
 
@@ -25,22 +30,9 @@ const DEFAULT_FORM_VALUES = {
   category: "others",
 };
 
-const DEFAULT_TITLE = "Untitled Task";
-
 interface UseTaskListOptions {
   onItemClick?: () => void;
 }
-
-const normalizeSessionGoal = (value: unknown) => {
-  const parsedValue =
-    typeof value === "number" ? value : parseInt(String(value), 10);
-
-  if (!Number.isFinite(parsedValue) || parsedValue < MIN_SESSIONS) {
-    return MIN_SESSIONS;
-  }
-
-  return Math.floor(parsedValue);
-};
 
 export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
   const [showModal, setShowModal] = useState(false);
@@ -48,38 +40,36 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
   const [formValues, setFormValues] =
     useState<Record<string, unknown>>(DEFAULT_FORM_VALUES);
   const [pendingTask, setPendingTask] = useState<Task | null>(null);
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
 
   const currentOrder = useRef<string[]>([]);
 
   const { user } = useAuthStore();
-  const { currentTask, setCurrentTask } = useTasksStore();
+  const userId = user?.id;
+  const { currentTask, createTaskRequestId, setCurrentTask } = useTasksStore();
   const queryClient = useQueryClient();
+  const lastCreateTaskRequestId = useRef(createTaskRequestId);
 
-  const { data: tasks = [], isLoading } = useTasksQuery(user?.id);
+  const { data: tasks = [], isLoading } = useTasksQuery(userId);
 
   const createTaskMutation = useCreateTaskMutation();
   const updateTaskMutation = useUpdateTaskMutation();
   const deleteTaskMutation = useDeleteTaskMutation();
   const sortTasksMutation = useSortTasksMutation();
 
-  const addTask = () => {
-    const title = formValues.title as string;
-    const { title: _, ...rest } = formValues;
+  const handleCancel = useCallback(() => {
+    setShowModal(false);
+    setFormValues({ ...DEFAULT_FORM_VALUES });
+    setMode(CREATE);
+  }, []);
 
+  const addTask = useCallback(() => {
     const maxRank =
       tasks.length > 0 ? Math.max(...tasks.map((task: any) => task.rank)) : 0;
-
-    const task = {
-      ...rest,
-      completed: false,
-      completedSessions: 0,
-      totalSessions: normalizeSessionGoal(rest.totalSessions),
-      rank: maxRank + 1,
-      title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
-    } as unknown as DefaultTask;
+    const task = buildCreateTaskPayload(formValues, maxRank + 1);
 
     createTaskMutation.mutate(
-      { payload: task, userId: user.id },
+      { payload: task, userId },
       {
         onSuccess: () => {
           toast.success("Task Created");
@@ -90,18 +80,13 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
         },
       },
     );
-  };
+  }, [createTaskMutation, formValues, handleCancel, tasks, userId]);
 
-  const editTask = () => {
-    const title = formValues.title as string;
-    const task = {
-      ...formValues,
-      totalSessions: normalizeSessionGoal(formValues.totalSessions),
-      title: !title || title.trim().length <= 0 ? DEFAULT_TITLE : title,
-    } as Task;
+  const editTask = useCallback(() => {
+    const task = buildUpdateTaskPayload(formValues);
 
     updateTaskMutation.mutate(
-      { payload: task, userId: user.id },
+      { payload: task, userId },
       {
         onSuccess: (res: any) => {
           const updatedTask = res.data?.[0];
@@ -116,30 +101,47 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
         },
       },
     );
-  };
+  }, [
+    currentTask?.id,
+    formValues,
+    handleCancel,
+    setCurrentTask,
+    updateTaskMutation,
+    userId,
+  ]);
 
-  const formSubmitHandler = () => {
+  const formSubmitHandler = useCallback(() => {
     if (mode === CREATE) {
       addTask();
     } else if (mode === EDIT) {
       editTask();
     }
-  };
+  }, [addTask, editTask, mode]);
 
-  const handleCancel = () => {
-    setShowModal(false);
-    setFormValues(DEFAULT_FORM_VALUES);
+  useEffect(() => {
+    if (lastCreateTaskRequestId.current === createTaskRequestId) return;
+
+    lastCreateTaskRequestId.current = createTaskRequestId;
+    setFormValues({ ...DEFAULT_FORM_VALUES });
     setMode(CREATE);
-  };
+    setShowModal(true);
+  }, [createTaskRequestId]);
 
-  const taskRemoveHandler = (taskId: string) => {
+  const taskRemoveHandler = useCallback((task: Task) => {
+    setTaskToDelete(task);
+  }, []);
+
+  const confirmTaskDelete = useCallback(() => {
+    if (!taskToDelete) return;
+
     deleteTaskMutation.mutate(
-      { taskId, userId: user.id },
+      { taskId: taskToDelete.id, userId },
       {
         onSuccess: () => {
-          if (currentTask?.id === taskId) {
+          if (currentTask?.id === taskToDelete.id) {
             setCurrentTask(null);
           }
+          setTaskToDelete(null);
           toast.success("Task Deleted");
         },
         onError: (error: Error) => {
@@ -147,15 +149,21 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
         },
       },
     );
-  };
+  }, [currentTask?.id, deleteTaskMutation, setCurrentTask, taskToDelete, userId]);
 
-  const taskCompleteHandler = (taskId: string) => {
+  const cancelTaskDelete = useCallback(() => {
+    if (deleteTaskMutation.isPending) return;
+    setTaskToDelete(null);
+  }, [deleteTaskMutation.isPending]);
+
+  const taskCompleteHandler = useCallback((taskId: string) => {
     const task = tasks.find((t: any) => t.id === taskId);
+    if (!task) return;
 
     updateTaskMutation.mutate(
       {
         payload: { ...task, completed: !task.completed } as Task,
-        userId: user.id,
+        userId,
       },
       {
         onSuccess: () => {
@@ -166,22 +174,22 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
         },
       },
     );
-  };
+  }, [tasks, updateTaskMutation, userId]);
 
-  const taskEditHandler = (task: any) => {
+  const taskEditHandler = useCallback((task: Task) => {
     setShowModal(true);
     setFormValues(task);
     setMode(EDIT);
-  };
+  }, []);
 
-  const taskDragHandler = (updatedTasks: any[]) => {
+  const taskDragHandler = useCallback((updatedTasks: Task[]) => {
     const newOrder = updatedTasks.map((task) => task.id);
     if (arraysEqual(newOrder, currentOrder.current)) {
       return;
     }
 
     sortTasksMutation.mutate(
-      { payload: updatedTasks, userId: user.id },
+      { payload: updatedTasks, userId },
       {
         onSuccess: () => {
           currentOrder.current = newOrder;
@@ -192,14 +200,10 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
         },
       },
     );
-  };
+  }, [sortTasksMutation, userId]);
 
-  const pendingTasks = useMemo(
-    () => tasks.filter((task: any) => !task.completed),
-    [tasks],
-  );
-  const completedTasks = useMemo(
-    () => tasks.filter((task: any) => task.completed),
+  const { pendingTasks, completedTasks } = useMemo(
+    () => getTaskGroups(tasks as Task[]),
     [tasks],
   );
 
@@ -209,7 +213,7 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
     }
   }, [pendingTasks, currentTask, setCurrentTask]);
 
-  const handleTaskClick = (task: any) => {
+  const handleTaskClick = useCallback((task: Task) => {
     if (currentTask?.id === task.id) return;
 
     const { timerStarted } = useTimerStore.getState();
@@ -222,13 +226,13 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
     if (typeof onItemClick === "function") {
       onItemClick();
     }
-  };
+  }, [currentTask?.id, onItemClick, setCurrentTask]);
 
-  const confirmTaskSwitch = () => {
+  const confirmTaskSwitch = useCallback(() => {
     if (!pendingTask) return;
     const { currentTab } = useTimerStore.getState();
     const userSettings = queryClient.getQueryData(
-      queryKeys.userSettings.all(user?.id),
+      queryKeys.userSettings.all(userId),
     );
     const value = getCurrentTime(currentTab, userSettings);
     useTimerStore.getState().resetTimer(value);
@@ -237,11 +241,11 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
       onItemClick();
     }
     setPendingTask(null);
-  };
+  }, [onItemClick, pendingTask, queryClient, setCurrentTask, userId]);
 
-  const cancelTaskSwitch = () => {
+  const cancelTaskSwitch = useCallback(() => {
     setPendingTask(null);
-  };
+  }, []);
 
   const isEmpty = tasks.length === 0 && !showModal;
 
@@ -267,5 +271,9 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
     pendingTask,
     confirmTaskSwitch,
     cancelTaskSwitch,
+    taskToDelete,
+    confirmTaskDelete,
+    cancelTaskDelete,
+    isDeletingTask: deleteTaskMutation.isPending,
   };
 }

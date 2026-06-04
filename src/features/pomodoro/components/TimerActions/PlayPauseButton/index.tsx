@@ -1,6 +1,7 @@
 import React from "react";
 import { Play, Square } from "lucide-react";
 import { Button } from "@/shared/ui";
+import { cn } from "@/shared/lib/utils";
 
 interface PlayPauseButtonProps {
   timerStarted: boolean;
@@ -14,7 +15,7 @@ const PlayPauseButton = ({
   timerStarted,
   onStart,
   onStop,
-  className = "!h-16 !min-w-16 sm:!px-8 text-base",
+  className = "h-16 min-w-16 text-base sm:px-8",
   showLabel = true,
 }: PlayPauseButtonProps): React.ReactNode => (
   <Button
@@ -26,7 +27,7 @@ const PlayPauseButton = ({
         <Play className="size-4" fill="currentColor" />
       )
     }
-    className={`rounded-full ${className}`}
+    className={cn("rounded-full", className)}
   >
     {showLabel && (
       <span className="hidden sm:block">

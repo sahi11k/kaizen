@@ -6,7 +6,7 @@ import { MobileTabLayout } from "@/app/layouts";
 import { useTimerStore } from "@/features/pomodoro/store";
 import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import { List } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const TASKS_TAB = "tasks";
 const FOCUS_TAB = "focus";
@@ -14,6 +14,13 @@ const FOCUS_TAB = "focus";
 const PomodoroMobile = () => {
   const [currentTab, setCurrentTab] = useState(TASKS_TAB);
   const [pendingTab, setPendingTab] = useState(null);
+  const timerStarted = useTimerStore((s) => s.timerStarted);
+
+  useEffect(() => {
+    if (timerStarted) {
+      setCurrentTab(FOCUS_TAB);
+    }
+  }, [timerStarted]);
 
   const onItemClick = useCallback(() => {
     setCurrentTab(FOCUS_TAB);
