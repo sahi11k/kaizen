@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router";
-import { Logo } from "@/shared/ui";
+import { Logo, Tooltip } from "@/shared/ui";
 import { SIDEBAR_LINKS } from "@/features/dashboard/constants";
 
-const SidebarContent = ({ setOpen, isMobile = false }) => {
+const SidebarContent = ({ setOpen, isMobile = false, isCollapsed = false }) => {
   return (
     <>
       <div className="h-16 flex justify-between items-center">
@@ -20,6 +20,7 @@ const SidebarContent = ({ setOpen, isMobile = false }) => {
             key={link.to}
             setOpen={setOpen}
             isMobile={isMobile}
+            isCollapsed={isCollapsed}
             {...link}
           />
         ))}
@@ -28,26 +29,47 @@ const SidebarContent = ({ setOpen, isMobile = false }) => {
   );
 };
 
-const LinkItem = ({ to, label, Icon, IconFilled, setOpen, isMobile }) => {
+const LinkItem = ({
+  to,
+  label,
+  Icon,
+  IconFilled,
+  setOpen,
+  isMobile,
+  isCollapsed,
+}) => {
   const location = useLocation();
-  const isActive = location.pathname === to;
+  const isActive =
+    to === "/dashboard"
+      ? location.pathname === to
+      : location.pathname === to || location.pathname.startsWith(`${to}/`);
   const ActiveIcon = isActive ? IconFilled : Icon;
-  return (
-    <Link to={to} key={to}>
+  const link = (
+    <Link to={to} key={to} aria-label={isCollapsed ? label : undefined}>
       <li
-        className={`p-2 rounded-lg hover:bg-muted font-medium flex items-center gap-2 ${
+        className={`p-2 rounded-lg font-medium flex items-center gap-2 ${
           isActive
-            ? "bg-primary-container text-primary-container-foreground hover:!bg-primary-container"
-            : "text-muted-foreground"
+            ? "bg-sidebar-active text-sidebar-active-foreground hover:bg-sidebar-active"
+            : "text-sidebar-muted-foreground hover:bg-sidebar-hover hover:text-sidebar-hover-foreground"
         }`}
         onClick={() => isMobile && setOpen((prev) => !prev)}
       >
         <span>
           <ActiveIcon fill="currentColor" />
         </span>
-        <span className="whitespace-nowrap">{label}</span>
+        {!isCollapsed && <span className="whitespace-nowrap">{label}</span>}
       </li>
     </Link>
+  );
+
+  if (!isCollapsed) {
+    return link;
+  }
+
+  return (
+    <Tooltip content={label} side="right" sideOffset={12} level="header">
+      {link}
+    </Tooltip>
   );
 };
 

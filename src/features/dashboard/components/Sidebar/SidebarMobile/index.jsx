@@ -45,12 +45,15 @@ const SidebarMobile = () => {
         </DrawerTitle>
       </DrawerHeader>
 
-      <DrawerContent className="!w-72 border-border">
+      <DrawerContent className="!w-72 border-r-[0.5px] border-sidebar-border bg-sidebar font-heading text-sidebar-foreground">
         <aside className="px-6 flex flex-col space-y-6 h-full">
           <SidebarContent setOpen={setOpen} isMobile={true} />
         </aside>
         <DrawerClose className="absolute top-2 right-4" asChild>
-          <Button variant="icon" className="-mr-2 w-12 !h-12">
+          <Button
+            variant="icon"
+            className="-mr-2 w-12 !h-12 text-sidebar-control hover:bg-sidebar-hover hover:text-sidebar-hover-foreground"
+          >
             <PanelLeftClose />
           </Button>
         </DrawerClose>
