@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import { useAuthStore } from "@/features/auth";
-import useJournalsStore from "@/features/journals/store";
 import {
   extractImageSrcsFromJson,
   getWordCount,
@@ -40,12 +39,11 @@ function getAutosaveUiState({
   return { showSaveStatus, saveStatus };
 }
 
-export function useJournalPersistence() {
+export function useJournalPersistence(journal, { onNewJournalSaved } = {}) {
   const { user } = useAuthStore();
-  const { currentJournal, setUnsavedJournal } = useJournalsStore();
   const [journalDate, setJournalDate] = useState(new Date());
   const [journalTitle, setJournalTitle] = useState("");
-  const currentJournalRef = useRef(currentJournal);
+  const journalRef = useRef(journal);
   const lastContentJsonRef = useRef("");
   const lastBodyJsonRef = useRef("");
   const journalTitleRef = useRef("");
@@ -54,7 +52,7 @@ export function useJournalPersistence() {
   /** Tracks the set of image src URLs present in the last-known body content. */
   const trackedImageSrcsRef = useRef(new Set());
 
-  currentJournalRef.current = currentJournal;
+  journalRef.current = journal;
   journalDateRef.current = journalDate;
 
   const {
@@ -65,29 +63,29 @@ export function useJournalPersistence() {
 
   const journalParts = useMemo(
     () =>
-      journalLoadPartsFromRecord(currentJournal, {
+      journalLoadPartsFromRecord(journal, {
         defaultBackendTitle: JOURNAL_DEFAULT_BACKEND_TITLE,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reload parts when id/title/content change, not whole object identity
-    [currentJournal?.id, currentJournal?.title, currentJournal?.content],
+    [journal?.id, journal?.title, journal?.content],
   );
 
   useEffect(() => {
-    if (currentJournal) {
+    if (journal) {
       setJournalDate(
-        currentJournal.date ? new Date(currentJournal.date) : new Date(),
+        journal.date ? new Date(journal.date) : new Date(),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only when switching journal entry
-  }, [currentJournal?.id]);
+  }, [journal?.id]);
 
   /* Reset title + body refs only when switching entries (not after each autosave). */
   useLayoutEffect(() => {
-    if (!currentJournal) {
+    if (!journal) {
       lastResetEntryIdRef.current = undefined;
       return;
     }
-    const id = currentJournal.id;
+    const id = journal.id;
     if (lastResetEntryIdRef.current === id) return;
     lastResetEntryIdRef.current = id;
     const { bodyForEditor, titleForField } = journalParts;
@@ -98,23 +96,26 @@ export function useJournalPersistence() {
     setJournalTitle(titleForField);
     trackedImageSrcsRef.current = extractImageSrcsFromJson(bodyJson);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `journalParts` tracks content/title; `id` gates applying resets to the active entry only
-  }, [currentJournal?.id, journalParts]);
+  }, [journal?.id, journalParts]);
 
   const persistJournal = useCallback(
     (overrides) => {
-      const journal = currentJournalRef.current;
-      if (!journal || !user?.id) return;
-      const isNewJournal = !journal.createdAt;
+      const activeJournal = journalRef.current;
+      if (!activeJournal || !user?.id) return;
+      const isNewJournal = !activeJournal.createdAt;
       saveJournal(
-        { payload: { ...journal, ...overrides }, userId: user.id },
+        { payload: { ...activeJournal, ...overrides }, userId: user.id },
         {
-          onSuccess: () => {
-            if (isNewJournal) setUnsavedJournal(null);
+          onSuccess: (data) => {
+            const savedJournal = data?.[0];
+            if (isNewJournal && savedJournal) {
+              onNewJournalSaved?.(savedJournal);
+            }
           },
         },
       );
     },
-    [saveJournal, setUnsavedJournal, user?.id],
+    [onNewJournalSaved, saveJournal, user?.id],
   );
 
   const debouncedPersist = useMemo(
@@ -200,7 +201,7 @@ export function useJournalPersistence() {
     [persistMergedFromParts],
   );
 
-  const lastSavedAt = currentJournal?.updatedAt ?? currentJournal?.createdAt;
+  const lastSavedAt = journal?.updatedAt ?? journal?.createdAt;
   const { showSaveStatus, saveStatus } = getAutosaveUiState({
     isSaveError,
     isSavePending,

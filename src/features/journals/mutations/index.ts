@@ -1,5 +1,4 @@
 import { deleteJournal, saveJournal } from "@/features/journals/apis";
-import useJournalsStore from "@/features/journals/store";
 import { DefaultJournalState, Journal } from "@/features/journals/types";
 import { queryKeys } from "@/shared/constants";
 import { deleteById, upsertById } from "@/shared/lib/utils";
@@ -37,11 +36,13 @@ export const useSaveJournalMutation = () => {
         queryKeys.journals.all(variables.userId),
         (old) => upsertById(old, updatedJournal),
       );
-
-      const { currentJournal, setCurrentJournal } = useJournalsStore.getState();
-      if (currentJournal?.id === updatedJournal.id) {
-        setCurrentJournal({ ...currentJournal, ...updatedJournal });
-      }
+      queryClient.setQueryData<Journal>(
+        queryKeys.journals.detail(variables.userId, updatedJournal.id),
+        updatedJournal,
+      );
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.journals.list(variables.userId),
+      });
     },
     onError: (error: Error, variables) => {
       logJournalMutationError("useSaveJournalMutation", error, variables);
@@ -60,6 +61,15 @@ export const useDeleteJournalMutation = () => {
         queryKeys.journals.all(variables.userId),
         (old) => deleteById(old ?? [], variables.journalId),
       );
+      queryClient.removeQueries({
+        queryKey: queryKeys.journals.detail(
+          variables.userId,
+          variables.journalId,
+        ),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.journals.list(variables.userId),
+      });
     },
     onError: (error: Error, variables) => {
       logJournalMutationError("useDeleteJournalMutation", error, variables);

@@ -137,6 +137,7 @@ export function ColorHighlightPopover({
   hideWhenUnavailable = false,
   useColorValue = false,
   onApplied,
+  children,
   ...props
 }) {
   const { editor } = useTiptapEditor(providedEditor)
@@ -161,7 +162,7 @@ export function ColorHighlightPopover({
           aria-label={label}
           tooltip={label}
           {...props}>
-          <Icon className="tiptap-button-icon" />
+          {children ?? <Icon className="tiptap-button-icon" />}
         </ColorHighlightPopoverButton>
       </PopoverTrigger>
       <PopoverContent aria-label="Highlight colors">

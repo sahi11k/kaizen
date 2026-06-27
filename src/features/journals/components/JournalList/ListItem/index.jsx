@@ -6,13 +6,17 @@ import { MoreOptions } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer px-3 py-2 rounded-lg transition-colors bg-background";
-const hover = "hover:bg-muted";
-const activeClass =
-  "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground";
+  "group flex min-h-36 cursor-pointer items-stretch gap-4 rounded-lg border border-border/70 bg-background p-4 transition-colors md:gap-5 md:p-5";
+const hover = "hover:border-primary-soft/80 hover:bg-muted/40";
 
-const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
-  const { title, date, content } = journal;
+const JournalListItem = ({
+  journal,
+  onClick,
+  onRemove,
+  onEdit,
+  isFirstInSection = false,
+}) => {
+  const { title, date, content, wordCount } = journal;
   const preview = getJournalPlainText(content);
   const legacyTitle = title?.trim?.() ? String(title).trim() : "";
   const displayTitle =
@@ -20,6 +24,7 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
       ? legacyTitle
       : "";
   const primaryLine = displayTitle || JOURNAL_DEFAULT_BACKEND_TITLE;
+  const wordsLabel = `${Number(wordCount) || 0} words`;
 
   const onKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " " || e.code === "Space") {
@@ -30,39 +35,39 @@ const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
 
   return (
     <li
-      className={cn(base, hover, { [activeClass]: isActive })}
+      className={cn(base, hover, isFirstInSection && "rounded-t-none")}
       onClick={onClick}
       onKeyDown={onKeyDown}
       role="option"
-      aria-selected={isActive}
       tabIndex={0}
     >
-      <div className="flex flex-col gap-1 xl:gap-0.5 items-center shrink-0">
-        <span className="text-lg xl:text-xl leading-tight">
+      <div className="flex size-14 shrink-0 flex-col items-center justify-center rounded-full bg-muted/70 text-foreground md:size-16">
+        <span className="font-number text-xl font-semibold leading-tight md:text-2xl">
           {getDayOfMonth(date)}
         </span>
-        <span className="text-xs font-medium uppercase tracking-wide">
+        <span className="text-xs font-medium uppercase text-muted-foreground">
           {getDayOfWeek(date)}
         </span>
       </div>
-      <div className="flex-1 w-0 flex flex-col">
-        <div className="text-base font-semibold truncate">{primaryLine}</div>
-        {preview ? (
-          <div
-            className={cn(
-              "text-[13px] tracking-wide line-clamp-1",
-              !isActive && "text-muted-foreground",
-            )}
-          >
-            {preview}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="min-w-0 max-w-3xl pr-8">
+          <div className="truncate text-lg font-semibold leading-snug md:text-xl">
+            {primaryLine}
           </div>
-        ) : null}
+          {preview ? (
+            <div className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground md:text-base">
+              {preview}
+            </div>
+          ) : null}
+        </div>
+        <div className="mt-auto pt-4 text-xs font-medium text-muted-foreground md:text-sm">
+          {wordsLabel}
+        </div>
       </div>
 
       <MoreOptions
-        triggerClassName="!p-0 w-0 overflow-hidden group-hover:w-auto data-[state=open]:w-auto hover:bg-transparent"
-        contentClassName="border-border"
         align="end"
+        triggerClassName="hover:!bg-transparent hover:text-primary"
         items={[
           { label: "Edit", onClick: onEdit },
           {

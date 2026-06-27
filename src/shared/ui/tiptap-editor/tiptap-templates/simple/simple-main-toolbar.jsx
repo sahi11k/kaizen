@@ -12,7 +12,10 @@ import {
   ColorHighlightPopover,
   ColorHighlightPopoverButton,
 } from "@/shared/ui/tiptap-editor/tiptap-ui/color-highlight-popover";
-import { LinkPopover, LinkButton } from "@/shared/ui/tiptap-editor/tiptap-ui/link-popover";
+import {
+  LinkPopover,
+  LinkButton,
+} from "@/shared/ui/tiptap-editor/tiptap-ui/link-popover";
 import { MarkButton } from "@/shared/ui/tiptap-editor/tiptap-ui/mark-button";
 import { TextAlignButton } from "@/shared/ui/tiptap-editor/tiptap-ui/text-align-button";
 import { UndoRedoButton } from "@/shared/ui/tiptap-editor/tiptap-ui/undo-redo-button";
@@ -25,6 +28,65 @@ export function MainToolbarContent({
   showThemeToggle,
   isJournal,
 }) {
+  if (isJournal) {
+    return (
+      <>
+        <ToolbarGroup>
+          <UndoRedoButton action="undo" />
+          <UndoRedoButton action="redo" />
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <HeadingDropdownMenu modal={false} levels={[1, 2, 3, 4]} />
+          <ListDropdownMenu
+            modal={false}
+            types={["bulletList", "orderedList", "taskList"]}
+          />
+          <BlockquoteButton />
+          <CodeBlockButton />
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <MarkButton type="bold" />
+          <MarkButton type="italic" />
+          <MarkButton type="strike" />
+          <MarkButton type="code" />
+          <MarkButton type="underline" />
+          {!isMobile ? (
+            <ColorHighlightPopover />
+          ) : (
+            <ColorHighlightPopoverButton onClick={onHighlighterClick} />
+          )}
+          {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <MarkButton type="superscript" />
+          <MarkButton type="subscript" />
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <TextAlignButton align="left" />
+          <TextAlignButton align="center" />
+          <TextAlignButton align="right" />
+          <TextAlignButton align="justify" />
+        </ToolbarGroup>
+        <ToolbarSeparator />
+        <ToolbarGroup>
+          <ImageUploadButton text="Add" />
+        </ToolbarGroup>
+        {showThemeToggle ? (
+          <>
+            <ToolbarSeparator />
+            <ToolbarGroup>
+              <ThemeToggle />
+            </ToolbarGroup>
+          </>
+        ) : null}
+      </>
+    );
+  }
+
   return (
     <>
       {!isJournal ? <Spacer /> : null}

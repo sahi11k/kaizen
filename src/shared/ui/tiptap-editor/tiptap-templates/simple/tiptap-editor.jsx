@@ -50,6 +50,14 @@ import demoContent from "@/shared/ui/tiptap-editor/tiptap-templates/simple/data/
 import { MainToolbarContent } from "@/shared/ui/tiptap-editor/tiptap-templates/simple/simple-main-toolbar";
 import { MobileToolbarContent } from "@/shared/ui/tiptap-editor/tiptap-templates/simple/simple-mobile-toolbar";
 
+const ExclusiveSuperscript = Superscript.extend({
+  excludes: "subscript code",
+});
+
+const ExclusiveSubscript = Subscript.extend({
+  excludes: "superscript code",
+});
+
 /**
  * @param {object} [props]
  * @param {string} [props.journalId] - When set with initialContent + onPersistentUpdate, enables journal autosave mode.
@@ -105,8 +113,8 @@ export function TipTapEditor({
         Highlight.configure({ multicolor: true }),
         ImageNode,
         Typography,
-        Superscript,
-        Subscript,
+        ExclusiveSuperscript,
+        ExclusiveSubscript,
         Selection,
         ImageUploadNode.configure({
           accept: isJournal
@@ -137,15 +145,12 @@ export function TipTapEditor({
     isJournal ? [journalId] : [],
   );
 
-  const toolbarHeight =
-    toolbarRef.current?.getBoundingClientRect().height ?? 0;
-  /* Tab bar (64px) + extra lift (0.75rem) — keep in sync with simple-editor.scss --tt-mobile-tab-clearance. */
-  const mobileTabBarOverlayPx =
-    isJournal && isMobile ? 64 + 12 : 0;
+  const toolbarHeight = toolbarRef.current?.getBoundingClientRect().height ?? 0;
+  const mobileJournalToolbarLiftPx = isJournal && isMobile ? 12 : 0;
 
   const rect = useCursorVisibility({
     editor,
-    overlayHeight: toolbarHeight + mobileTabBarOverlayPx,
+    overlayHeight: toolbarHeight + mobileJournalToolbarLiftPx,
   });
 
   useEffect(() => {
@@ -153,6 +158,44 @@ export function TipTapEditor({
       setMobileView("main");
     }
   }, [isMobile, mobileView]);
+
+  const toolbar = (
+    <Toolbar
+      ref={toolbarRef}
+      style={{
+        ...(isMobile && isJournal
+          ? {
+              position: "fixed",
+              /* Override sticky `top: 0` from toolbar.scss — without this, `top` + `bottom` stretch the bar full viewport height. */
+              top: "auto",
+              bottom: "var(--tt-mobile-tab-clearance, 0px)",
+              left: "var(--tt-journal-toolbar-inline, 1rem)",
+              right: "auto",
+              zIndex: 65,
+            }
+          : isMobile
+            ? {
+                bottom: `calc(100% - ${height - rect.y}px + var(--tt-mobile-tab-clearance, 0px))`,
+              }
+            : {}),
+      }}
+    >
+      {mobileView === "main" ? (
+        <MainToolbarContent
+          onHighlighterClick={() => setMobileView("highlighter")}
+          onLinkClick={() => setMobileView("link")}
+          isMobile={isMobile}
+          showThemeToggle={isJournal ? showThemeToggle : true}
+          isJournal={isJournal}
+        />
+      ) : (
+        <MobileToolbarContent
+          type={mobileView === "highlighter" ? "highlighter" : "link"}
+          onBack={() => setMobileView("main")}
+        />
+      )}
+    </Toolbar>
+  );
 
   return (
     <div
@@ -162,41 +205,11 @@ export function TipTapEditor({
       )}
     >
       <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={{
-            ...(isMobile && isJournal
-              ? {
-                  position: "fixed",
-                  /* Override sticky `top: 0` from toolbar.scss — without this, `top` + `bottom` stretch the bar full viewport height. */
-                  top: "auto",
-                  bottom: "var(--tt-mobile-tab-clearance, 0px)",
-                  left: "0.75rem",
-                  right: "0.75rem",
-                  zIndex: 65,
-                }
-              : isMobile
-              ? {
-                  bottom: `calc(100% - ${height - rect.y}px + var(--tt-mobile-tab-clearance, 0px))`,
-                }
-              : {}),
-          }}
-        >
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
-              showThemeToggle={isJournal ? showThemeToggle : true}
-              isJournal={isJournal}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-        </Toolbar>
+        {isJournal ? (
+          <div className="simple-editor-journal-toolbar-shell">{toolbar}</div>
+        ) : (
+          toolbar
+        )}
 
         <EditorContent
           editor={editor}

@@ -43,7 +43,12 @@ export function canToggleMark(editor, type) {
   if (!isMarkInSchema(type, editor) || isNodeTypeSelected(editor, ["image"]))
     return false
 
-  return editor.can().toggleMark(type);
+  try {
+    return editor.can().toggleMark(type);
+  } catch (error) {
+    console.error(`Failed to check ${type} mark availability:`, error)
+    return false
+  }
 }
 
 /**
@@ -59,9 +64,15 @@ export function isMarkActive(editor, type) {
  */
 export function toggleMark(editor, type) {
   if (!editor || !editor.isEditable) return false
-  if (!canToggleMark(editor, type)) return false
 
-  return editor.chain().focus().toggleMark(type).run();
+  try {
+    if (!canToggleMark(editor, type)) return false
+
+    return editor.chain().focus().toggleMark(type).run();
+  } catch (error) {
+    console.error(`Failed to toggle ${type} mark:`, error)
+    return false
+  }
 }
 
 /**

@@ -10,6 +10,7 @@ import {
   JOURNAL_IMAGES_STORAGE_BUCKET,
   JOURNAL_IMAGE_MIME_TO_EXT,
   JOURNAL_IMAGE_SIGNED_URL_EXPIRY_SEC,
+  JOURNAL_LIST_PAGE_SIZE,
   JOURNAL_STORAGE_SIGNED_URL_PATH_REGEX,
 } from "@/features/journals/constants";
 
@@ -86,6 +87,47 @@ export const fetchJournals = async (userId) => {
 
   const res = parseApiResponse({ response });
   return transformJournalsFromDb(res.data ?? []);
+};
+
+export const fetchJournalsPage = async (
+  userId,
+  pageParam = 0,
+  limit = JOURNAL_LIST_PAGE_SIZE,
+) => {
+  const response = await supabase
+    .from(SUPABASE_TABLES.JOURNALS)
+    .select("*")
+    .eq("created_by", userId)
+    .order("date", { ascending: false })
+    .order("created_at", { ascending: false })
+    .range(pageParam, pageParam + limit);
+
+  const res = parseApiResponse({ response });
+  const journals = transformJournalsFromDb(res.data ?? []);
+  const hasMore = journals.length > limit;
+
+  return {
+    journals: journals.slice(0, limit),
+    nextPageParam: hasMore ? pageParam + limit : undefined,
+  };
+};
+
+export const fetchJournalById = async (journalId, userId) => {
+  if (!userId) throw new ApiError("User authentication required");
+  if (!journalId) throw new ApiError("Journal ID required");
+
+  const response = await supabase
+    .from(SUPABASE_TABLES.JOURNALS)
+    .select("*")
+    .eq("id", journalId)
+    .eq("created_by", userId)
+    .maybeSingle();
+
+  const res = parseApiResponse({
+    response,
+    errorMessage: "Journal not found or you don't have permission to view it",
+  });
+  return transformJournalsFromDb(res.data ? [res.data] : [])[0] ?? null;
 };
 
 export const deleteJournal = async (journalId, userId) => {

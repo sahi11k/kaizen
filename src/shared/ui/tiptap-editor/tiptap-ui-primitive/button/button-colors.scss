@@ -139,90 +139,90 @@
       --------------------------- GHOST BUTTON --------------------------
       ---------------------------------------------------------------- */
 
-  /* Match dashboard sidebar LinkItem: muted + hover:bg-muted; active: primary-container + foreground */
+  /* Match dashboard sidebar LinkItem: muted + hover:bg-muted; active: primary-soft + foreground */
   &[data-style="ghost"] {
     --tt-button-default-bg-color: var(--transparent);
     --tt-button-hover-bg-color: var(--muted);
-    --tt-button-active-bg-color: var(--primary-container);
-    --tt-button-active-bg-color-emphasized: var(--primary-container);
+    --tt-button-active-bg-color: var(--primary-soft);
+    --tt-button-active-bg-color-emphasized: var(--primary-soft);
     --tt-button-active-bg-color-subdued: var(--muted);
-    --tt-button-active-hover-bg-color: var(--primary-container);
-    --tt-button-active-hover-bg-color-emphasized: var(--primary-container);
+    --tt-button-active-hover-bg-color: var(--primary-soft);
+    --tt-button-active-hover-bg-color-emphasized: var(--primary-soft);
     --tt-button-active-hover-bg-color-subdued: var(--muted);
     --tt-button-disabled-bg-color: var(--transparent);
 
     .dark & {
       --tt-button-default-bg-color: var(--transparent);
       --tt-button-hover-bg-color: var(--muted);
-      --tt-button-active-bg-color: var(--primary-container);
-      --tt-button-active-bg-color-emphasized: var(--primary-container);
+      --tt-button-active-bg-color: var(--primary-soft);
+      --tt-button-active-bg-color-emphasized: var(--primary-soft);
       --tt-button-active-bg-color-subdued: var(--muted);
-      --tt-button-active-hover-bg-color: var(--primary-container);
-      --tt-button-active-hover-bg-color-emphasized: var(--primary-container);
+      --tt-button-active-hover-bg-color: var(--primary-soft);
+      --tt-button-active-hover-bg-color-emphasized: var(--primary-soft);
       --tt-button-active-hover-bg-color-subdued: var(--muted);
       --tt-button-disabled-bg-color: var(--transparent);
     }
 
     --tt-button-default-text-color: var(--muted-foreground);
     --tt-button-hover-text-color: var(--muted-foreground);
-    --tt-button-active-text-color: var(--primary-container-foreground);
-    --tt-button-active-text-color-emphasized: var(--primary-container-foreground);
+    --tt-button-active-text-color: var(--primary-soft-foreground);
+    --tt-button-active-text-color-emphasized: var(--primary-soft-foreground);
     --tt-button-active-text-color-subdued: var(--muted-foreground);
     --tt-button-disabled-text-color: var(--muted-foreground);
 
     .dark & {
       --tt-button-default-text-color: var(--muted-foreground);
       --tt-button-hover-text-color: var(--muted-foreground);
-      --tt-button-active-text-color: var(--primary-container-foreground);
-      --tt-button-active-text-color-emphasized: var(--primary-container-foreground);
+      --tt-button-active-text-color: var(--primary-soft-foreground);
+      --tt-button-active-text-color-emphasized: var(--primary-soft-foreground);
       --tt-button-active-text-color-subdued: var(--muted-foreground);
       --tt-button-disabled-text-color: var(--muted-foreground);
     }
 
     --tt-button-default-icon-color: var(--muted-foreground);
     --tt-button-hover-icon-color: var(--muted-foreground);
-    --tt-button-active-icon-color: var(--primary-container-foreground);
-    --tt-button-active-icon-color-emphasized: var(--primary-container-foreground);
+    --tt-button-active-icon-color: var(--primary-soft-foreground);
+    --tt-button-active-icon-color-emphasized: var(--primary-soft-foreground);
     --tt-button-active-icon-color-subdued: var(--muted-foreground);
     --tt-button-disabled-icon-color: var(--muted-foreground);
 
     .dark & {
       --tt-button-default-icon-color: var(--muted-foreground);
       --tt-button-hover-icon-color: var(--muted-foreground);
-      --tt-button-active-icon-color: var(--primary-container-foreground);
-      --tt-button-active-icon-color-emphasized: var(--primary-container-foreground);
+      --tt-button-active-icon-color: var(--primary-soft-foreground);
+      --tt-button-active-icon-color-emphasized: var(--primary-soft-foreground);
       --tt-button-active-icon-color-subdued: var(--muted-foreground);
       --tt-button-disabled-icon-color: var(--muted-foreground);
     }
 
     --tt-button-default-icon-sub-color: var(--muted-foreground);
     --tt-button-hover-icon-sub-color: var(--muted-foreground);
-    --tt-button-active-icon-sub-color: var(--primary-container-foreground);
-    --tt-button-active-icon-sub-color-emphasized: var(--primary-container-foreground);
+    --tt-button-active-icon-sub-color: var(--primary-soft-foreground);
+    --tt-button-active-icon-sub-color-emphasized: var(--primary-soft-foreground);
     --tt-button-active-icon-sub-color-subdued: var(--muted-foreground);
     --tt-button-disabled-icon-sub-color: var(--muted-foreground);
 
     .dark & {
       --tt-button-default-icon-sub-color: var(--muted-foreground);
       --tt-button-hover-icon-sub-color: var(--muted-foreground);
-      --tt-button-active-icon-sub-color: var(--primary-container-foreground);
-      --tt-button-active-icon-sub-color-emphasized: var(--primary-container-foreground);
+      --tt-button-active-icon-sub-color: var(--primary-soft-foreground);
+      --tt-button-active-icon-sub-color-emphasized: var(--primary-soft-foreground);
       --tt-button-active-icon-sub-color-subdued: var(--muted-foreground);
       --tt-button-disabled-icon-sub-color: var(--muted-foreground);
     }
 
     --tt-button-default-dropdown-arrows-color: var(--muted-foreground);
     --tt-button-hover-dropdown-arrows-color: var(--muted-foreground);
-    --tt-button-active-dropdown-arrows-color: var(--primary-container-foreground);
-    --tt-button-active-dropdown-arrows-color-emphasized: var(--primary-container-foreground);
+    --tt-button-active-dropdown-arrows-color: var(--primary-soft-foreground);
+    --tt-button-active-dropdown-arrows-color-emphasized: var(--primary-soft-foreground);
     --tt-button-active-dropdown-arrows-color-subdued: var(--muted-foreground);
     --tt-button-disabled-dropdown-arrows-color: var(--muted-foreground);
 
     .dark & {
       --tt-button-default-dropdown-arrows-color: var(--muted-foreground);
       --tt-button-hover-dropdown-arrows-color: var(--muted-foreground);
-      --tt-button-active-dropdown-arrows-color: var(--primary-container-foreground);
-      --tt-button-active-dropdown-arrows-color-emphasized: var(--primary-container-foreground);
+      --tt-button-active-dropdown-arrows-color: var(--primary-soft-foreground);
+      --tt-button-active-dropdown-arrows-color-emphasized: var(--primary-soft-foreground);
       --tt-button-active-dropdown-arrows-color-subdued: var(--muted-foreground);
       --tt-button-disabled-dropdown-arrows-color: var(--muted-foreground);
     }
