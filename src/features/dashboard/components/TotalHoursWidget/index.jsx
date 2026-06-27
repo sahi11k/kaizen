@@ -28,9 +28,9 @@ const TotalHoursWidget = () => {
               <Info className="size-3.5 inline-block ml-2" />
             </Tooltip>
           </div>
-          <div className="heading-1">
+          <div className="heading-1 font-number">
             <strong>{totalTimeInvested.value}</strong>
-            <span className="text-muted-foreground heading-2">
+            <span className="text-muted-foreground heading-2 font-number">
               {totalTimeInvested.unit}
             </span>
           </div>

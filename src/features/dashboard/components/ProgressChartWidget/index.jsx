@@ -40,7 +40,7 @@ const ProgressChartWidget = () => {
       className="border-none shadow-none h-full"
       contentClassName="flex-1"
     >
-      {data?.datasets?.length > 0 ? (
+      {data?.datasets?.length > 1110 ? (
         <div className="h-50 md:h-80">
           <Bar data={data} options={options} />
         </div>
@@ -55,7 +55,7 @@ const ProgressChartWidget = () => {
           description="Start your first session to unlock your weekly insights!"
           action={
             <Link to="/dashboard/pomodoro">
-              <Button>Start Session</Button>
+              <Button size="sm">Start Session</Button>
             </Link>
           }
           className="h-80"

@@ -6,13 +6,12 @@ import TCPWidget from "@/features/dashboard/components/TCPWidget";
 import TotalHoursWidget from "@/features/dashboard/components/TotalHoursWidget";
 import TimerOutline from "@/assets/icons/timer-outline.svg?react";
 import TimerFilled from "@/assets/icons/timer-filled.svg?react";
-import JournalOutline from "@/assets/icons/journal-outline.svg?react";
-import JournalFilled from "@/assets/icons/journal-filled.svg?react";
+import JournalOutline from "@/assets/icons/edit-doc-outline.svg?react";
+import JournalFilled from "@/assets/icons/edit-doc-filled.svg?react";
+import BookmarkOutline from "@/assets/icons/bookmark-outline.svg?react";
+import BookmarkFilled from "@/assets/icons/bookmark-filled.svg?react";
 import GridOutline from "@/assets/icons/grid-outline.svg?react";
 import GridFilled from "@/assets/icons/grid-filled.svg?react";
-import CalendarCheckFilled from "@/assets/icons/calendar-check-filled.svg?react";
-import CalendarCheckOutline from "@/assets/icons/calendar-check-outline.svg?react";
-
 export const TCP_CHART = {
   RING_WIDTH_PX: 16,
   SIZE_MOBILE: 216,
@@ -33,16 +32,16 @@ export const SIDEBAR_LINKS = [
     IconFilled: TimerFilled,
   },
   {
-    to: "/dashboard/habits",
-    label: "Habits",
-    Icon: CalendarCheckOutline,
-    IconFilled: CalendarCheckFilled,
-  },
-  {
     to: "/dashboard/journals",
     label: "Journals",
     Icon: JournalOutline,
     IconFilled: JournalFilled,
+  },
+  {
+    to: "/dashboard/bookmarked",
+    label: "Bookmarked",
+    Icon: BookmarkOutline,
+    IconFilled: BookmarkFilled,
   },
 ];
 

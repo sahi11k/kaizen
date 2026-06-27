@@ -34,8 +34,8 @@ export const generatePomodoroChartData = (sessions = []) => {
   });
 
   const styles = getComputedStyle(document.documentElement);
-  const minutesBarColor = styles.getPropertyValue("--teal-700").trim();
-  const sessionsBarColor = styles.getPropertyValue("--teal-200").trim();
+  const minutesBarColor = styles.getPropertyValue("--primary").trim();
+  const sessionsBarColor = styles.getPropertyValue("--muted-foreground").trim();
 
   const data = {
     labels,
