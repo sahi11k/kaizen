@@ -4,11 +4,11 @@ import Home from "@/features/home/pages/Home";
 import Pomodoro from "@/features/pomodoro/pages/Pomodoro";
 import Journal from "@/features/journals/pages/Journal";
 import Settings from "@/features/settings/pages/Settings";
-import Analytics from "@/features/analytics/pages/Analytics";
 import Dashboard from "@/features/dashboard/pages/Dashboard";
 import Login from "@/features/auth/pages/Login";
 import Signup from "@/features/auth/pages/Signup";
 import NotFound from "@/features/home/pages/NotFound";
+import Bookmarked from "@/features/bookmarked/pages/Bookmarked";
 import UpdatePassword from "@/features/auth/pages/UpdatePassword";
 import {
   AuthLayout,
@@ -71,7 +71,23 @@ const router = sentryCreateBrowserRouter([
             path: "/dashboard/journals",
             element: (
               <ProtectedRoute>
-                <Journal />
+                <Journal mode="list" />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/dashboard/journals/new",
+            element: (
+              <ProtectedRoute>
+                <Journal mode="new" />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/dashboard/journals/:journalId",
+            element: (
+              <ProtectedRoute>
+                <Journal mode="detail" />
               </ProtectedRoute>
             ),
           },
@@ -92,10 +108,10 @@ const router = sentryCreateBrowserRouter([
             ),
           },
           {
-            path: "/dashboard/analytics",
+            path: "/dashboard/bookmarked",
             element: (
               <ProtectedRoute>
-                <Analytics />
+                <Bookmarked />
               </ProtectedRoute>
             ),
           },
