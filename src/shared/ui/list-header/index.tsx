@@ -5,6 +5,7 @@ interface ListHeaderButtonProps {
   label: string;
   icon?: React.ReactNode;
   tooltip?: string;
+  showTooltip?: boolean;
   onClick: () => void;
 }
 
@@ -14,18 +15,26 @@ interface ListHeaderProps {
 }
 
 const ListHeader = ({ title, buttonProps }: ListHeaderProps): React.ReactElement => {
+  const button = (
+    <Button
+      icon={buttonProps.icon}
+      size="sm"
+      onClick={buttonProps.onClick}
+    >
+      {buttonProps.label}
+    </Button>
+  );
+
   return (
     <div className="px-4 xl:px-6 mt-4 xl:mt-6 pb-2 xl:pb-4 flex items-center justify-between hidden md:flex">
       <span className="heading-3">{title}</span>
-      <Tooltip content={buttonProps.tooltip ?? buttonProps.label}>
-        <Button
-          icon={buttonProps.icon}
-          size="sm"
-          onClick={buttonProps.onClick}
-        >
-          {buttonProps.label}
-        </Button>
-      </Tooltip>
+      {buttonProps.showTooltip === false ? (
+        button
+      ) : (
+        <Tooltip content={buttonProps.tooltip ?? buttonProps.label}>
+          {button}
+        </Tooltip>
+      )}
     </div>
   );
 };

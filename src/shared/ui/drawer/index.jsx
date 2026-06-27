@@ -24,7 +24,7 @@ function DrawerOverlay({ className, ...props }) {
     <DrawerPrimitive.Overlay
       data-slot="drawer-overlay"
       className={cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-[var(--z-drawer-overlay)] bg-black/50",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-[var(--z-drawer-overlay)] bg-overlay-backdrop",
         className
       )}
       {...props}
@@ -39,7 +39,7 @@ function DrawerContent({ className, children, fullScreen = false, ...props }) {
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "group/drawer-content bg-popover text-popover-foreground fixed z-[var(--z-drawer)] flex h-auto flex-col",
+          "group/drawer-content bg-popover text-popover-foreground border-border fixed z-[var(--z-drawer)] flex h-auto flex-col shadow-[0_12px_32px_var(--overlay-shadow)]",
           "data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-lg data-[vaul-drawer-direction=top]:border-b",
           "data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=bottom]:rounded-t-lg data-[vaul-drawer-direction=bottom]:border-t",
           "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-sm",
@@ -75,7 +75,7 @@ function DrawerFooter({ className, ...props }) {
     <div
       data-slot="drawer-footer"
       className={cn(
-        "mt-auto flex flex-col gap-2 p-4 [&>button:first-child]:bg-popover [&>button:first-child]:text-popover-foreground [&>button:first-child:hover]:bg-accent [&>button:first-child:hover]:text-accent-foreground",
+        "mt-auto flex flex-col gap-2 p-4 [&>button:first-child]:border-border [&>button:first-child]:bg-dropdown-hover [&>button:first-child]:text-foreground [&>button:first-child:hover]:bg-control-inactive [&>button:first-child:hover]:text-foreground",
         className
       )}
       {...props}
@@ -87,7 +87,7 @@ function DrawerTitle({ className, ...props }) {
   return (
     <DrawerPrimitive.Title
       data-slot="drawer-title"
-      className={cn("text-foreground font-semibold", className)}
+      className={cn("heading-3 text-foreground", className)}
       {...props}
     />
   );

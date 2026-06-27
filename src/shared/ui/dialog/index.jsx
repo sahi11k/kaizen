@@ -25,7 +25,7 @@ function DialogOverlay({ className, ...props }) {
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-[var(--z-overlay)] bg-black/70",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-[var(--z-overlay)] bg-overlay-backdrop",
         className,
       )}
       {...props}
@@ -36,7 +36,7 @@ function DialogOverlay({ className, ...props }) {
 function DialogContent({
   className,
   children,
-  showCloseButton = true,
+  showCloseButton = false,
   ...props
 }) {
   return (
@@ -45,7 +45,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-[var(--z-modal)] grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border border-border p-6 shadow-lg shadow-black/10 duration-200 sm:max-w-lg dark:border-neutral-700 dark:shadow-2xl dark:shadow-black/60",
+          "bg-overlay text-overlay-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-[var(--z-modal)] grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border border-overlay-border p-6 shadow-[0_16px_40px_var(--overlay-shadow)] duration-200 sm:max-w-lg",
           className,
         )}
         {...props}
@@ -54,7 +54,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            className="ring-offset-background focus:ring-ring data-[state=open]:bg-muted data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
             <XIcon />
             <span className="sr-only">Close</span>
@@ -80,7 +80,7 @@ function DialogFooter({ className, ...props }) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end [&>button:first-child]:bg-popover [&>button:first-child]:text-popover-foreground [&>button:first-child:hover]:bg-accent [&>button:first-child:hover]:text-accent-foreground",
+        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end [&>button:first-child]:border-overlay-border [&>button:first-child]:bg-overlay-hover [&>button:first-child]:text-overlay-foreground [&>button:first-child:hover]:bg-control-inactive [&>button:first-child:hover]:text-overlay-foreground",
         className,
       )}
       {...props}
@@ -92,7 +92,7 @@ function DialogTitle({ className, ...props }) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn("heading-3 text-foreground", className)}
       {...props}
     />
   );
@@ -115,7 +115,7 @@ function Dialog({
   description,
   children,
   footer,
-  showCloseButton = true,
+  showCloseButton = false,
   className,
   contentClassName,
 }) {

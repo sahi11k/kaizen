@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouteError } from "react-router";
 import * as Sentry from "@sentry/react";
-import ErrorBoundaryIllustration from "@/assets/illustrations/errorBoundary.svg?react";
+import ErrorBoundaryIllustration from "@/assets/illustrations/error-boundary.svg?react";
 
 const reportError = (error, errorInfo) => {
   if (error) {
@@ -33,7 +33,7 @@ const ErrorFallback = () => {
           <div className="flex flex-col items-center justify-center">
             <h2 className="heading-2 text-center">Something went wrong</h2>
             <p className="body-description max-w-lg text-center">
-              Refresh this tab, or try again later if the issue continues.
+              Please refresh the tab or try again later if the issue continues.
             </p>
           </div>
         </div>

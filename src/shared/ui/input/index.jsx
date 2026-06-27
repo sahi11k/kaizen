@@ -4,7 +4,7 @@ import { cn } from "@/shared/lib/utils";
 import { Eye, EyeOff, Minus, Plus } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 
-function Input({ className, type, ...props }) {
+function Input({ className = "", type = "text", ...props }) {
   const isPassword = type === "password";
   const isNumber = type === "number";
 
@@ -31,7 +31,7 @@ function Input({ className, type, ...props }) {
   );
 }
 
-const Password = ({ className, ...props }) => {
+const Password = ({ className = "", ...props }) => {
   const [show, setShow] = React.useState(false);
   return (
     <div className="relative">
@@ -60,7 +60,7 @@ const Password = ({ className, ...props }) => {
 };
 
 const InputNumber = ({
-  className,
+  className = "",
   onChange,
   min,
   max,
@@ -133,14 +133,14 @@ const InputNumber = ({
         onChange={handleChange}
         {...rest}
       />
-      <div className="absolute top-0 bottom-0 right-0 flex my-auto">
+      <div className="absolute inset-y-px right-px flex my-auto">
         <Button
           type="button"
           aria-label="Decrement"
           onClick={handleDecrement}
           disabled={!canDecrement}
           variant="icon"
-          className="w-9 border border-border rounded-none disabled:opacity-50 disabled:bg-accent !h-full"
+          className="w-9 rounded-none border border-border border-y-0 !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
         >
           <Minus />
         </Button>
@@ -150,7 +150,7 @@ const InputNumber = ({
           onClick={handleIncrement}
           disabled={!canIncrement}
           variant="icon"
-          className="w-9 border border-border rounded-l-none border-l-0 rounded-r-md disabled:opacity-50 disabled:bg-accent !h-full"
+          className="w-9 rounded-l-none rounded-r-md border border-y-0 border-l-0 border-border !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
         >
           <Plus />
         </Button>

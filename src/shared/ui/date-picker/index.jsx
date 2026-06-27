@@ -18,6 +18,7 @@ const DatePicker = ({
   defaultDate,
   onDateChange,
   triggerClassName,
+  iconClassName,
   popoverClassName,
   format = "LL",
   showIcon = true,
@@ -64,7 +65,9 @@ const DatePicker = ({
               triggerClassName
             )}
           >
-            {showIcon && <CalendarIcon />}
+            {showIcon && (
+              <CalendarIcon className={cn("size-4 shrink-0", iconClassName)} />
+            )}
             {date ? formatDate(date, format) : <span>Pick a date</span>}
           </Button>
         </PopoverTrigger>
