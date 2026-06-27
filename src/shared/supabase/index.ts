@@ -11,6 +11,5 @@ export const SUPABASE_TABLES = {
   USER_SETTINGS: "user_settings_master",
   TASK_SESSIONS: "task_sessions_master",
   DAILY_MOODS: "daily_moods_master",
-  HABITS: "habits_master",
-  HABIT_ENTRIES: "habit_entries_master",
+  BOOKMARKED_ITEMS: "bookmarked_items_master",
 } as const;

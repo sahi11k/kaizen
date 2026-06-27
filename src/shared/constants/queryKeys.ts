@@ -4,35 +4,28 @@ export const queryKeys = {
   },
   taskSessions: {
     all: (userId: string) => ["taskSessions", userId] as const,
+    byRange: (userId: string, startDate: string, endDate: string) =>
+      ["taskSessions", userId, "range", startDate, endDate] as const,
+    ranges: (userId: string) => ["taskSessions", userId, "range"] as const,
     totalDuration: (userId: string) =>
       ["taskSessions", userId, "totalDuration"] as const,
+    totalCount: (userId: string) =>
+      ["taskSessions", userId, "totalCount"] as const,
   },
   userSettings: {
     all: (userId: string) => ["userSettings", userId] as const,
   },
   journals: {
     all: (userId: string) => ["journals", userId] as const,
+    list: (userId: string) => ["journals", userId, "list"] as const,
+    detail: (userId: string, journalId: string) =>
+      ["journals", userId, "detail", journalId] as const,
   },
   moods: {
     today: (userId: string, dateKey: string) =>
       ["moods", "today", userId, dateKey] as const,
   },
-  habits: {
-    all: (userId: string, lifecycleFilter = "active") =>
-      ["habits", userId, lifecycleFilter] as const,
-  },
-  habitEntries: {
-    byDate: (userId: string, dateKey: string) =>
-      ["habitEntries", "byDate", userId, dateKey] as const,
-    ranges: (userId: string) => ["habitEntries", "range", userId] as const,
-    byRange: (
-      userId: string,
-      habitId: string,
-      startDate: string,
-      endDate: string,
-    ) =>
-      ["habitEntries", "range", userId, habitId, startDate, endDate] as const,
-    today: (userId: string, dateKey: string) =>
-      ["habitEntries", "byDate", userId, dateKey] as const,
+  bookmarked: {
+    all: (userId: string) => ["bookmarked", userId] as const,
   },
 };
