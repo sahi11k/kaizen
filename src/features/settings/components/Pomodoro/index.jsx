@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Save, Undo2 } from "lucide-react";
 
 import { useAuthStore } from "@/features/auth";
-import useThemeStore from "@/features/theme/store";
-import { THEME } from "@/features/theme/constants";
 import {
   useUpsertUserSettingsMutation,
   useUserSettingsQuery,
@@ -57,9 +55,8 @@ const POMODORO_FIELDS = [
   },
 ];
 
-const Preferences = ({ section = "pomodoro" }) => {
+const PomodoroSettings = () => {
   const user = useAuthStore((s) => s.user);
-  const { theme, toggleTheme } = useThemeStore();
   const { data: userSettings } = useUserSettingsQuery(user?.id);
   const { mutate: upsertSettings, isPending } = useUpsertUserSettingsMutation();
 
@@ -115,7 +112,6 @@ const Preferences = ({ section = "pomodoro" }) => {
     return errors;
   }, {});
   const hasErrors = Object.keys(fieldErrors).length > 0;
-  const isDarkMode = theme === THEME.DARK;
 
   const handlePreferenceChange = (key, value) => {
     setFormValues((currentValues) => ({
@@ -151,37 +147,6 @@ const Preferences = ({ section = "pomodoro" }) => {
     );
   };
 
-  const handleThemeChange = (checked) => {
-    if (checked !== isDarkMode) {
-      toggleTheme();
-    }
-  };
-
-  if (section === "theming") {
-    return (
-      <section className="rounded-lg border border-border p-4 sm:p-6">
-        <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-background px-4 py-3">
-          <div>
-            <label
-              htmlFor="settings-theme-toggle"
-              className="text-sm font-medium text-foreground"
-            >
-              Dark mode
-            </label>
-            <p className="text-sm text-muted-foreground">
-              {isDarkMode ? "Dark mode is on" : "Dark mode is off"}
-            </p>
-          </div>
-          <Switch
-            id="settings-theme-toggle"
-            checked={isDarkMode}
-            onCheckedChange={handleThemeChange}
-          />
-        </div>
-      </section>
-    );
-  }
-
   return (
     <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
       <section className="rounded-lg border border-border p-4 sm:p-6">
@@ -213,6 +178,7 @@ const Preferences = ({ section = "pomodoro" }) => {
           </div>
           <Switch
             id="settings-sound-toggle"
+            thumbClassName="bg-card"
             checked={formValues.soundEnabled}
             onCheckedChange={(checked) =>
               handlePreferenceChange("soundEnabled", checked)
@@ -264,11 +230,11 @@ const NumberField = ({ label, value, min, max, unit, error, onChange }) => {
         max={max}
         step={1}
         aria-invalid={!!error}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.valueAsNumber)}
       />
       {error && <span className="form-error">{error}</span>}
     </label>
   );
 };
 
-export default Preferences;
+export default PomodoroSettings;
