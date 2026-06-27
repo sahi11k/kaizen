@@ -6,7 +6,6 @@ export const APP_URL =
 
 export const BROWSER_TAB_TITLES = {
   POMODORO: "Pomodoro",
-  HABITS: "Habits",
   JOURNALS: "Journals",
   LOGIN: "Login",
   SIGNUP: "Signup",

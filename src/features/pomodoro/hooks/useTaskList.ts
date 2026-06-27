@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { CREATE, EDIT, queryKeys } from "@/shared/constants";
 import { arraysEqual } from "@/shared/lib/utils";
 import { useTasksStore, useTimerStore } from "@/features/pomodoro/store";
@@ -149,32 +149,41 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
         },
       },
     );
-  }, [currentTask?.id, deleteTaskMutation, setCurrentTask, taskToDelete, userId]);
+  }, [
+    currentTask?.id,
+    deleteTaskMutation,
+    setCurrentTask,
+    taskToDelete,
+    userId,
+  ]);
 
   const cancelTaskDelete = useCallback(() => {
     if (deleteTaskMutation.isPending) return;
     setTaskToDelete(null);
   }, [deleteTaskMutation.isPending]);
 
-  const taskCompleteHandler = useCallback((taskId: string) => {
-    const task = tasks.find((t: any) => t.id === taskId);
-    if (!task) return;
+  const taskCompleteHandler = useCallback(
+    (taskId: string) => {
+      const task = tasks.find((t: any) => t.id === taskId);
+      if (!task) return;
 
-    updateTaskMutation.mutate(
-      {
-        payload: { ...task, completed: !task.completed } as Task,
-        userId,
-      },
-      {
-        onSuccess: () => {
-          toast.success("Task Updated");
+      updateTaskMutation.mutate(
+        {
+          payload: { ...task, completed: !task.completed } as Task,
+          userId,
         },
-        onError: (error: Error) => {
-          toast.error(error.message);
+        {
+          onSuccess: () => {
+            toast.success("Task Updated");
+          },
+          onError: (error: Error) => {
+            toast.error(error.message);
+          },
         },
-      },
-    );
-  }, [tasks, updateTaskMutation, userId]);
+      );
+    },
+    [tasks, updateTaskMutation, userId],
+  );
 
   const taskEditHandler = useCallback((task: Task) => {
     setShowModal(true);
@@ -182,25 +191,28 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
     setMode(EDIT);
   }, []);
 
-  const taskDragHandler = useCallback((updatedTasks: Task[]) => {
-    const newOrder = updatedTasks.map((task) => task.id);
-    if (arraysEqual(newOrder, currentOrder.current)) {
-      return;
-    }
+  const taskDragHandler = useCallback(
+    (updatedTasks: Task[]) => {
+      const newOrder = updatedTasks.map((task) => task.id);
+      if (arraysEqual(newOrder, currentOrder.current)) {
+        return;
+      }
 
-    sortTasksMutation.mutate(
-      { payload: updatedTasks, userId },
-      {
-        onSuccess: () => {
-          currentOrder.current = newOrder;
-          toast.success("Task Order Updated");
+      sortTasksMutation.mutate(
+        { payload: updatedTasks, userId },
+        {
+          onSuccess: () => {
+            currentOrder.current = newOrder;
+            toast.success("Task Order Updated");
+          },
+          onError: (error: Error) => {
+            toast.error(error.message);
+          },
         },
-        onError: (error: Error) => {
-          toast.error(error.message);
-        },
-      },
-    );
-  }, [sortTasksMutation, userId]);
+      );
+    },
+    [sortTasksMutation, userId],
+  );
 
   const { pendingTasks, completedTasks } = useMemo(
     () => getTaskGroups(tasks as Task[]),
@@ -213,20 +225,23 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
     }
   }, [pendingTasks, currentTask, setCurrentTask]);
 
-  const handleTaskClick = useCallback((task: Task) => {
-    if (currentTask?.id === task.id) return;
+  const handleTaskClick = useCallback(
+    (task: Task) => {
+      if (currentTask?.id === task.id) return;
 
-    const { timerStarted } = useTimerStore.getState();
-    if (timerStarted) {
-      setPendingTask(task);
-      return;
-    }
+      const { timerStarted } = useTimerStore.getState();
+      if (timerStarted) {
+        setPendingTask(task);
+        return;
+      }
 
-    setCurrentTask(task);
-    if (typeof onItemClick === "function") {
-      onItemClick();
-    }
-  }, [currentTask?.id, onItemClick, setCurrentTask]);
+      setCurrentTask(task);
+      if (typeof onItemClick === "function") {
+        onItemClick();
+      }
+    },
+    [currentTask?.id, onItemClick, setCurrentTask],
+  );
 
   const confirmTaskSwitch = useCallback(() => {
     if (!pendingTask) return;

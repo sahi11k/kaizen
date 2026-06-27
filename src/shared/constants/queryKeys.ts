@@ -21,10 +21,6 @@ export const queryKeys = {
     detail: (userId: string, journalId: string) =>
       ["journals", userId, "detail", journalId] as const,
   },
-  moods: {
-    today: (userId: string, dateKey: string) =>
-      ["moods", "today", userId, dateKey] as const,
-  },
   bookmarked: {
     all: (userId: string) => ["bookmarked", userId] as const,
   },
