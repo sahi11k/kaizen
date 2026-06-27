@@ -1,3 +1,5 @@
+@import "./fonts.css";
+
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
@@ -9,45 +11,93 @@
   --font-mono: "Space Mono", monospace;
   --font-heading: "Plus Jakarta Sans", sans-serif;
 
-  /* core */
+  /* base */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* surfaces (card/popover) */
-  --color-card: var(--muted);
-  --color-card-foreground: var(--muted-foreground);
-  --color-popover: var(--muted);
-  --color-popover-foreground: var(--muted-foreground);
+  /* card */
+  --color-card: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-card-foreground: var(--card-fg);
 
-  /* brand — primary */
+  /* primary */
   --color-primary: var(--primary);
-  --color-primary-container: var(--primary-container);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary-container-foreground: var(--primary-container-foreground);
+  --color-primary-foreground: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-foreground: var(--primary-soft-foreground);
 
-  /* brand — secondary */
+  /* secondary */
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-secondary-soft-foreground: var(--secondary-soft-foreground);
 
-  /* utility / text */
+  /* sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-foreground: var(--sidebar-fg);
+  --color-sidebar-muted-foreground: var(--sidebar-muted-fg);
+  --color-sidebar-hover: var(--sidebar-hover-bg);
+  --color-sidebar-hover-foreground: var(--sidebar-hover-fg);
+  --color-sidebar-active: var(--sidebar-active-bg);
+  --color-sidebar-active-foreground: var(--sidebar-active-fg);
+  --color-sidebar-control: var(--sidebar-control-fg);
+  --color-sidebar-account-hover: var(--sidebar-account-hover-bg);
+
+  /* muted */
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-
-  /* accent — neutral hover/highlight surface */
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-popover: var(--muted);
+  --color-popover-foreground: var(--muted-foreground);
+  --color-dropdown-hover: var(--dropdown-hover);
+  --color-overlay: var(--overlay-bg);
+  --color-overlay-foreground: var(--overlay-foreground);
+  --color-overlay-border: var(--overlay-border);
+  --color-overlay-shadow: var(--overlay-shadow);
+  --color-overlay-backdrop: var(--overlay-backdrop);
+  --color-overlay-hover: var(--overlay-hover);
+  --color-overlay-field: var(--overlay-field-bg);
+  --color-overlay-field-border: var(--overlay-field-border);
+  --color-overlay-field-foreground: var(--overlay-field-foreground);
+  --color-overlay-field-placeholder: var(--overlay-field-placeholder);
+  --color-overlay-field-ring: var(--overlay-field-ring);
 
   /* semantic */
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-soft-foreground: var(--success-soft-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-destructive-soft-foreground: var(--destructive-soft-foreground);
 
-  /* forms + focus */
+  /* forms */
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-control-inactive: var(--control-inactive);
 
-  /* timer — pomodoro & break progress */
+  /* tabs */
+  --color-tab-list: var(--tab-list);
+  --color-tab-list-foreground: var(--tab-list-foreground);
+  --color-tab-trigger: var(--tab-trigger);
+  --color-tab-trigger-foreground: var(--tab-trigger-foreground);
+  --color-tab-trigger-hover: var(--tab-trigger-hover);
+  --color-tab-trigger-hover-foreground: var(--tab-trigger-hover-foreground);
+  --color-tab-trigger-active: var(--tab-trigger-active);
+  --color-tab-trigger-active-foreground: var(--tab-trigger-active-foreground);
+  --color-tab-trigger-border: var(--tab-trigger-border);
+  --color-tab-trigger-active-underline: var(--tab-trigger-active-underline);
+  --tab-trigger-active-underline-width: var(
+    --tab-trigger-active-underline-width
+  );
+  --tab-trigger-active-underline-offset: var(
+    --tab-trigger-active-underline-offset
+  );
+  --color-tab-hover: var(--tab-trigger-hover);
+
+  /* timer */
   --color-pomodoro-filled: var(--primary);
-  --color-pomodoro-unfilled: var(--primary-container);
+  --color-pomodoro-unfilled: var(--primary-soft);
   --color-break-filled: var(--break-filled);
   --color-break-unfilled: var(--break-unfilled);
 }
@@ -57,43 +107,92 @@
  * Map purpose-driven roles to Layer 1 primitives.
  * ============================================ */
 :root {
-  /* Base backgrounds & text */
+  /* base */
   --background: var(--neutral-50);
   --foreground: var(--neutral-900);
 
+  /* card */
+  --card-bg: var(--neutral-50);
+  --card-fg: var(--neutral-900);
+  --card-border: var(--neutral-300);
+
+  /* primary */
   --primary: var(--teal-500);
   --primary-foreground: var(--neutral-50);
+  --primary-soft: var(--teal-50);
+  --primary-soft-foreground: var(--teal-800);
 
-  --primary-container: var(--teal-50);
-  --primary-container-foreground: var(--teal-800);
-
-  /* Brand — secondary (warm yellow) */
+  /* secondary */
   --secondary: var(--warm-500);
   --secondary-foreground: var(--neutral-900);
+  --secondary-soft: var(--warm-100);
+  --secondary-soft-foreground: var(--warm-900);
 
-  /* Muted surfaces & text */
+  /* sidebar */
+  --sidebar: var(--neutral-50);
+  --sidebar-border: var(--neutral-300);
+  --sidebar-fg: var(--neutral-900);
+  --sidebar-muted-fg: var(--neutral-600);
+  --sidebar-hover-bg: var(--neutral-200);
+  --sidebar-hover-fg: var(--neutral-900);
+  --sidebar-active-bg: var(--primary-soft);
+  --sidebar-active-fg: var(--primary-soft-foreground);
+  --sidebar-control-fg: var(--neutral-500);
+  --sidebar-account-hover-bg: var(--neutral-100);
+
+  /* tabs */
+  --tab-list: var(--muted);
+  --tab-list-foreground: var(--muted-foreground);
+  --tab-trigger: transparent;
+  --tab-trigger-foreground: var(--muted-foreground);
+  --tab-trigger-hover: var(--muted);
+  --tab-trigger-hover-foreground: var(--foreground);
+  --tab-trigger-active: transparent;
+  --tab-trigger-active-foreground: var(--primary);
+  --tab-trigger-border: transparent;
+  --tab-trigger-active-underline: var(--primary);
+  --tab-trigger-active-underline-width: 2px;
+  --tab-trigger-active-underline-offset: 1px;
+
+  /* muted */
   --muted: var(--neutral-100);
   --muted-foreground: var(--neutral-500);
+  --dropdown-hover: var(--neutral-50);
 
-  /* Accent — neutral hover/highlight surface (not a brand color) */
-  --accent: var(--neutral-200);
-  --accent-foreground: var(--teal-500);
-
-  /* Semantic — destructive */
+  /* semantic */
+  --success: var(--green-600);
+  --success-soft: var(--green-50);
+  --success-soft-foreground: var(--green-700);
   --destructive: var(--red-600);
+  --destructive-soft: var(--red-50);
+  --destructive-soft-foreground: var(--red-700);
 
-  /* Forms & interaction */
+  /* forms */
   --border: var(--neutral-300);
   --input: var(--neutral-200);
   --ring: var(--neutral-300);
+  --control-inactive: var(--neutral-200);
 
-  /* Timer — break progress (changes per theme) */
+  /* overlays */
+  --overlay-bg: var(--muted);
+  --overlay-foreground: var(--muted-foreground);
+  --overlay-border: var(--border);
+  --overlay-shadow: rgb(0 0 0 / 0.18);
+  --overlay-backdrop: rgb(0 0 0 / 0.68);
+  --overlay-hover: var(--dropdown-hover);
+  --overlay-field-bg: var(--neutral-50);
+  --overlay-field-border: var(--neutral-400);
+  --overlay-field-foreground: var(--neutral-900);
+  --overlay-field-placeholder: var(--neutral-500);
+  --overlay-field-ring: var(--neutral-400);
+
+  /* timer */
   --break-filled: var(--warm-400);
   --break-unfilled: var(--warm-100);
   --pomodoro-filled: var(--teal-900);
   --pomodoro-unfilled: var(--teal-100);
 
-  /* Illustration colors */
+  /* illustration */
   --illus-bg: var(--neutral-300);
   --illus-bg-light: var(--neutral-200);
   --illus-bg-lighter: var(--neutral-50);
@@ -105,33 +204,92 @@
  * Same roles, remapped to dark-end primitives.
  * ============================================ */
 .dark {
-  /* Base backgrounds & text */
+  /* base */
   --background: var(--neutral-950);
-  --foreground: oklch(93% 0 0);
+  --foreground: var(--neutral-100);
 
-  --primary-container: var(--teal-900);
-  --primary-container-foreground: var(--teal-100);
+  /* card */
+  --card-bg: var(--neutral-900);
+  --card-border: var(--neutral-800);
+  --card-fg: var(--neutral-50);
 
-  /* Muted surfaces & text */
-  --muted: var(--neutral-900);
-  --muted-foreground: oklch(60% 0 0);
+  /* primary */
+  --primary: rgba(93, 189, 182, 1);
+  --primary-fg: #071514;
+  --primary-soft: rgba(28, 63, 58, 0.45);
+  --primary-soft-foreground: #a8d8d4;
 
-  /* Accent — neutral hover/highlight surface */
-  --accent: oklch(22% 0 0);
-  --accent-foreground: var(--teal-50);
+  /* secondary */
+  --secondary: var(--warm-500);
+  --secondary-foreground: var(--neutral-900);
+  --secondary-soft: var(--warm-900);
+  --secondary-soft-foreground: var(--warm-100);
 
-  /* Forms & interaction */
+  /* sidebar */
+  --sidebar: #111111;
+  --sidebar-border: #1f1f1f;
+  --sidebar-fg: var(--neutral-50);
+  --sidebar-muted-fg: var(--neutral-400);
+  --sidebar-hover-bg: var(--neutral-800);
+  --sidebar-hover-fg: var(--neutral-50);
+  --sidebar-active-bg: var(--primary-soft);
+  --sidebar-active-fg: var(--primary-soft-foreground);
+  --sidebar-control-fg: var(--neutral-400);
+  --sidebar-account-hover-bg: var(--neutral-800);
+
+  /* tabs */
+  --tab-list: var(--neutral-900);
+  --tab-list-foreground: var(--neutral-400);
+  --tab-trigger: transparent;
+  --tab-trigger-foreground: var(--neutral-400);
+  --tab-trigger-hover: var(--neutral-800);
+  --tab-trigger-hover-foreground: var(--neutral-50);
+  --tab-trigger-active: transparent;
+  --tab-trigger-active-foreground: var(--primary);
+  --tab-trigger-border: transparent;
+  --tab-trigger-active-underline: var(--primary);
+  --tab-trigger-active-underline-width: 2px;
+  --tab-trigger-active-underline-offset: 1px;
+
+  /* muted */
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+  --dropdown-hover: var(--neutral-700);
+
+  /* semantic */
+  --success: var(--green-500);
+  --success-soft: var(--green-950);
+  --success-soft-foreground: var(--green-300);
+  --destructive: var(--red-600);
+  --destructive-soft: var(--red-950);
+  --destructive-soft-foreground: var(--red-300);
+
+  /* forms */
   --border: var(--neutral-800);
-  --input: oklch(22% 0 0);
+  --input: #242424;
   --ring: oklch(35% 0 0);
+  --control-inactive: var(--neutral-700);
 
-  /* Timer — break progress */
+  /* overlays */
+  --overlay-bg: var(--muted);
+  --overlay-foreground: var(--muted-foreground);
+  --overlay-border: var(--border);
+  --overlay-shadow: rgb(0 0 0 / 0.5);
+  --overlay-backdrop: rgb(0 0 0 / 0.72);
+  --overlay-hover: var(--dropdown-hover);
+  --overlay-field-bg: var(--neutral-900);
+  --overlay-field-border: var(--neutral-700);
+  --overlay-field-foreground: var(--neutral-100);
+  --overlay-field-placeholder: var(--neutral-400);
+  --overlay-field-ring: var(--neutral-600);
+
+  /* timer */
   --break-filled: var(--warm-900);
   --break-unfilled: var(--warm-950);
   --pomodoro-filled: var(--teal-100);
   --pomodoro-unfilled: var(--teal-900);
 
-  /* Illustration colors */
+  /* illustration */
   --illus-bg: var(--neutral-800);
   --illus-bg-light: var(--neutral-900);
   --illus-bg-lighter: var(--neutral-700);
