@@ -10,7 +10,7 @@ const base =
   "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-border hover:bg-muted";
 const activeClass = "border-l-2 border-l-primary rounded-l-none";
 const completedClass =
-  "border-primary/20 bg-primary/5 text-muted-foreground hover:bg-primary/10";
+  "border-border opacity-40 hover:opacity-60";
 
 const TaskItem = ({
   task,
@@ -69,7 +69,7 @@ const TaskItem = ({
             icon={<CheckCircle2 className="size-5" color="currentColor" />}
             className={cn(
               "!p-0 hover:bg-transparent",
-              task.completed && "text-primary",
+              task.completed && "text-[var(--color-success)]",
             )}
             aria-label={completeTooltip}
             aria-pressed={task.completed}
@@ -88,16 +88,7 @@ const TaskItem = ({
           {task.title}
         </div>
         <div className="text-[12px] tracking-wide text-muted-foreground">
-          {task.completed ? (
-            <>
-              Done <span aria-hidden="true">•</span>{" "}
-              <span>{sessionSummary}</span>
-            </>
-          ) : (
-            <>
-              Sessions: <span>{sessionSummary}</span>
-            </>
-          )}
+          Sessions: <span>{sessionSummary}</span>
         </div>
       </div>
       <MoreOptions

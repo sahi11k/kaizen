@@ -173,11 +173,8 @@ export default function useTaskList({ onItemClick }: UseTaskListOptions = {}) {
           userId,
         },
         {
-          onSuccess: () => {
-            toast.success("Task Updated");
-          },
           onError: (error: Error) => {
-            toast.error(error.message);
+            toast.error(error.message || "Failed to update task");
           },
         },
       );
