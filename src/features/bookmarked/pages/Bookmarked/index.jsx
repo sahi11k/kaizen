@@ -1,10 +1,10 @@
-import { useState, useMemo } from 'react';
-import { useAuthStore } from '@/features/auth';
-import { useBookmarkedQuery } from '@/features/bookmarked/queries';
-import BookmarkedHeader from '@/features/bookmarked/components/BookmarkedHeader';
-import BookmarkedFilters from '@/features/bookmarked/components/BookmarkedFilters';
-import BookmarkedGrid from '@/features/bookmarked/components/BookmarkedGrid';
-import BookmarkedFormDialog from '@/features/bookmarked/components/BookmarkedFormDialog';
+import { useState, useMemo } from "react";
+import { useAuthStore } from "@/features/auth";
+import { useBookmarkedQuery } from "@/features/bookmarked/queries";
+import BookmarkedHeader from "@/features/bookmarked/components/BookmarkedHeader";
+import BookmarkedFilters from "@/features/bookmarked/components/BookmarkedFilters";
+import BookmarkedGrid from "@/features/bookmarked/components/BookmarkedGrid";
+import BookmarkedFormDialog from "@/features/bookmarked/components/BookmarkedFormDialog";
 
 export default function Bookmarked() {
   const { user } = useAuthStore();
@@ -34,10 +34,13 @@ export default function Bookmarked() {
     setActiveStatuses(new Set());
   };
 
+  const isFiltered = activeTypes.size > 0 || activeStatuses.size > 0;
+
   const filtered = useMemo(() => {
     return items.filter((item) => {
       const matchType = activeTypes.size === 0 || activeTypes.has(item.type);
-      const matchStatus = activeStatuses.size === 0 || activeStatuses.has(item.status);
+      const matchStatus =
+        activeStatuses.size === 0 || activeStatuses.has(item.status);
       return matchType && matchStatus;
     });
   }, [items, activeTypes, activeStatuses]);
@@ -72,7 +75,15 @@ export default function Bookmarked() {
             />
           )}
           <div className="mt-4 pb-6">
-            <BookmarkedGrid items={filtered} userId={user?.id} onEdit={handleEdit} isLoading={isLoading} />
+            <BookmarkedGrid
+              items={filtered}
+              userId={user?.id}
+              onEdit={handleEdit}
+              isLoading={isLoading}
+              isFiltered={isFiltered}
+              onAdd={handleAdd}
+              onClear={clearAll}
+            />
           </div>
           <BookmarkedFormDialog
             open={dialogOpen}

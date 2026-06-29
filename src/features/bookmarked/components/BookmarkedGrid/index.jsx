@@ -1,14 +1,14 @@
-import { EmptyState, Skeleton } from "@/shared/ui";
+import { EmptyState, EmptyFiltered, Skeleton } from "@/shared/ui";
 import EmptyBookIllustration from "@/assets/illustrations/empty-book.svg?react";
 import BookmarkedItem from "@/features/bookmarked/components/BookmarkedItem";
 
 const GROUPS = [
-  { status: "reading", label: "Reading" },
-  { status: "want_to_read", label: "Want to Read" },
-  { status: "finished", label: "Done" },
+  { status: "reading", label: "Currently Reading" },
+  { status: "pending", label: "Want to Read" },
+  { status: "finished", label: "Finished Reading" },
 ];
 
-export default function BookmarkedGrid({ items, userId, onEdit, isLoading }) {
+export default function BookmarkedGrid({ items, userId, onEdit, isLoading, isFiltered, onAdd, onClear }) {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2.5">
@@ -20,16 +20,30 @@ export default function BookmarkedGrid({ items, userId, onEdit, isLoading }) {
   }
 
   if (!items.length) {
+    if (isFiltered) {
+      return <EmptyFiltered onClear={onClear} />;
+    }
     return (
       <EmptyState
-        className="flex-1"
+        className="w-full py-20"
         icon={
           <div className="w-72 md:w-96">
             <EmptyBookIllustration />
           </div>
         }
         title="Nothing bookmarked yet"
-        description="Add books or links you want to read."
+        description="Start building your reading list — add books or links you want to revisit."
+        action={
+          onAdd && (
+            <button
+              type="button"
+              onClick={onAdd}
+              className="mt-2 text-sm font-medium text-primary hover:underline"
+            >
+              + Add your first item
+            </button>
+          )
+        }
       />
     );
   }
