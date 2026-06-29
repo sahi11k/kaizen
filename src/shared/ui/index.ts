@@ -41,6 +41,7 @@ export {
 } from "./dropdown-menu";
 export { EmptyState } from "./empty-state";
 export type { EmptyStateProps } from "./empty-state";
+export { EmptyFiltered } from "./empty-state/EmptyFiltered";
 export {
   ErrorBoundary,
   ErrorFallback,
@@ -55,6 +56,7 @@ export type { ListHeaderProps, ListHeaderButtonProps } from "./list-header";
 export { InputOTP } from "./input-otp";
 export { Logo } from "./logo";
 export { MoreOptions } from "./more-options";
+export { Pill } from "./pill";
 export {
   Popover,
   PopoverTrigger,
