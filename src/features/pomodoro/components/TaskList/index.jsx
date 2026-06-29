@@ -15,7 +15,6 @@ import TaskSection from "./TaskSection";
 import {
   DEFAULT_TASK_FILTER,
   TASK_FILTERS,
-  TASK_LIST_EMPTY_STATES,
 } from "./constants";
 import { getFilteredTasks } from "./utils";
 
@@ -52,17 +51,10 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
     [selectedFilter, tasks],
   );
   const isPendingFilter = selectedFilter === TASK_FILTERS.PENDING;
-  const isCompletedFilter = selectedFilter === TASK_FILTERS.COMPLETED;
 
   const openTaskForm = useCallback(() => {
     setShowModal(true);
   }, [setShowModal]);
-
-  const emptyState = isPendingFilter
-    ? TASK_LIST_EMPTY_STATES[TASK_FILTERS.PENDING]
-    : isCompletedFilter
-      ? TASK_LIST_EMPTY_STATES[TASK_FILTERS.COMPLETED]
-      : null;
 
   return (
     <>
@@ -112,7 +104,6 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
           <div className="h-full min-h-0 overflow-y-auto">
             <TaskSection
               tasks={filteredTasks}
-              emptyState={emptyState}
               sortable={isPendingFilter}
               currentTask={currentTask}
               onDragEnd={taskDragHandler}

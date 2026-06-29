@@ -1,24 +1,11 @@
 import React from "react";
-import { FolderOpen } from "lucide-react";
-
-import { EmptyState } from "@/shared/ui";
 
 import TaskItem from "../ListItem";
 import SortableContainer from "../SortableContainer";
 import { TASK_LIST_CLASSES } from "../constants";
 
-const TaskSectionEmptyState = ({ title, description }) => (
-  <EmptyState
-    icon={<FolderOpen className="size-8" />}
-    title={title}
-    description={description}
-    className="min-h-full px-4 py-10"
-  />
-);
-
 const TaskSection = ({
   tasks,
-  emptyState,
   sortable = false,
   currentTask,
   onDragEnd,
@@ -27,9 +14,6 @@ const TaskSection = ({
   onTaskRemove,
   onTaskComplete,
 }) => {
-  if (tasks.length === 0 && emptyState) {
-    return <TaskSectionEmptyState {...emptyState} />;
-  }
 
   const renderTaskItem = (task, { isSortable = true } = {}) => (
     <TaskItem
