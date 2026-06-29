@@ -6,8 +6,8 @@ import { MoreOptions } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 
 const base =
-  "group flex min-h-36 cursor-pointer items-stretch gap-4 rounded-lg border border-border/70 bg-background p-4 transition-colors md:gap-5 md:p-5";
-const hover = "hover:border-primary-soft/80 hover:bg-muted/40";
+  "group flex min-h-36 cursor-pointer items-stretch gap-4 rounded-lg border border-border bg-background p-4 transition-colors md:gap-5 md:p-5";
+const hover = "hover:bg-muted";
 
 const JournalListItem = ({
   journal,
@@ -41,7 +41,7 @@ const JournalListItem = ({
       role="option"
       tabIndex={0}
     >
-      <div className="flex size-14 shrink-0 flex-col items-center justify-center rounded-full bg-muted/70 text-foreground md:size-16">
+      <div className="flex size-14 shrink-0 flex-col items-center justify-center rounded-full bg-secondary text-foreground md:size-16">
         <span className="font-number text-xl font-semibold leading-tight md:text-2xl">
           {getDayOfMonth(date)}
         </span>

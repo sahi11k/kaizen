@@ -33,7 +33,7 @@
 }
 
 .text-link {
-  @apply text-sm font-medium text-primary hover:underline dark:text-secondary;
+  @apply text-sm font-medium text-primary hover:underline;
 }
 
 /* Pomodoro controls */
@@ -52,16 +52,18 @@
   @apply gap-6 md:gap-8 xl:gap-10;
 }
 
-.surface-card {
-  background: var(--card-bg);
-  color: var(--card-fg);
-  border: 1px solid var(--border);
-  box-shadow: none;
-}
+@layer components {
+  .surface-card {
+    background: var(--card-bg);
+    color: var(--card-fg);
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
 
-.dark .surface-card {
-  border: 1px solid var(--border);
-  box-shadow: none;
+  .dark .surface-card {
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
 }
 
 /* Forms */

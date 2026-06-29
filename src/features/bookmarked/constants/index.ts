@@ -13,11 +13,11 @@ export const DEFAULT_BOOKMARKED_FORM_STATE: BookmarkedItemFormState = {
   author: "",
   notes: "",
   tags: "",
-  status: "want_to_read",
+  status: "pending",
 };
 
 export const STATUS_OPTIONS = [
-  { value: "want_to_read", label: "Want to Read" },
+  { value: "pending", label: "Pending" },
   { value: "reading", label: "Reading" },
   { value: "finished", label: "Finished" },
 ] as const;

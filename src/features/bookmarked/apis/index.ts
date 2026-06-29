@@ -34,7 +34,7 @@ export const updateBookmarkedItem = async (
   const dbItem = toDbBookmarkedItem(item);
   const { data, error } = await supabase
     .from(SUPABASE_TABLES.BOOKMARKED_ITEMS)
-    .update({ ...dbItem, updated_at: new Date().toISOString() })
+    .update(dbItem)
     .eq('id', id)
     .select()
     .single();

@@ -211,7 +211,7 @@ const SecuritySettings = () => {
         </div>
       </form>
 
-      <section className="rounded-lg border border-destructive/60 bg-destructive/5 p-4 sm:p-6">
+      <section className="rounded-lg border border-destructive bg-destructive-soft p-4 sm:p-6">
         <div className="flex flex-col gap-5">
           <div className="flex gap-3">
             <AlertTriangle className="mt-1 size-5 shrink-0 text-destructive" />

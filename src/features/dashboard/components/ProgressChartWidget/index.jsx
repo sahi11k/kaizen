@@ -17,6 +17,7 @@ import { generatePomodoroChartData } from "./data";
 import { Link } from "react-router";
 import EmptyProgressIllustration from "@/assets/illustrations/empty-progress.svg?react";
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -40,19 +41,21 @@ const ProgressChartWidget = () => {
       className="border-none shadow-none h-full"
       contentClassName="flex-1"
     >
-      {data?.datasets?.length > 1110 ? (
+      {data?.datasets?.length > 0 ? (
         <div className="h-50 md:h-80">
           <Bar data={data} options={options} />
         </div>
       ) : (
         <EmptyState
           icon={
-            <div className="w-40 h-40 lg:w-50 lg:h-50">
+            <div className="w-40">
               <EmptyProgressIllustration />
             </div>
           }
           title="No progress yet"
           description="Start your first session to unlock your weekly insights!"
+          titleClassName="text-3xl font-semibold"
+          descriptionClassName="text-sm text-muted-foreground"
           action={
             <Link to="/dashboard/pomodoro">
               <Button size="sm">Start Session</Button>

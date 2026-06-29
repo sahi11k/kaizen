@@ -1,13 +1,6 @@
 import {
   Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
+  ResponsiveDialog,
   Slider,
   Switch,
   Toast,
@@ -26,7 +19,6 @@ import {
 import { useTimerStore } from "@/features/pomodoro/store";
 import { Settings } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
-import useIsMobile from "@/shared/hooks/useIsMobile";
 
 const { toast } = Toast;
 
@@ -102,10 +94,8 @@ const PomodoroSettingsButton = () => {
     }));
   };
 
-  const isMobile = useIsMobile();
-
   const settingsForm = (
-    <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
+    <form id="pomodoro-settings-form" onSubmit={handleFormSubmit} className="flex flex-col gap-6">
       <FormItem
         label="Pomodoro Timer Duration"
         value={pomodoroFormValues.pomodoroDuration}
@@ -116,9 +106,7 @@ const PomodoroSettingsButton = () => {
           min={3}
           max={60}
           step={1}
-          onValueChange={(value) => {
-            handleFormChange("pomodoroDuration", value[0]);
-          }}
+          onValueChange={(value) => handleFormChange("pomodoroDuration", value[0])}
         />
       </FormItem>
       <FormItem
@@ -131,9 +119,7 @@ const PomodoroSettingsButton = () => {
           min={3}
           max={15}
           step={1}
-          onValueChange={(value) => {
-            handleFormChange("shortBreakDuration", value[0]);
-          }}
+          onValueChange={(value) => handleFormChange("shortBreakDuration", value[0])}
         />
       </FormItem>
       <FormItem
@@ -146,9 +132,7 @@ const PomodoroSettingsButton = () => {
           min={5}
           max={30}
           step={1}
-          onValueChange={(value) => {
-            handleFormChange("longBreakDuration", value[0]);
-          }}
+          onValueChange={(value) => handleFormChange("longBreakDuration", value[0])}
         />
       </FormItem>
       <FormItem
@@ -161,9 +145,7 @@ const PomodoroSettingsButton = () => {
           min={2}
           max={10}
           step={1}
-          onValueChange={(value) => {
-            handleFormChange("longBreakInterval", value[0]);
-          }}
+          onValueChange={(value) => handleFormChange("longBreakInterval", value[0])}
         />
       </FormItem>
       <div className="flex items-center justify-between">
@@ -175,59 +157,36 @@ const PomodoroSettingsButton = () => {
         </label>
         <Switch
           id="sound-toggle"
-          thumbClassName="bg-card"
           checked={pomodoroFormValues.soundEnabled}
-          onCheckedChange={(checked) => {
-            handleFormChange("soundEnabled", checked);
-          }}
+          onCheckedChange={(checked) => handleFormChange("soundEnabled", checked)}
         />
-      </div>
-      <div className="flex justify-end gap-6 mt-6 [&>*]:flex-1 md:[&>*]:flex-none">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleFormCancel}
-          className="border-border bg-dropdown-hover text-foreground hover:bg-control-inactive hover:text-foreground"
-        >
-          Cancel
-        </Button>
-        <Button type="submit" loading={isPending} disabled={isPending}>
-          Update
-        </Button>
       </div>
     </form>
   );
 
-  const triggerButton = (
-    <Button
-      icon={<Settings />}
-      className="pomodoro-control-button"
-      variant="icon"
-      aria-label="Pomodoro Settings"
-      disabled={timerStarted}
-    />
+  const footer = (
+    <>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={handleFormCancel}
+        className="border-border bg-dropdown-hover text-foreground hover:bg-control-inactive hover:text-foreground"
+      >
+        Cancel
+      </Button>
+      <Button
+        type="submit"
+        form="pomodoro-settings-form"
+        loading={isPending}
+        disabled={isPending}
+      >
+        Update
+      </Button>
+    </>
   );
 
-  if (isMobile) {
-    return (
-      <Drawer
-        open={open}
-        onOpenChange={(v) => !timerStarted && setOpen(v)}
-        direction="bottom"
-      >
-        <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
-        <DrawerContent className="border-border px-6 pb-6">
-          <DrawerHeader className="px-0">
-            <DrawerTitle className="">Pomodoro Settings</DrawerTitle>
-          </DrawerHeader>
-          {settingsForm}
-        </DrawerContent>
-      </Drawer>
-    );
-  }
-
   return (
-    <Popover open={open} onOpenChange={(v) => !timerStarted && setOpen(v)}>
+    <>
       <Tooltip
         content={
           timerStarted
@@ -235,15 +194,26 @@ const PomodoroSettingsButton = () => {
             : "Pomodoro Settings"
         }
       >
-        <PopoverTrigger asChild>
-          <span className="inline-flex">{triggerButton}</span>
-        </PopoverTrigger>
+        <span className="inline-flex">
+          <Button
+            icon={<Settings />}
+            className="pomodoro-control-button"
+            variant="icon"
+            aria-label="Pomodoro Settings"
+            disabled={timerStarted}
+            onClick={() => !timerStarted && setOpen(true)}
+          />
+        </span>
       </Tooltip>
-      <PopoverContent className="min-w-80 sm:w-md mx-8 px-6 border-border shadow-2xl">
-        <h4 className="heading-3 mb-6 text-foreground">Pomodoro Settings</h4>
+      <ResponsiveDialog
+        open={open}
+        onOpenChange={(v) => !timerStarted && setOpen(v)}
+        title="Pomodoro Settings"
+        footer={footer}
+      >
         {settingsForm}
-      </PopoverContent>
-    </Popover>
+      </ResponsiveDialog>
+    </>
   );
 };
 

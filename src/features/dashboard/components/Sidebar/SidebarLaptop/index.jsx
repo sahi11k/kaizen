@@ -16,7 +16,7 @@ const SidebarLaptop = () => {
   );
   const toggleLabel = isCollapsed ? "Expand sidebar" : "Collapse sidebar";
   const sidebarControlClassName =
-    "!h-10 w-10 rounded-full !bg-transparent text-sidebar-control hover:!bg-transparent hover:!text-primary";
+    "!h-10 w-10 rounded-full !bg-transparent text-sidebar-muted-foreground hover:!bg-transparent hover:!text-primary";
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(DESKTOP_SIDEBAR_QUERY);
@@ -57,7 +57,7 @@ const SidebarLaptop = () => {
   const accountDropdown = (
     <AccountDropdown
       showUserText={!isCollapsed}
-      align={isCollapsed ? "center" : "start"}
+      align="start"
       side="top"
       triggerClassName={cn(
         "text-sidebar-foreground",
@@ -65,9 +65,7 @@ const SidebarLaptop = () => {
           ? "justify-center"
           : "min-h-14 w-full overflow-hidden rounded-lg py-3 pr-20 pl-4 hover:bg-sidebar-account-hover",
       )}
-      contentClassName={
-        isCollapsed ? undefined : "w-[var(--radix-dropdown-menu-trigger-width)]"
-      }
+      contentClassName="w-64"
       avatarClassName={isCollapsed ? "size-10" : "size-11"}
     />
   );

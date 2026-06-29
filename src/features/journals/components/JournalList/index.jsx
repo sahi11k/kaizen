@@ -126,7 +126,7 @@ const JournalList = ({
             {sections.map(({ key, label, content }) => (
               <section key={key} className="mb-7 last:mb-0 md:mb-9">
                 <div className={`sticky ${sectionHeaderStickyTop} z-20`}>
-                  <div className="mx-4 rounded-t-lg bg-muted px-4 py-3 md:mx-6 md:px-6">
+                  <div className="mx-4 rounded-t-lg bg-muted border border-muted px-4 py-3 md:mx-6 md:px-6">
                     <h4 className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">
                       {label}
                     </h4>

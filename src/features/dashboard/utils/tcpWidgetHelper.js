@@ -1,5 +1,14 @@
 import { TCP_CHART } from "@/features/dashboard/constants";
 
+export const resolveColor = (varName) => {
+  const tmp = document.createElement("span");
+  tmp.style.color = `var(${varName})`;
+  document.documentElement.appendChild(tmp);
+  const color = getComputedStyle(tmp).color;
+  document.documentElement.removeChild(tmp);
+  return color;
+};
+
 export const getCutout = (diameter) => {
   const radius = diameter / 2;
   return `${((radius - TCP_CHART.RING_WIDTH_PX) / radius) * 100}%`;

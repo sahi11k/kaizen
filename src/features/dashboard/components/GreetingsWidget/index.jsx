@@ -1,6 +1,5 @@
 import { useAuthStore, getUserDisplayName } from "@/features/auth";
 import React from "react";
-import CoverImage from "@/assets/images/cover.jpg";
 
 const GreetingsWidget = () => {
   const { user } = useAuthStore();
@@ -9,24 +8,16 @@ const GreetingsWidget = () => {
   const { greeting, subtitle } = getTimeBasedGreeting();
 
   return (
-    <div className="relative p-6 text-neutral-200">
-      <div className="relative z-10">
-        <h1 className="heading-2">
-          <span>{greeting},</span>{" "}
-          <span className="w-[20ch]">
-            {displayName.length > 25
-              ? displayName.slice(0, 25) + "..."
-              : displayName}
-          </span>
-        </h1>
-        <p className="body-base font-medium">{subtitle}</p>
-      </div>
-      <div className="absolute inset-0 bg-black/30"></div>
-      <img
-        src={CoverImage}
-        alt="Greetings Widget"
-        className="absolute inset-0 object-cover object-center w-full h-full -z-10"
-      />
+    <div className="p-6">
+      <h1 className="heading-2">
+        <span>{greeting},</span>{" "}
+        <span className="w-[20ch]">
+          {displayName.length > 25
+            ? displayName.slice(0, 25) + "..."
+            : displayName}
+        </span>
+      </h1>
+      <p className="body-base font-medium">{subtitle}</p>
     </div>
   );
 };

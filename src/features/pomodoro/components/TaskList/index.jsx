@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import TaskForm from "@/features/pomodoro/components/TaskForm";
 import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import useTaskList from "@/features/pomodoro/hooks/useTaskList";
-import { EmptyState, FloatingButton, EmptyFiltered } from "@/shared/ui";
+import { EmptyState, FloatingButton } from "@/shared/ui";
 import TaskIllustration from "@/assets/illustrations/empty-tasks.svg?react";
 
 import TaskDeleteDialog from "./TaskDeleteDialog";
@@ -15,6 +15,7 @@ import TaskSection from "./TaskSection";
 import {
   DEFAULT_TASK_FILTER,
   TASK_FILTERS,
+  TASK_LIST_EMPTY_STATES,
 } from "./constants";
 import { getFilteredTasks } from "./utils";
 
@@ -50,6 +51,7 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
     () => getFilteredTasks(tasks, selectedFilter),
     [selectedFilter, tasks],
   );
+
   const isPendingFilter = selectedFilter === TASK_FILTERS.PENDING;
 
   const openTaskForm = useCallback(() => {
@@ -93,12 +95,22 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
           </div>
         )}
 
-        {!isEmpty && filteredTasks.length === 0 && !isLoading && (
-          <EmptyFiltered
-            onClear={() => setSelectedFilter(TASK_FILTERS.ALL)}
-            description="No tasks match the current filter."
-          />
-        )}
+        {!isEmpty &&
+          filteredTasks.length === 0 &&
+          !isLoading &&
+          TASK_LIST_EMPTY_STATES[selectedFilter] && (
+            <EmptyState
+              icon={
+                <div className="w-64">
+                  <TaskIllustration />
+                </div>
+              }
+              title={TASK_LIST_EMPTY_STATES[selectedFilter].title}
+              description={TASK_LIST_EMPTY_STATES[selectedFilter].description}
+              titleClassName="text-3xl font-semibold"
+              descriptionClassName="text-sm text-muted-foreground"
+            />
+          )}
 
         {!isEmpty && filteredTasks.length > 0 && (
           <div className="h-full min-h-0 overflow-y-auto">

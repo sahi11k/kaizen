@@ -5,7 +5,7 @@ const AuthLayout = () => {
     <main className="h-full w-full flex">
       <div className="bg-primary flex-7 items-center justify-center hidden lg:flex">
         <div className="text-primary-foreground items-start flex flex-col">
-          <span className="text-[clamp(100px,16vw,180px)] font-bold">
+          <span className="text-[clamp(100px,16vw,180px)] font-bold leading-none mb-10">
             改 善
           </span>
           <span className="mt-6 text-5xl font-bold leading-none">Kaizen</span>

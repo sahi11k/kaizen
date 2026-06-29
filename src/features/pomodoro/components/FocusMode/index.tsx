@@ -67,7 +67,7 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[var(--z-modal)] bg-background flex flex-col items-center justify-center select-none gap-20 px-8"
+      className="fixed inset-0 z-[var(--z-modal)] bg-card flex flex-col items-center justify-center select-none gap-20 px-8"
     >
       <Button
         onClick={handleExit}
@@ -90,13 +90,16 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
           {seconds}
         </span>
 
-        <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+        <div
+          className="w-full h-2 rounded-full overflow-hidden"
+          style={{
+            backgroundColor: "var(--color-primary-soft)",
+          }}
+        >
           <div
             style={{
               width: `${progressPercent}%`,
-              backgroundColor: isPomodoro
-                ? "var(--primary)"
-                : "var(--break-filled)",
+              backgroundColor: "var(--color-primary-soft-foreground)",
             }}
             className="h-full rounded-full transition-[width] duration-500 ease-linear"
           />

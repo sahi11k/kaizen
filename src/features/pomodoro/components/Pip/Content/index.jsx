@@ -20,7 +20,7 @@ const PipTimerContent = () => {
   } = usePomodoroTimer();
 
   return (
-    <div className="flex justify-center items-center h-full w-full bg-background text-foreground select-none">
+    <div className="flex justify-center items-center h-full w-full bg-card text-foreground select-none">
       <div className="flex flex-col items-center gap-4 min-w-0 flex-1 px-6 max-w-120">
         <SessionBadge
           isPomodoro={isPomodoro}

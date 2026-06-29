@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Dialog, Button, Input, Textarea, Select } from '@/shared/ui';
+import { ResponsiveDialog, Button, Input, Textarea, Pill, Select } from '@/shared/ui';
 import {
   useCreateBookmarkedItemMutation,
   useUpdateBookmarkedItemMutation,
@@ -9,7 +9,6 @@ import {
   STATUS_OPTIONS,
   TYPE_OPTIONS,
 } from '@/features/bookmarked/constants';
-import { cn } from '@/shared/lib/utils';
 
 export default function BookmarkedFormDialog({ open, onClose, userId, editItem = null }) {
   const [form, setForm] = useState(DEFAULT_BOOKMARKED_FORM_STATE);
@@ -58,29 +57,33 @@ export default function BookmarkedFormDialog({ open, onClose, userId, editItem =
     }
   };
 
+  const footer = (
+    <>
+      <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>
+        Cancel
+      </Button>
+      <Button type="submit" form="bookmarked-form" disabled={isPending || !form.title.trim()}>
+        {isPending ? 'Saving…' : editItem ? 'Save' : 'Add'}
+      </Button>
+    </>
+  );
+
   return (
-    <Dialog
+    <ResponsiveDialog
       open={open}
       onOpenChange={(v) => !v && onClose()}
       title={editItem ? 'Edit item' : 'Add to Bookmarked'}
+      footer={footer}
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        {/* Type toggle */}
+      <form id="bookmarked-form" onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div className="flex gap-2">
           {TYPE_OPTIONS.map((opt) => (
-            <button
+            <Pill
               key={opt.value}
-              type="button"
+              label={opt.label}
+              variant={form.type === opt.value ? 'active' : 'inactive'}
               onClick={() => setForm((f) => ({ ...f, type: opt.value }))}
-              className={cn(
-                'px-3 py-1 rounded-full text-sm font-medium border transition-colors',
-                form.type === opt.value
-                  ? 'bg-foreground text-background border-foreground'
-                  : 'bg-background text-muted-foreground border-border',
-              )}
-            >
-              {opt.label}
-            </button>
+            />
           ))}
         </div>
 
@@ -126,15 +129,7 @@ export default function BookmarkedFormDialog({ open, onClose, userId, editItem =
           placeholder="Status"
         />
 
-        <div className="flex justify-end gap-2 pt-2">
-          <Button type="button" variant="ghost" onClick={onClose} disabled={isPending}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isPending || !form.title.trim()}>
-            {isPending ? 'Saving…' : editItem ? 'Save' : 'Add'}
-          </Button>
-        </div>
       </form>
-    </Dialog>
+    </ResponsiveDialog>
   );
 }

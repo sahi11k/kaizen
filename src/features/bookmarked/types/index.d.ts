@@ -1,4 +1,4 @@
-export type BookmarkedItemStatus = 'want_to_read' | 'reading' | 'finished';
+export type BookmarkedItemStatus = 'pending' | 'reading' | 'finished';
 export type BookmarkedItemType = 'book' | 'link';
 
 export type BookmarkedItem = {

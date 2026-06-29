@@ -1,6 +1,7 @@
 /node_modules
 /dist
 .superpowers/
+/docs
 
 .env
 .env.local

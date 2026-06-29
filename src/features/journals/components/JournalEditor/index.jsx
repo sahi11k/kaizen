@@ -41,7 +41,7 @@ const JournalEditor = ({ journal, onBack, onNewJournalSaved }) => {
               icon={<ArrowLeft className="size-4" />}
               onClick={onBack}
               aria-label="Back to journals"
-              className="mb-3 size-10 items-center justify-center rounded-full border border-card-border !bg-[#262626] !text-[#a3a3a3] hover:!bg-[#262626] hover:!text-primary md:absolute md:top-1 md:left-0 md:mb-0 md:-translate-x-[calc(100%+2rem)]"
+              className="mb-3 size-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground md:absolute md:top-1 md:left-0 md:mb-0 md:-translate-x-[calc(100%+2rem)]"
             />
           ) : null}
           <label

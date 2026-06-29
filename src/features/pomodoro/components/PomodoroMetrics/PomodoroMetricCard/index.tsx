@@ -6,7 +6,7 @@ const PomodoroMetricCard = ({ icon, label, value, unit, comparison }) => {
   return (
     <div className="surface-card flex min-h-40 flex-col justify-between rounded-2xl p-5">
       <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-        <span className="shrink-0">{icon}</span>
+        <span className="shrink-0 text-primary">{icon}</span>
         <span>{label}</span>
       </div>
       <div className="flex items-start gap-2">

@@ -53,12 +53,8 @@ export default function usePomodoroTimer(): PomodoroTimerReturn {
     duration > 0 ? ((duration - timerValue) / duration) * 100 : 0;
   const isPomodoro = currentTab === POMODORO_TAB;
 
-  const fillColor = isPomodoro
-    ? "var(--pomodoro-filled)"
-    : "var(--break-filled)";
-  const unfilledColor = isPomodoro
-    ? "var(--pomodoro-unfilled)"
-    : "var(--break-unfilled)";
+  const fillColor = "var(--color-timer-filled)";
+  const unfilledColor = "var(--color-timer-unfilled)";
 
   return {
     timerValue,

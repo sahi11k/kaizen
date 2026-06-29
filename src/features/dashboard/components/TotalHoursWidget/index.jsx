@@ -13,7 +13,7 @@ const TotalHoursWidget = () => {
 
   return (
     <Card
-      className="border-none shadow-none text-foreground"
+      className="border-none shadow-none text-foreground bg-primary-soft"
       contentClassName="flex items-center justify-center"
       footerClassName="flex-col"
       footer={

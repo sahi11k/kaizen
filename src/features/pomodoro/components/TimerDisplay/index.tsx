@@ -38,14 +38,16 @@ const TimerDisplay = ({
         <span className="-mt-4">:</span>
         {seconds}
       </div>
-      <div className="w-full h-2 rounded-full bg-[#262626] overflow-hidden">
+      <div
+        className="w-full h-2 rounded-full overflow-hidden"
+        style={{
+          backgroundColor: "var(--color-primary-soft)",
+        }}
+      >
         <div
           style={{
             width: `${duration > 0 ? ((duration - timerValue) / duration) * 100 : 0}%`,
-            backgroundColor:
-              currentTab === POMODORO_TAB
-                ? "var(--primary)"
-                : "var(--break-filled)",
+            backgroundColor: "var(--color-primary-soft-foreground)",
           }}
           className="h-full rounded-full transition-[width] duration-500 ease-linear"
         />

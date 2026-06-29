@@ -2,7 +2,7 @@ import { useAuthStore } from "@/features/auth";
 import { getCurrentTime } from "@/features/pomodoro/utils";
 import { useUserSettingsQuery } from "@/features/settings";
 import { useTimerStore } from "@/features/pomodoro/store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const useDurationSync = () => {
   const currentTab = useTimerStore((s) => s.currentTab);
@@ -12,15 +12,18 @@ const useDurationSync = () => {
   const user = useAuthStore((s) => s.user);
   const { data: userSettings } = useUserSettingsQuery(user?.id);
 
+  const timerStartedRef = useRef(timerStarted);
+  timerStartedRef.current = timerStarted;
+
   useEffect(() => {
     const duration = getCurrentTime(currentTab, userSettings);
 
     setDuration(duration);
 
-    if (!timerStarted) {
+    if (!timerStartedRef.current) {
       setTimerValue(duration);
     }
-  }, [currentTab, timerStarted, userSettings, setDuration, setTimerValue]);
+  }, [currentTab, userSettings, setDuration, setTimerValue]);
 };
 
 export default useDurationSync;

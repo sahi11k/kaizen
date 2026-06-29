@@ -69,7 +69,7 @@ const TaskItem = ({
             icon={<CheckCircle2 className="size-5" color="currentColor" />}
             className={cn(
               "!p-0 hover:bg-transparent",
-              task.completed && "text-[var(--color-success)]",
+              task.completed && "text-primary",
             )}
             aria-label={completeTooltip}
             aria-pressed={task.completed}

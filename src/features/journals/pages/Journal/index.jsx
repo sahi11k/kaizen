@@ -108,7 +108,7 @@ const JournalEditorRoute = ({ mode }) => {
           description="This journal may have been deleted or is no longer available."
           action={
             <Button
-              variant="outline"
+              variant="default"
               size="sm"
               icon={<ArrowLeft className="size-4" />}
               onClick={goBack}

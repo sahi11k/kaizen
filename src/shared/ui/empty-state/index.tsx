@@ -6,6 +6,8 @@ interface EmptyStateProps {
   description?: string;
   action?: React.ReactNode;
   className?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
 }
 
 const EmptyState = ({
@@ -14,6 +16,8 @@ const EmptyState = ({
   description,
   action,
   className,
+  titleClassName,
+  descriptionClassName,
 }: EmptyStateProps): React.ReactElement => {
   return (
     <div
@@ -22,12 +26,14 @@ const EmptyState = ({
         className,
       )}
     >
-      <div className="flex flex-col items-center gap-4 text-muted-foreground">
+      <div className="flex flex-col items-center gap-4">
         {icon && <div>{icon}</div>}
         <div className="flex flex-col items-center">
-          <h3 className="heading-3">{title}</h3>
+          <h2 className={titleClassName ?? "heading-2"}>{title}</h2>
           {description && (
-            <p className="body-description text-center">{description}</p>
+            <p className={descriptionClassName ?? "body-description text-center"}>
+              {description}
+            </p>
           )}
         </div>
         {action}

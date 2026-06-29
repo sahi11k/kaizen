@@ -1,89 +1,76 @@
 /* ============================================
  * PRIMITIVE COLOR PALETTE
  * Raw color scales — never use directly in components.
- * Reference these via semantic role tokens in global.css.
+ * Reference these via semantic role tokens in theme.css.
  * ============================================ */
 
 :root {
-  /* ─── Neutral (achromatic) ─── */
-  --neutral-50: #fafafa;
-  --neutral-100: #f2f2f2;
-  --neutral-200: #e4e4e4;
-  --neutral-300: #d4d4d4;
-  --neutral-400: #a1a1a1;
-  --neutral-500: #737373;
-  --neutral-600: #525252;
-  --neutral-700: #404040;
-  --neutral-800: #262626;
-  --neutral-900: #161616;
-  --neutral-950: #0a0a0a;
+  /* ─── Neutral (warm-tinted charcoal scale) ─── */
+  --neutral-0: #ffffff;
+  --neutral-50: #f7f6f4; /* light background */
+  --neutral-100: #f0ede9; /* muted / input light */
+  --neutral-150: #ede9e4; /* foreground dark */
+  --neutral-200: #e5e2de; /* border / secondary light */
+  --neutral-250: #d6d2cd; /* overlay field border light */
+  --neutral-300: #c9c4bc; /* secondary-fg dark */
+  --neutral-400: #a8a29e; /* sidebar control / placeholder light */
+  --neutral-500: #78716c; /* muted-fg / sidebar muted */
+  --neutral-600: #57534e; /* secondary-soft-fg dark */
+  --neutral-700: #44403c; /* secondary-fg light / overlay-fg light */
+  --neutral-750: #3a3633; /* card-border dark */
+  --neutral-800: #2e2b28; /* border dark / secondary dark */
+  --neutral-850: #272421; /* muted dark / input dark */
+  --neutral-900: #1f1d1b; /* card dark / popover dark */
+  --neutral-925: #1b1917; /* sidebar dark / overlay-field dark */
+  --neutral-950: #171614; /* background dark */
 
-  /* ─── Teal ─── */
-  --teal-50: #d1d8d7;
-  --teal-100: #a4b2b0;
-  --teal-200: #607875;
-  --teal-300: #496561;
-  --teal-400: #32524d;
-  --teal-500: #1c3f3a;
-  --teal-600: #193834;
-  --teal-700: #16322e;
-  --teal-800: #132c28;
-  --teal-900: #102522;
-  --teal-950: #0e1f1d;
+  /* ─── Amber (accent — muted ochre, not alert-like) ─── */
+  --amber-50: #fdf3e3; /* primary-soft light */
+  --amber-100: #fdf3e3;
+  --amber-200: #e8b472; /* primary-soft-fg dark */
+  --amber-300: #d4933f; /* primary dark / ring light / break-filled light */
+  --amber-400: #d4933f;
+  --amber-500: #c27c2a; /* primary light / ring dark */
+  --amber-600: #c27c2a;
+  --amber-700: #8a5c1e; /* break-filled dark */
+  --amber-850: #372B1D;
+  --amber-900: #2a2118; /* break-unfilled dark */
+  --amber-950: #2a2118;
 
-  /* ─── Warm ─── */
-  --warm-50: #f5f3db;
-  --warm-100: #f3f1d4;
-  --warm-200: #f1eecd;
-  --warm-300: #edeabf;
-  --warm-400: #d8d38b;
-  --warm-500: #ebe8b8;
-  --warm-600: #d3d0a5;
-  --warm-700: #bcb993;
-  --warm-800: #a4a280;
-  --warm-900: #8d8b6e;
-  --warm-950: #75745c;
+  /* ─── Success (muted sage green) ─── */
+  --green-50: #eef5f1; /* success-soft light */
+  --green-100: #eef5f1;
+  --green-300: #8ecba4; /* success-soft-fg dark */
+  --green-400: #6aaf82; /* success dark */
+  --green-500: #57956d; /* success dark (dark mode) */
+  --green-600: #4a7c59; /* success light */
+  --green-700: #2d5a3d; /* success-soft-fg light */
+  --green-900: #0f2d1a; /* success-soft dark bg */
 
-  /* ─── Success (Tailwind Green) ─── */
-  --green-50: #f0fdf4;
-  --green-100: #dcfce7;
-  --green-200: #bbf7d0;
-  --green-300: #86efac;
-  --green-400: #4ade80;
-  --green-500: #22c55e;
-  --green-600: #16a34a;
-  --green-700: #15803d;
-  --green-800: #166534;
-  --green-900: #14532d;
-  --green-950: #052e16;
-
-  /* ─── Destructive (Tailwind Red) ─── */
-  --red-50: #fef2f2;
-  --red-100: #fee2e2;
-  --red-200: #fecaca;
-  --red-300: #fca5a5;
-  --red-400: #f87171;
-  --red-500: #ef4444;
-  --red-600: #dc2626;
-  --red-700: #b91c1c;
-  --red-800: #991b1b;
-  --red-900: #7f1d1d;
-  --red-950: #450a0a;
+  /* ─── Destructive (muted terracotta — not harsh red) ─── */
+  --red-50: #fef4f2; /* destructive-soft light */
+  --red-100: #fef4f2;
+  --red-300: #d9917f; /* destructive-soft-fg dark */
+  --red-400: #c47060; /* destructive dark */
+  --red-500: #bc6655; /* destructive (dark mode) */
+  --red-600: #b85c4a; /* destructive light */
+  --red-700: #7a2e20; /* destructive-soft-fg light */
+  --red-900: #2d1210; /* destructive-soft dark bg */
 
   /* ─── Z-Index Scale ─── */
   --z-image: 10;
-  --z-fab: 60; /* floating action above sticky list section headers */
+  --z-fab: 60;
   --z-header: 100;
   --z-sidebar: 200;
   --z-popover: 700;
   --z-dropdown: 700;
   --z-drawer-overlay: 800;
   --z-drawer: 850;
-  --z-overlay: 900; /* modal overlay */
-  --z-modal: 950; /* modal/dialog content */
+  --z-overlay: 900;
+  --z-modal: 950;
 
   /* Tooltip tiers */
-  --z-tooltip-image: 300; /* images/cards (above header) */
-  --z-tooltip-header: 400; /* header tooltips (above image tooltips) */
-  --z-tooltip-overlay: 1000; /* tooltips inside overlays/dialogs */
+  --z-tooltip-image: 300;
+  --z-tooltip-header: 400;
+  --z-tooltip-overlay: 1000;
 }

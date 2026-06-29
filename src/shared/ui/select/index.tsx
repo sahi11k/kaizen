@@ -42,8 +42,9 @@ const Select = ({
     >
       <SelectPrimitive.Trigger
         aria-label={ariaLabel}
+        data-slot="select-trigger"
         className={cn(
-          "border-border bg-background text-foreground flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 xl:h-11 xl:px-4 xl:py-2",
+          "border-border bg-transparent text-foreground flex h-10 w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] data-[state=open]:border-ring data-[state=open]:ring-[2px] data-[state=open]:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 xl:h-11 xl:px-4 xl:py-2",
           className,
         )}
       >
@@ -68,7 +69,7 @@ const Select = ({
                 key={option.value}
                 value={option.value}
                 disabled={option.disabled}
-                className="focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                className="focus:bg-dropdown-hover focus:text-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
               >
                 <span className="absolute right-2 flex size-3.5 items-center justify-center">
                   <SelectPrimitive.ItemIndicator>

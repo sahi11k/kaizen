@@ -13,7 +13,7 @@ import {
 ChartJS.register(ArcElement, ChartTooltip, Legend);
 
 import { TCP_CHART } from "@/features/dashboard/constants";
-import { getCutout, getTCP } from "@/features/dashboard/utils/tcpWidgetHelper";
+import { getCutout, getTCP, resolveColor } from "@/features/dashboard/utils/tcpWidgetHelper";
 
 const TCPWidget = () => {
   const { user } = useAuthStore();
@@ -24,12 +24,8 @@ const TCPWidget = () => {
 
   const isMobile = window.innerWidth < 768;
 
-  const styles = getComputedStyle(document.documentElement);
-
-  const pomodoroFilled = styles.getPropertyValue("--pomodoro-filled").trim();
-  const pomodoroUnfilled = styles
-    .getPropertyValue("--pomodoro-unfilled")
-    .trim();
+  const pomodoroFilled = resolveColor("--color-timer-filled");
+  const pomodoroUnfilled = resolveColor("--color-primary-soft");
 
   const data = {
     labels: ["Completed", "Remaining"],
@@ -63,7 +59,7 @@ const TCPWidget = () => {
       <div className="relative w-54 h-54 md:w-70 md:h-70 mx-auto">
         <Doughnut data={data} options={options} />
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="font-semibold leading-tight">
+          <div className="font-semibold leading-tight font-mono">
             <strong className="text-foreground text-4xl md:text-5xl xl:text-6xl">
               {completed}
             </strong>

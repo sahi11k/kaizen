@@ -1,6 +1,5 @@
-import { SlidersHorizontal, X } from 'lucide-react';
-import { Popover, PopoverTrigger, PopoverContent, Button } from '@/shared/ui';
-import { cn } from '@/shared/lib/utils';
+import { SlidersHorizontal } from 'lucide-react';
+import { Popover, PopoverTrigger, PopoverContent, Button, Pill } from '@/shared/ui';
 
 const TYPE_OPTIONS = [
   { value: 'book', label: 'Books' },
@@ -8,38 +7,11 @@ const TYPE_OPTIONS = [
 ];
 
 const STATUS_OPTIONS = [
-  { value: 'want_to_read', label: 'Want to Read' },
+  { value: 'pending', label: 'Pending' },
   { value: 'reading', label: 'Reading' },
   { value: 'finished', label: 'Finished' },
 ];
 
-function OptionPill({ label, active, onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        'px-3 py-1 rounded-full text-sm font-medium border-2 transition-colors cursor-pointer',
-        active
-          ? 'bg-primary text-primary-foreground border-primary'
-          : 'bg-overlay text-muted-foreground border-foreground/20 hover:border-primary/60',
-      )}
-    >
-      {label}
-    </button>
-  );
-}
-
-function ActiveTag({ label, onRemove }) {
-  return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary text-primary-foreground">
-      {label}
-      <button type="button" onClick={onRemove} className="hover:opacity-70 transition-opacity">
-        <X className="w-3 h-3" />
-      </button>
-    </span>
-  );
-}
 
 export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeToggle, onStatusToggle, onClearAll }) {
   const totalActive = activeTypes.size + activeStatuses.size;
@@ -76,10 +48,10 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Type</p>
             <div className="flex flex-wrap gap-2">
               {TYPE_OPTIONS.map((opt) => (
-                <OptionPill
+                <Pill
                   key={opt.value}
                   label={opt.label}
-                  active={activeTypes.has(opt.value)}
+                  variant={activeTypes.has(opt.value) ? 'active' : 'inactive'}
                   onClick={() => onTypeToggle(opt.value)}
                 />
               ))}
@@ -89,10 +61,10 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</p>
             <div className="flex flex-wrap gap-2">
               {STATUS_OPTIONS.map((opt) => (
-                <OptionPill
+                <Pill
                   key={opt.value}
                   label={opt.label}
-                  active={activeStatuses.has(opt.value)}
+                  variant={activeStatuses.has(opt.value) ? 'active' : 'inactive'}
                   onClick={() => onStatusToggle(opt.value)}
                 />
               ))}
@@ -111,7 +83,7 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
       </Popover>
 
       {activeTags.map((tag) => (
-        <ActiveTag key={tag.key} label={tag.label} onRemove={tag.onRemove} />
+        <Pill key={tag.key} label={tag.label} variant="active" onRemove={tag.onRemove} />
       ))}
     </div>
   );
