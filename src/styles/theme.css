@@ -47,6 +47,7 @@
   /* muted */
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-fg);
+  --color-subtle-foreground: var(--subtle-fg);
 
   /* popover (distinct from muted) */
   --color-popover: var(--popover);
@@ -149,6 +150,9 @@
   --muted: #f0ede8;
   --muted-fg: #888580;
 
+  /* subtle — tertiary text: captions, empty-state hints, timestamps */
+  --subtle-fg: #9c9690;
+
   /* popover */
   --popover: #ffffff;
   --popover-fg: var(--neutral-950);
@@ -206,6 +210,7 @@
 
   /* aliases */
   --muted-foreground: var(--muted-fg);
+  --subtle-foreground: var(--subtle-fg);
   --primary-soft-foreground: var(--primary-soft-fg);
   --secondary-soft-foreground: var(--secondary-soft-fg);
   --secondary-foreground: var(--secondary-fg);
@@ -256,6 +261,9 @@
   /* muted */
   --muted: var(--neutral-850);
   --muted-fg: var(--neutral-400);
+
+  /* subtle — tertiary text: captions, empty-state hints, timestamps */
+  --subtle-fg: var(--neutral-500);
 
   /* popover */
   --popover: var(--neutral-900);
@@ -314,6 +322,7 @@
 
   /* aliases */
   --muted-foreground: var(--muted-fg);
+  --subtle-foreground: var(--subtle-fg);
   --primary-soft-foreground: var(--primary-soft-fg);
   --secondary-soft-foreground: var(--secondary-soft-fg);
   --secondary-foreground: var(--secondary-fg);
