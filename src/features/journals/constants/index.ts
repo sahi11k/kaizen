@@ -3,7 +3,7 @@ export const DATEPICKER_DATE_FORMAT = "dddd, MMMM D, YYYY";
 
 /** Date row + save status: same font size on mobile and md+ (overrides DatePicker Button defaults). */
 export const JOURNAL_META_ROW_TEXT_CLASS =
-  "text-xs md:text-sm font-medium leading-snug text-muted-foreground";
+  "!text-sm font-medium leading-snug text-muted-foreground";
 
 export const DEFAULT_JOURNAL_STATE = {
   content: "",

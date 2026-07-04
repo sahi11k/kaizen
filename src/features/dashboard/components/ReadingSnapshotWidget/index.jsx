@@ -1,0 +1,141 @@
+import React, { useMemo } from "react";
+import dayjs from "dayjs";
+import { Link } from "react-router";
+import { ExternalLink } from "lucide-react";
+import { useAuthStore } from "@/features/auth";
+import { useBookmarkedQuery } from "@/features/bookmarked";
+import { Card, Skeleton } from "@/shared/ui";
+
+function formatDaysAgo(days) {
+  if (days <= 0) return "today";
+  if (days === 1) return "yesterday";
+  return `${days} days ago`;
+}
+
+const MetricCell = ({ value, label, highlight }) => (
+  <div className="text-center px-2">
+    <div
+      className={`font-mono text-3xl font-normal leading-none mb-1.5 tracking-tight ${
+        value === 0 ? "text-subtle-foreground" : highlight ? "text-primary" : "text-foreground"
+      }`}
+    >
+      {value}
+    </div>
+    <div className="label-overline text-subtle-foreground">
+      {label}
+    </div>
+  </div>
+);
+
+const ReadingSnapshotWidget = () => {
+  const { user } = useAuthStore();
+  const { data: items = [], isLoading } = useBookmarkedQuery(user?.id);
+
+  const { pending, reading, finished, highlightItem } = useMemo(() => {
+    const pendingItems = items.filter((i) => i.status === "pending");
+    const readingItems = items.filter((i) => i.status === "reading");
+    const finishedItems = items.filter((i) => i.status === "finished");
+
+    const currentlyReading = readingItems[0];
+
+    let highlight = null;
+    if (currentlyReading) {
+      highlight = {
+        label: "Currently Reading",
+        title: currentlyReading.title,
+        url: currentlyReading.url,
+        days: null,
+      };
+    } else {
+      const latestAdded = items.reduce((newest, item) => {
+        if (!newest) return item;
+        return dayjs(item.createdAt).isAfter(dayjs(newest.createdAt)) ? item : newest;
+      }, null);
+      if (latestAdded) {
+        highlight = {
+          label: "Newly Added",
+          title: latestAdded.title,
+          url: latestAdded.url,
+          days: null,
+        };
+      }
+    }
+
+    return {
+      pending: pendingItems.length,
+      reading: readingItems.length,
+      finished: finishedItems.length,
+      highlightItem: highlight,
+    };
+  }, [items]);
+
+  const hasActivity = pending > 0 || reading > 0 || finished > 0;
+
+  if (isLoading) {
+    return <Skeleton className="h-full w-full" />;
+  }
+
+  return (
+    <Card className="h-full" contentClassName="flex h-full flex-col">
+      <p className="label-overline mb-5">
+        Reading Snapshot
+      </p>
+
+      {hasActivity ? (
+        <>
+          <div
+            className="grid mb-5 pb-5 border-b border-border items-center"
+            style={{ gridTemplateColumns: "1fr 1px 1fr 1px 1fr" }}
+          >
+            <MetricCell value={pending} label="Pending" />
+            <div className="bg-border h-9" />
+            <MetricCell value={reading} label="Reading" highlight />
+            <div className="bg-border h-9" />
+            <MetricCell value={finished} label="Finished" />
+          </div>
+
+          {highlightItem && (
+            <div className="mt-4">
+              <p className="label-overline text-subtle-foreground mb-2.5">
+                {highlightItem.label}
+              </p>
+              <p className="flex items-baseline justify-between gap-2 font-sans text-sm text-foreground/70 leading-snug">
+                {highlightItem.url ? (
+                  <a
+                    href={highlightItem.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 truncate underline hover:text-primary"
+                  >
+                    <span className="truncate">{highlightItem.title}</span>
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                  </a>
+                ) : (
+                  <span className="truncate">{highlightItem.title}</span>
+                )}
+                {highlightItem.days !== null && (
+                  <span className="font-sans text-xs text-subtle-foreground shrink-0">
+                    {formatDaysAgo(highlightItem.days)}
+                  </span>
+                )}
+              </p>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="flex flex-1 items-center justify-center">
+          <p className="font-sans text-sm leading-snug text-center text-subtle-foreground italic">
+            No bookmarks yet.
+            <br />
+            <Link to="/dashboard/bookmarked" className="text-muted-foreground underline">
+              Add a bookmark
+            </Link>{" "}
+            to get started.
+          </p>
+        </div>
+      )}
+    </Card>
+  );
+};
+
+export default ReadingSnapshotWidget;

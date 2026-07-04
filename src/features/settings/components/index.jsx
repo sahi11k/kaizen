@@ -40,9 +40,12 @@ const Settings = () => {
       >
         <div className="mx-4 pb-4 md:mx-6 md:pb-5">
           <div className="flex min-w-0 flex-col gap-4">
-            <h1 className="text-2xl font-semibold leading-tight text-foreground md:text-3xl">
-              Settings
-            </h1>
+            <div>
+              <h1 className="heading-2">Settings</h1>
+              <p className="text-sm text-muted-foreground mt-0.5">
+                Manage your account and preferences.
+              </p>
+            </div>
             <TabsList
               aria-label="Settings sections"
               className="h-auto max-w-full justify-start overflow-x-auto border border-border bg-card"

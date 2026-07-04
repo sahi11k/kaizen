@@ -10,7 +10,7 @@ const AuthFormContainer = ({ headerText, children }) => {
             iconClassName="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
             link="/"
           />
-          <div className="heading-3">{headerText}</div>
+          <div className="heading-3 !font-sans">{headerText}</div>
         </div>
         <div className="px-4">{children}</div>
       </div>

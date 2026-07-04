@@ -1,5 +1,9 @@
-import { EmptyState, EmptyFiltered, Skeleton } from "@/shared/ui";
-import EmptyBookIllustration from "@/assets/illustrations/empty-book.svg?react";
+import {
+  EmptyState,
+  EmptyStateAction,
+  EmptyFiltered,
+  Skeleton,
+} from "@/shared/ui";
 import BookmarkedItem from "@/features/bookmarked/components/BookmarkedItem";
 
 const GROUPS = [
@@ -8,7 +12,15 @@ const GROUPS = [
   { status: "finished", label: "Finished Reading" },
 ];
 
-export default function BookmarkedGrid({ items, userId, onEdit, isLoading, isFiltered, onAdd, onClear }) {
+export default function BookmarkedGrid({
+  items,
+  userId,
+  onEdit,
+  isLoading,
+  isFiltered,
+  onAdd,
+  onClear,
+}) {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2.5">
@@ -21,27 +33,18 @@ export default function BookmarkedGrid({ items, userId, onEdit, isLoading, isFil
 
   if (!items.length) {
     if (isFiltered) {
-      return <EmptyFiltered onClear={onClear} />;
+      return <EmptyFiltered onClear={onClear} className="mt-[20%]" />;
     }
     return (
       <EmptyState
-        className="w-full py-20"
-        icon={
-          <div className="w-72 md:w-96">
-            <EmptyBookIllustration />
-          </div>
-        }
-        title="Nothing bookmarked yet"
-        description="Start building your reading list — add books or links you want to revisit."
+        className="border border-green-500 grow-1"
+        title="Nothing bookmarked yet."
+        description="Add books or articles you want to read."
         action={
           onAdd && (
-            <button
-              type="button"
-              onClick={onAdd}
-              className="mt-2 text-sm font-medium text-primary hover:underline"
-            >
-              + Add your first item
-            </button>
+            <EmptyStateAction onClick={onAdd}>
+              Add a bookmark →
+            </EmptyStateAction>
           )
         }
       />
@@ -54,10 +57,10 @@ export default function BookmarkedGrid({ items, userId, onEdit, isLoading, isFil
         const group = items.filter((item) => item.status === status);
         if (!group.length) return null;
         return (
-          <div key={status} className="flex flex-col gap-2.5">
-            <p className="text-[11px] text-[#555] uppercase tracking-[0.05em] mb-2 px-1">
-              {label}
-            </p>
+          <div key={status} className="flex flex-col gap-4">
+            <div className="sticky top-[10.25rem] md:top-[11.25rem] z-20 bg-background before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5">
+              <p className="label-overline mb-2 px-1 py-1">{label}</p>
+            </div>
             {group.map((item) => (
               <BookmarkedItem
                 key={item.id}

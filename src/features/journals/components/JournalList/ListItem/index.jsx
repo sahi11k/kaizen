@@ -1,22 +1,15 @@
 import React from "react";
-import { getDayOfMonth, getDayOfWeek } from "@/shared/lib/date";
+import { Link } from "react-router";
+import { formatDate } from "@/shared/lib/date";
 import { JOURNAL_DEFAULT_BACKEND_TITLE } from "@/features/journals/constants";
 import { getJournalPlainText } from "@/features/journals/utils";
 import { MoreOptions } from "@/shared/ui";
-import { cn } from "@/shared/lib/utils";
 
 const base =
-  "group flex min-h-36 cursor-pointer items-stretch gap-4 rounded-lg border border-border bg-background p-4 transition-colors md:gap-5 md:p-5";
-const hover = "hover:bg-muted";
+  "surface-card group relative flex items-stretch gap-4 rounded-lg px-4 py-3 transition-colors hover:bg-muted md:gap-5 md:px-5 md:py-4";
 
-const JournalListItem = ({
-  journal,
-  onClick,
-  onRemove,
-  onEdit,
-  isFirstInSection = false,
-}) => {
-  const { title, date, content, wordCount } = journal;
+const JournalListItem = ({ journal, onRemove, onEdit }) => {
+  const { id, title, date, content, wordCount } = journal;
   const preview = getJournalPlainText(content);
   const legacyTitle = title?.trim?.() ? String(title).trim() : "";
   const displayTitle =
@@ -24,59 +17,47 @@ const JournalListItem = ({
       ? legacyTitle
       : "";
   const primaryLine = displayTitle || JOURNAL_DEFAULT_BACKEND_TITLE;
-  const wordsLabel = `${Number(wordCount) || 0} words`;
-
-  const onKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === " " || e.code === "Space") {
-      e.preventDefault();
-      onClick?.(e);
-    }
-  };
+  const wordCountValue = Number(wordCount) || 0;
+  const wordsLabel = `${wordCountValue} ${wordCountValue === 1 ? "word" : "words"}`;
 
   return (
-    <li
-      className={cn(base, hover, isFirstInSection && "rounded-t-none")}
-      onClick={onClick}
-      onKeyDown={onKeyDown}
-      role="option"
-      tabIndex={0}
-    >
-      <div className="flex size-14 shrink-0 flex-col items-center justify-center rounded-full bg-secondary text-foreground md:size-16">
-        <span className="font-number text-xl font-semibold leading-tight md:text-2xl">
-          {getDayOfMonth(date)}
-        </span>
-        <span className="text-xs font-medium uppercase text-muted-foreground">
-          {getDayOfWeek(date)}
-        </span>
-      </div>
+    <li className={base}>
+      <Link
+        to={`/dashboard/journals/${id}`}
+        className="absolute inset-0 rounded-lg"
+        aria-label={`Open journal: ${primaryLine}`}
+      />
       <div className="flex min-w-0 flex-1 flex-col">
-        <div className="min-w-0 max-w-3xl pr-8">
-          <div className="truncate text-lg font-semibold leading-snug md:text-xl">
+        <div className="min-w-0">
+          <div className="mb-1.5 flex items-center justify-between gap-2">
+            <div className="label-overline flex items-center gap-2 !text-[11px] text-muted-foreground">
+              <span>{formatDate(date, "ddd, MMM D")}</span>
+              <span aria-hidden="true">·</span>
+              <span className="normal-case">{wordsLabel}</span>
+            </div>
+            <MoreOptions
+              align="end"
+              triggerClassName="relative z-10 !p-0 w-0 overflow-hidden opacity-0 group-hover:w-8 group-hover:opacity-100 data-[state=open]:w-8 data-[state=open]:opacity-100 hover:!bg-transparent hover:text-primary !h-8 shrink-0"
+              items={[
+                { label: "Edit", onClick: onEdit },
+                {
+                  label: "Delete",
+                  onClick: onRemove,
+                  className: "hover:!bg-destructive/10 !text-destructive",
+                },
+              ]}
+            />
+          </div>
+          <div className="truncate text-base font-medium font-sans leading-snug">
             {primaryLine}
           </div>
           {preview ? (
-            <div className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground md:text-base">
+            <div className="mt-1 mb-4 line-clamp-2 text-xs leading-relaxed text-muted-foreground md:text-sm">
               {preview}
             </div>
           ) : null}
         </div>
-        <div className="mt-auto pt-4 text-xs font-medium text-muted-foreground md:text-sm">
-          {wordsLabel}
-        </div>
       </div>
-
-      <MoreOptions
-        align="end"
-        triggerClassName="hover:!bg-transparent hover:text-primary"
-        items={[
-          { label: "Edit", onClick: onEdit },
-          {
-            label: "Delete",
-            onClick: onRemove,
-            className: "hover:!bg-destructive/10 !text-destructive",
-          },
-        ]}
-      />
     </li>
   );
 };

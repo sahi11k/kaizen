@@ -25,7 +25,7 @@ const TimerContainer = () => {
   } = useTimerContainer();
 
   return (
-    <div className="surface-card flex flex-1 items-start justify-center rounded-xl p-6">
+    <div className="surface-card flex flex-1 items-start justify-center rounded-lg p-6">
       <div className="flex h-full flex-col">
         <TimerTabs
           currentTab={currentTab}

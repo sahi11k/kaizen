@@ -51,18 +51,18 @@
   --tt-gray-dark-800: rgba(224, 224, 225, 1);
   --tt-gray-dark-900: rgba(245, 245, 245, 1);
 
-  /* Brand — align TipTap UI with app teal scale (see src/styles/variables.css) */
-  --tt-brand-color-50: var(--teal-50);
-  --tt-brand-color-100: var(--teal-100);
-  --tt-brand-color-200: var(--teal-200);
-  --tt-brand-color-300: var(--teal-300);
-  --tt-brand-color-400: var(--teal-400);
-  --tt-brand-color-500: var(--teal-500);
-  --tt-brand-color-600: var(--teal-600);
-  --tt-brand-color-700: var(--teal-700);
-  --tt-brand-color-800: var(--teal-800);
-  --tt-brand-color-900: var(--teal-900);
-  --tt-brand-color-950: var(--teal-950);
+  /* Brand — align TipTap UI with app amber/primary scale */
+  --tt-brand-color-50: var(--amber-50);
+  --tt-brand-color-100: var(--amber-100);
+  --tt-brand-color-200: var(--amber-200);
+  --tt-brand-color-300: var(--amber-300);
+  --tt-brand-color-400: var(--amber-400);
+  --tt-brand-color-500: var(--amber-500);
+  --tt-brand-color-600: var(--amber-600);
+  --tt-brand-color-700: var(--amber-700);
+  --tt-brand-color-800: var(--amber-850);
+  --tt-brand-color-900: var(--amber-900);
+  --tt-brand-color-950: var(--amber-950);
 
   /* Green */
   --tt-color-green-inc-5: hsla(129, 100%, 97%, 1);
@@ -178,8 +178,8 @@
   --tt-border-color-tint: var(--tt-gray-light-a-100);
   --tt-sidebar-bg-color: var(--tt-gray-light-100);
   --tt-scrollbar-color: var(--muted-foreground);
-  --tt-cursor-color: var(--teal-500);
-  --tt-selection-color: color-mix(in srgb, var(--teal-500) 22%, transparent);
+  --tt-cursor-color: var(--primary);
+  --tt-selection-color: color-mix(in srgb, var(--foreground) 20%, transparent);
   --tt-card-bg-color: var(--muted);
   --tt-card-border-color: var(--border);
 }
@@ -191,8 +191,8 @@
   --tt-border-color-tint: var(--tt-gray-dark-a-100);
   --tt-sidebar-bg-color: var(--tt-gray-dark-100);
   --tt-scrollbar-color: var(--muted-foreground);
-  --tt-cursor-color: var(--teal-400);
-  --tt-selection-color: color-mix(in srgb, var(--teal-300) 30%, transparent);
+  --tt-cursor-color: var(--primary);
+  --tt-selection-color: color-mix(in srgb, var(--foreground) 20%, transparent);
   --tt-card-bg-color: var(--tt-gray-dark-50);
   --tt-card-border-color: var(--tt-gray-dark-a-50);
 

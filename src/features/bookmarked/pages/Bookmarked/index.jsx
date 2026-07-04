@@ -61,8 +61,8 @@ export default function Bookmarked() {
   };
 
   return (
-    <div className="h-full bg-background px-3 py-3 md:px-6 md:py-5 lg:px-8">
-      <div className="mx-auto flex h-full w-full max-w-5xl flex-col">
+    <div className="min-h-full bg-background px-3 py-3 md:px-6 md:py-5 lg:px-8">
+      <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col">
         <div className="mx-4 flex flex-1 flex-col md:mx-6">
           <BookmarkedHeader onAdd={handleAdd} />
           {items.length > 0 && (

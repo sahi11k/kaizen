@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { ArrowLeft, SquarePen } from "lucide-react";
+import { SquarePen } from "lucide-react";
 import JournalList from "@/features/journals/components/JournalList";
 import JournalEditor from "@/features/journals/components/JournalEditor";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
@@ -9,8 +9,7 @@ import useJournalsStore from "@/features/journals/store";
 import { useAuthStore } from "@/features/auth";
 import { useJournalByIdQuery } from "@/features/journals/queries";
 import { DEFAULT_JOURNAL_STATE } from "@/features/journals/constants";
-import { Button, EmptyState, Skeleton } from "@/shared/ui";
-import NotFoundIllustration from "@/assets/illustrations/not-found.svg?react";
+import { EmptyState, EmptyStateAction, Skeleton } from "@/shared/ui";
 
 const JOURNALS_ROUTE = "/dashboard/journals";
 
@@ -99,22 +98,12 @@ const JournalEditorRoute = ({ mode }) => {
     return (
       <JournalDetailShell>
         <EmptyState
-          icon={
-            <div className="w-72 md:w-96">
-              <NotFoundIllustration />
-            </div>
-          }
-          title="Journal not found"
-          description="This journal may have been deleted or is no longer available."
+          title="Journal not found."
+          description="This entry may have been deleted or is no longer available."
           action={
-            <Button
-              variant="default"
-              size="sm"
-              icon={<ArrowLeft className="size-4" />}
-              onClick={goBack}
-            >
-              Back to journals
-            </Button>
+            <EmptyStateAction to={JOURNALS_ROUTE}>
+              ← Back to journals
+            </EmptyStateAction>
           }
         />
       </JournalDetailShell>
@@ -134,8 +123,8 @@ const JournalEditorRoute = ({ mode }) => {
 
 const JournalLibraryRoute = () => {
   return (
-    <div className="h-full bg-background px-3 py-3 md:px-6 md:py-5 lg:px-8">
-      <div className="mx-auto flex h-full w-full max-w-5xl flex-col">
+    <div className="min-h-full bg-background px-3 py-3 md:px-6 md:py-5 lg:px-8">
+      <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col">
         <JournalList
           showHeader
           headerTitle="Journals"

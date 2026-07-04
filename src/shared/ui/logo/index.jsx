@@ -31,12 +31,12 @@ const iconVariants = cva("text-primary", {
   },
 });
 
-const textVariants = cva("text-foreground font-semibold leading-none", {
+const textVariants = cva("text-foreground text-wordmark leading-none", {
   variants: {
     size: {
-      sm: "text-sm md:text-base xl:text-lg",
-      md: "text-lg lg:text-xl xl:text-2xl",
-      lg: "text-2xl xl:text-3xl",
+      sm: "",
+      md: "",
+      lg: "",
     },
   },
   defaultVariants: {

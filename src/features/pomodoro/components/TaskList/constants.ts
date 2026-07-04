@@ -14,12 +14,12 @@ export const TASK_FILTER_LABELS = {
 
 export const TASK_LIST_EMPTY_STATES = {
   [TASK_FILTERS.PENDING]: {
-    title: "No pending tasks",
-    description: "All tasks completed. Nice work!",
+    title: "Nothing pending.",
+    description: "You're all caught up.",
   },
   [TASK_FILTERS.COMPLETED]: {
-    title: "No completed tasks",
-    description: "Completed tasks will appear here.",
+    title: "Nothing completed yet.",
+    description: "Finish a task and it'll show up here.",
   },
 } as const;
 

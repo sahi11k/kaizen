@@ -19,17 +19,20 @@
   --neutral-700: #44403c; /* secondary-fg light / overlay-fg light */
   --neutral-750: #3a3633; /* card-border dark */
   --neutral-800: #2e2b28; /* border dark / secondary dark */
-  --neutral-850: #272421; /* muted dark / input dark */
-  --neutral-900: #1f1d1b; /* card dark / popover dark */
-  --neutral-925: #1b1917; /* sidebar dark / overlay-field dark */
-  --neutral-950: #171614; /* background dark */
+  --neutral-820: #2a2520; /* hover / secondary dark */
+  --neutral-840: #231f1a; /* card border dark */
+  --neutral-850: #1e1b16; /* muted dark / input dark */
+  --neutral-875: #1a1714; /* divider / cell empty */
+  --neutral-900: #141210; /* card dark / popover dark */
+  --neutral-925: #131110; /* sidebar dark / overlay-field dark */
+  --neutral-950: #0f0e0d; /* background dark */
 
   /* ─── Amber (accent — muted ochre, not alert-like) ─── */
   --amber-50: #fdf3e3; /* primary-soft light */
   --amber-100: #fdf3e3;
-  --amber-200: #e8b472; /* primary-soft-fg dark */
-  --amber-300: #d4933f; /* primary dark / ring light / break-filled light */
-  --amber-400: #d4933f;
+  --amber-200: #e0a458; /* primary dark (gold) */
+  --amber-300: #e0a458; /* primary dark / ring light / break-filled light */
+  --amber-400: #f59e0b; /* primary light */
   --amber-500: #c27c2a; /* primary light / ring dark */
   --amber-600: #c27c2a;
   --amber-700: #8a5c1e; /* break-filled dark */

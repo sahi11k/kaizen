@@ -29,9 +29,9 @@ const PipTimerContent = () => {
         />
 
         <div className="flex-1 flex items-center gap-6 justify-between w-full">
-          <div className="font-number text-5xl tracking-tight leading-none">
+          <div className="font-number text-5xl tracking-tight leading-none font-number flex items-center justify-center">
             {minutes}
-            <span className="mx-0.5">:</span>
+            <span className="-mt-2">:</span>
             {seconds}
           </div>
           <TimerActionGroup>

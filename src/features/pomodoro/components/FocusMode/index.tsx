@@ -84,11 +84,11 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
           className="w-full text-xl"
         />
 
-        <span className="font-number text-[clamp(6rem,20vw,14rem)] tracking-tight leading-none">
+        <div className="font-number flex items-center justify-center text-[clamp(6rem,20vw,14rem)] tracking-tight leading-none">
           {minutes}
-          <span className="mx-2">:</span>
+          <span className="-mt-6 mx-2">:</span>
           {seconds}
-        </span>
+        </div>
 
         <div
           className="w-full h-2 rounded-full overflow-hidden"

@@ -4,8 +4,7 @@ import { Plus } from "lucide-react";
 import TaskForm from "@/features/pomodoro/components/TaskForm";
 import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import useTaskList from "@/features/pomodoro/hooks/useTaskList";
-import { EmptyState, FloatingButton } from "@/shared/ui";
-import TaskIllustration from "@/assets/illustrations/empty-tasks.svg?react";
+import { EmptyState, EmptyStateAction, FloatingButton } from "@/shared/ui";
 
 import TaskDeleteDialog from "./TaskDeleteDialog";
 import TaskFilterControl from "./TaskFilterControl";
@@ -74,15 +73,13 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
 
         {isEmpty && !isLoading && (
           <EmptyState
-            icon={
-              <div className="w-64 md:w-64">
-                <TaskIllustration />
-              </div>
+            title="No tasks yet."
+            description="Add something you want to get done."
+            action={
+              <EmptyStateAction onClick={openTaskForm}>
+                Add a task →
+              </EmptyStateAction>
             }
-            title="No Tasks"
-            description="Add a task to get started."
-            titleClassName="text-3xl font-semibold"
-            descriptionClassName="text-sm text-muted-foreground"
           />
         )}
 
@@ -100,15 +97,8 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
           !isLoading &&
           TASK_LIST_EMPTY_STATES[selectedFilter] && (
             <EmptyState
-              icon={
-                <div className="w-64">
-                  <TaskIllustration />
-                </div>
-              }
               title={TASK_LIST_EMPTY_STATES[selectedFilter].title}
               description={TASK_LIST_EMPTY_STATES[selectedFilter].description}
-              titleClassName="text-3xl font-semibold"
-              descriptionClassName="text-sm text-muted-foreground"
             />
           )}
 

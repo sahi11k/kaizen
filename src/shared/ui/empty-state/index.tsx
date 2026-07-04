@@ -1,42 +1,37 @@
 import { cn } from "@/shared/lib/utils";
 
 interface EmptyStateProps {
-  icon?: React.ReactNode;
+  code?: string;
   title: string;
   description?: string;
   action?: React.ReactNode;
   className?: string;
-  titleClassName?: string;
-  descriptionClassName?: string;
 }
 
 const EmptyState = ({
-  icon,
+  code,
   title,
   description,
   action,
   className,
-  titleClassName,
-  descriptionClassName,
 }: EmptyStateProps): React.ReactElement => {
   return (
-    <div
-      className={cn(
-        "flex justify-center items-center h-full w-full",
-        className,
-      )}
-    >
-      <div className="flex flex-col items-center gap-4">
-        {icon && <div>{icon}</div>}
-        <div className="flex flex-col items-center">
-          <h2 className={titleClassName ?? "heading-2"}>{title}</h2>
-          {description && (
-            <p className={descriptionClassName ?? "body-description text-center"}>
-              {description}
-            </p>
-          )}
-        </div>
-        {action}
+    <div className={cn("w-full h-full", className)}>
+      <div className="flex flex-col items-center text-center max-w-lg px-6">
+        {code && (
+          <span className="font-number text-8xl md:text-9xl leading-none tracking-tight text-subtle-foreground/10 mb-9 select-none">
+            {code}
+          </span>
+        )}
+        <h2 className="font-heading text-2xl md:text-3xl font-normal leading-snug tracking-tight text-foreground">
+          {title}
+        </h2>
+        {description && (
+          <p className="mt-3.5 text-sm leading-relaxed text-muted-foreground">
+            {description}
+          </p>
+        )}
+        {action && <div className="mt-8">{action}</div>}
       </div>
     </div>
   );

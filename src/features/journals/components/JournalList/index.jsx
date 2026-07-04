@@ -2,11 +2,11 @@ import React from "react";
 import JournalListItem from "./ListItem";
 import useJournalList from "@/features/journals/hooks/useJournalList";
 import { SquarePen } from "lucide-react";
-import EmptyJournalIllustration from "@/assets/illustrations/empty-journal.svg?react";
 import {
   Button,
   FloatingButton,
   EmptyState,
+  EmptyStateAction,
   Skeleton,
   Tooltip,
 } from "@/shared/ui";
@@ -19,7 +19,7 @@ const JournalList = ({
 }) => {
   const headerStickyTop = "top-3 md:top-5";
   const sectionHeaderStickyTop = showHeader
-    ? "top-[5.25rem] md:top-[6.25rem]"
+    ? "top-[6.25rem] md:top-[7.25rem]"
     : "top-0";
 
   const {
@@ -29,7 +29,6 @@ const JournalList = ({
     isEmpty,
     grouped,
     fetchNextPage,
-    handleJournalClick,
     removeJournal,
     editJournal,
     newJournal,
@@ -38,15 +37,10 @@ const JournalList = ({
   const sections = grouped.map(({ key, label, items }) => ({
     key,
     label,
-    content: items.map((journal, index) => (
+    content: items.map((journal) => (
       <JournalListItem
         key={journal.id}
         journal={journal}
-        isFirstInSection={index === 0}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleJournalClick(journal);
-        }}
         onRemove={(e) => {
           e.stopPropagation();
           removeJournal(journal.id);
@@ -63,13 +57,11 @@ const JournalList = ({
     <>
       {showHeader && (
         <div
-          className={`sticky ${headerStickyTop} z-30 bg-background before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5`}
+          className={`sticky ${headerStickyTop} z-40 bg-background before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5`}
         >
           <div className="mx-4 flex shrink-0 items-center justify-between pb-4 md:mx-6 md:pb-5">
             <div>
-              <h1 className="text-2xl font-semibold leading-tight text-foreground md:text-3xl">
-                {headerTitle}
-              </h1>
+              <h1 className="heading-2">{headerTitle}</h1>
               <p className="mt-1 text-sm text-muted-foreground">
                 Browse and continue your reflections.
               </p>
@@ -101,39 +93,29 @@ const JournalList = ({
 
         {isEmpty && !isLoading && (
           <EmptyState
-            icon={
-              <div className="w-72 md:w-96">
-                <EmptyJournalIllustration />
-              </div>
-            }
-            title="No journals yet"
-            description="Write a journal to get started."
+            title="No entries yet."
+            description="Your journal is empty. Start writing when you're ready."
             action={
-              <Button
-                icon={headerButtonIcon}
-                onClick={newJournal}
-                className="mt-2"
-                size="sm"
-              >
-                {headerButtonLabel}
-              </Button>
+              <EmptyStateAction onClick={newJournal}>
+                New entry →
+              </EmptyStateAction>
             }
           />
         )}
 
         {!isEmpty && (
-          <div className="pt-3 pb-24 md:pt-4 md:pb-8">
+          <div className="pb-24 md:pb-8">
             {sections.map(({ key, label, content }) => (
-              <section key={key} className="mb-7 last:mb-0 md:mb-9">
-                <div className={`sticky ${sectionHeaderStickyTop} z-20`}>
-                  <div className="mx-4 rounded-t-lg bg-muted border border-muted px-4 py-3 md:mx-6 md:px-6">
-                    <h4 className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">
-                      {label}
-                    </h4>
+              <section key={key} className="mb-6 last:mb-0">
+                <div
+                  className={`sticky ${sectionHeaderStickyTop} z-20 bg-background before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5`}
+                >
+                  <div className="mx-4 pb-2 md:mx-6">
+                    <h4 className="label-overline mb-2">{label}</h4>
                   </div>
                 </div>
                 <ul
-                  className="mx-4 flex flex-col gap-5 md:mx-6 md:gap-6"
+                  className="mx-4 mt-1 flex flex-col gap-4 md:mx-6"
                   role="listbox"
                 >
                   {content}

@@ -63,15 +63,15 @@
       position: sticky;
       top: var(--journal-toolbar-sticky-top, 6.5rem);
       z-index: 35;
-      margin-inline: 1.5rem;
+      margin-inline: 1rem;
       background: var(--background);
 
       &::before,
       &::after {
         content: "";
         position: absolute;
-        left: -1.5rem;
-        right: -1.5rem;
+        left: -1rem;
+        right: -1rem;
         z-index: 0;
         background: var(--background);
         pointer-events: none;
@@ -133,7 +133,7 @@
     padding-inline: 0;
 
     .simple-editor-journal-toolbar-shell {
-      margin-inline: 1.5rem;
+      margin-inline: 1rem;
     }
 
     .tiptap-toolbar[data-variant="fixed"] {
@@ -199,7 +199,7 @@
   .simple-editor-wrapper--journal
     .simple-editor-content
     .tiptap.ProseMirror.simple-editor {
-    padding-inline: 1.5rem;
+    padding-inline: 1rem;
   }
 }
 
@@ -207,7 +207,7 @@
   .simple-editor-wrapper--journal
     .simple-editor-content
     .tiptap.ProseMirror.simple-editor {
-    padding-inline: 1.5rem;
+    padding-inline: 1rem;
   }
 }
 

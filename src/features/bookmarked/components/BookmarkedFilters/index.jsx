@@ -30,10 +30,10 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
   ];
 
   return (
-    <div className="sticky top-[5.25rem] md:top-[6.25rem] z-20 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-1 before:bg-background flex flex-wrap items-center gap-2 relative">
+    <div className="sticky top-[6.25rem] md:top-[7.25rem] z-30 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5 flex flex-wrap items-center gap-2 relative">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="flex items-center gap-1.5">
+          <Button variant="outline" size="sm" className="flex items-center gap-1.5 bg-card">
             <SlidersHorizontal className="w-3.5 h-3.5" />
             Filter
             {totalActive > 0 && (
@@ -45,7 +45,7 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
         </PopoverTrigger>
         <PopoverContent align="start" className="w-64 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Type</p>
+            <p className="label-overline text-muted-foreground">Type</p>
             <div className="flex flex-wrap gap-2">
               {TYPE_OPTIONS.map((opt) => (
                 <Pill
@@ -58,7 +58,7 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</p>
+            <p className="label-overline text-muted-foreground">Status</p>
             <div className="flex flex-wrap gap-2">
               {STATUS_OPTIONS.map((opt) => (
                 <Pill

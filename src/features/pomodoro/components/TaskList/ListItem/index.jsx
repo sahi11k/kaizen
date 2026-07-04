@@ -10,7 +10,7 @@ const base =
   "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-border hover:bg-muted";
 const activeClass = "border-l-2 border-l-primary rounded-l-none";
 const completedClass =
-  "border-border opacity-40 hover:opacity-60";
+  "border-border opacity-55 hover:opacity-75";
 
 const TaskItem = ({
   task,
@@ -80,8 +80,8 @@ const TaskItem = ({
       <div className="flex flex-col flex-1 w-0 gap-1">
         <div
           className={cn(
-            "text-base font-semibold truncate",
-            "font-heading",
+            "text-base font-medium truncate",
+            "font-sans",
             task.completed && "line-through",
           )}
         >

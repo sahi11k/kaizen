@@ -140,7 +140,7 @@ const InputNumber = ({
           onClick={handleDecrement}
           disabled={!canDecrement}
           variant="icon"
-          className="w-9 rounded-none border border-border border-y-0 !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
+          className="w-9 min-w-8 min-h-8 rounded-none border border-border border-y-0 !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
         >
           <Minus />
         </Button>
@@ -150,7 +150,7 @@ const InputNumber = ({
           onClick={handleIncrement}
           disabled={!canIncrement}
           variant="icon"
-          className="w-9 rounded-l-none rounded-r-md border border-y-0 border-l-0 border-border !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
+          className="w-9 min-w-8 min-h-8 rounded-l-none rounded-r-md border border-y-0 border-l-0 border-border !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
         >
           <Plus />
         </Button>

@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, Save, Trash2, Undo2 } from "lucide-react";
+import { AlertTriangle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -146,7 +146,7 @@ const SecuritySettings = () => {
   return (
     <div className="flex flex-col gap-6">
       <form
-        className="rounded-lg border border-border p-4 sm:p-6"
+        className="rounded-lg border border-border bg-card p-4 sm:p-6"
         onSubmit={handlePasswordSubmit}
       >
         <div className="grid gap-5">
@@ -187,20 +187,18 @@ const SecuritySettings = () => {
           <Button
             type="button"
             variant="outline"
-            icon={<Undo2 className="size-4" />}
             onClick={handlePasswordCancel}
             disabled={
               isPasswordLoading ||
               (!passwordValues.password && !passwordValues.confirmPassword)
             }
             size="sm"
-            className="flex-1 sm:flex-none"
+            className="flex-1 bg-muted hover:bg-border sm:flex-none"
           >
             Cancel
           </Button>
           <Button
             type="submit"
-            icon={<Save className="size-4" />}
             loading={isPasswordLoading}
             disabled={!canUpdatePassword}
             size="sm"

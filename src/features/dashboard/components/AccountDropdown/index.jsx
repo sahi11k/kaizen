@@ -65,7 +65,7 @@ const AccountDropdown = ({
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "flex min-w-0 cursor-pointer items-center rounded-full outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+          "flex min-w-0 cursor-pointer items-center rounded-full outline-none",
           showUserText && "gap-3",
           triggerClassName,
         )}
@@ -78,7 +78,7 @@ const AccountDropdown = ({
         </Avatar>
         {showUserText && (
           <span className="min-w-0 overflow-hidden text-left">
-            <span className="block truncate text-base font-semibold text-current">
+            <span className="block truncate font-display text-lg font-medium text-current">
               {userDisplayName}
             </span>
           </span>
@@ -86,7 +86,7 @@ const AccountDropdown = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className={cn(
-          "border-border shadow-md w-48 text-base font-medium",
+          "border-border shadow-md w-48 font-sans text-base font-normal",
           contentClassName,
           className,
         )}

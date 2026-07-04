@@ -15,6 +15,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Button,
   Input,
   Switch,
   Toast,
@@ -24,15 +25,11 @@ const { toast } = Toast;
 
 const AVATAR_MAX_SIZE_BYTES = 2 * 1024 * 1024;
 const AVATAR_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const DISPLAY_NAME_AUTO_SAVE_DELAY_MS = 700;
 
 export const GeneralSettings = () => {
   const { user } = useAuthStore();
   const { theme, toggleTheme } = useThemeStore();
   const avatarInputRef = useRef(null);
-  const displayNameSaveTimerRef = useRef(null);
-  const displayNameSaveVersionRef = useRef(0);
-  const lastSavedDisplayNameRef = useRef("");
 
   const [formValues, setFormValues] = useState({
     email: "",
@@ -55,16 +52,7 @@ export const GeneralSettings = () => {
   useEffect(() => {
     const defaultUserValues = getDefaultUserValues();
     setFormValues(defaultUserValues);
-    lastSavedDisplayNameRef.current = defaultUserValues.displayName.trim();
   }, [getDefaultUserValues]);
-
-  useEffect(() => {
-    return () => {
-      if (displayNameSaveTimerRef.current) {
-        clearTimeout(displayNameSaveTimerRef.current);
-      }
-    };
-  }, []);
 
   const displayName = formValues.displayName.trim();
   const displayNameError =
@@ -72,6 +60,8 @@ export const GeneralSettings = () => {
   const avatarFallback =
     displayName.charAt(0) || formValues.email.charAt(0) || "K";
   const isDarkMode = theme === THEME.DARK;
+  const defaultValues = getDefaultUserValues();
+  const isDirty = displayName !== defaultValues.displayName.trim();
 
   const handleFormChange = (e) => {
     setFormValues((currentValues) => ({
@@ -80,58 +70,29 @@ export const GeneralSettings = () => {
     }));
   };
 
-  useEffect(() => {
-    if (displayNameSaveTimerRef.current) {
-      clearTimeout(displayNameSaveTimerRef.current);
-    }
+  const handleFormCancel = () => {
+    setFormValues(defaultValues);
+  };
 
-    displayNameSaveVersionRef.current += 1;
-    const saveVersion = displayNameSaveVersionRef.current;
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-    if (!user?.id || displayNameError) {
-      setIsProfileLoading(false);
-      return;
-    }
-
-    if (displayName === lastSavedDisplayNameRef.current) {
-      setIsProfileLoading(false);
-      return;
-    }
+    if (displayNameError || !user?.id) return;
 
     setIsProfileLoading(true);
-
-    displayNameSaveTimerRef.current = setTimeout(async () => {
-      try {
-        await updateUserMetadata({
-          display_name: displayName,
-          avatar_url: formValues.avatarUrl,
-          avatar_path: formValues.avatarPath,
-        });
-
-        if (saveVersion === displayNameSaveVersionRef.current) {
-          lastSavedDisplayNameRef.current = displayName;
-          setIsProfileLoading(false);
-        }
-      } catch (error) {
-        if (saveVersion === displayNameSaveVersionRef.current) {
-          setIsProfileLoading(false);
-          toast.error(error.message || "Failed to update profile");
-        }
-      }
-    }, DISPLAY_NAME_AUTO_SAVE_DELAY_MS);
-
-    return () => {
-      if (displayNameSaveTimerRef.current) {
-        clearTimeout(displayNameSaveTimerRef.current);
-      }
-    };
-  }, [
-    displayName,
-    displayNameError,
-    formValues.avatarPath,
-    formValues.avatarUrl,
-    user?.id,
-  ]);
+    try {
+      await updateUserMetadata({
+        display_name: displayName,
+        avatar_url: formValues.avatarUrl,
+        avatar_path: formValues.avatarPath,
+      });
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      toast.error(error.message || "Failed to update profile");
+    } finally {
+      setIsProfileLoading(false);
+    }
+  };
 
   const handleAvatarButtonClick = () => {
     avatarInputRef.current?.click();
@@ -202,7 +163,7 @@ export const GeneralSettings = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
       <section className="rounded-lg border border-border p-4 sm:p-6 bg-card">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex min-w-0 items-center gap-4">
@@ -231,7 +192,7 @@ export const GeneralSettings = () => {
               </span>
             </button>
             <div className="min-w-0">
-              <p className="truncate text-2xl font-semibold text-foreground">
+              <p className="truncate font-display text-2xl font-semibold text-foreground">
                 {displayName}
               </p>
               <p className="body-description truncate">{formValues.email}</p>
@@ -247,17 +208,10 @@ export const GeneralSettings = () => {
         </div>
       </section>
 
-      <section className="rounded-lg border border-border p-4 sm:p-6">
+      <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
         <div className="grid gap-5">
           <label className="flex flex-col gap-2 text-sm font-medium text-muted-foreground">
-            <span className="flex items-center justify-between gap-3">
-              <span>Display name</span>
-              {isProfileLoading && (
-                <span className="text-xs font-medium text-muted-foreground">
-                  Saving...
-                </span>
-              )}
-            </span>
+            Display name
             <Input
               name="displayName"
               value={formValues.displayName}
@@ -279,42 +233,62 @@ export const GeneralSettings = () => {
               value={formValues.email}
               disabled
               readOnly
-              className="w-full"
+              className="w-full border-transparent bg-transparent text-muted-foreground shadow-none hover:border-transparent focus-visible:border-transparent focus-visible:ring-0 disabled:opacity-100"
             />
           </label>
         </div>
       </section>
 
-      <section className="rounded-lg border border-border p-4 sm:p-6">
-        <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-background px-4 py-3">
-          <div className="flex min-w-0 items-center gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-              {isDarkMode ? (
-                <Moon className="size-4" />
-              ) : (
-                <Sun className="size-4" />
-              )}
-            </span>
-            <div>
-              <label
-                htmlFor="settings-theme-toggle"
-                className="text-sm font-medium text-foreground"
-              >
-                Dark mode
-              </label>
-              <p className="text-sm text-muted-foreground">
-                {isDarkMode ? "Dark mode is on" : "Dark mode is off"}
-              </p>
-            </div>
+      <section className="flex items-center justify-between gap-4 rounded-lg border border-border bg-card p-4 sm:p-6">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            {isDarkMode ? (
+              <Moon className="size-4" />
+            ) : (
+              <Sun className="size-4" />
+            )}
+          </span>
+          <div>
+            <label
+              htmlFor="settings-theme-toggle"
+              className="text-sm font-medium text-foreground"
+            >
+              Dark mode
+            </label>
+            <p className="text-sm text-muted-foreground">
+              {isDarkMode ? "Dark mode is on" : "Dark mode is off"}
+            </p>
           </div>
-          <Switch
-            id="settings-theme-toggle"
-            checked={isDarkMode}
-            onCheckedChange={handleThemeChange}
-          />
         </div>
+        <Switch
+          id="settings-theme-toggle"
+          checked={isDarkMode}
+          onCheckedChange={handleThemeChange}
+        />
       </section>
-    </div>
+
+      <div className="flex gap-3 sm:justify-end">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleFormCancel}
+          disabled={isProfileLoading || !isDirty}
+          size="sm"
+          className="flex-1 bg-muted hover:bg-border sm:flex-none"
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          loading={isProfileLoading}
+          disabled={!isDirty || !!displayNameError}
+          size="sm"
+          className="flex-1 sm:flex-none"
+        >
+          Save
+        </Button>
+      </div>
+    </form>
   );
 };
 

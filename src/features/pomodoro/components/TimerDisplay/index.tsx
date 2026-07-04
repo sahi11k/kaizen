@@ -35,7 +35,7 @@ const TimerDisplay = ({
       />
       <div className="font-number flex items-center justify-center text-[clamp(100px,16vw,180px)] tracking-tight">
         {minutes}
-        <span className="-mt-4">:</span>
+        <span className="-mt-6 mx-2">:</span>
         {seconds}
       </div>
       <div

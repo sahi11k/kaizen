@@ -1,5 +1,3 @@
-@import "./fonts.css";
-
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
@@ -8,8 +6,9 @@
  * ============================================ */
 @theme {
   --font-sans: "Inter", sans-serif;
-  --font-mono: "Space Mono", monospace;
-  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "Inter", sans-serif;
+  --font-heading: "Lora", serif;
+  --font-display: "Lora", serif;
 
   /* base */
   --color-background: var(--background);
@@ -131,7 +130,7 @@
   /* secondary */
   --secondary: #e8e2d9;
   --secondary-fg: #5a564f;
-  --secondary-soft: #f0ede8;
+  --secondary-soft: #ece7de;
   --secondary-soft-fg: #6b6860;
 
   /* sidebar — white card, warm border */
@@ -147,7 +146,7 @@
   --sidebar-account-hover-bg: #f0ede8;
 
   /* muted */
-  --muted: #f0ede8;
+  --muted: #f5f3ef;
   --muted-fg: #888580;
 
   /* subtle — tertiary text: captions, empty-state hints, timestamps */
@@ -161,11 +160,11 @@
   --dropdown-hover: #f0ede8;
 
   /* tabs */
-  --tab-list: #f0ede8;
+  --tab-list: var(--card-bg);
   --tab-list-fg: #888580;
   --tab-trigger: transparent;
   --tab-trigger-fg: #888580;
-  --tab-trigger-hover: #e8e2d9;
+  --tab-trigger-hover: #f0ede8;
   --tab-trigger-hover-fg: var(--neutral-950);
   --tab-trigger-active: transparent;
   --tab-trigger-active-fg: var(--amber-400);
@@ -243,7 +242,7 @@
   /* secondary */
   --secondary: var(--neutral-800);
   --secondary-fg: var(--neutral-200);
-  --secondary-soft: var(--neutral-850);
+  --secondary-soft: var(--neutral-820);
   --secondary-soft-fg: var(--neutral-300);
 
   /* sidebar */
@@ -259,7 +258,7 @@
   --sidebar-account-hover-bg: var(--neutral-850);
 
   /* muted */
-  --muted: var(--neutral-850);
+  --muted: var(--neutral-840);
   --muted-fg: var(--neutral-400);
 
   /* subtle — tertiary text: captions, empty-state hints, timestamps */

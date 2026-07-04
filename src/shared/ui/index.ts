@@ -42,6 +42,7 @@ export {
 export { EmptyState } from "./empty-state";
 export type { EmptyStateProps } from "./empty-state";
 export { EmptyFiltered } from "./empty-state/EmptyFiltered";
+export { EmptyStateAction } from "./empty-state/EmptyStateAction";
 export {
   ErrorBoundary,
   ErrorFallback,

@@ -1,3 +1,9 @@
+/* Selection */
+
+::selection {
+  background-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+
 /* Typography */
 
 .heading-1 {
@@ -12,6 +18,10 @@
   @apply font-heading text-lg xl:text-xl font-semibold leading-snug;
 }
 
+.heading-4 {
+  @apply font-heading text-base font-semibold leading-snug;
+}
+
 .body-base {
   @apply text-base xl:text-lg leading-relaxed tracking-wide;
 }
@@ -24,12 +34,16 @@
   @apply text-xs uppercase tracking-wide text-muted-foreground;
 }
 
+.label-overline {
+  @apply text-xs uppercase tracking-widest text-muted-foreground font-normal;
+}
+
 .text-number {
-  @apply text-2xl font-bold font-mono;
+  @apply text-2xl font-bold font-display;
 }
 
 .font-number {
-  @apply font-mono font-semibold;
+  @apply font-mono font-normal tabular-nums;
 }
 
 .text-link {
@@ -89,6 +103,36 @@
   animation: spin-once 0.5s ease-out;
 }
 
+/* Animation — skeleton shimmer */
+
+@keyframes shimmer-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in oklab, var(--color-foreground) 5%, transparent) 50%,
+    transparent 80%
+  );
+  animation: shimmer-sweep 1.6s ease-in-out infinite;
+}
+
 /* Scrollbar theming */
 
 * {
@@ -131,7 +175,7 @@
 }
 
 :where(.tab-trigger) {
-  @apply relative bg-tab-trigger font-heading text-tab-trigger-foreground data-[state=active]:border-transparent data-[state=active]:focus-visible:ring-0 data-[state=active]:focus-visible:outline-0 data-[state=active]:focus-visible:border-transparent data-[state=active]:font-semibold focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-2 first:rounded-l-md last:rounded-r-md border border-tab-trigger-border px-4 pb-2.5 pt-1.5 text-base font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5;
+  @apply relative bg-tab-trigger font-sans text-tab-trigger-foreground data-[state=active]:border-transparent data-[state=active]:focus-visible:ring-0 data-[state=active]:focus-visible:outline-0 data-[state=active]:focus-visible:border-transparent focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-2 first:rounded-l-md last:rounded-r-md border border-tab-trigger-border px-4 pb-2.5 pt-1.5 text-base font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5;
 }
 
 :where(.tab-trigger):hover {

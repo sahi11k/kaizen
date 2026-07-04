@@ -1,9 +1,3 @@
-import GreetingsWidget from "@/features/dashboard/components/GreetingsWidget";
-import JournalsWidget from "@/features/dashboard/components/JournalsWidget";
-import ProgressChartWidget from "@/features/dashboard/components/ProgressChartWidget";
-import TaskListWidget from "@/features/dashboard/components/TaskListWidget";
-import TCPWidget from "@/features/dashboard/components/TCPWidget";
-import TotalHoursWidget from "@/features/dashboard/components/TotalHoursWidget";
 import TimerOutline from "@/assets/icons/timer-outline.svg?react";
 import TimerFilled from "@/assets/icons/timer-filled.svg?react";
 import JournalOutline from "@/assets/icons/edit-doc-outline.svg?react";
@@ -45,47 +39,3 @@ export const SIDEBAR_LINKS = [
   },
 ];
 
-export const WIDGET_GRID = [
-  {
-    span: "col-span-12",
-    Content: GreetingsWidget,
-    key: "greet",
-    height: "h-40",
-    img: true,
-  },
-  {
-    span: "col-span-12 lg:col-span-4",
-    Content: TotalHoursWidget,
-    key: "total-hours",
-    height: "min-h-100",
-    img: false,
-  },
-  {
-    span: "col-span-12 md:col-span-6 lg:col-span-4",
-    Content: JournalsWidget,
-    key: "journals",
-    height: "min-h-100",
-    img: false,
-  },
-  {
-    span: "col-span-12 md:col-span-6 lg:col-span-4",
-    Content: TaskListWidget,
-    key: "tasks",
-    height: "min-h-100",
-    img: false,
-  },
-  {
-    span: "col-span-12 lg:col-span-8",
-    Content: ProgressChartWidget,
-    key: "progress",
-    height: "min-h-100",
-    img: false,
-  },
-  {
-    span: "col-span-12 lg:col-span-4",
-    Content: TCPWidget,
-    key: "taskCompletionPercentage",
-    height: "min-h-100",
-    img: false,
-  },
-];

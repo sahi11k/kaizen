@@ -47,7 +47,7 @@ const LinkItem = ({
   const link = (
     <Link to={to} key={to} aria-label={isCollapsed ? label : undefined}>
       <li
-        className={`p-2 rounded-lg font-medium flex items-center gap-2 ${
+        className={`p-2 rounded-lg flex items-center gap-2 ${
           isActive
             ? "bg-sidebar-active text-sidebar-active-foreground hover:bg-sidebar-active"
             : "text-sidebar-muted-foreground hover:bg-sidebar-hover hover:text-sidebar-hover-foreground"
@@ -57,7 +57,11 @@ const LinkItem = ({
         <span>
           <ActiveIcon fill="currentColor" />
         </span>
-        {!isCollapsed && <span className="whitespace-nowrap">{label}</span>}
+        {!isCollapsed && (
+          <span className={`whitespace-nowrap ${isActive ? "text-nav-item-active" : "text-nav-item"}`}>
+            {label}
+          </span>
+        )}
       </li>
     </Link>
   );

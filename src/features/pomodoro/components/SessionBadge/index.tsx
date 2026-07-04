@@ -27,10 +27,16 @@ const SessionBadge = ({
   className,
 }: SessionBadgeProps): React.ReactNode => {
   const sessionProgress = currentTask
-    ? getSessionProgress(currentTask.completedSessions, currentTask.totalSessions)
+    ? getSessionProgress(
+        currentTask.completedSessions,
+        currentTask.totalSessions,
+      )
     : null;
   const sessionIndicators = currentTask
-    ? getSessionIndicators(currentTask.completedSessions, currentTask.totalSessions)
+    ? getSessionIndicators(
+        currentTask.completedSessions,
+        currentTask.totalSessions,
+      )
     : [];
 
   return (
@@ -39,18 +45,18 @@ const SessionBadge = ({
         {isPomodoro ? (
           <>
             {sessionProgress && (
-              <span className="shrink-0 text-muted-foreground">
+              <span className="label-overline shrink-0">
                 {sessionProgress.isExtraSession
                   ? `Extra session ${sessionProgress.nextSession}`
                   : `Session ${sessionProgress.currentSession} of ${sessionProgress.totalSessions}`}
               </span>
             )}
-            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+            <span className="whitespace-nowrap overflow-hidden text-ellipsis text-xs">
               {currentTask?.title || "Focus Time!"}
             </span>
           </>
         ) : (
-          <span>Time to Relax</span>
+          <span className="label-overline">Time to Relax</span>
         )}
       </div>
       <div

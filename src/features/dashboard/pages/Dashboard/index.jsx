@@ -1,57 +1,10 @@
-import { Skeleton } from "@/shared/ui";
-import { WIDGET_GRID } from "@/features/dashboard/constants";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
-import { cn } from "@/shared/lib/utils";
-import { useAuthStore } from "@/features/auth";
-import { useTasksQuery } from "@/features/pomodoro";
-import { useJournalsQuery } from "@/features/journals";
+import DashboardOverview from "@/features/dashboard/components/Dashboard";
 
 const Dashboard = () => {
-  const { user } = useAuthStore();
-
-  const { isLoading: isTasksLoading } = useTasksQuery(user?.id);
-  const { isLoading: isJournalsLoading } = useJournalsQuery(user?.id);
-
   useDocumentTitle(BROWSER_TAB_TITLES.DASHBOARD);
-
-  const loading = isTasksLoading || isJournalsLoading;
-
-  return (
-    <div className="p-6 grid grid-cols-12 gap-6">
-      {WIDGET_GRID.map(({ span, Content, key, height, img }) => (
-        <DashboardCard
-          className={span}
-          key={key}
-          loading={loading}
-          height={height}
-          img={img}
-        >
-          <Content />
-        </DashboardCard>
-      ))}
-    </div>
-  );
-};
-
-const DashboardCard = ({ children, className, loading, height, img }) => {
-  return (
-    <div
-      className={cn(
-        "rounded-lg overflow-hidden",
-        className,
-        !img && "bg-card border border-border",
-      )}
-    >
-      {loading ? (
-        <Skeleton
-          className={cn("border-none shadow-none rounded-lg", height)}
-        />
-      ) : (
-        children
-      )}
-    </div>
-  );
+  return <DashboardOverview />;
 };
 
 export default Dashboard;

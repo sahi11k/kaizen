@@ -26,14 +26,14 @@ const JournalEditor = ({ journal, onBack, onNewJournalSaved }) => {
   } = useJournalPersistence(journal, { onNewJournalSaved });
 
   return (
-    <div className="flex min-w-0 w-full flex-col [--journal-toolbar-sticky-top:5.75rem] max-[480px]:[--journal-toolbar-sticky-top:6.25rem] md:[--journal-toolbar-sticky-top:6.75rem]">
+    <div className="flex min-w-0 w-full flex-col [--journal-toolbar-sticky-top:6.25rem] max-[480px]:[--journal-toolbar-sticky-top:6.75rem] md:[--journal-toolbar-sticky-top:7.25rem]">
       <div
         className={cn(
           "sticky top-3 z-40 shrink-0 bg-background md:top-5",
           "before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5",
         )}
       >
-        <div className="relative mx-4 pt-2 pb-3 max-[480px]:pt-1 max-[480px]:pb-3 md:mx-6 md:pt-1 md:pb-4">
+        <div className="relative mx-4 pt-2 pb-3 max-[480px]:pt-1 max-[480px]:pb-3 md:pt-1 md:pb-4">
           {typeof onBack === "function" ? (
             <Button
               variant="icon"
@@ -41,7 +41,7 @@ const JournalEditor = ({ journal, onBack, onNewJournalSaved }) => {
               icon={<ArrowLeft className="size-4" />}
               onClick={onBack}
               aria-label="Back to journals"
-              className="mb-3 size-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground md:absolute md:top-1 md:left-0 md:mb-0 md:-translate-x-[calc(100%+2rem)]"
+              className="mb-3 pomodoro-control-button md:absolute md:top-1 md:left-0 md:mb-0 md:-translate-x-[calc(100%+2rem)]"
             />
           ) : null}
           <label
@@ -56,11 +56,11 @@ const JournalEditor = ({ journal, onBack, onNewJournalSaved }) => {
             value={journalTitle}
             onChange={handleTitleChange}
             placeholder={JOURNAL_DAY_TITLE_PLACEHOLDER}
-            className="w-full border-0 bg-transparent p-0 text-2xl font-semibold leading-tight tracking-tight text-foreground placeholder:text-muted-foreground/55 focus:outline-none focus-visible:ring-0 md:text-3xl"
+            className="w-full border-0 bg-transparent p-0 font-heading text-2xl font-semibold leading-snug tracking-tight text-foreground placeholder:text-muted-foreground/55 focus:outline-none focus-visible:ring-0 md:text-3xl xl:text-4xl"
             autoComplete="off"
             maxLength={200}
           />
-          <div className="mt-1.5 flex flex-col items-start gap-y-1 md:flex-row md:flex-wrap md:items-center md:gap-x-4 md:gap-y-2">
+          <div className="mt-1 flex flex-col items-start gap-y-1 md:flex-row md:flex-wrap md:items-center md:gap-x-4 md:gap-y-2">
             <DatePicker
               defaultDate={journalDate}
               onDateChange={handleJournalDateChange}
@@ -76,9 +76,9 @@ const JournalEditor = ({ journal, onBack, onNewJournalSaved }) => {
             {showSaveStatus ? (
               <>
                 <span
-                  className="hidden h-3 w-px shrink-0 self-center bg-border md:block"
+                  className="hidden shrink-0 text-base text-muted-foreground md:block"
                   aria-hidden
-                />
+                >·</span>
                 <SavingStatus status={saveStatus} updatedAt={lastSavedAt} />
               </>
             ) : null}

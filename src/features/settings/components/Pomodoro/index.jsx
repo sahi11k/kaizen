@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Save, Undo2 } from "lucide-react";
-
 import { useAuthStore } from "@/features/auth";
 import {
   useUpsertUserSettingsMutation,
@@ -149,7 +147,7 @@ const PomodoroSettings = () => {
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleFormSubmit}>
-      <section className="rounded-lg border border-border p-4 sm:p-6">
+      <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
         <div className="grid gap-5">
           {POMODORO_FIELDS.map((field) => (
             <NumberField
@@ -163,7 +161,7 @@ const PomodoroSettings = () => {
         </div>
       </section>
 
-      <section className="rounded-lg border border-border p-4 sm:p-6">
+      <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <div>
             <label
@@ -191,17 +189,15 @@ const PomodoroSettings = () => {
         <Button
           type="button"
           variant="outline"
-          icon={<Undo2 className="size-4" />}
           onClick={handleFormCancel}
           disabled={isPending || !isDirty}
           size="sm"
-          className="flex-1 sm:flex-none"
+          className="flex-1 bg-muted hover:bg-border sm:flex-none"
         >
           Cancel
         </Button>
         <Button
           type="submit"
-          icon={<Save className="size-4" />}
           loading={isPending}
           disabled={!isDirty || hasErrors}
           size="sm"
@@ -217,12 +213,7 @@ const PomodoroSettings = () => {
 const NumberField = ({ label, value, min, max, unit, error, onChange }) => {
   return (
     <label className="flex flex-col gap-2 text-sm font-medium text-muted-foreground">
-      <span className="flex items-center justify-between gap-3">
-        <span>{label}</span>
-        <span className="text-xs font-medium text-muted-foreground">
-          Max {max} {unit}
-        </span>
-      </span>
+      {label}
       <Input
         type="number"
         value={Number.isFinite(value) ? value : ""}
@@ -230,8 +221,11 @@ const NumberField = ({ label, value, min, max, unit, error, onChange }) => {
         max={max}
         step={1}
         aria-invalid={!!error}
-        onChange={(e) => onChange(e.target.valueAsNumber)}
+        onChange={(e) => onChange(e.target.value)}
       />
+      <span className="text-xs font-normal text-muted-foreground">
+        Max {max} {unit}
+      </span>
       {error && <span className="form-error">{error}</span>}
     </label>
   );

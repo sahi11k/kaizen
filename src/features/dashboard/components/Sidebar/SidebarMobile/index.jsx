@@ -45,7 +45,7 @@ const SidebarMobile = () => {
         </DrawerTitle>
       </DrawerHeader>
 
-      <DrawerContent className="!w-72 border-r-[0.5px] border-sidebar-border bg-sidebar font-heading text-sidebar-foreground">
+      <DrawerContent className="!w-72 border-r-[0.5px] border-sidebar-border bg-sidebar font-sans text-sidebar-foreground">
         <aside className="px-6 flex flex-col space-y-6 h-full">
           <SidebarContent setOpen={setOpen} isMobile={true} />
         </aside>

@@ -80,7 +80,7 @@ function DialogFooter({ className, ...props }) {
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end [&>button:first-child]:border-overlay-border [&>button:first-child]:bg-overlay-hover [&>button:first-child]:text-overlay-foreground [&>button:first-child:hover]:bg-control-inactive [&>button:first-child:hover]:text-overlay-foreground",
+        "flex flex-col-reverse gap-4 sm:flex-row sm:justify-end [&>button]:!h-10 [&>button]:!px-4 [&>button:first-child]:border-overlay-border [&>button:first-child]:bg-overlay-hover [&>button:first-child]:text-overlay-foreground [&>button:first-child:hover]:bg-control-inactive [&>button:first-child:hover]:text-overlay-foreground",
         className,
       )}
       {...props}
@@ -135,7 +135,7 @@ function Dialog({
           </DialogHeader>
         )}
         {children}
-        {footer && <DialogFooter>{footer}</DialogFooter>}
+        {footer && <DialogFooter className="mt-4">{footer}</DialogFooter>}
       </DialogContent>
     </BaseDialog>
   );
