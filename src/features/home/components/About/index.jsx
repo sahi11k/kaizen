@@ -1,47 +1,69 @@
 import React from "react";
-import { Card, Button } from "@/shared/ui";
+import Section from "@/features/home/components/Section";
 import { ABOUT_CARDS } from "@/features/home/constants";
-import { ArrowUpRight } from "lucide-react";
-import { Link } from "react-router";
 
 const About = () => {
   return (
-    <div className="flex items-center justify-center max-w-7xl mx-auto gap-16 px-6 lg:px-8 xl:px-0 py-12 flex-col">
-      <div className="flex flex-col gap-2 items-center justify-center">
-        <h2 className="heading-2 text-center">Everything You Need to Grow</h2>
-        <p className="body-description text-center">
-          Powerful tools designed to support your personal development journey
-        </p>
+    <Section
+      id="about"
+      eyebrow="Four Tools, One System"
+      title={
+        <h2 className="heading-2">
+          Small tools,
+          <br />
+          <span className="italic text-muted-foreground">steady growth</span>
+        </h2>
+      }
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        {ABOUT_CARDS.map((card, index) => (
+          <AboutCard key={card.key} index={index} {...card} />
+        ))}
       </div>
-      <div className="flex flex-wrap flex-gap overflow-x-auto w-full">
-        {ABOUT_CARDS.map((card) => {
-          return <AboutCard key={card.title} {...card} />;
-        })}
+    </Section>
+  );
+};
+
+const AboutCard = ({ title, headline, description, preview, index }) => {
+  const number = String(index + 1).padStart(2, "0");
+
+  return (
+    <div className="flex flex-col gap-6 rounded-lg border border-border bg-card p-6 md:p-8 md:min-h-[22rem]">
+      <span className="label !text-primary">
+        <span className="font-mono">{number}</span> — {title}
+      </span>
+      <div className="flex flex-col gap-3">
+        <h3 className="heading-card">{headline}</h3>
+        <p className="body-base">{description}</p>
       </div>
+      {preview && <AboutCardPreview preview={preview} />}
     </div>
   );
 };
 
-const AboutCard = ({ title, description, Icon, link }) => {
+const AboutCardPreview = ({ preview }) => {
+  if (preview.type === "quote") {
+    return (
+      <div className="mt-auto rounded-lg border border-border/50 bg-background px-5 py-4 flex flex-col gap-2">
+        <p className="font-sans text-sm md:text-base text-foreground leading-relaxed">
+          &quot;{preview.text}&quot;
+        </p>
+        <span className="label">{preview.meta}</span>
+      </div>
+    );
+  }
+
   return (
-    <Card
-      className="flex-1 flex flex-col gap-4 lg:gap-8 px-3 py-6 bg-background border border-border shadow-none basis-80"
-      title={<Icon />}
-      titleClassName="text-muted-foreground size-10 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-[1.25]"
-      contentClassName="flex-1"
-      footer={
-        <Link to={link}>
-          <Button
-            variant="outline"
-            icon={<ArrowUpRight className="size-4" />}
-            className="rounded-full w-12 !h-12"
-          />
-        </Link>
-      }
-    >
-      <h3 className="heading-3 text-foreground mb-3">{title}</h3>
-      <p className="body-description">{description}</p>
-    </Card>
+    <div className="mt-auto flex divide-x divide-border/50 rounded-lg border border-border/50 bg-background overflow-hidden">
+      {preview.items.map((item) => (
+        <div key={item.label} className="flex-1 flex flex-col gap-1 px-4 py-3">
+          <span className="font-mono text-xl md:text-2xl text-foreground">
+            {item.value}
+          </span>
+          <span className="label">{item.label}</span>
+        </div>
+      ))}
+    </div>
   );
 };
 

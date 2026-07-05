@@ -1,0 +1,37 @@
+import React from "react";
+import Section from "@/features/home/components/Section";
+import { PHILOSOPHY_ITEMS } from "@/features/home/constants";
+
+const Philosophy = () => {
+  return (
+    <Section
+      eyebrow="Philosophy"
+      title={
+        <h2 className="heading-2">
+          Built around
+          <br />
+          <span className="italic text-muted-foreground">continuous improvement</span>
+        </h2>
+      }
+    >
+      <div className="grid grid-cols-1 md:grid-cols-3 rounded-lg border border-border divide-y divide-x divide-border overflow-hidden">
+        {PHILOSOPHY_ITEMS.map((item) => (
+          <div
+            key={item.key}
+            className="flex flex-col gap-6 bg-card p-6 md:p-8"
+          >
+            <span className="font-serif italic text-2xl text-subtle-foreground">
+              {item.numeral}
+            </span>
+            <div className="flex flex-col gap-3">
+              <h3 className="heading-card">{item.title}</h3>
+              <p className="body-base">{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+};
+
+export default Philosophy;

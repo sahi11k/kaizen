@@ -1,11 +1,4 @@
-import {
-  AlarmClock,
-  ChartNoAxesCombined,
-  Instagram,
-  Linkedin,
-  Mail,
-  ScrollText,
-} from "lucide-react";
+import { Instagram, Linkedin, Mail } from "lucide-react";
 
 export const FOOTER_LINKS = [
   {
@@ -28,26 +21,93 @@ export const FOOTER_LINKS = [
 export const ABOUT_CARDS = [
   {
     title: "Focus",
+    headline: "Deep work, without the drift",
     description:
-      "Sharpen your focus with the Pomodoro technique — work in deep, distraction-free sprints, recharge with structured breaks, and stay on top of your goals with built-in task management",
-    Icon: AlarmClock,
+      "Pomodoro sessions with built-in task management. Work in focused sprints, track what you finish, and see where your time actually goes.",
     key: "focus",
-    link: "/dashboard/pomodoro",
+    preview: {
+      type: "stats",
+      items: [
+        { value: "25", label: "Min focus block" },
+        { value: "5", label: "Min short break" },
+      ],
+    },
   },
   {
     title: "Reflect",
+    headline: "Write it down, see it clearly",
     description:
-      "Build self-awareness with our journaling tool — capture your thoughts, track your wins and challenges, and reflect on your growth every day",
-    Icon: ScrollText,
+      "A private journal for honest self-assessment. No prompts, no streaks, no pressure — just a consistent record of where your head is at.",
     key: "reflect",
-    link: "/dashboard/journals",
+    preview: {
+      type: "quote",
+      text: "Started the week with more clarity than expected. Morning routines are holding…",
+      meta: "12-day streak — active",
+    },
+  },
+  {
+    title: "Read",
+    headline: "Everything worth reading, in one place",
+    description:
+      "Track what you want to read, what you're reading, and what you've finished — so nothing worth revisiting slips through the cracks.",
+    key: "bookmarked",
+    preview: {
+      type: "stats",
+      items: [
+        { value: "8", label: "Want to read" },
+        { value: "3", label: "Reading" },
+        { value: "24", label: "Finished" },
+      ],
+    },
   },
   {
     title: "Insights",
+    headline: "An honest look at your week",
     description:
-      "Gain clarity with predefined dashboards and key metrics — track your progress, recognize patterns, and celebrate growth with ease",
-    Icon: ChartNoAxesCombined,
+      "Cross-tool analytics that connect your focus time, journal entries, and reading — showing patterns no single tool could show you.",
     key: "insights",
-    link: "/dashboard",
+    preview: {
+      type: "stats",
+      items: [
+        { value: "+18%", label: "Focus hrs vs last wk" },
+        { value: "6/7", label: "Days journaled" },
+      ],
+    },
+  },
+];
+
+export const METRICS_ITEMS = [
+  { value: "4", label: "Integrated tools", key: "tools" },
+  { value: "0", label: "Streaks tracked", key: "streaks" },
+  { value: "∞", label: "Journal entries", key: "journal" },
+  {
+    value: "0",
+    label: "Distractions by design",
+    key: "notifications",
+    accent: true,
+  },
+];
+
+export const PHILOSOPHY_ITEMS = [
+  {
+    numeral: "I.",
+    title: "Calm by design",
+    description:
+      "No notifications. No streaks designed to make you anxious. No push to do more. Just a clear view of where your time went.",
+    key: "calm",
+  },
+  {
+    numeral: "II.",
+    title: "Context over counts",
+    description:
+      "Every number on the dashboard has a comparison. This week vs last. Hours by category, not just total. Age of a task, not just its name.",
+    key: "context",
+  },
+  {
+    numeral: "III.",
+    title: "Tools that connect",
+    description:
+      "A journal entry next to your focus hours next to your reading list — because growth is cross-disciplinary and your tools should reflect that.",
+    key: "connected",
   },
 ];
