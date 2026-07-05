@@ -66,7 +66,7 @@ const OtpVerification = ({ onBack, email, backBtnText }) => {
   return (
     <div className="flex flex-col gap-6">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <label className="body-description text-center">
+        <label className="body-base text-center">
           Enter the 6-digit code we&apos;ve sent to your email.
         </label>
         <div className="flex flex-col items-center">
@@ -77,13 +77,13 @@ const OtpVerification = ({ onBack, email, backBtnText }) => {
             placeholder="Enter 6-digit OTP"
             maxLength={6}
           />
-          <div className="body-description flex flex-wrap justify-center items-center">
+          <div className="body-base flex flex-wrap justify-center items-center">
             Didn&apos;t receive the code?
             <Button
               onClick={handleResendOTP}
               disabled={resendTimer > 0 || isLoading}
               variant="link"
-              className="!p-0 !ml-2 body-description !no-underline"
+              className="!p-0 !ml-2 body-base !no-underline"
             >
               Resend OTP{" "}
               {resendTimer > 0

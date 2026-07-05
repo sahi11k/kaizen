@@ -48,7 +48,7 @@ const UpdatePasswordForm = () => {
   return (
     <div className="flex flex-col gap-6">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <label className="body-description px-2">
+        <label className="body-base px-2">
           Secure your account by setting a new password.
         </label>
         <Input

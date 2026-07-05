@@ -5,13 +5,13 @@ const AuthLayout = () => {
     <main className="h-full w-full flex">
       <div className="bg-primary flex-7 items-center justify-center hidden lg:flex">
         <div className="text-primary-foreground items-start flex flex-col">
-          <span className="text-[clamp(100px,16vw,180px)] font-bold leading-none mb-10">
-            改 善
-          </span>
-          <span className="mt-6 text-5xl font-bold font-heading leading-none">Kaizen</span>
-          <span className="mt-3 text-xl text-primary-foreground/50">/kai&apos;zen/</span>
-          <span className="mt-2 text-lg italic text-primary-foreground/50">noun (from Japanese)</span>
-          <span className="mt-1 text-xl text-primary-foreground">
+          <span className="heading-display mb-10">改 善</span>
+          <span className="heading-2 !text-primary-foreground">Kaizen</span>
+          <div className="body-base !text-primary-subtle-foreground flex flex-col mt-3 mb-1">
+            <span>/kai&apos;zen/</span>
+            <span className="italic">noun (from Japanese)</span>
+          </div>
+          <span className="body-base !text-primary-foreground">
             The philosophy of continuous improvement.
           </span>
         </div>

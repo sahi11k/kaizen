@@ -25,7 +25,7 @@ const ResetPasswordForm = ({ onBack, defaultEmail = "" }) => {
   return (
     <div className="flex flex-col gap-6">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <label className="body-description px-2">
+        <label className="body-base px-2">
           Enter the email associated with your account, and we’ll send you a
           password reset link
         </label>
