@@ -8,7 +8,7 @@ const About = () => {
       id="about"
       eyebrow="Four Tools, One System"
       title={
-        <h2 className="heading-2">
+        <h2 className="heading-3">
           Small tools,
           <br />
           <span className="italic text-muted-foreground">steady growth</span>
@@ -29,11 +29,11 @@ const AboutCard = ({ title, headline, description, preview, index }) => {
 
   return (
     <div className="flex flex-col gap-6 rounded-lg border border-border bg-card p-6 md:p-8 md:min-h-[22rem]">
-      <span className="label !text-primary">
+      <span className="text-label !text-primary">
         <span className="font-mono">{number}</span> — {title}
       </span>
       <div className="flex flex-col gap-3">
-        <h3 className="heading-card">{headline}</h3>
+        <h3 className="heading-6">{headline}</h3>
         <p className="body-base">{description}</p>
       </div>
       {preview && <AboutCardPreview preview={preview} />}
@@ -48,7 +48,7 @@ const AboutCardPreview = ({ preview }) => {
         <p className="font-sans text-sm md:text-base text-foreground leading-relaxed">
           &quot;{preview.text}&quot;
         </p>
-        <span className="label">{preview.meta}</span>
+        <span className="text-label">{preview.meta}</span>
       </div>
     );
   }
@@ -60,7 +60,7 @@ const AboutCardPreview = ({ preview }) => {
           <span className="font-mono text-xl md:text-2xl text-foreground">
             {item.value}
           </span>
-          <span className="label">{item.label}</span>
+          <span className="text-label">{item.label}</span>
         </div>
       ))}
     </div>

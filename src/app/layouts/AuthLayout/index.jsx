@@ -5,8 +5,8 @@ const AuthLayout = () => {
     <main className="h-full w-full flex">
       <div className="bg-primary flex-7 items-center justify-center hidden lg:flex">
         <div className="text-primary-foreground items-start flex flex-col">
-          <span className="heading-display mb-10">改 善</span>
-          <span className="heading-2 !text-primary-foreground">Kaizen</span>
+          <span className="heading-0 mb-10">改 善</span>
+          <span className="heading-4 !text-primary-foreground">Kaizen</span>
           <div className="body-base !text-primary-subtle-foreground flex flex-col mt-3 mb-1">
             <span>/kai&apos;zen/</span>
             <span className="italic">noun (from Japanese)</span>

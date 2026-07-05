@@ -12,7 +12,7 @@ const Section = ({ id, eyebrow, title, children, className }) => {
     >
       {(eyebrow || title) && (
         <div className="flex flex-col gap-4 max-w-2xl">
-          {eyebrow && <span className="label">{eyebrow}</span>}
+          {eyebrow && <span className="text-label">{eyebrow}</span>}
           {title}
         </div>
       )}

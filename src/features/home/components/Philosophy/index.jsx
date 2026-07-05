@@ -7,7 +7,7 @@ const Philosophy = () => {
     <Section
       eyebrow="Philosophy"
       title={
-        <h2 className="heading-2">
+        <h2 className="heading-3">
           Built around
           <br />
           <span className="italic text-muted-foreground">continuous improvement</span>
@@ -20,11 +20,11 @@ const Philosophy = () => {
             key={item.key}
             className="flex flex-col gap-6 bg-card p-6 md:p-8"
           >
-            <span className="font-serif italic text-2xl text-subtle-foreground">
+            <span className="heading-6 italic text-subtle-foreground">
               {item.numeral}
             </span>
             <div className="flex flex-col gap-3">
-              <h3 className="heading-card">{item.title}</h3>
+              <h3 className="heading-6">{item.title}</h3>
               <p className="body-base">{item.description}</p>
             </div>
           </div>

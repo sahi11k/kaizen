@@ -14,7 +14,7 @@ const Metrics = () => {
             >
               {value}
             </span>
-            <span className="label">{label}</span>
+            <span className="text-label">{label}</span>
           </div>
         ))}
       </div>

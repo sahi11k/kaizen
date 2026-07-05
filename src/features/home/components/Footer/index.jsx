@@ -10,8 +10,8 @@ const FooterMain = () => {
     <footer className="px-6 pt-10 md:pt-14">
       <div className="flex flex-col xl:max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center gap-6 pb-16 md:pb-20">
-          <h2 className="heading-2 tracking-tight">
-            Start small
+          <h2 className="heading-1 tracking-tight">
+            Start small,
             <br />
             <span className="italic text-primary"> Stay consistent</span>
           </h2>
@@ -19,10 +19,7 @@ const FooterMain = () => {
             That&apos;s all Kaizen asks.
           </p>
           <Link to={DEFAULT_NAV_ROUTE}>
-            <Button
-              variant="default"
-              className="shadow-none mt-2 px-8 h-12 text-base"
-            >
+            <Button variant="default" className="shadow-none mt-2">
               Get Started
             </Button>
           </Link>
@@ -40,7 +37,7 @@ const FooterMain = () => {
               className="!w-5 !h-5 xl:!w-6 xl:!h-6 !p-0 text-muted-foreground hover:!text-primary hover:!bg-transparent"
             />
           </div>
-          <div className="font-serif body-description text-center">
+          <div className="font-serif body-description text-center tracking-[0.15em]!">
             KAIZEN
           </div>
         </div>
