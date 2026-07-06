@@ -22,7 +22,7 @@ const TimerControls = ({
   onStart,
   onStop,
 }: TimerControlsProps): React.ReactNode => (
-  <TimerActionGroup className="px-2 lg:gap-6">
+  <TimerActionGroup className="w-full max-w-md lg:gap-6">
     <FocusModeButton onClick={onFocusMode} />
     <ResetTimerButton onClick={onReset} />
     <PlayPauseButton

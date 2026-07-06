@@ -29,7 +29,7 @@ const TaskFilterControl = ({ selectedFilter, onFilterChange, className }) => {
         <DropdownMenuTrigger
           aria-label={tooltip}
           className={cn(
-            "flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border transition-colors outline-none",
+            "flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border transition-colors outline-none",
             isFilterApplied
               ? "border-transparent bg-sidebar-active text-sidebar-active-foreground hover:bg-sidebar-active hover:text-sidebar-active-foreground"
               : "border-border bg-transparent",

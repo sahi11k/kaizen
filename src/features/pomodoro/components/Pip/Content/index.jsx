@@ -26,10 +26,11 @@ const PipTimerContent = () => {
           isPomodoro={isPomodoro}
           currentTask={timerTask}
           className="text-sm w-full"
+          showIndicators={false}
         />
 
         <div className="flex-1 flex items-center gap-6 justify-between w-full">
-          <div className="font-number text-5xl tracking-tight leading-none font-number flex items-center justify-center">
+          <div className="heading-1 !font-mono tracking-tight flex items-center justify-center">
             {minutes}
             <span className="-mt-2">:</span>
             {seconds}
@@ -40,7 +41,7 @@ const PipTimerContent = () => {
               onStart={() => startTimer(timerTask?.id)}
               onStop={stopTimer}
               showLabel={false}
-              className="h-12 p-4"
+              className="p-4 !h-12 w-12"
             />
             <ResetTimerButton
               onClick={() => resetTimer(duration)}

@@ -12,7 +12,7 @@ const TaskListHeader = ({
   onAddTask,
 }) => (
   <div className="mt-4 hidden items-center justify-between px-4 pb-2 md:flex xl:mt-6 xl:px-6 xl:pb-4">
-    <span className="heading-3">{title}</span>
+    <span className="heading-5">{title}</span>
     <div className="flex items-center gap-2">
       <TaskFilterControl
         selectedFilter={selectedFilter}

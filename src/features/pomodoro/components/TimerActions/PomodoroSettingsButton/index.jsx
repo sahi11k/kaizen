@@ -219,7 +219,7 @@ const PomodoroSettingsButton = () => {
 
 const FormItem = ({ label, children, value = 0, timeUnit = "min" }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
         <label
           htmlFor={label}
@@ -227,8 +227,8 @@ const FormItem = ({ label, children, value = 0, timeUnit = "min" }) => {
         >
           {label}
         </label>
-        <strong className="font-number text-sm text-muted-foreground">
-          ({value} {timeUnit})
+        <strong className="body-description">
+          ({value}{timeUnit && ` ${timeUnit}`})
         </strong>
       </div>
 

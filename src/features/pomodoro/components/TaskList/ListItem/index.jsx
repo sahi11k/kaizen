@@ -77,17 +77,16 @@ const TaskItem = ({
         </Tooltip>
       </div>
 
-      <div className="flex flex-col flex-1 w-0 gap-1">
+      <div className="flex flex-col flex-1 w-0">
         <div
           className={cn(
-            "text-base font-medium truncate",
-            "font-sans",
+            "body-base !text-foreground truncate",
             task.completed && "line-through",
           )}
         >
           {task.title}
         </div>
-        <div className="text-[12px] tracking-wide text-muted-foreground">
+        <div className="body-description">
           Sessions: <span>{sessionSummary}</span>
         </div>
       </div>

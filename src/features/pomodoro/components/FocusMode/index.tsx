@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { usePomodoroTimer } from "@/features/pomodoro/hooks";
 import { Button } from "@/shared/ui";
 import SessionBadge from "@/features/pomodoro/components/SessionBadge";
+import TimerProgressBar from "@/features/pomodoro/components/TimerProgressBar";
 import TimerControlsFocusMode from "@/features/pomodoro/components/TimerActions/TimerControlsFocusMode";
 
 interface FocusModeProps {
@@ -61,9 +62,6 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
     }
   };
 
-  const progressPercent =
-    duration > 0 ? ((duration - timerValue) / duration) * 100 : 0;
-
   return (
     <div
       ref={containerRef}
@@ -77,33 +75,21 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
         aria-label="Exit Focus Mode"
       />
 
-      <div className="flex flex-col items-center gap-16 w-full max-w-2xl">
+      <div className="flex flex-col items-center gap-16 w-xl">
         <SessionBadge
           isPomodoro={isPomodoro}
           currentTask={timerTask}
-          className="w-full text-xl"
+          className="w-full max-w-xl"
+          textClassName="!text-sm"
         />
 
-        <div className="font-number flex items-center justify-center text-[clamp(6rem,20vw,14rem)] tracking-tight leading-none">
+        <div className="heading-xl !font-mono tracking-tight flex items-center justify-center">
           {minutes}
-          <span className="-mt-6 mx-2">:</span>
+          <span className="-mt-6">:</span>
           {seconds}
         </div>
 
-        <div
-          className="w-full h-2 rounded-full overflow-hidden"
-          style={{
-            backgroundColor: "var(--color-primary-soft)",
-          }}
-        >
-          <div
-            style={{
-              width: `${progressPercent}%`,
-              backgroundColor: "var(--color-primary-soft-foreground)",
-            }}
-            className="h-full rounded-full transition-[width] duration-500 ease-linear"
-          />
-        </div>
+        <TimerProgressBar timerValue={timerValue} duration={duration} />
       </div>
       <TimerControlsFocusMode
         timerStarted={timerStarted}
