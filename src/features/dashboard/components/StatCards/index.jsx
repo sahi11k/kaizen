@@ -6,17 +6,7 @@ import { useJournalsQuery } from "@/features/journals";
 import { useBookmarkedQuery } from "@/features/bookmarked/queries";
 import { Card, Skeleton } from "@/shared/ui";
 import { getWeekStart } from "../../utils/dateRange";
-
-function minutesToHours(mins) {
-  const hours = mins / 60;
-  return hours === 0 ? "0" : hours.toFixed(1);
-}
-
-function formatTimeFocused(mins) {
-  if (mins === 0) return { value: "0", unit: "h" };
-  if (mins < 60) return { value: `${Math.round(mins)}m`, unit: "" };
-  return { value: (mins / 60).toFixed(1), unit: "h" };
-}
+import { minutesToHours, formatTimeFocused } from "../../utils/timeFormat";
 
 const StatCard = ({
   label,
@@ -39,17 +29,13 @@ const StatCard = ({
 
   return (
     <Card className="" contentClassName="">
-      <p className="label-overline mb-4">{label}</p>
+      <p className="text-label mb-4">{label}</p>
       <div className="flex items-baseline gap-1.5 mb-2">
-        <span
-          className={
-            isZeroValue
-              ? "font-sans text-5xl font-normal leading-none tracking-tight text-muted-foreground"
-              : "font-mono text-5xl font-normal leading-none tracking-tight text-foreground"
-          }
+        <h3
+          className={`heading-3 !font-mono ${isZeroValue ? "text-muted-foreground" : "text-foreground"}`}
         >
           {value}
-        </span>
+        </h3>
         {unit && (
           <span className="text-sm font-light text-muted-foreground">
             {unit}
@@ -58,8 +44,8 @@ const StatCard = ({
       </div>
       {hasHistory && diff !== 0 && (
         <p className={`text-xs tracking-wide ${colorClass}`}>
-          {icon} {Math.abs(diff)}
-          {diffUnit} {diffLabel}
+          {icon} <span className="font-mono">{Math.abs(diff)}
+          {diffUnit}</span> {diffLabel}
         </p>
       )}
     </Card>
@@ -68,9 +54,13 @@ const StatCard = ({
 
 const StatCards = () => {
   const { user } = useAuthStore();
-  const { data: sessions = [], isLoading: sessionsLoading } = useTaskSessionsQuery(user?.id);
-  const { data: journals = [], isLoading: journalsLoading } = useJournalsQuery(user?.id);
-  const { data: bookmarkedItems = [], isLoading: bookmarkedLoading } = useBookmarkedQuery(user?.id);
+  const { data: sessions = [], isLoading: sessionsLoading } =
+    useTaskSessionsQuery(user?.id);
+  const { data: journals = [], isLoading: journalsLoading } = useJournalsQuery(
+    user?.id,
+  );
+  const { data: bookmarkedItems = [], isLoading: bookmarkedLoading } =
+    useBookmarkedQuery(user?.id);
   const isLoading = sessionsLoading || journalsLoading || bookmarkedLoading;
 
   const weekStart = getWeekStart();
@@ -94,10 +84,19 @@ const StatCards = () => {
     (a, s) => a + (s.duration || 0),
     0,
   );
-  const hoursDiff =
-    parseFloat(minutesToHours(thisWeekMins)) -
-    parseFloat(minutesToHours(prevWeekMins));
   const timeFocused = formatTimeFocused(thisWeekMins);
+  const timeFocusedDiff =
+    timeFocused.unit === "h"
+      ? {
+          diff: parseFloat(
+            (
+              parseFloat(minutesToHours(thisWeekMins)) -
+              parseFloat(minutesToHours(prevWeekMins))
+            ).toFixed(1),
+          ),
+          unit: "h",
+        }
+      : { diff: Math.round(thisWeekMins - prevWeekMins), unit: "m" };
 
   const sessionsDiff = thisWeekSessions.length - prevWeekSessions.length;
 
@@ -143,8 +142,8 @@ const StatCards = () => {
         label="Time Focused"
         value={timeFocused.value}
         unit={timeFocused.unit}
-        diff={parseFloat(hoursDiff.toFixed(1))}
-        diffUnit="h"
+        diff={timeFocusedDiff.diff}
+        diffUnit={timeFocusedDiff.unit}
         diffLabel="vs last week"
         hasHistory={sessions.length > 0}
       />

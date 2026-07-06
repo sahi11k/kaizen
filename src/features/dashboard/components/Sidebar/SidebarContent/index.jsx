@@ -7,12 +7,7 @@ const SidebarContent = ({ setOpen, isMobile = false, isCollapsed = false }) => {
   return (
     <>
       <div className="h-16 flex justify-between items-center">
-        <Logo
-          showText={false}
-          className="-ml-1"
-          iconClassName="size-8"
-          link="/"
-        />
+        <Logo showText={!isCollapsed} className="-ml-1" link="/" />
       </div>
       <ul className="flex-1 flex flex-col space-y-1 overflow-y-auto no-scrollbar -mx-2 cursor-pointer">
         {SIDEBAR_LINKS.map((link) => (
@@ -58,7 +53,11 @@ const LinkItem = ({
           <ActiveIcon fill="currentColor" />
         </span>
         {!isCollapsed && (
-          <span className={`whitespace-nowrap ${isActive ? "text-nav-item-active" : "text-nav-item"}`}>
+          <span
+            className={`whitespace-nowrap ${
+              isActive ? "text-nav-item-active" : "text-nav-item"
+            }`}
+          >
             {label}
           </span>
         )}

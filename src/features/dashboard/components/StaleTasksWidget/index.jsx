@@ -1,13 +1,15 @@
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
 import { Link } from "react-router";
+import { ArrowUpRight } from "lucide-react";
 import { useAuthStore } from "@/features/auth";
-import { useTasksQuery } from "@/features/pomodoro";
+import { useTasksQuery, useTasksStore } from "@/features/pomodoro";
 import { Card, Skeleton } from "@/shared/ui";
 
 const StaleTasksWidget = () => {
   const { user } = useAuthStore();
   const { data: tasks = [], isLoading } = useTasksQuery(user?.id);
+  const setCurrentTask = useTasksStore((s) => s.setCurrentTask);
 
   const incompleteTasks = tasks.filter((t) => !t.completed);
 
@@ -29,41 +31,52 @@ const StaleTasksWidget = () => {
   return (
     <Card className="h-full" contentClassName="flex h-full flex-col">
       <div className="flex justify-between items-baseline mb-5">
-        <p className="label-overline">
-          Stale Tasks
-        </p>
+        <p className="text-label">Stale Tasks</p>
       </div>
 
       {staleTasks.length > 0 ? (
-        <div>
+        <ul className="list-none m-0 p-0">
           {staleTasks.map((task) => (
-            <div
+            <li
               key={task.id}
-              className="flex justify-between items-baseline py-3 border-b border-border last:border-0"
+              className="flex items-baseline border-b border-border last:border-0 py-3"
             >
-              <span className="text-sm text-foreground/70 flex-1 mr-5 leading-relaxed">
-                {task.title}
-              </span>
+              <Link
+                to="/dashboard/pomodoro"
+                title="Open with Pomodoro"
+                aria-label={`Set "${task.title}" as current task`}
+                onClick={() => setCurrentTask(task)}
+                className="group inline-flex items-center gap-1.5 min-w-0 mr-5 font-sans text-sm leading-relaxed text-muted-foreground"
+              >
+                <span className="truncate min-w-0 group-hover:text-foreground">
+                  {task.title}
+                </span>
+                <ArrowUpRight className="w-3.5 h-3.5 shrink-0 group-hover:text-foreground" />
+              </Link>
+
               <span
-                className={`font-mono text-sm whitespace-nowrap shrink-0 tracking-tight ${
+                className={`font-mono text-sm whitespace-nowrap shrink-0 tracking-tight ml-auto ${
                   task.days >= 90
-                    ? "text-red-500"
+                    ? "text-primary"
                     : task.days >= 30
-                      ? "text-red-600"
-                      : "text-red-400"
+                      ? "text-foreground"
+                      : "text-muted-foreground"
                 }`}
               >
                 {task.days}d
               </span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       ) : tasks.length === 0 ? (
         <div className="flex flex-1 items-center justify-center">
           <p className="font-sans text-sm leading-snug text-center text-subtle-foreground italic">
             No tasks yet.
             <br />
-            <Link to="/dashboard/pomodoro" className="text-muted-foreground underline">
+            <Link
+              to="/dashboard/pomodoro"
+              className="text-muted-foreground underline"
+            >
               Add a task
             </Link>{" "}
             to get started.

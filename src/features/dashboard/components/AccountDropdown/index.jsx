@@ -78,7 +78,7 @@ const AccountDropdown = ({
         </Avatar>
         {showUserText && (
           <span className="min-w-0 overflow-hidden text-left">
-            <span className="block truncate font-display text-lg font-medium text-current">
+            <span className="body-base !font-serif block truncate text-current">
               {userDisplayName}
             </span>
           </span>

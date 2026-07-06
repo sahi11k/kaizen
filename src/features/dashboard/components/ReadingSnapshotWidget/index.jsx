@@ -5,23 +5,18 @@ import { ExternalLink } from "lucide-react";
 import { useAuthStore } from "@/features/auth";
 import { useBookmarkedQuery } from "@/features/bookmarked";
 import { Card, Skeleton } from "@/shared/ui";
-
-function formatDaysAgo(days) {
-  if (days <= 0) return "today";
-  if (days === 1) return "yesterday";
-  return `${days} days ago`;
-}
+import { formatDaysAgo } from "../../utils/timeFormat";
 
 const MetricCell = ({ value, label, highlight }) => (
   <div className="text-center px-2">
     <div
-      className={`font-mono text-3xl font-normal leading-none mb-1.5 tracking-tight ${
+      className={`heading-4 !font-mono mb-1.5 ${
         value === 0 ? "text-subtle-foreground" : highlight ? "text-primary" : "text-foreground"
       }`}
     >
       {value}
     </div>
-    <div className="label-overline text-subtle-foreground">
+    <div className="text-label text-subtle-foreground">
       {label}
     </div>
   </div>
@@ -77,7 +72,7 @@ const ReadingSnapshotWidget = () => {
 
   return (
     <Card className="h-full" contentClassName="flex h-full flex-col">
-      <p className="label-overline mb-5">
+      <p className="text-label mb-5">
         Reading Snapshot
       </p>
 
@@ -96,10 +91,10 @@ const ReadingSnapshotWidget = () => {
 
           {highlightItem && (
             <div className="mt-4">
-              <p className="label-overline text-subtle-foreground mb-2.5">
+              <p className="text-label text-subtle-foreground mb-2.5">
                 {highlightItem.label}
               </p>
-              <p className="flex items-baseline justify-between gap-2 font-sans text-sm text-foreground/70 leading-snug">
+              <p className="body-base !text-sm flex items-baseline justify-between gap-2">
                 {highlightItem.url ? (
                   <a
                     href={highlightItem.url}

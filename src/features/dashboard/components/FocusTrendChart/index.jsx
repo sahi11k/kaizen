@@ -16,17 +16,8 @@ import { useThemeStore } from "@/features/theme";
 import { useTaskSessionsQuery } from "@/features/pomodoro";
 import { Card, Skeleton } from "@/shared/ui";
 import { getDayKeys, getWeekStart } from "../../utils/dateRange";
-
-const legendMargin = {
-  id: "legendMargin",
-  afterInit(chart) {
-    const originalFit = chart.legend.fit;
-    chart.legend.fit = function fit() {
-      originalFit.bind(chart.legend)();
-      this.height += 16;
-    };
-  },
-};
+import { minutesToHours } from "../../utils/timeFormat";
+import { readCssColor } from "../../utils/cssVars";
 
 ChartJS.register(
   CategoryScale,
@@ -35,19 +26,7 @@ ChartJS.register(
   Tooltip,
   Title,
   Legend,
-  legendMargin,
 );
-
-function minutesToHours(mins) {
-  return (mins / 60).toFixed(1);
-}
-
-function readCssColor(variable) {
-  if (typeof window === "undefined") return "";
-  return getComputedStyle(document.documentElement)
-    .getPropertyValue(variable)
-    .trim();
-}
 
 const FocusTrendChart = () => {
   const { user } = useAuthStore();
@@ -91,6 +70,8 @@ const FocusTrendChart = () => {
   const mutedColor = readCssColor("--color-muted") || "#e5e7eb";
   const mutedForegroundColor =
     readCssColor("--color-muted-foreground") || "#6b7280";
+  const subtleForegroundColor =
+    readCssColor("--color-subtle-foreground") || mutedForegroundColor;
 
   const chartData = {
     labels: trendData.map((d) => d.label),
@@ -126,9 +107,10 @@ const FocusTrendChart = () => {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: "bottom",
         align: "center",
         labels: {
+          padding: 16,
           color: mutedForegroundColor,
           font: { size: 12, lineHeight: 1 },
           boxWidth: 10,
@@ -178,17 +160,17 @@ const FocusTrendChart = () => {
     scales: {
       x: {
         grid: { color: mutedColor },
-        ticks: { color: mutedForegroundColor, font: { size: 11 } },
+        ticks: { color: mutedForegroundColor, font: { size: 12 } },
       },
       y: {
         beginAtZero: true,
         grid: { color: mutedColor },
-        ticks: { color: mutedForegroundColor, font: { size: 11 } },
+        ticks: { color: mutedForegroundColor, font: { size: 12 } },
         title: {
           display: true,
-          text: "Hours",
-          color: mutedForegroundColor,
-          font: { size: 13 },
+          text: "HOURS",
+          color: subtleForegroundColor,
+          font: { size: 12, weight: "normal" },
           padding: { bottom: 10 },
         },
       },
@@ -196,7 +178,7 @@ const FocusTrendChart = () => {
         beginAtZero: true,
         position: "right",
         grid: { display: false },
-        ticks: { color: mutedForegroundColor, font: { size: 11 }, stepSize: 1 },
+        ticks: { color: mutedForegroundColor, font: { size: 12 }, stepSize: 1 },
       },
     },
   };
@@ -204,12 +186,17 @@ const FocusTrendChart = () => {
   return (
     <Card
       title="Focus & Sessions Trend"
-      className="h-full"
+      className="h-full !pb-2"
       contentClassName="flex h-full flex-col"
     >
       {hasActivity ? (
-        <div className="relative flex-1 min-h-0">
-          <Chart key={theme} type="bar" data={chartData} options={chartOptions} />
+        <div className="relative flex-1 min-h-0 h-full w-full">
+          <Chart
+            key={theme}
+            type="bar"
+            data={chartData}
+            options={chartOptions}
+          />
         </div>
       ) : (
         <div className="flex flex-1 items-center justify-center">
