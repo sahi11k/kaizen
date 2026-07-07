@@ -53,11 +53,6 @@ export default function useJournalList() {
     );
   };
 
-  const editJournal = (journal: unknown) => {
-    const selectedJournal = journal as Journal;
-    navigate(`${JOURNALS_ROUTE}/${selectedJournal.id}`);
-  };
-
   const newJournal = () => {
     if (unsavedJournal) {
       navigate(`${JOURNALS_ROUTE}/new`);
@@ -90,7 +85,6 @@ export default function useJournalList() {
     fetchNextPage,
     handleJournalClick,
     removeJournal,
-    editJournal,
     newJournal,
   };
 }

@@ -1,15 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import * as Sentry from "@sentry/react";
-import Home from "@/features/home/pages/Home";
-import Pomodoro from "@/features/pomodoro/pages/Pomodoro";
-import Journal from "@/features/journals/pages/Journal";
-import Settings from "@/features/settings/pages/Settings";
-import Dashboard from "@/features/dashboard/pages/Dashboard";
-import Login from "@/features/auth/pages/Login";
-import Signup from "@/features/auth/pages/Signup";
-import NotFound from "@/features/home/pages/NotFound";
-import Bookmarked from "@/features/bookmarked/pages/Bookmarked";
-import UpdatePassword from "@/features/auth/pages/UpdatePassword";
+import { homeRoutes, notFoundRoutes } from "@/features/home/routes";
+import authRoutes from "@/features/auth/routes";
+import dashboardRoutes from "@/features/dashboard/routes";
+import journalsRoutes from "@/features/journals/routes";
+import pomodoroRoutes from "@/features/pomodoro/routes";
+import bookmarkedRoutes from "@/features/bookmarked/routes";
+import settingsRoutes from "@/features/settings/routes";
 import {
   AuthLayout,
   HomePageLayout,
@@ -17,7 +14,6 @@ import {
   BaseLayout,
 } from "@/app/layouts";
 import { RouteErrorBoundary } from "@/shared/ui";
-import ProtectedRoute from "./ProtectedRoute";
 
 const sentryCreateBrowserRouter =
   Sentry.wrapCreateBrowserRouterV7(createBrowserRouter);
@@ -30,97 +26,25 @@ const router = sentryCreateBrowserRouter([
       {
         path: "/",
         element: <HomePageLayout />,
-        children: [
-          {
-            path: "/",
-            element: <Home />,
-          },
-        ],
+        children: homeRoutes,
       },
       {
         path: "/",
         element: <AuthLayout />,
-        children: [
-          {
-            path: "auth/login",
-            element: <Login />,
-          },
-          {
-            path: "auth/signup",
-            element: <Signup />,
-          },
-          {
-            path: "auth/update-password",
-            element: <UpdatePassword />,
-          },
-        ],
+        children: authRoutes,
       },
       {
         path: "/dashboard",
         element: <DashboardLayout />,
         children: [
-          {
-            path: "/dashboard",
-            element: (
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "/dashboard/journals",
-            element: (
-              <ProtectedRoute>
-                <Journal mode="list" />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "/dashboard/journals/new",
-            element: (
-              <ProtectedRoute>
-                <Journal mode="new" />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "/dashboard/journals/:journalId",
-            element: (
-              <ProtectedRoute>
-                <Journal mode="detail" />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "/dashboard/pomodoro",
-            element: (
-              <ProtectedRoute>
-                <Pomodoro />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "/dashboard/bookmarked",
-            element: (
-              <ProtectedRoute>
-                <Bookmarked />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: "/dashboard/settings",
-            element: (
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            ),
-          },
+          ...dashboardRoutes,
+          ...journalsRoutes,
+          ...pomodoroRoutes,
+          ...bookmarkedRoutes,
+          ...settingsRoutes,
         ],
       },
-      {
-        path: "*",
-        element: <NotFound />,
-      },
+      ...notFoundRoutes,
     ],
   },
 ]);

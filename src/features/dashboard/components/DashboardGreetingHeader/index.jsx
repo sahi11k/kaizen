@@ -17,7 +17,6 @@ const DashboardGreetingHeader = () => {
         </>
       }
       subtitle={<>Your week at a glance · {rangeLabel}</>}
-      titleClassName="heading-4"
     />
   );
 };
