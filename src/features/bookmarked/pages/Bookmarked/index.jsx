@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
 import { useAuthStore } from "@/features/auth";
 import { useBookmarkedQuery } from "@/features/bookmarked/queries";
-import BookmarkedHeader from "@/features/bookmarked/components/BookmarkedHeader";
 import BookmarkedFilters from "@/features/bookmarked/components/BookmarkedFilters";
 import BookmarkedGrid from "@/features/bookmarked/components/BookmarkedGrid";
 import BookmarkedFormDialog from "@/features/bookmarked/components/BookmarkedFormDialog";
+import { PageHeader, Button } from "@/shared/ui";
+import { Plus } from "lucide-react";
 
 export default function Bookmarked() {
   const { user } = useAuthStore();
@@ -61,38 +62,44 @@ export default function Bookmarked() {
   };
 
   return (
-    <div className="min-h-full bg-background px-3 py-3 md:px-6 md:py-5 lg:px-8">
-      <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col">
-        <div className="mx-4 flex flex-1 flex-col md:mx-6">
-          <BookmarkedHeader onAdd={handleAdd} />
-          {items.length > 0 && (
-            <BookmarkedFilters
-              activeTypes={activeTypes}
-              activeStatuses={activeStatuses}
-              onTypeToggle={toggleType}
-              onStatusToggle={toggleStatus}
-              onClearAll={clearAll}
-            />
-          )}
-          <div className="mt-4 pb-6">
-            <BookmarkedGrid
-              items={filtered}
-              userId={user?.id}
-              onEdit={handleEdit}
-              isLoading={isLoading}
-              isFiltered={isFiltered}
-              onAdd={handleAdd}
-              onClear={clearAll}
-            />
-          </div>
-          <BookmarkedFormDialog
-            open={dialogOpen}
-            onClose={handleClose}
-            userId={user?.id}
-            editItem={editItem}
-          />
-        </div>
-      </div>
+    <div className="w-full max-w-5xl mx-auto pb-6">
+      <PageHeader
+        title="Bookmarked"
+        subtitle="Books, articles, and links worth your time."
+        action={
+          <Button
+            icon={<Plus className="size-4" />}
+            onClick={handleAdd}
+            size="sm"
+          >
+            Add
+          </Button>
+        }
+      />
+      {items.length > 0 && (
+        <BookmarkedFilters
+          activeTypes={activeTypes}
+          activeStatuses={activeStatuses}
+          onTypeToggle={toggleType}
+          onStatusToggle={toggleStatus}
+          onClearAll={clearAll}
+        />
+      )}
+      <BookmarkedGrid
+        items={filtered}
+        userId={user?.id}
+        onEdit={handleEdit}
+        isLoading={isLoading}
+        isFiltered={isFiltered}
+        onAdd={handleAdd}
+        onClear={clearAll}
+      />
+      <BookmarkedFormDialog
+        open={dialogOpen}
+        onClose={handleClose}
+        userId={user?.id}
+        editItem={editItem}
+      />
     </div>
   );
 }

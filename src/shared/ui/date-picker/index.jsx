@@ -22,7 +22,7 @@ const DatePicker = ({
   popoverClassName,
   format = "LL",
   showIcon = true,
-  tooltip,
+  tooltip = null,
   tooltipContentClassName,
   tooltipAlign = "center",
   tooltipSide = "top",
@@ -31,17 +31,21 @@ const DatePicker = ({
   portalled = true,
 }) => {
   const [date, setDate] = useState(new Date());
+  const [month, setMonth] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (defaultDate) {
-      setDate(new Date(defaultDate));
+      const nextDate = new Date(defaultDate);
+      setDate(nextDate);
+      setMonth(nextDate);
     }
   }, [defaultDate]);
 
   const handleDateChange = (newDate) => {
     const nextDate = newDate || new Date();
     setDate(nextDate);
+    setMonth(nextDate);
     if (onDateChange) {
       onDateChange(nextDate);
     }
@@ -78,7 +82,13 @@ const DatePicker = ({
         align={align}
         portalled={portalled}
       >
-        <Calendar mode="single" selected={date} onSelect={handleDateChange} />
+        <Calendar
+          mode="single"
+          selected={date}
+          month={month}
+          onMonthChange={setMonth}
+          onSelect={handleDateChange}
+        />
       </PopoverContent>
     </Popover>
   );

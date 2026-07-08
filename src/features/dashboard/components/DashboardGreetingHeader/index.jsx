@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Dot } from "lucide-react";
 import { useAuthStore, getUserDisplayName } from "@/features/auth";
 import { PageHeader } from "@/shared/ui";
 import { getDayKeys, getRangeLabel } from "../../utils/dateRange";
@@ -16,7 +17,13 @@ const DashboardGreetingHeader = () => {
           {getGreeting()}, {userName}
         </>
       }
-      subtitle={<>Your week at a glance · {rangeLabel}</>}
+      subtitle={
+        <span className="inline-flex items-center gap-1">
+          Your week at a glance
+          <Dot className="size-4" aria-hidden />
+          {rangeLabel}
+        </span>
+      }
     />
   );
 };

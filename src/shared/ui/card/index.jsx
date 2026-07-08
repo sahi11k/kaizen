@@ -32,7 +32,7 @@ function CardTitle({ className, ...props }) {
   return (
     <div
       data-slot="card-title"
-      className={cn("label-overline leading-none", className)}
+      className={cn("text-label leading-none", className)}
       {...props}
     />
   );

@@ -9,7 +9,6 @@ import {
   EmptyStateAction,
   PageHeader,
   Skeleton,
-  Tooltip,
 } from "@/shared/ui";
 
 const JournalList = ({
@@ -26,13 +25,18 @@ const JournalList = ({
     grouped,
     fetchNextPage,
     newJournal,
+    removeJournal,
   } = useJournalList();
 
   const sections = grouped.map(({ key, label, items }) => ({
     key,
     label,
     content: items.map((journal) => (
-      <JournalListItem key={journal.id} journal={journal} />
+      <JournalListItem
+        key={journal.id}
+        journal={journal}
+        onDelete={removeJournal}
+      />
     )),
   }));
 
@@ -43,16 +47,14 @@ const JournalList = ({
           title={headerTitle}
           subtitle="Browse and continue your reflections."
           action={
-            <Tooltip content="New Journal">
-              <Button
-                icon={headerButtonIcon}
-                onClick={newJournal}
-                className="hidden sm:inline-flex"
-                size="sm"
-              >
-                {headerButtonLabel}
-              </Button>
-            </Tooltip>
+            <Button
+              icon={headerButtonIcon}
+              onClick={newJournal}
+              className="hidden sm:inline-flex"
+              size="sm"
+            >
+              {headerButtonLabel}
+            </Button>
           }
         />
       )}
@@ -79,16 +81,14 @@ const JournalList = ({
       )}
 
       {!isEmpty && (
-        <>
+        <div className="flex flex-col gap-6 pb-6">
           {sections.map(({ key, label, content }) => (
-            <section key={key} className="mb-6">
-              <h4 className="text-label mb-2 pb-2 sticky top-[6.5rem] md:top-[7.5rem] bg-background">
+            <ul key={key} className="flex flex-col gap-3" role="listbox">
+              <h4 className="sticky top-[7.5rem] z-20 bg-background text-label py-2">
                 {label}
               </h4>
-              <ul className="flex flex-col gap-6" role="listbox">
-                {content}
-              </ul>
-            </section>
+              {content}
+            </ul>
           ))}
           {hasNextPage && (
             <div className="text-center">
@@ -101,7 +101,7 @@ const JournalList = ({
               </Button>
             </div>
           )}
-        </>
+        </div>
       )}
 
       <FloatingButton

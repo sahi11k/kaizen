@@ -5,6 +5,7 @@ import {
   Skeleton,
 } from "@/shared/ui";
 import BookmarkedItem from "@/features/bookmarked/components/BookmarkedItem";
+import GridSkeleton from "@/features/bookmarked/components/GridSkeleton";
 
 const GROUPS = [
   { status: "reading", label: "Currently Reading" },
@@ -22,13 +23,7 @@ export default function BookmarkedGrid({
   onClear,
 }) {
   if (isLoading) {
-    return (
-      <div className="flex flex-col gap-2.5">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <Skeleton key={i} className="h-14 w-full rounded-lg bg-card" />
-        ))}
-      </div>
-    );
+    return <GridSkeleton />;
   }
 
   if (!items.length) {
@@ -37,7 +32,7 @@ export default function BookmarkedGrid({
     }
     return (
       <EmptyState
-        className="border border-green-500 grow-1"
+        className="grow-1"
         title="Nothing bookmarked yet."
         description="Add books or articles you want to read."
         action={
@@ -57,19 +52,21 @@ export default function BookmarkedGrid({
         const group = items.filter((item) => item.status === status);
         if (!group.length) return null;
         return (
-          <div key={status} className="flex flex-col gap-4">
-            <div className="sticky top-[10.25rem] md:top-[11.25rem] z-20 bg-background before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5">
-              <p className="label-overline mb-2 px-1 py-1">{label}</p>
-            </div>
+          <ul key={status} className="flex flex-col gap-3" role="listbox">
+            <h4 className="sticky top-[10.5rem] z-20 bg-background text-label py-2">
+              {label}
+            </h4>
             {group.map((item) => (
-              <BookmarkedItem
-                key={item.id}
-                item={item}
-                userId={userId}
-                onEdit={onEdit}
-              />
+              <>
+                <BookmarkedItem
+                  key={item.id}
+                  item={item}
+                  userId={userId}
+                  onEdit={onEdit}
+                />
+              </>
             ))}
-          </div>
+          </ul>
         );
       })}
     </div>

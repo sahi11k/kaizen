@@ -1,24 +1,33 @@
-import { BookOpen, Link2, ExternalLink } from 'lucide-react';
-import { MoreOptions, Pill } from '@/shared/ui';
-import { useDeleteBookmarkedItemMutation, useUpdateBookmarkedItemMutation } from '@/features/bookmarked/mutations';
-import { cn } from '@/shared/lib/utils';
+import { BookOpen, Link2, ExternalLink, Dot } from "lucide-react";
+import { MoreOptions, Pill } from "@/shared/ui";
+import {
+  useDeleteBookmarkedItemMutation,
+  useUpdateBookmarkedItemMutation,
+} from "@/features/bookmarked/mutations";
+import { cn } from "@/shared/lib/utils";
 
-const STATUS_CYCLE = ['pending', 'reading', 'finished'];
-
+const STATUS_CYCLE = ["pending", "reading", "finished"];
 
 const STATUS_LABEL = {
-  pending:  'Pending',
-  reading:  'Reading',
-  finished: 'Finished',
+  pending: "Pending",
+  reading: "Reading",
+  finished: "Finished",
 };
 
+const base =
+  "surface-card group relative flex items-center gap-3 px-3.5 py-3 rounded-lg transition-colors hover:bg-muted";
 
 function TypeIcon({ type, status }) {
-  const active = status === 'reading';
-  const Icon = type === 'book' ? BookOpen : Link2;
+  const active = status === "reading";
+  const Icon = type === "book" ? BookOpen : Link2;
   return (
-    <div className="flex items-center justify-center w-8 h-8 rounded-md border border-border bg-muted shrink-0">
-      <Icon className={cn('w-4 h-4', active ? 'text-primary' : 'text-muted-foreground')} />
+    <div className="flex items-center justify-center w-8 h-8 rounded-lg border border-border bg-muted shrink-0">
+      <Icon
+        className={cn(
+          "w-4 h-4",
+          active ? "text-primary" : "text-muted-foreground",
+        )}
+      />
     </div>
   );
 }
@@ -38,10 +47,10 @@ export default function BookmarkedItem({ item, userId, onEdit }) {
     deleteMutation.mutate({ id: item.id, userId });
   };
 
-  const done = item.status === 'finished';
+  const done = item.status === "finished";
 
   return (
-    <div className={cn("surface-card group relative flex items-center gap-3 px-3.5 py-3 rounded-lg transition-colors hover:bg-muted", done && "opacity-55 hover:opacity-75")}>
+    <li className={cn(base, done && "opacity-55 hover:opacity-75")}>
       {item.url && (
         <a
           href={item.url}
@@ -55,7 +64,12 @@ export default function BookmarkedItem({ item, userId, onEdit }) {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 min-w-0">
-          <p className={cn('text-base font-medium font-sans truncate', done ? 'line-through text-muted-foreground' : 'text-foreground')}>
+          <p
+            className={cn(
+              "body-base !text-foreground truncate",
+              done && "line-through",
+            )}
+          >
             {item.title}
           </p>
           {item.url && (
@@ -63,10 +77,10 @@ export default function BookmarkedItem({ item, userId, onEdit }) {
           )}
         </div>
         {item.tags?.length > 0 && (
-          <p className="text-[12px] tracking-wide font-sans text-muted-foreground mt-0.5">
+          <p className="body-description mt-0.5 flex items-center flex-wrap">
             {item.tags.slice(0, 3).map((tag, i) => (
-              <span key={tag}>
-                {i > 0 && <span className="text-sm mx-0.5">·</span>}
+              <span key={tag} className="inline-flex items-center">
+                {i > 0 && <Dot className="size-4" aria-hidden />}
                 {tag}
               </span>
             ))}
@@ -76,9 +90,12 @@ export default function BookmarkedItem({ item, userId, onEdit }) {
       </div>
 
       <Pill
-        className={cn("relative z-10", updateMutation.isPending ? 'opacity-50 pointer-events-none' : '')}
+        className={cn(
+          "relative z-10",
+          updateMutation.isPending && "opacity-50 pointer-events-none",
+        )}
         label={STATUS_LABEL[item.status]}
-        variant={item.status === 'pending' ? 'inactive' : 'active'}
+        variant={item.status === "pending" ? "inactive" : "active"}
         onClick={cycleStatus}
       />
 
@@ -87,14 +104,14 @@ export default function BookmarkedItem({ item, userId, onEdit }) {
         contentClassName="border-border"
         align="end"
         items={[
-          { label: 'Edit', onClick: () => onEdit(item) },
+          { label: "Edit", onClick: () => onEdit(item) },
           {
-            label: 'Delete',
+            label: "Delete",
             onClick: handleDelete,
-            className: 'hover:!bg-destructive/10 !text-destructive',
+            className: "hover:!bg-destructive/10 !text-destructive",
           },
         ]}
       />
-    </div>
+    </li>
   );
 }

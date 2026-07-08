@@ -5,6 +5,7 @@ export {
   AccordionContent,
 } from "./accordion";
 export { Avatar, AvatarImage, AvatarFallback } from "./avatar";
+export { BackButton } from "./back-button";
 export { Button, buttonVariants } from "./button";
 export { Calendar, CalendarDayButton } from "./calendar";
 export { Card } from "./card";
@@ -57,6 +58,8 @@ export type { ListHeaderProps, ListHeaderButtonProps } from "./list-header";
 export { InputOTP } from "./input-otp";
 export { Logo } from "./logo";
 export { MoreOptions } from "./more-options";
+export { PageHeader } from "./page-header";
+export type { PageHeaderProps } from "./page-header";
 export { Pill } from "./pill";
 export {
   Popover,

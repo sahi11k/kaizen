@@ -6,9 +6,8 @@
  * ============================================ */
 @theme {
   --font-sans: "Inter", sans-serif;
-  --font-mono: "Inter", sans-serif;
-  --font-heading: "Lora", serif;
-  --font-display: "Lora", serif;
+  --font-serif: "Lora", serif;
+  --font-mono: "IBM Plex Mono", monospace;
 
   /* base */
   --color-background: var(--background);
@@ -22,6 +21,7 @@
   /* primary */
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-fg);
+  --color-primary-subtle-foreground: var(--primary-subtle-fg);
   --color-primary-soft: var(--primary-soft);
   --color-primary-soft-foreground: var(--primary-soft-fg);
 
@@ -119,11 +119,12 @@
   /* card — true white so it lifts off the cream background */
   --card-bg: #ffffff;
   --card-fg: var(--neutral-950);
-  --card-border: #e8e2d9;
+  --card-border: #efe9e0;
 
   /* primary (amber — unchanged) */
   --primary: var(--amber-400);
   --primary-fg: var(--neutral-0);
+  --primary-subtle-fg: color-mix(in srgb, var(--primary-fg) 55%, var(--primary));
   --primary-soft: #fef3d7;
   --primary-soft-fg: #a16207;
 
@@ -135,7 +136,7 @@
 
   /* sidebar — white card, warm border */
   --sidebar: #ffffff;
-  --sidebar-border: #e8e2d9;
+  --sidebar-border: #efe9e0;
   --sidebar-fg: var(--neutral-950);
   --sidebar-muted-fg: #9c9690;
   --sidebar-hover-bg: #f0ede8;
@@ -174,7 +175,7 @@
   --tab-trigger-active-underline-offset: 1px;
 
   /* semantic */
-  --success: var(--green-600);
+  --success: var(--green-500);
   --success-soft: var(--green-100);
   --success-soft-fg: var(--green-700);
   --destructive: var(--red-600);
@@ -183,20 +184,20 @@
   --destructive-soft-fg: var(--red-700);
 
   /* forms — warm-tinted inputs, clear borders */
-  --border: #ddd8ce;
+  --border: #e5dfd5;
   --input: #f0ede8;
   --ring: var(--amber-300);
-  --control-inactive: #ddd8ce;
+  --control-inactive: #e5dfd5;
 
   /* overlays */
   --overlay-bg: #ffffff;
   --overlay-fg: #5a564f;
-  --overlay-border: #e8e2d9;
+  --overlay-border: #efe9e0;
   --overlay-shadow: oklch(0% 0 0 / 0.1);
   --overlay-backdrop: oklch(0% 0 0 / 0.55);
   --overlay-hover: #f0ede8;
   --overlay-field-bg: #ffffff;
-  --overlay-field-border: #ddd8ce;
+  --overlay-field-border: #e5dfd5;
   --overlay-field-fg: var(--neutral-950);
   --overlay-field-placeholder: #b8b4ae;
   --overlay-field-ring: var(--amber-300);
@@ -231,11 +232,12 @@
   /* card */
   --card-bg: var(--neutral-900);
   --card-fg: var(--neutral-50);
-  --card-border: var(--neutral-800);
+  --card-border: var(--neutral-840);
 
   /* primary (amber — lifted for dark bg readability) */
   --primary: var(--amber-300);
   --primary-fg: var(--neutral-950);
+  --primary-subtle-fg: color-mix(in srgb, var(--primary-fg) 55%, var(--primary));
   --primary-soft: var(--amber-850);
   --primary-soft-fg: var(--amber-200);
 
@@ -247,7 +249,7 @@
 
   /* sidebar */
   --sidebar: var(--neutral-925);
-  --sidebar-border: var(--neutral-850);
+  --sidebar-border: var(--neutral-875);
   --sidebar-fg: var(--neutral-50);
   --sidebar-muted-fg: var(--neutral-400);
   --sidebar-hover-bg: var(--neutral-800);
@@ -295,20 +297,20 @@
   --destructive-soft-fg: var(--red-400);
 
   /* forms */
-  --border: var(--neutral-800);
+  --border: var(--neutral-840);
   --input: var(--neutral-850);
   --ring: var(--amber-400);
-  --control-inactive: var(--neutral-700);
+  --control-inactive: var(--neutral-750);
 
   /* overlays */
   --overlay-bg: var(--neutral-900);
   --overlay-fg: var(--neutral-300);
-  --overlay-border: var(--neutral-800);
+  --overlay-border: var(--neutral-840);
   --overlay-shadow: oklch(0% 0 0 / 0.45);
   --overlay-backdrop: oklch(0% 0 0 / 0.7);
   --overlay-hover: var(--neutral-800);
   --overlay-field-bg: var(--neutral-925);
-  --overlay-field-border: var(--neutral-700);
+  --overlay-field-border: var(--neutral-750);
   --overlay-field-fg: var(--neutral-50);
   --overlay-field-placeholder: var(--neutral-500);
   --overlay-field-ring: var(--amber-400);

@@ -1,19 +1,30 @@
-import { SlidersHorizontal } from 'lucide-react';
-import { Popover, PopoverTrigger, PopoverContent, Button, Pill } from '@/shared/ui';
+import { SlidersHorizontal } from "lucide-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Button,
+  Pill,
+} from "@/shared/ui";
 
 const TYPE_OPTIONS = [
-  { value: 'book', label: 'Books' },
-  { value: 'link', label: 'Links' },
+  { value: "book", label: "Books" },
+  { value: "link", label: "Links" },
 ];
 
 const STATUS_OPTIONS = [
-  { value: 'pending', label: 'Pending' },
-  { value: 'reading', label: 'Reading' },
-  { value: 'finished', label: 'Finished' },
+  { value: "pending", label: "Pending" },
+  { value: "reading", label: "Reading" },
+  { value: "finished", label: "Finished" },
 ];
 
-
-export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeToggle, onStatusToggle, onClearAll }) {
+export default function BookmarkedFilters({
+  activeTypes,
+  activeStatuses,
+  onTypeToggle,
+  onStatusToggle,
+  onClearAll,
+}) {
   const totalActive = activeTypes.size + activeStatuses.size;
 
   const activeTags = [
@@ -30,10 +41,14 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
   ];
 
   return (
-    <div className="sticky top-[6.25rem] md:top-[7.25rem] z-30 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5 flex flex-wrap items-center gap-2 relative">
+    <div className="sticky top-[6.25rem] md:top-[7.5rem] z-30 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5 flex flex-wrap items-center gap-2 relative">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="flex items-center gap-1.5 bg-card">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-1.5 bg-card"
+          >
             <SlidersHorizontal className="w-3.5 h-3.5" />
             Filter
             {totalActive > 0 && (
@@ -45,26 +60,28 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
         </PopoverTrigger>
         <PopoverContent align="start" className="w-64 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <p className="label-overline text-muted-foreground">Type</p>
+            <p className="text-label text-muted-foreground">Type</p>
             <div className="flex flex-wrap gap-2">
               {TYPE_OPTIONS.map((opt) => (
                 <Pill
                   key={opt.value}
                   label={opt.label}
-                  variant={activeTypes.has(opt.value) ? 'active' : 'inactive'}
+                  variant={activeTypes.has(opt.value) ? "active" : "inactive"}
                   onClick={() => onTypeToggle(opt.value)}
                 />
               ))}
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="label-overline text-muted-foreground">Status</p>
+            <p className="text-label text-muted-foreground">Status</p>
             <div className="flex flex-wrap gap-2">
               {STATUS_OPTIONS.map((opt) => (
                 <Pill
                   key={opt.value}
                   label={opt.label}
-                  variant={activeStatuses.has(opt.value) ? 'active' : 'inactive'}
+                  variant={
+                    activeStatuses.has(opt.value) ? "active" : "inactive"
+                  }
                   onClick={() => onStatusToggle(opt.value)}
                 />
               ))}
@@ -83,7 +100,12 @@ export default function BookmarkedFilters({ activeTypes, activeStatuses, onTypeT
       </Popover>
 
       {activeTags.map((tag) => (
-        <Pill key={tag.key} label={tag.label} variant="active" onRemove={tag.onRemove} />
+        <Pill
+          key={tag.key}
+          label={tag.label}
+          variant="active"
+          onRemove={tag.onRemove}
+        />
       ))}
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { Dot } from "lucide-react";
 import {
   DATEPICKER_DATE_FORMAT,
   JOURNAL_DAY_TITLE_PLACEHOLDER,
@@ -21,6 +22,7 @@ const JournalEditorHeader = ({
   return (
     <div className="relative py-6 sticky top-0 bg-background z-40">
       <BackButton to="/dashboard/journals" className="absolute -left-20" />
+
       <label className="sr-only" htmlFor={`journal-day-title-${journal.id}`}>
         Journal title
       </label>
@@ -34,27 +36,23 @@ const JournalEditorHeader = ({
         autoComplete="off"
         maxLength={100}
       />
-      <div className="flex flex-col items-start gap-y-1 md:flex-row md:flex-wrap md:items-center md:gap-x-4 md:gap-y-2">
+      <div className="flex flex-col items-start gap-y-1 md:flex-row md:flex-wrap md:items-center md:gap-x-1 md:gap-y-2">
         <DatePicker
           defaultDate={journalDate}
           onDateChange={handleJournalDateChange}
           format={DATEPICKER_DATE_FORMAT}
-          showIcon={false}
-          tooltip="Click to edit"
-          tooltipContentClassName="block"
+          iconClassName="size-3.5"
           triggerClassName={cn(
-            "h-auto min-h-0 border-0 bg-transparent p-0 shadow-none hover:bg-transparent hover:text-foreground/80 focus-visible:ring-0 focus-visible:ring-offset-0 md:h-auto md:p-0 md:px-0 md:py-0 lg:h-auto lg:p-0 lg:px-0 lg:py-0",
+            "!p-0 flex border-none !h-auto bg-transparent hover:bg-transparent hover:!text-secondary-foreground focus:!text-secondary-foreground",
             JOURNAL_META_ROW_TEXT_CLASS,
           )}
         />
         {showSaveStatus ? (
           <>
-            <span
-              className="hidden shrink-0 text-base text-muted-foreground md:block"
+            <Dot
+              className="hidden shrink-0 size-4 text-muted-foreground md:block"
               aria-hidden
-            >
-              ·
-            </span>
+            />
             <SavingStatus status={saveStatus} updatedAt={lastSavedAt} />
           </>
         ) : null}
