@@ -11,7 +11,7 @@ import ArrowLeftIcon from "@/assets/icons/arrow-left-icon.svg?react"
 import HighlighterIcon from "@/assets/icons/highlighter-icon.svg?react"
 import LinkIcon from "@/assets/icons/link-icon.svg?react"
 
-export function MobileToolbarContent({ type, onBack }) {
+export function MobileToolbarOverlay({ type, onBack }) {
   return (
     <>
       <ToolbarGroup>

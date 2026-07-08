@@ -22,8 +22,8 @@ const iconVariants = cva("text-primary", {
   variants: {
     size: {
       sm: "w-4 h-4 md:w-5 md:h-5 xl:w-6 xl:h-6",
-      md: "w-6 h-6 md:w-7 md:h-7 xl:w-8 xl:h-8",
-      lg: "w-8 h-8 md:w-9 xl:w-10",
+      md: "w-5 h-5 md:w-6 md:h-6 xl:w-7 xl:h-7",
+      lg: "w-7 h-7 md:w-8 xl:w-9",
     },
   },
   defaultVariants: {
@@ -31,7 +31,7 @@ const iconVariants = cva("text-primary", {
   },
 });
 
-const textVariants = cva("text-foreground text-wordmark leading-none", {
+const textVariants = cva("heading-6 text-primary uppercase tracking-[0.15em]", {
   variants: {
     size: {
       sm: "",

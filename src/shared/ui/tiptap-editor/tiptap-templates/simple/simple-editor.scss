@@ -6,7 +6,6 @@
   --tt-toolbar-height: 44px;
   --tt-theme-text: var(--foreground);
   color: var(--foreground);
-  font-family: var(--font-sans), "Manrope", system-ui, sans-serif;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -14,26 +13,20 @@
   max-width: 100%;
   min-height: 0;
   min-width: 0;
-  padding-inline: 2rem;
   overflow-x: hidden;
-  overflow-y: visible;
-}
-
-.tiptap.ProseMirror {
-  font-family: inherit;
 }
 
 /* Journal: toolbar controls flush left, full border (demo template keeps centered flex spacers). */
 .simple-editor-wrapper--journal {
-  gap: 0.25rem;
   flex: 0 0 auto;
   padding-inline: 0;
-  overflow: visible;
 
   .simple-editor-journal-toolbar-shell {
     position: relative;
     z-index: 35;
     background: var(--background);
+    padding-bottom: 6px;
+    width: 100%;
   }
 
   .tiptap-toolbar[data-variant="fixed"] {
@@ -44,13 +37,9 @@
     box-sizing: border-box;
     border: 1px solid var(--tt-toolbar-border-color);
     border-radius: var(--tt-radius-md, 0.5rem);
-    margin: 0.25rem 1rem;
+    margin: 0.25rem 1rem 0.25rem 0;
     overflow-x: auto;
     overflow-y: hidden;
-  }
-
-  .simple-editor-content {
-    overflow: visible;
   }
 
   /* Tablet/desktop: page scroll comes from DashboardLayout, matching the journal list. */
@@ -61,31 +50,10 @@
 
     .simple-editor-journal-toolbar-shell {
       position: sticky;
-      top: var(--journal-toolbar-sticky-top, 6.5rem);
+      top: var(--journal-toolbar-sticky-top, 7.5rem);
       z-index: 35;
-      margin-inline: 1rem;
+      margin-right: 1rem;
       background: var(--background);
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        left: -1rem;
-        right: -1rem;
-        z-index: 0;
-        background: var(--background);
-        pointer-events: none;
-      }
-
-      &::before {
-        top: -0.5rem;
-        height: 0.5rem;
-      }
-
-      &::after {
-        bottom: -0.5rem;
-        height: 0.5rem;
-      }
     }
 
     .tiptap-toolbar[data-variant="fixed"] {
@@ -104,8 +72,8 @@
 
     /* Tabs (4rem) + extra gap so the bar sits a bit higher. Keep tab height in sync with MobileTabLayout TabsList h-16. */
     --tt-mobile-tab-clearance: calc(4rem + 0.75rem);
-    /* Equal horizontal inset from the journal column edges. */
-    --tt-journal-toolbar-inline: 1rem;
+    /* Right inset from the journal column edge; left is flush. */
+    --tt-journal-toolbar-inline: 0rem;
 
     .simple-editor-journal-toolbar-shell {
       display: contents;
@@ -125,15 +93,11 @@
 }
 
 @media (min-width: 1024px) {
-  .simple-editor-wrapper {
-    padding-inline: 4rem;
-  }
-
   .simple-editor-wrapper--journal {
     padding-inline: 0;
 
     .simple-editor-journal-toolbar-shell {
-      margin-inline: 1rem;
+      margin-right: 1rem;
     }
 
     .tiptap-toolbar[data-variant="fixed"] {
@@ -159,21 +123,13 @@
   max-width: 100%;
   overflow-wrap: anywhere;
   word-break: break-word;
-  /* No extra horizontal inset — parent already uses px-6 lg:px-12 */
-  padding: 1.5rem 0 30vh;
-}
-
-@media screen and (max-width: 480px) {
-  .simple-editor-content .tiptap.ProseMirror.simple-editor {
-    padding: 1rem 0 30vh;
-  }
 }
 
 /* Journal: tighter vertical rhythm; keep in sync with JournalEditor header `pb-[calc(...)]`. */
 .simple-editor-wrapper--journal
   .simple-editor-content
   .tiptap.ProseMirror.simple-editor {
-  padding: 0.25rem 1rem 30vh;
+  padding: 0.25rem 0 30vh;
 
   > * {
     max-width: 100%;
@@ -192,29 +148,5 @@
     white-space: break-spaces;
     overflow-wrap: anywhere;
     word-break: break-word;
-  }
-}
-
-@media (min-width: 768px) {
-  .simple-editor-wrapper--journal
-    .simple-editor-content
-    .tiptap.ProseMirror.simple-editor {
-    padding-inline: 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .simple-editor-wrapper--journal
-    .simple-editor-content
-    .tiptap.ProseMirror.simple-editor {
-    padding-inline: 1rem;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .simple-editor-wrapper--journal
-    .simple-editor-content
-    .tiptap.ProseMirror.simple-editor {
-    padding: 0.25rem 1rem 30vh;
   }
 }
