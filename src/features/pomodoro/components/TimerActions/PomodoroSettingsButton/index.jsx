@@ -95,7 +95,11 @@ const PomodoroSettingsButton = () => {
   };
 
   const settingsForm = (
-    <form id="pomodoro-settings-form" onSubmit={handleFormSubmit} className="flex flex-col gap-6">
+    <form
+      id="pomodoro-settings-form"
+      onSubmit={handleFormSubmit}
+      className="flex flex-col gap-6"
+    >
       <FormItem
         label="Pomodoro Timer Duration"
         value={pomodoroFormValues.pomodoroDuration}
@@ -106,7 +110,9 @@ const PomodoroSettingsButton = () => {
           min={3}
           max={60}
           step={1}
-          onValueChange={(value) => handleFormChange("pomodoroDuration", value[0])}
+          onValueChange={(value) =>
+            handleFormChange("pomodoroDuration", value[0])
+          }
         />
       </FormItem>
       <FormItem
@@ -119,7 +125,9 @@ const PomodoroSettingsButton = () => {
           min={3}
           max={15}
           step={1}
-          onValueChange={(value) => handleFormChange("shortBreakDuration", value[0])}
+          onValueChange={(value) =>
+            handleFormChange("shortBreakDuration", value[0])
+          }
         />
       </FormItem>
       <FormItem
@@ -132,7 +140,9 @@ const PomodoroSettingsButton = () => {
           min={5}
           max={30}
           step={1}
-          onValueChange={(value) => handleFormChange("longBreakDuration", value[0])}
+          onValueChange={(value) =>
+            handleFormChange("longBreakDuration", value[0])
+          }
         />
       </FormItem>
       <FormItem
@@ -145,20 +155,21 @@ const PomodoroSettingsButton = () => {
           min={2}
           max={10}
           step={1}
-          onValueChange={(value) => handleFormChange("longBreakInterval", value[0])}
+          onValueChange={(value) =>
+            handleFormChange("longBreakInterval", value[0])
+          }
         />
       </FormItem>
       <div className="flex items-center justify-between">
-        <label
-          htmlFor="sound-toggle"
-          className="text-sm font-medium text-muted-foreground"
-        >
+        <label htmlFor="sound-toggle" className="form-label">
           Timer Sound Effects
         </label>
         <Switch
           id="sound-toggle"
           checked={pomodoroFormValues.soundEnabled}
-          onCheckedChange={(checked) => handleFormChange("soundEnabled", checked)}
+          onCheckedChange={(checked) =>
+            handleFormChange("soundEnabled", checked)
+          }
         />
       </div>
     </form>
@@ -221,14 +232,12 @@ const FormItem = ({ label, children, value = 0, timeUnit = "min" }) => {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
-        <label
-          htmlFor={label}
-          className="text-sm font-medium text-muted-foreground"
-        >
+        <label htmlFor={label} className="form-label">
           {label}
         </label>
         <strong className="body-description">
-          ({value}{timeUnit && ` ${timeUnit}`})
+          ({value}
+          {timeUnit && ` ${timeUnit}`})
         </strong>
       </div>
 

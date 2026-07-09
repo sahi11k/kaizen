@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
 import PomodoroSettings from "@/features/settings/components/Pomodoro";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui";
+import {
+  PageHeader,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/shared/ui";
 import GeneralSettings from "@/features/settings/components/General";
 import SecuritySettings from "@/features/settings/components/Security";
 
@@ -23,53 +29,37 @@ const TABS = [
   },
 ];
 
-const HEADER_STICKY_TOP = "top-3 md:top-5";
-const CONTENT_SPACING = "mx-4 min-w-0 pt-3 pb-24 md:mx-6 md:pt-4 md:pb-8";
-
 const Settings = () => {
   const [currentTab, setCurrentTab] = useState(TABS[0].key);
 
   return (
-    <Tabs
-      value={currentTab}
-      onValueChange={setCurrentTab}
-      className="min-h-0 w-full gap-0 overflow-visible"
-    >
-      <div
-        className={`sticky ${HEADER_STICKY_TOP} z-30 shrink-0 bg-background before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5`}
+    <div className="w-full max-w-5xl mx-auto">
+      <PageHeader
+        title="Settings"
+        subtitle="Manage your account and preferences."
+      />
+      <Tabs
+        value={currentTab}
+        onValueChange={setCurrentTab}
+        className="flex flex-col gap-6 pb-6"
       >
-        <div className="mx-4 pb-4 md:mx-6 md:pb-5">
-          <div className="flex min-w-0 flex-col gap-4">
-            <div>
-              <h1 className="heading-2">Settings</h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                Manage your account and preferences.
-              </p>
-            </div>
-            <TabsList
-              aria-label="Settings sections"
-              className="h-auto max-w-full justify-start overflow-x-auto border border-border bg-card"
-            >
-              {TABS.map(({ key, label }) => (
-                <TabsTrigger
-                  key={key}
-                  value={key}
-                  className="h-11 flex-none rounded-none border-x-0 border-t-0 bg-transparent px-5 pb-3 pt-2 text-base cursor-pointer first:rounded-none last:rounded-none data-[state=active]:border-b-primary"
-                >
-                  {label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-        </div>
-      </div>
-
-      {TABS.map(({ key, content }) => (
-        <TabsContent key={key} value={key} className="mt-0 flex-none">
-          <div className={CONTENT_SPACING}>{content}</div>
-        </TabsContent>
-      ))}
-    </Tabs>
+        <TabsList
+          aria-label="Settings sections"
+          className="border border-border"
+        >
+          {TABS.map(({ key, label }) => (
+            <TabsTrigger key={key} value={key}>
+              {label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {TABS.map(({ key, content }) => (
+          <TabsContent key={key} value={key} className="flex-1">
+            {content}
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
   );
 };
 

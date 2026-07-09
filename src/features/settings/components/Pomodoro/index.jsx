@@ -164,13 +164,10 @@ const PomodoroSettings = () => {
       <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <label
-              htmlFor="settings-sound-toggle"
-              className="text-sm font-medium text-foreground"
-            >
+            <label htmlFor="settings-sound-toggle" className="form-label">
               Timer sound effects
             </label>
-            <p className="text-sm text-muted-foreground">
+            <p className="body-description">
               Play a sound when sessions start and end.
             </p>
           </div>
@@ -212,7 +209,7 @@ const PomodoroSettings = () => {
 
 const NumberField = ({ label, value, min, max, unit, error, onChange }) => {
   return (
-    <label className="flex flex-col gap-2 text-sm font-medium text-muted-foreground">
+    <label className="form-label flex flex-col gap-2">
       {label}
       <Input
         type="number"
@@ -223,7 +220,7 @@ const NumberField = ({ label, value, min, max, unit, error, onChange }) => {
         aria-invalid={!!error}
         onChange={(e) => onChange(e.target.value)}
       />
-      <span className="text-xs font-normal text-muted-foreground">
+      <span className="body-description !text-xs">
         Max {max} {unit}
       </span>
       {error && <span className="form-error">{error}</span>}

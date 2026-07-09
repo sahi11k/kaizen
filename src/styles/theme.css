@@ -199,7 +199,7 @@
   --overlay-field-bg: #ffffff;
   --overlay-field-border: #e5dfd5;
   --overlay-field-fg: var(--neutral-950);
-  --overlay-field-placeholder: #b8b4ae;
+  --overlay-field-placeholder: var(--subtle-fg);
   --overlay-field-ring: var(--amber-300);
 
   /* timer */
@@ -312,7 +312,7 @@
   --overlay-field-bg: var(--neutral-925);
   --overlay-field-border: var(--neutral-750);
   --overlay-field-fg: var(--neutral-50);
-  --overlay-field-placeholder: var(--neutral-500);
+  --overlay-field-placeholder: var(--subtle-fg);
   --overlay-field-ring: var(--amber-400);
 
   /* timer */

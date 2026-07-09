@@ -59,7 +59,7 @@
 /* Pomodoro controls */
 
 .pomodoro-control-button {
-  @apply h-12 w-12 bg-muted text-muted-foreground hover:bg-muted hover:text-primary;
+  @apply h-12 w-12 bg-muted text-muted-foreground hover:bg-muted hover:text-foreground;
 }
 
 .pomodoro-control-button-hidden {
@@ -90,6 +90,10 @@
 
 .form-error {
   @apply text-sm text-destructive leading-snug;
+}
+
+.form-label {
+  @apply font-sans text-base font-medium text-muted-foreground;
 }
 
 /* Animation — theme toggle icon */
@@ -181,7 +185,7 @@
 }
 
 :where(.tab-trigger) {
-  @apply relative bg-tab-trigger font-sans text-tab-trigger-foreground data-[state=active]:border-transparent data-[state=active]:focus-visible:ring-0 data-[state=active]:focus-visible:outline-0 data-[state=active]:focus-visible:border-transparent focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-2 first:rounded-l-md last:rounded-r-md border border-tab-trigger-border px-4 pb-2.5 pt-1.5 text-base font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5;
+  @apply relative bg-tab-trigger font-sans text-tab-trigger-foreground cursor-pointer data-[state=active]:border-transparent data-[state=active]:focus-visible:ring-0 data-[state=active]:focus-visible:outline-0 data-[state=active]:focus-visible:border-transparent focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-2 first:rounded-l-md last:rounded-r-md border border-tab-trigger-border px-4 pb-2.5 pt-1.5 text-base font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5;
 }
 
 :where(.tab-trigger):hover {

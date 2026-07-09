@@ -49,10 +49,7 @@ const TaskForm = ({
         </div>
 
         <div className="flex items-center gap-4" data-field="total-sessions">
-          <label
-            htmlFor="total-sessions"
-            className="text-description text-sm w-full pl-2"
-          >
+          <label htmlFor="total-sessions" className="form-label w-full pl-2">
             Session Goal
           </label>
           <Input

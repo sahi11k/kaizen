@@ -9,8 +9,7 @@ import { getTaskSessionSummary } from "../utils";
 const base =
   "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-border hover:bg-muted";
 const activeClass = "border-l-2 border-l-primary rounded-l-none";
-const completedClass =
-  "border-border opacity-55 hover:opacity-75";
+const completedClass = "border-border opacity-55 hover:opacity-75";
 
 const TaskItem = ({
   task,
@@ -68,8 +67,8 @@ const TaskItem = ({
             variant="icon"
             icon={<CheckCircle2 className="size-5" color="currentColor" />}
             className={cn(
-              "!p-0 hover:bg-transparent",
-              task.completed && "text-primary",
+              "!p-0 hover:bg-transparent !h-8",
+              task.completed && "text-primary hover:text-primary",
             )}
             aria-label={completeTooltip}
             aria-pressed={task.completed}

@@ -192,10 +192,8 @@ export const GeneralSettings = () => {
               </span>
             </button>
             <div className="min-w-0">
-              <p className="truncate font-display text-2xl font-semibold text-foreground">
-                {displayName}
-              </p>
-              <p className="body-description truncate">{formValues.email}</p>
+              <h5 className="truncate heading-5">{displayName}</h5>
+              <p className="truncate body-base">{formValues.email}</p>
             </div>
           </div>
           <input
@@ -210,7 +208,7 @@ export const GeneralSettings = () => {
 
       <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
         <div className="grid gap-5">
-          <label className="flex flex-col gap-2 text-sm font-medium text-muted-foreground">
+          <label className="form-label flex flex-col gap-2">
             Display name
             <Input
               name="displayName"
@@ -225,15 +223,14 @@ export const GeneralSettings = () => {
               <span className="form-error">{displayNameError}</span>
             )}
           </label>
-          <label className="flex flex-col gap-2 text-sm font-medium text-muted-foreground">
+          <label className="form-label">
             Email
             <Input
               type="email"
               name="email"
               value={formValues.email}
+              className="mt-1"
               disabled
-              readOnly
-              className="w-full border-transparent bg-transparent text-muted-foreground shadow-none hover:border-transparent focus-visible:border-transparent focus-visible:ring-0 disabled:opacity-100"
             />
           </label>
         </div>
@@ -249,13 +246,10 @@ export const GeneralSettings = () => {
             )}
           </span>
           <div>
-            <label
-              htmlFor="settings-theme-toggle"
-              className="text-sm font-medium text-foreground"
-            >
+            <label htmlFor="settings-theme-toggle" className="form-label">
               Dark mode
             </label>
-            <p className="text-sm text-muted-foreground">
+            <p className="body-description">
               {isDarkMode ? "Dark mode is on" : "Dark mode is off"}
             </p>
           </div>

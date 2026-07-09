@@ -1,11 +1,11 @@
 :root {
-  --tt-input-placeholder: var(--tt-gray-light-a-400);
+  --tt-input-placeholder: var(--subtle-fg);
   --tt-input-border: var(--tt-gray-light-a-200);
   --tt-input-border-focus: var(--tt-gray-light-a-300);
 }
 
 .dark {
-  --tt-input-placeholder: var(--tt-gray-dark-a-400);
+  --tt-input-placeholder: var(--subtle-fg);
   --tt-input-border: var(--tt-gray-dark-a-200);
   --tt-input-border-focus: var(--tt-gray-dark-a-300);
 }

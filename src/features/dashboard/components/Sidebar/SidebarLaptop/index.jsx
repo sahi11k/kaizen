@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import SidebarContent from "../SidebarContent";
+import SidebarCollapseButton from "../SidebarCollapseButton";
 import AccountDropdown from "../../AccountDropdown";
-import { Button, Tooltip } from "@/shared/ui";
 import { cn } from "@/shared/lib/utils";
 
 const DESKTOP_SIDEBAR_QUERY = "(min-width: 1280px)";
@@ -14,9 +13,6 @@ const SidebarLaptop = () => {
       ? false
       : window.matchMedia(DESKTOP_SIDEBAR_QUERY).matches,
   );
-  const toggleLabel = isCollapsed ? "Expand sidebar" : "Collapse sidebar";
-  const sidebarControlClassName =
-    "!h-10 w-10 rounded-full !bg-transparent text-sidebar-muted-foreground hover:!bg-transparent hover:!text-primary";
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(DESKTOP_SIDEBAR_QUERY);
@@ -33,25 +29,13 @@ const SidebarLaptop = () => {
   }
 
   const collapseButton = (
-    <Tooltip content={toggleLabel} side="right" level="header">
-      <Button
-        variant="icon"
-        className={cn(
-          sidebarControlClassName,
-          !isCollapsed && "absolute right-8 top-1/2 -translate-y-1/2",
-        )}
-        aria-label={toggleLabel}
-        aria-expanded={!isCollapsed}
-        onClick={() => setIsCollapsed((prev) => !prev)}
-        icon={
-          isCollapsed ? (
-            <PanelLeftOpen className="size-6" />
-          ) : (
-            <PanelLeftClose className="size-6" />
-          )
-        }
-      />
-    </Tooltip>
+    <SidebarCollapseButton
+      isCollapsed={isCollapsed}
+      onToggle={() => setIsCollapsed((prev) => !prev)}
+      className={cn(
+        !isCollapsed && "absolute right-5 top-1/2 -translate-y-1/2",
+      )}
+    />
   );
 
   const accountDropdown = (
@@ -63,7 +47,7 @@ const SidebarLaptop = () => {
         "text-sidebar-foreground",
         isCollapsed
           ? "justify-center"
-          : "min-h-14 w-full overflow-hidden rounded-lg py-3 pr-20 pl-4 hover:bg-sidebar-account-hover",
+          : "min-h-14 w-full overflow-hidden rounded-lg py-3 pr-10 pl-2 hover:bg-sidebar-account-hover",
       )}
       contentClassName="w-64"
       avatarClassName={isCollapsed ? "size-10" : "size-11"}

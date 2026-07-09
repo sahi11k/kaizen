@@ -9,8 +9,8 @@ import dashboardDark from "@/assets/images/dashboard-dark.png";
 const Banner = () => {
   return (
     <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 xl:px-0 pt-16 lg:pt-24 pb-10 lg:pb-14 flex flex-col gap-16 lg:gap-24">
-      <div className="flex flex-col lg:flex-row items-start">
-        <div className="flex-3 flex flex-col gap-6 lg:gap-8 max-w-2xl">
+      <div className="flex flex-col lg:flex-row items-start gap-24">
+        <div className="flex-2 flex flex-col gap-6 lg:gap-8">
           <div className="flex flex-col gap-6">
             <span className="text-label inline-flex w-fit items-center gap-2 rounded-lg border border-border px-4 py-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
@@ -39,7 +39,7 @@ const Banner = () => {
             </a>
           </div>
         </div>
-        <div className="hidden lg:flex flex-1 justify-end lg:mt-10 xl:mt-12">
+        <div className="hidden lg:flex flex-3 justify-end lg:mt-10 xl:mt-12">
           <DashboardPreview />
         </div>
       </div>
@@ -50,7 +50,7 @@ const Banner = () => {
 
 const DashboardPreview = () => {
   return (
-    <div className="w-full max-w-lg rounded-lg border border-border overflow-hidden shadow-sm">
+    <div className="w-full h-full rounded-lg border border-border overflow-hidden shadow-sm px-4 py-6">
       <img
         src={dashboardLight}
         alt="Kaizen dashboard"

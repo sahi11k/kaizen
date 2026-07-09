@@ -7,8 +7,8 @@ import { ThemeToggle } from "@/features/theme";
 
 const FooterMain = () => {
   return (
-    <footer className="px-6 pt-10 md:pt-14">
-      <div className="flex flex-col xl:max-w-7xl mx-auto">
+    <footer className="pt-10 md:pt-14">
+      <div className="flex flex-col mx-auto">
         <div className="flex flex-col items-center text-center gap-6 pb-16 md:pb-20">
           <h2 className="heading-1 tracking-tight">
             Start small,
@@ -24,21 +24,23 @@ const FooterMain = () => {
             </Button>
           </Link>
         </div>
-        <div className="flex gap-4 flex-col md:flex-row justify-between items-center border-t border-border py-6 w-full">
-          <div className="flex items-center gap-6 text-text-muted">
-            {FOOTER_LINKS.map(({ label, href, Icon }) => (
-              <FooterLink key={label} href={href}>
-                <Icon />
-              </FooterLink>
-            ))}
-            <ThemeToggle
-              tooltipSide="top"
-              tooltipLevel="footer"
-              className="!w-5 !h-5 xl:!w-6 xl:!h-6 !p-0 text-muted-foreground hover:!text-primary hover:!bg-transparent"
-            />
-          </div>
-          <div className="font-serif body-description text-center tracking-[0.15em]!">
-            KAIZEN
+        <div className="border-t border-border/50">
+          <div className="flex gap-4 flex-col md:flex-row justify-between items-center py-6 w-full max-w-7xl mx-auto">
+            <div className="flex items-center gap-6 text-text-muted">
+              {FOOTER_LINKS.map(({ label, href, Icon }) => (
+                <FooterLink key={label} href={href}>
+                  <Icon />
+                </FooterLink>
+              ))}
+              <ThemeToggle
+                tooltipSide="top"
+                tooltipLevel="footer"
+                className="!w-5 !h-5 xl:!w-6 xl:!h-6 !p-0 text-muted-foreground hover:!text-foreground hover:!bg-transparent"
+              />
+            </div>
+            <div className="heading-6 tracking-[4px] !text-lg !text-subtle-foreground">
+              KAIZEN
+            </div>
           </div>
         </div>
       </div>
@@ -52,7 +54,7 @@ const FooterLink = ({ href, children }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-5 h-5 xl:w-6 xl:h-6 text-muted-foreground hover:text-primary transition-colors"
+      className="w-5 h-5 xl:w-6 xl:h-6 text-muted-foreground hover:text-foreground transition-colors"
     >
       {children}
     </a>

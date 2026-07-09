@@ -77,39 +77,31 @@ const AccountDropdown = ({
           </AvatarFallback>
         </Avatar>
         {showUserText && (
-          <span className="min-w-0 overflow-hidden text-left">
-            <span className="body-base !font-serif block truncate text-current">
-              {userDisplayName}
-            </span>
-          </span>
+          <h5 className="body-base !text-lg truncate text-left font-medium">
+            {userDisplayName}
+          </h5>
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className={cn(
-          "border-border shadow-md w-48 font-sans text-base font-normal",
+          "border-border shadow-md w-48 font-sans",
           contentClassName,
           className,
         )}
         align={align}
         side={side}
       >
-        <DropdownMenuItem
-          className="cursor-pointer text-base"
-          onClick={toggleTheme}
-        >
+        <DropdownMenuItem className="cursor-pointer" onClick={toggleTheme}>
           <ThemeIcon />
           {themeActionLabel}
         </DropdownMenuItem>
         <Link to="/dashboard/settings">
-          <DropdownMenuItem className="cursor-pointer text-base">
+          <DropdownMenuItem className="cursor-pointer">
             <Settings />
             Settings
           </DropdownMenuItem>
         </Link>
-        <DropdownMenuItem
-          className="cursor-pointer text-base"
-          onClick={handleLogout}
-        >
+        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
           <LogOut />
           Logout
         </DropdownMenuItem>

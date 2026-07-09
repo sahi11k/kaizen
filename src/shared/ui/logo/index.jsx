@@ -31,7 +31,7 @@ const iconVariants = cva("text-primary", {
   },
 });
 
-const textVariants = cva("heading-6 text-primary uppercase tracking-[0.15em]", {
+const textVariants = cva("heading-6 text-primary uppercase tracking-[4px]", {
   variants: {
     size: {
       sm: "",
