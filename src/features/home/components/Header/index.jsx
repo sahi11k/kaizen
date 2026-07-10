@@ -8,7 +8,7 @@ const HeaderMain = () => {
   const { user } = useAuthStore();
 
   return (
-    <header className="sticky top-0 inset-x-0 z-50 bg-background border-b border-border/50">
+    <header className="fixed top-0 inset-x-0 z-50 bg-background border-b border-border/50">
       <div className="flex justify-between items-center px-6 xl:px-0 py-4 xl:max-w-7xl mx-auto">
         <Logo link={true} className="text-primary" />
         <div className="flex items-center gap-4 xl:gap-6">

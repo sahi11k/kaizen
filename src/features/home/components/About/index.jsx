@@ -1,5 +1,6 @@
 import React from "react";
 import Section from "@/features/home/components/Section";
+import { Reveal } from "@/shared/ui";
 import { ABOUT_CARDS } from "@/features/home/constants";
 
 const About = () => {
@@ -17,7 +18,9 @@ const About = () => {
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {ABOUT_CARDS.map((card, index) => (
-          <AboutCard key={card.key} index={index} {...card} />
+          <Reveal key={card.key} delay={index * 100}>
+            <AboutCard index={index} {...card} />
+          </Reveal>
         ))}
       </div>
     </Section>

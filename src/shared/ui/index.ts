@@ -67,9 +67,11 @@ export {
   PopoverContent,
   PopoverAnchor,
 } from "./popover";
+export { Reveal } from "./reveal";
 export { ResponsiveDialog } from "./responsive-dialog";
 export type { ResponsiveDialogProps } from "./responsive-dialog";
 export { SectionedList } from "./sectioned-list";
+export { Separator } from "./separator";
 export type {
   SectionedListProps,
   SectionedListSection,

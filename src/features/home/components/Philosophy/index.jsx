@@ -1,5 +1,6 @@
 import React from "react";
 import Section from "@/features/home/components/Section";
+import { Reveal } from "@/shared/ui";
 import { PHILOSOPHY_ITEMS } from "@/features/home/constants";
 
 const Philosophy = () => {
@@ -15,9 +16,10 @@ const Philosophy = () => {
       }
     >
       <div className="grid grid-cols-1 md:grid-cols-3 rounded-lg border border-border divide-y divide-x divide-border overflow-hidden">
-        {PHILOSOPHY_ITEMS.map((item) => (
-          <div
+        {PHILOSOPHY_ITEMS.map((item, index) => (
+          <Reveal
             key={item.key}
+            delay={index * 100}
             className="flex flex-col gap-6 bg-card p-6 md:p-8"
           >
             <span className="heading-6 italic text-subtle-foreground">
@@ -27,7 +29,7 @@ const Philosophy = () => {
               <h3 className="heading-6">{item.title}</h3>
               <p className="body-base">{item.description}</p>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </Section>

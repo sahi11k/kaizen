@@ -76,18 +76,6 @@ export const ABOUT_CARDS = [
   },
 ];
 
-export const METRICS_ITEMS = [
-  { value: "4", label: "Integrated tools", key: "tools" },
-  { value: "0", label: "Streaks tracked", key: "streaks" },
-  { value: "∞", label: "Journal entries", key: "journal" },
-  {
-    value: "0",
-    label: "Distractions by design",
-    key: "notifications",
-    accent: true,
-  },
-];
-
 export const PHILOSOPHY_ITEMS = [
   {
     numeral: "I.",

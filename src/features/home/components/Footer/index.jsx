@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/features/theme";
 
 const FooterMain = () => {
   return (
-    <footer className="pt-10 md:pt-14">
+    <footer className="pt-24">
       <div className="flex flex-col mx-auto">
         <div className="flex flex-col items-center text-center gap-6 pb-16 md:pb-20">
           <h2 className="heading-1 tracking-tight">
