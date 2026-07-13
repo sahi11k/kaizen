@@ -1,0 +1,17 @@
+/* Animation — fill-sweep mark (full-page loading) */
+
+@keyframes fill-sweep {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+  50% {
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+.animate-fill-sweep {
+  animation: fill-sweep 1.8s ease-in-out infinite;
+}

@@ -1,8 +1,7 @@
 import React from "react";
 import { useRouteError } from "react-router";
 import * as Sentry from "@sentry/react";
-import { EmptyState } from "@/shared/ui/empty-state";
-import { EmptyStateAction } from "@/shared/ui/empty-state/EmptyStateAction";
+import { EmptyState, EmptyStateAction } from "@/shared/ui";
 
 const reportError = (error, errorInfo) => {
   if (error) {
@@ -26,15 +25,15 @@ const ErrorFallback = () => {
   return (
     <main className="min-h-screen w-full bg-background text-foreground">
       <EmptyState
-        className="min-h-screen"
         code="500"
-        title="Something went wrong."
+        title="Something went wrong"
         description="Try refreshing the page. If it keeps happening, the issue is on our end."
         action={
           <EmptyStateAction onClick={() => window.location.reload()}>
-            ↺ Refresh
+            Refresh
           </EmptyStateAction>
         }
+        className="flex items-center justify-center"
       />
     </main>
   );

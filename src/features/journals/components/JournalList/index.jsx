@@ -1,5 +1,6 @@
 import React from "react";
 import JournalListItem from "./ListItem";
+import JournalListSkeleton from "./JournalListSkeleton";
 import useJournalList from "@/features/journals/hooks/useJournalList";
 import { SquarePen } from "lucide-react";
 import {
@@ -8,7 +9,6 @@ import {
   EmptyState,
   EmptyStateAction,
   PageHeader,
-  Skeleton,
 } from "@/shared/ui";
 
 const JournalList = ({
@@ -59,21 +59,15 @@ const JournalList = ({
         />
       )}
 
-      {isLoading && isEmpty && (
-        <div className="flex flex-col gap-6">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton key={index} className="h-36 w-full" />
-          ))}
-        </div>
-      )}
+      {isLoading && isEmpty && <JournalListSkeleton />}
 
       {isEmpty && !isLoading && (
         <EmptyState
-          title="No entries yet."
+          title="No entries"
           description="Your journal is empty. Start writing when you're ready."
           action={
             <EmptyStateAction onClick={newJournal}>
-              New entry →
+              New Journal
             </EmptyStateAction>
           }
           className="flex-1 flex items-center justify-center"

@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Button } from "@/shared/ui/button";
 import { cn } from "@/shared/lib/utils";
 
 interface EmptyStateActionProps {
@@ -8,8 +9,6 @@ interface EmptyStateActionProps {
   className?: string;
 }
 
-const actionClassName = "text-sm font-medium text-primary hover:opacity-75 transition-opacity";
-
 const EmptyStateAction = ({
   to,
   onClick,
@@ -18,20 +17,16 @@ const EmptyStateAction = ({
 }: EmptyStateActionProps): React.ReactElement => {
   if (to) {
     return (
-      <Link to={to} className={cn(actionClassName, className)}>
+      <Link to={to} className={cn("text-link", className)}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(actionClassName, className)}
-    >
+    <Button size="sm" onClick={onClick} className={className}>
       {children}
-    </button>
+    </Button>
   );
 };
 

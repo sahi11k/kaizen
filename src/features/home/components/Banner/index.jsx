@@ -51,16 +51,16 @@ const Banner = () => {
               aria-hidden="true"
               className="absolute -inset-x-4 -inset-y-6 -z-10 rounded-full bg-primary/5 blur-[80px]"
             />
-            <div className="rounded-lg border border-border overflow-hidden shadow-sm p-4 bg-background">
+            <div className="rounded-lg border border-border overflow-hidden shadow-sm p-4 pb-6 bg-background">
               <img
                 src={dashboardLight}
                 alt="Kaizen dashboard"
-                className="block dark:hidden w-full h-auto -mt-0.5"
+                className="block dark:hidden w-full h-auto"
               />
               <img
                 src={dashboardDark}
                 alt="Kaizen dashboard"
-                className="hidden dark:block w-full h-auto -mt-0.5"
+                className="hidden dark:block w-full h-auto"
               />
             </div>
           </Reveal>

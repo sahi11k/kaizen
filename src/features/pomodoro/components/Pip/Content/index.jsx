@@ -30,7 +30,7 @@ const PipTimerContent = () => {
         />
 
         <div className="flex-1 flex items-center gap-6 justify-between w-full">
-          <div className="heading-1 !font-mono tracking-tight flex items-center justify-center">
+          <div className="heading-1 !font-mono flex items-center justify-center">
             {minutes}
             <span className="-mt-2">:</span>
             {seconds}

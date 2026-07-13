@@ -17,21 +17,17 @@ const EmptyState = ({
 }: EmptyStateProps): React.ReactElement => {
   return (
     <div className={cn("w-full h-full", className)}>
-      <div className="flex flex-col items-center text-center max-w-lg px-6">
+      <div className="flex flex-col items-center text-center gap-6 max-w-500">
         {code && (
-          <span className="font-number text-8xl md:text-9xl leading-none tracking-tight text-subtle-foreground/10 mb-9 select-none">
+          <h1 className="heading-0 !text-subtle-foreground/25 !font-sans !font-normal tracking-tight select-none">
             {code}
-          </span>
+          </h1>
         )}
-        <h2 className="font-heading text-2xl md:text-3xl font-normal leading-snug tracking-tight text-foreground">
-          {title}
-        </h2>
-        {description && (
-          <p className="mt-3.5 text-sm leading-relaxed text-muted-foreground">
-            {description}
-          </p>
-        )}
-        {action && <div className="mt-8">{action}</div>}
+        <div className="flex flex-col gap-2">
+          <h2 className="heading-4 !font-normal">{title}</h2>
+          {description && <p className="body-base">{description}</p>}
+        </div>
+        {action && <div>{action}</div>}
       </div>
     </div>
   );

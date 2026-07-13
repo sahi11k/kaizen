@@ -1,4 +1,5 @@
 import { cn } from "@/shared/lib/utils";
+import "./skeleton.css";
 
 function Skeleton({ className, ...props }) {
   return (

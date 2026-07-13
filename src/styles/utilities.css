@@ -96,53 +96,6 @@
   @apply font-sans text-base font-medium text-muted-foreground;
 }
 
-/* Animation — theme toggle icon */
-
-@keyframes spin-once {
-  from {
-    transform: rotate(-90deg) scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: rotate(0deg) scale(1);
-    opacity: 1;
-  }
-}
-
-.animate-spin-once {
-  animation: spin-once 0.5s ease-out;
-}
-
-/* Animation — skeleton shimmer */
-
-@keyframes shimmer-sweep {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(100%);
-  }
-}
-
-.animate-shimmer {
-  position: relative;
-  overflow: hidden;
-}
-
-.animate-shimmer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background-image: linear-gradient(
-    100deg,
-    transparent 20%,
-    color-mix(in oklab, var(--color-foreground) 5%, transparent) 50%,
-    transparent 80%
-  );
-  animation: shimmer-sweep 1.6s ease-in-out infinite;
-}
-
 /* Scrollbar theming */
 
 * {
@@ -179,37 +132,3 @@
   display: none;
 }
 
-/* Tabs (Radix tabs) */
-:where(.tab-list) {
-  @apply bg-tab-list text-tab-list-foreground inline-flex h-11 w-fit items-center justify-center overflow-hidden rounded-lg p-0;
-}
-
-:where(.tab-trigger) {
-  @apply relative bg-tab-trigger font-sans text-tab-trigger-foreground cursor-pointer data-[state=active]:border-transparent data-[state=active]:focus-visible:ring-0 data-[state=active]:focus-visible:outline-0 data-[state=active]:focus-visible:border-transparent focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-2 first:rounded-l-md last:rounded-r-md border border-tab-trigger-border px-4 pb-2.5 pt-1.5 text-base font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5;
-}
-
-:where(.tab-trigger):hover {
-  @apply bg-tab-trigger-hover text-tab-trigger-hover-foreground;
-}
-
-/* Tab active state utility (Radix tabs) */
-.tab-active[data-state="active"] {
-  color: var(--tab-trigger-active-foreground);
-  background: var(--tab-trigger-active);
-}
-
-.tab-active[data-state="active"]:hover {
-  color: var(--tab-trigger-active-foreground);
-  background: var(--tab-trigger-hover);
-}
-
-.tab-active[data-state="active"]::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--tab-trigger-active-underline-width);
-  background: var(--tab-trigger-active-underline);
-  border-radius: 0;
-}

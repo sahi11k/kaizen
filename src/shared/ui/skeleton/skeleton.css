@@ -1,0 +1,41 @@
+/* Animation — skeleton shimmer */
+
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -150% 0;
+  }
+  100% {
+    background-position: 250% 0;
+  }
+}
+
+.animate-shimmer {
+  background-color: color-mix(
+    in oklab,
+    var(--color-foreground) 8%,
+    var(--color-card)
+  );
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--color-foreground) 10%, transparent) 50%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 60% 100%;
+  animation: shimmer-sweep 1.5s ease-in-out infinite;
+}
+
+.dark .animate-shimmer {
+  background-color: color-mix(
+    in oklab,
+    var(--color-foreground) 5%,
+    var(--color-card)
+  );
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--color-foreground) 5%, transparent) 50%,
+    transparent 100%
+  );
+}

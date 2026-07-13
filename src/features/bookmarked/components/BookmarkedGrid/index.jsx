@@ -1,17 +1,7 @@
-import {
-  EmptyState,
-  EmptyStateAction,
-  EmptyFiltered,
-  Skeleton,
-} from "@/shared/ui";
+import { EmptyState, EmptyStateAction, EmptyFiltered } from "@/shared/ui";
 import BookmarkedItem from "@/features/bookmarked/components/BookmarkedItem";
 import GridSkeleton from "@/features/bookmarked/components/GridSkeleton";
-
-const GROUPS = [
-  { status: "reading", label: "Currently Reading" },
-  { status: "pending", label: "Want to Read" },
-  { status: "finished", label: "Finished Reading" },
-];
+import { BOOKMARKED_GROUPS } from "@/features/bookmarked/constants";
 
 export default function BookmarkedGrid({
   items,
@@ -28,18 +18,16 @@ export default function BookmarkedGrid({
 
   if (!items.length) {
     if (isFiltered) {
-      return <EmptyFiltered onClear={onClear} className="mt-[20%]" />;
+      return <EmptyFiltered onClear={onClear} />;
     }
     return (
       <EmptyState
-        className="grow-1"
-        title="Nothing bookmarked yet."
+        className="flex-1 flex items-center justify-center"
+        title="Nothing bookmarked"
         description="Add books or articles you want to read."
         action={
           onAdd && (
-            <EmptyStateAction onClick={onAdd}>
-              Add a bookmark →
-            </EmptyStateAction>
+            <EmptyStateAction onClick={onAdd}>Add Bookmark</EmptyStateAction>
           )
         }
       />
@@ -47,8 +35,8 @@ export default function BookmarkedGrid({
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      {GROUPS.map(({ status, label }) => {
+    <div className="flex flex-col gap-6 pb-6">
+      {BOOKMARKED_GROUPS.map(({ status, label }) => {
         const group = items.filter((item) => item.status === status);
         if (!group.length) return null;
         return (

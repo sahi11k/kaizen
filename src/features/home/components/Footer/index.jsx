@@ -10,11 +10,11 @@ const FooterMain = () => {
     <footer className="pt-24">
       <div className="flex flex-col mx-auto">
         <div className="flex flex-col items-center text-center gap-6 pb-16 md:pb-20">
-          <h2 className="heading-1 tracking-tight">
+          <h1 className="heading-1">
             Start small,
             <br />
             <span className="italic text-primary"> Stay consistent</span>
-          </h2>
+          </h1>
           <p className="text-muted-foreground text-base max-w-md">
             That&apos;s all Kaizen asks.
           </p>

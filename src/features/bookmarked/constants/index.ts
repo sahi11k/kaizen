@@ -27,3 +27,9 @@ export const TYPE_OPTIONS = [
   { value: "link", label: "Link" },
 ] as const;
 
+export const BOOKMARKED_GROUPS = [
+  { status: "reading", label: "Currently Reading" },
+  { status: "pending", label: "Want to Read" },
+  { status: "finished", label: "Finished Reading" },
+] as const;
+

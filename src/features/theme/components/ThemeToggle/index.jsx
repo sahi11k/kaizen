@@ -5,6 +5,7 @@ import { Tooltip } from "@/shared/ui/tooltip";
 import { cn } from "@/shared/lib/utils";
 import useThemeStore from "@/features/theme/store";
 import { THEME, THEME_TOOLTIP_TEXT } from "@/features/theme/constants";
+import "./theme-toggle.css";
 
 const ThemeToggle = ({ tooltipSide = "bottom", tooltipLevel, className }) => {
   const { theme, toggleTheme } = useThemeStore();

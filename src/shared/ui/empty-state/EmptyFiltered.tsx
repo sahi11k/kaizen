@@ -15,7 +15,7 @@ const EmptyFiltered = ({
 }: EmptyFilteredProps): React.ReactElement => {
   return (
     <EmptyState
-      className={cn("w-full", className)}
+      className="flex-1 flex items-center justify-center"
       title="No matches found"
       description={description}
       action={

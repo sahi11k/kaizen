@@ -13,7 +13,7 @@ const TaskListSkeleton = () => (
         />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <Skeleton
-            className={`h-5 w-2/3 ${TASK_LIST_CLASSES.skeletonBlock}`}
+            className={`h-6 w-2/3 ${TASK_LIST_CLASSES.skeletonBlock}`}
           />
           <Skeleton
             className={`h-4 w-1/2 ${TASK_LIST_CLASSES.skeletonBlock}`}

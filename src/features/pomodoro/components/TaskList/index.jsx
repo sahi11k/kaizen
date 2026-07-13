@@ -73,13 +73,14 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
 
         {isEmpty && !isLoading && (
           <EmptyState
-            title="No tasks yet."
+            title="No tasks"
             description="Add something you want to get done."
             action={
               <EmptyStateAction onClick={openTaskForm}>
-                Add a task →
+                Add Task
               </EmptyStateAction>
             }
+            className="flex items-center justify-center"
           />
         )}
 
@@ -99,6 +100,7 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
             <EmptyState
               title={TASK_LIST_EMPTY_STATES[selectedFilter].title}
               description={TASK_LIST_EMPTY_STATES[selectedFilter].description}
+              className="flex items-center justify-center"
             />
           )}
 
