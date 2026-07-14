@@ -1,0 +1,62 @@
+/* ============================================
+ * PRIMITIVE COLOR PALETTE
+ * Raw color scales — never use directly in components.
+ * Reference these via semantic role tokens in theme.css.
+ * ============================================ */
+
+:root {
+  /* ─── Neutral (warm-tinted charcoal scale) ─── */
+  --neutral-0: #ffffff;
+  --neutral-50: #f7f6f4; /* light background */
+  --neutral-100: #f0ede9; /* muted / input light */
+  --neutral-150: #ede9e4; /* foreground dark */
+  --neutral-200: #e5e2de; /* border / secondary light */
+  --neutral-250: #d6d2cd; /* overlay field border light */
+  --neutral-300: #c9c4bc; /* secondary-fg dark */
+  --neutral-400: #a8a29e; /* sidebar control / placeholder light */
+  --neutral-500: #78716c; /* muted-fg / sidebar muted */
+  --neutral-600: #57534e; /* secondary-soft-fg dark */
+  --neutral-700: #44403c; /* secondary-fg light / overlay-fg light */
+  --neutral-750: #3a3633; /* card-border dark */
+  --neutral-800: #2e2b28; /* border dark / secondary dark */
+  --neutral-820: #2a2520; /* hover / secondary dark */
+  --neutral-840: #231f1a; /* card border dark */
+  --neutral-850: #1e1b16; /* muted dark / input dark */
+  --neutral-875: #1a1714; /* divider / cell empty */
+  --neutral-900: #141210; /* card dark / popover dark */
+  --neutral-925: #131110; /* sidebar dark / overlay-field dark */
+  --neutral-950: #0f0e0d; /* background dark */
+
+  /* ─── Amber (accent — muted ochre, not alert-like) ─── */
+  --amber-50: #fdf3e3; /* primary-soft light */
+  --amber-100: #fdf3e3;
+  --amber-200: #e0a458; /* primary dark (gold) */
+  --amber-300: #e0a458; /* primary dark / ring light / break-filled light */
+  --amber-400: #f59e0b; /* primary light */
+  --amber-500: #e29134; /* primary light / ring dark */
+  --amber-600: #c27c2a;
+  --amber-700: #8a5c1e; /* break-filled dark */
+  --amber-850: #372b1d;
+  --amber-900: #2a2118; /* break-unfilled dark */
+  --amber-950: #2a2118;
+
+  /* ─── Success (muted sage green) ─── */
+  --green-50: #eef5f1; /* success-soft light */
+  --green-100: #eef5f1;
+  --green-300: #8ecba4; /* success-soft-fg dark */
+  --green-400: #6aaf82; /* success dark */
+  --green-500: #57956d; /* success dark (dark mode) */
+  --green-600: #4a7c59; /* success light */
+  --green-700: #2d5a3d; /* success-soft-fg light */
+  --green-900: #0f2d1a; /* success-soft dark bg */
+
+  /* ─── Destructive (muted terracotta — not harsh red) ─── */
+  --red-50: #fef4f2; /* destructive-soft light */
+  --red-100: #fef4f2;
+  --red-300: #d9917f; /* destructive-soft-fg dark */
+  --red-400: #c47060; /* destructive dark */
+  --red-500: #bc6655; /* destructive (dark mode) */
+  --red-600: #b85c4a; /* destructive light */
+  --red-700: #7a2e20; /* destructive-soft-fg light */
+  --red-900: #2d1210; /* destructive-soft dark bg */
+}

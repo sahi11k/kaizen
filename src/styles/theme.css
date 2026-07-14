@@ -121,8 +121,8 @@
   --card-fg: var(--neutral-950);
   --card-border: var(--neutral-200);
 
-  /* primary (amber — unchanged) */
-  --primary: var(--amber-400);
+  /* primary (amber 500) */
+  --primary: var(--amber-500);
   --primary-fg: var(--neutral-0);
   --primary-subtle-fg: color-mix(in srgb, var(--primary-fg) 55%, var(--primary));
   --primary-soft: var(--amber-100);
