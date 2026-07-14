@@ -5,33 +5,28 @@
  * Maps --color-* to semantic role tokens.
  * ============================================ */
 @theme {
-  --font-sans: "Inter", sans-serif;
+  --font-sans: "DM Sans", sans-serif;
   --font-serif: "Lora", serif;
   --font-mono: "IBM Plex Mono", monospace;
 
-  /* base */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* card */
   --color-card: var(--card-bg);
   --color-card-border: var(--card-border);
   --color-card-foreground: var(--card-fg);
 
-  /* primary */
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-fg);
   --color-primary-subtle-foreground: var(--primary-subtle-fg);
   --color-primary-soft: var(--primary-soft);
   --color-primary-soft-foreground: var(--primary-soft-fg);
 
-  /* secondary */
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-fg);
   --color-secondary-soft: var(--secondary-soft);
   --color-secondary-soft-foreground: var(--secondary-soft-fg);
 
-  /* sidebar */
   --color-sidebar: var(--sidebar);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-foreground: var(--sidebar-fg);
@@ -43,19 +38,15 @@
   --color-sidebar-control: var(--sidebar-control-fg);
   --color-sidebar-account-hover: var(--sidebar-account-hover-bg);
 
-  /* muted */
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-fg);
   --color-subtle-foreground: var(--subtle-fg);
 
-  /* popover (distinct from muted) */
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-fg);
 
-  /* dropdown */
   --color-dropdown-hover: var(--dropdown-hover);
 
-  /* overlay */
   --color-overlay: var(--overlay-bg);
   --color-overlay-foreground: var(--overlay-fg);
   --color-overlay-border: var(--overlay-border);
@@ -68,7 +59,6 @@
   --color-overlay-field-placeholder: var(--overlay-field-placeholder);
   --color-overlay-field-ring: var(--overlay-field-ring);
 
-  /* semantic */
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-success-soft-foreground: var(--success-soft-fg);
@@ -77,13 +67,11 @@
   --color-destructive-soft: var(--destructive-soft);
   --color-destructive-soft-foreground: var(--destructive-soft-fg);
 
-  /* forms */
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-control-inactive: var(--control-inactive);
 
-  /* tabs */
   --color-tab-list: var(--tab-list);
   --color-tab-list-foreground: var(--tab-list-fg);
   --color-tab-trigger: var(--tab-trigger);
@@ -102,113 +90,101 @@
     --tab-trigger-active-underline-offset
   );
 
-  /* timer */
   --color-timer-filled: var(--timer-filled);
   --color-timer-unfilled: var(--timer-unfilled);
 }
 
 /* ============================================
  * LAYER 2 — SEMANTIC ROLE TOKENS (light mode)
- * Warm-neutral surfaces + amber accent.
+ * This system has no pure-white token (dark-first palette) — card/sidebar/
+ * popover surfaces sit one step above the page background instead.
  * ============================================ */
 :root {
-  /* base — warm cream instead of cold grey */
   --background: var(--neutral-50);
   --foreground: var(--neutral-950);
 
-  /* card — true white so it lifts off the cream background */
-  --card-bg: var(--neutral-0);
+  --card-bg: var(--neutral-100);
   --card-fg: var(--neutral-950);
-  --card-border: var(--neutral-200);
+  --card-border: var(--neutral-300);
 
-  /* primary (amber 500) */
-  --primary: var(--amber-500);
-  --primary-fg: var(--neutral-0);
-  --primary-subtle-fg: color-mix(in srgb, var(--primary-fg) 55%, var(--primary));
-  --primary-soft: var(--amber-100);
+  --primary: var(--amber-400);
+  --primary-fg: var(--neutral-950);
+  --primary-subtle-fg: color-mix(
+    in srgb,
+    var(--primary-fg) 55%,
+    var(--primary)
+  );
+  --primary-soft: var(--amber-50);
   --primary-soft-fg: var(--amber-700);
 
-  /* secondary */
   --secondary: var(--neutral-200);
   --secondary-fg: var(--neutral-700);
   --secondary-soft: var(--neutral-100);
   --secondary-soft-fg: var(--neutral-600);
 
-  /* sidebar — white card, warm border */
-  --sidebar: var(--neutral-0);
-  --sidebar-border: var(--neutral-200);
+  --sidebar: var(--neutral-100);
+  --sidebar-border: var(--neutral-300);
   --sidebar-fg: var(--neutral-950);
-  --sidebar-muted-fg: var(--neutral-400);
-  --sidebar-hover-bg: var(--neutral-100);
+  --sidebar-muted-fg: var(--neutral-500);
+  --sidebar-hover-bg: var(--neutral-200);
   --sidebar-hover-fg: var(--neutral-950);
-  --sidebar-active-bg: var(--amber-100);
+  --sidebar-active-bg: var(--amber-50);
   --sidebar-active-fg: var(--amber-700);
-  --sidebar-control-fg: var(--neutral-300);
-  --sidebar-account-hover-bg: var(--neutral-100);
+  --sidebar-control-fg: var(--neutral-400);
+  --sidebar-account-hover-bg: var(--neutral-200);
 
-  /* muted */
   --muted: var(--neutral-100);
   --muted-fg: var(--neutral-500);
-
-  /* subtle — tertiary text: captions, empty-state hints, timestamps */
   --subtle-fg: var(--neutral-400);
 
-  /* popover */
-  --popover: var(--neutral-0);
+  --popover: var(--neutral-100);
   --popover-fg: var(--neutral-950);
 
-  /* dropdown */
-  --dropdown-hover: var(--neutral-100);
+  --dropdown-hover: var(--neutral-200);
 
-  /* tabs */
   --tab-list: var(--card-bg);
   --tab-list-fg: var(--neutral-500);
   --tab-trigger: transparent;
   --tab-trigger-fg: var(--neutral-500);
-  --tab-trigger-hover: var(--neutral-100);
+  --tab-trigger-hover: var(--neutral-200);
   --tab-trigger-hover-fg: var(--neutral-950);
   --tab-trigger-active: transparent;
-  --tab-trigger-active-fg: var(--amber-400);
+  --tab-trigger-active-fg: var(--amber-600);
   --tab-trigger-border: transparent;
-  --tab-trigger-active-underline: var(--amber-400);
+  --tab-trigger-active-underline: var(--amber-600);
   --tab-trigger-active-underline-width: 2px;
   --tab-trigger-active-underline-offset: 1px;
 
-  /* semantic */
-  --success: var(--green-500);
-  --success-soft: var(--green-100);
+  --success: var(--green-600);
+  --success-soft: var(--green-50);
   --success-soft-fg: var(--green-700);
   --destructive: var(--red-600);
   --destructive-hover: var(--red-700);
-  --destructive-soft: var(--red-100);
+  --destructive-soft: var(--red-50);
   --destructive-soft-fg: var(--red-700);
 
-  /* forms — warm-tinted inputs, clear borders */
-  --border: var(--neutral-200);
+  --border: var(--neutral-300);
   --input: var(--neutral-100);
-  --ring: var(--amber-300);
-  --control-inactive: var(--neutral-200);
+  --ring: var(--amber-500);
+  --control-inactive: var(--neutral-300);
 
-  /* overlays */
-  --overlay-bg: var(--neutral-0);
+  --overlay-bg: var(--neutral-100);
   --overlay-fg: var(--neutral-700);
-  --overlay-border: var(--neutral-200);
+  --overlay-border: var(--neutral-300);
   --overlay-shadow: oklch(0% 0 0 / 0.1);
   --overlay-backdrop: oklch(0% 0 0 / 0.55);
-  --overlay-hover: var(--neutral-100);
-  --overlay-field-bg: var(--neutral-0);
-  --overlay-field-border: var(--neutral-200);
+  --overlay-hover: var(--neutral-200);
+  --overlay-field-bg: var(--neutral-50);
+  --overlay-field-border: var(--neutral-300);
   --overlay-field-fg: var(--neutral-950);
   --overlay-field-placeholder: var(--subtle-fg);
-  --overlay-field-ring: var(--amber-300);
+  --overlay-field-ring: var(--amber-500);
 
-  /* timer */
   --timer-filled: var(--amber-400);
   --timer-unfilled: var(--amber-100);
   --break-filled: var(--amber-300);
   --break-unfilled: var(--amber-100);
 
-  /* aliases */
   --muted-foreground: var(--muted-fg);
   --subtle-foreground: var(--subtle-fg);
   --primary-soft-foreground: var(--primary-soft-fg);
@@ -222,106 +198,119 @@
 
 /* ============================================
  * LAYER 2 — SEMANTIC ROLE TOKENS (dark mode)
- * Warm-tinted charcoal surfaces + amber accent.
+ * The system's home base. Surfaces between neutral-900 and neutral-950 are
+ * derived with color-mix since the 11-step scale doesn't carry a token there.
  * ============================================ */
 .dark {
-  /* base */
   --background: var(--neutral-950);
-  --foreground: var(--neutral-50);
+  --foreground: var(--neutral-200);
 
-  /* card */
-  --card-bg: var(--neutral-900);
-  --card-fg: var(--neutral-50);
-  --card-border: var(--neutral-840);
+  --card-bg: color-mix(in oklab, var(--neutral-900) 55%, var(--neutral-950));
+  --card-fg: var(--neutral-200);
+  --card-border: var(--neutral-900);
 
-  /* primary (amber — lifted for dark bg readability) */
-  --primary: var(--amber-300);
+  --primary: var(--amber-400);
   --primary-fg: var(--neutral-950);
-  --primary-subtle-fg: color-mix(in srgb, var(--primary-fg) 55%, var(--primary));
-  --primary-soft: var(--amber-850);
-  --primary-soft-fg: var(--amber-200);
+  --primary-subtle-fg: color-mix(
+    in srgb,
+    var(--primary-fg) 55%,
+    var(--primary)
+  );
+  --primary-soft: color-mix(in oklab, var(--amber-400) 15%, var(--neutral-950));
+  --primary-soft-fg: var(--amber-400);
 
-  /* secondary */
   --secondary: var(--neutral-800);
   --secondary-fg: var(--neutral-200);
-  --secondary-soft: var(--neutral-820);
+  --secondary-soft: color-mix(
+    in oklab,
+    var(--neutral-900) 80%,
+    var(--neutral-950)
+  );
   --secondary-soft-fg: var(--neutral-300);
 
-  /* sidebar */
-  --sidebar: var(--neutral-925);
-  --sidebar-border: var(--neutral-875);
-  --sidebar-fg: var(--neutral-50);
-  --sidebar-muted-fg: var(--neutral-400);
-  --sidebar-hover-bg: var(--neutral-800);
-  --sidebar-hover-fg: var(--neutral-50);
-  --sidebar-active-bg: var(--amber-850);
-  --sidebar-active-fg: var(--amber-200);
-  --sidebar-control-fg: var(--neutral-400);
-  --sidebar-account-hover-bg: var(--neutral-850);
+  --sidebar: color-mix(in oklab, var(--neutral-900) 40%, var(--neutral-950));
+  --sidebar-border: var(--neutral-900);
+  --sidebar-fg: var(--neutral-200);
+  --sidebar-muted-fg: var(--neutral-500);
+  --sidebar-hover-bg: color-mix(
+    in oklab,
+    var(--neutral-900) 85%,
+    var(--neutral-950)
+  );
+  --sidebar-hover-fg: var(--neutral-200);
+  --sidebar-active-bg: color-mix(
+    in oklab,
+    var(--amber-400) 15%,
+    var(--neutral-950)
+  );
+  --sidebar-active-fg: var(--amber-400);
+  --sidebar-control-fg: var(--neutral-600);
+  --sidebar-account-hover-bg: color-mix(
+    in oklab,
+    var(--neutral-900) 80%,
+    var(--neutral-950)
+  );
 
-  /* muted */
-  --muted: var(--neutral-840);
-  --muted-fg: var(--neutral-400);
+  --muted: color-mix(in oklab, var(--neutral-900) 70%, var(--neutral-950));
+  --muted-fg: var(--neutral-500);
+  --subtle-fg: var(--neutral-600);
 
-  /* subtle — tertiary text: captions, empty-state hints, timestamps */
-  --subtle-fg: var(--neutral-500);
+  --popover: color-mix(in oklab, var(--neutral-900) 55%, var(--neutral-950));
+  --popover-fg: var(--neutral-300);
 
-  /* popover */
-  --popover: var(--neutral-900);
-  --popover-fg: var(--neutral-200);
+  --dropdown-hover: var(--neutral-900);
 
-  /* dropdown */
-  --dropdown-hover: var(--neutral-800);
-
-  /* tabs */
-  --tab-list: var(--neutral-900);
-  --tab-list-fg: var(--neutral-400);
+  --tab-list: color-mix(in oklab, var(--neutral-900) 55%, var(--neutral-950));
+  --tab-list-fg: var(--neutral-500);
   --tab-trigger: transparent;
-  --tab-trigger-fg: var(--neutral-400);
-  --tab-trigger-hover: var(--neutral-800);
-  --tab-trigger-hover-fg: var(--neutral-50);
+  --tab-trigger-fg: var(--neutral-500);
+  --tab-trigger-hover: var(--neutral-900);
+  --tab-trigger-hover-fg: var(--neutral-200);
   --tab-trigger-active: transparent;
-  --tab-trigger-active-fg: var(--amber-300);
+  --tab-trigger-active-fg: var(--amber-400);
   --tab-trigger-border: transparent;
-  --tab-trigger-active-underline: var(--amber-300);
+  --tab-trigger-active-underline: var(--amber-400);
   --tab-trigger-active-underline-width: 2px;
   --tab-trigger-active-underline-offset: 1px;
 
-  /* semantic */
-  --success: var(--green-500);
+  --success: var(--green-400);
   --success-soft: var(--green-900);
-  --success-soft-fg: var(--green-400);
-  --destructive: var(--red-500);
-  --destructive-hover: var(--red-600);
+  --success-soft-fg: var(--green-300);
+  --destructive: var(--red-400);
+  --destructive-hover: var(--red-300);
   --destructive-soft: var(--red-900);
-  --destructive-soft-fg: var(--red-400);
+  --destructive-soft-fg: var(--red-300);
 
-  /* forms */
-  --border: var(--neutral-840);
-  --input: var(--neutral-850);
+  --border: var(--neutral-900);
+  --input: color-mix(in oklab, var(--neutral-900) 60%, var(--neutral-950));
   --ring: var(--amber-400);
-  --control-inactive: var(--neutral-750);
+  --control-inactive: color-mix(
+    in oklab,
+    var(--neutral-800) 50%,
+    var(--neutral-900)
+  );
 
-  /* overlays */
-  --overlay-bg: var(--neutral-900);
+  --overlay-bg: color-mix(in oklab, var(--neutral-900) 55%, var(--neutral-950));
   --overlay-fg: var(--neutral-300);
-  --overlay-border: var(--neutral-840);
+  --overlay-border: var(--neutral-900);
   --overlay-shadow: oklch(0% 0 0 / 0.45);
   --overlay-backdrop: oklch(0% 0 0 / 0.7);
-  --overlay-hover: var(--neutral-800);
-  --overlay-field-bg: var(--neutral-925);
-  --overlay-field-border: var(--neutral-800);
-  --overlay-field-fg: var(--neutral-50);
+  --overlay-hover: var(--neutral-900);
+  --overlay-field-bg: color-mix(
+    in oklab,
+    var(--neutral-900) 45%,
+    var(--neutral-950)
+  );
+  --overlay-field-border: var(--neutral-900);
+  --overlay-field-fg: var(--neutral-200);
   --overlay-field-placeholder: var(--subtle-fg);
   --overlay-field-ring: var(--amber-400);
 
-  /* timer */
-  --timer-filled: var(--amber-300);
+  --timer-filled: var(--amber-400);
   --timer-unfilled: var(--neutral-800);
   --break-filled: var(--amber-500);
   --break-unfilled: var(--amber-900);
 
-  /* aliases */
   --muted-foreground: var(--muted-fg);
   --subtle-foreground: var(--subtle-fg);
   --primary-soft-foreground: var(--primary-soft-fg);
