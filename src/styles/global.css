@@ -68,6 +68,15 @@ body {
   color: var(--overlay-field-placeholder);
 }
 
+:is(
+    [data-slot="dialog-content"],
+    [data-slot="drawer-content"],
+    [data-slot="popover-content"]
+  )
+  [data-slot="button"][data-variant="outline"] {
+  border-color: var(--overlay-field-border);
+}
+
 /* iOS Safari: ensure at least 16px font-size on form controls to prevent zoom */
 @supports (-webkit-touch-callout: none) and (not (hover: hover)) and
   (pointer: coarse) {

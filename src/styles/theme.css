@@ -113,59 +113,59 @@
  * ============================================ */
 :root {
   /* base — warm cream instead of cold grey */
-  --background: #faf8f4;
+  --background: var(--neutral-50);
   --foreground: var(--neutral-950);
 
   /* card — true white so it lifts off the cream background */
-  --card-bg: #ffffff;
+  --card-bg: var(--neutral-0);
   --card-fg: var(--neutral-950);
-  --card-border: #efe9e0;
+  --card-border: var(--neutral-200);
 
   /* primary (amber — unchanged) */
   --primary: var(--amber-400);
   --primary-fg: var(--neutral-0);
   --primary-subtle-fg: color-mix(in srgb, var(--primary-fg) 55%, var(--primary));
-  --primary-soft: #fef3d7;
-  --primary-soft-fg: #a16207;
+  --primary-soft: var(--amber-100);
+  --primary-soft-fg: var(--amber-700);
 
   /* secondary */
-  --secondary: #e8e2d9;
-  --secondary-fg: #5a564f;
-  --secondary-soft: #ece7de;
-  --secondary-soft-fg: #6b6860;
+  --secondary: var(--neutral-200);
+  --secondary-fg: var(--neutral-700);
+  --secondary-soft: var(--neutral-100);
+  --secondary-soft-fg: var(--neutral-600);
 
   /* sidebar — white card, warm border */
-  --sidebar: #ffffff;
-  --sidebar-border: #efe9e0;
+  --sidebar: var(--neutral-0);
+  --sidebar-border: var(--neutral-200);
   --sidebar-fg: var(--neutral-950);
-  --sidebar-muted-fg: #9c9690;
-  --sidebar-hover-bg: #f0ede8;
+  --sidebar-muted-fg: var(--neutral-400);
+  --sidebar-hover-bg: var(--neutral-100);
   --sidebar-hover-fg: var(--neutral-950);
-  --sidebar-active-bg: #fef3d7;
-  --sidebar-active-fg: #a16207;
-  --sidebar-control-fg: #c8c3bb;
-  --sidebar-account-hover-bg: #f0ede8;
+  --sidebar-active-bg: var(--amber-100);
+  --sidebar-active-fg: var(--amber-700);
+  --sidebar-control-fg: var(--neutral-300);
+  --sidebar-account-hover-bg: var(--neutral-100);
 
   /* muted */
-  --muted: #f5f3ef;
-  --muted-fg: #888580;
+  --muted: var(--neutral-100);
+  --muted-fg: var(--neutral-500);
 
   /* subtle — tertiary text: captions, empty-state hints, timestamps */
-  --subtle-fg: #9c9690;
+  --subtle-fg: var(--neutral-400);
 
   /* popover */
-  --popover: #ffffff;
+  --popover: var(--neutral-0);
   --popover-fg: var(--neutral-950);
 
   /* dropdown */
-  --dropdown-hover: #f0ede8;
+  --dropdown-hover: var(--neutral-100);
 
   /* tabs */
   --tab-list: var(--card-bg);
-  --tab-list-fg: #888580;
+  --tab-list-fg: var(--neutral-500);
   --tab-trigger: transparent;
-  --tab-trigger-fg: #888580;
-  --tab-trigger-hover: #f0ede8;
+  --tab-trigger-fg: var(--neutral-500);
+  --tab-trigger-hover: var(--neutral-100);
   --tab-trigger-hover-fg: var(--neutral-950);
   --tab-trigger-active: transparent;
   --tab-trigger-active-fg: var(--amber-400);
@@ -184,29 +184,29 @@
   --destructive-soft-fg: var(--red-700);
 
   /* forms — warm-tinted inputs, clear borders */
-  --border: #e5dfd5;
-  --input: #f0ede8;
+  --border: var(--neutral-200);
+  --input: var(--neutral-100);
   --ring: var(--amber-300);
-  --control-inactive: #e5dfd5;
+  --control-inactive: var(--neutral-200);
 
   /* overlays */
-  --overlay-bg: #ffffff;
-  --overlay-fg: #5a564f;
-  --overlay-border: #efe9e0;
+  --overlay-bg: var(--neutral-0);
+  --overlay-fg: var(--neutral-700);
+  --overlay-border: var(--neutral-200);
   --overlay-shadow: oklch(0% 0 0 / 0.1);
   --overlay-backdrop: oklch(0% 0 0 / 0.55);
-  --overlay-hover: #f0ede8;
-  --overlay-field-bg: #ffffff;
-  --overlay-field-border: #e5dfd5;
+  --overlay-hover: var(--neutral-100);
+  --overlay-field-bg: var(--neutral-0);
+  --overlay-field-border: var(--neutral-200);
   --overlay-field-fg: var(--neutral-950);
   --overlay-field-placeholder: var(--subtle-fg);
   --overlay-field-ring: var(--amber-300);
 
   /* timer */
   --timer-filled: var(--amber-400);
-  --timer-unfilled: #fef3d7;
+  --timer-unfilled: var(--amber-100);
   --break-filled: var(--amber-300);
-  --break-unfilled: #fef3d7;
+  --break-unfilled: var(--amber-100);
 
   /* aliases */
   --muted-foreground: var(--muted-fg);
@@ -310,7 +310,7 @@
   --overlay-backdrop: oklch(0% 0 0 / 0.7);
   --overlay-hover: var(--neutral-800);
   --overlay-field-bg: var(--neutral-925);
-  --overlay-field-border: var(--neutral-750);
+  --overlay-field-border: var(--neutral-800);
   --overlay-field-fg: var(--neutral-50);
   --overlay-field-placeholder: var(--subtle-fg);
   --overlay-field-ring: var(--amber-400);

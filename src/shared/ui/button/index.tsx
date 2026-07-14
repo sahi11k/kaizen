@@ -14,7 +14,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive-hover focus-visible:ring-destructive-soft",
         outline:
-          "border border-border bg-background shadow-xs hover:bg-muted hover:text-muted-foreground",
+          "border border-border bg-transparent shadow-xs hover:bg-muted hover:text-muted-foreground",
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost: "hover:bg-muted hover:text-muted-foreground",
@@ -51,6 +51,8 @@ const ShadButton = React.forwardRef<HTMLButtonElement, ShadButtonProps>(
     return (
       <Comp
         ref={ref}
+        data-slot="button"
+        data-variant={variant}
         className={cn(buttonVariants({ variant, size }), className)}
         {...rest}
       >

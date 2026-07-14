@@ -177,12 +177,7 @@ const PomodoroSettingsButton = () => {
 
   const footer = (
     <>
-      <Button
-        type="button"
-        variant="outline"
-        onClick={handleFormCancel}
-        className="border-border bg-dropdown-hover text-foreground hover:bg-control-inactive hover:text-foreground"
-      >
+      <Button type="button" variant="outline" onClick={handleFormCancel}>
         Cancel
       </Button>
       <Button

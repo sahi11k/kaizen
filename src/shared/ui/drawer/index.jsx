@@ -75,7 +75,7 @@ function DrawerFooter({ className, ...props }) {
     <div
       data-slot="drawer-footer"
       className={cn(
-        "mt-auto flex flex-col gap-2 p-4 [&>button:first-child]:border-border [&>button:first-child]:bg-dropdown-hover [&>button:first-child]:text-foreground [&>button:first-child:hover]:bg-control-inactive [&>button:first-child:hover]:text-foreground",
+        "mt-auto flex flex-col gap-2 p-4",
         className
       )}
       {...props}

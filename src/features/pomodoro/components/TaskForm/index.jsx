@@ -25,10 +25,10 @@ const TaskForm = ({
       contentClassName="w-lg p-6 overflow-y-auto scrollbar-thin shadow-md"
       footer={
         <>
-          <Button variant="outline" onClick={onCancel} className="">
+          <Button variant="outline" onClick={onCancel}>
             Cancel
           </Button>
-          <Button type="submit" onClick={onSave} className="">
+          <Button type="submit" onClick={onSave}>
             Save
           </Button>
         </>

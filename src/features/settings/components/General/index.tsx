@@ -268,7 +268,7 @@ export const GeneralSettings = () => {
           onClick={handleFormCancel}
           disabled={isProfileLoading || !isDirty}
           size="sm"
-          className="flex-1 bg-muted hover:bg-border sm:flex-none"
+          className="flex-1 sm:flex-none"
         >
           Cancel
         </Button>

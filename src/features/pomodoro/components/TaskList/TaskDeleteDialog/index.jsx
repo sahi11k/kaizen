@@ -2,12 +2,7 @@ import React from "react";
 
 import { Button, ResponsiveDialog } from "@/shared/ui";
 
-const TaskDeleteDialog = ({
-  task,
-  isDeleting,
-  onCancel,
-  onConfirm,
-}) => (
+const TaskDeleteDialog = ({ task, isDeleting, onCancel, onConfirm }) => (
   <ResponsiveDialog
     open={!!task}
     onOpenChange={(open) => {
@@ -27,10 +22,9 @@ const TaskDeleteDialog = ({
     }
   >
     {task && (
-      <p className="text-sm text-muted-foreground">
+      <p>
         Delete{" "}
-        <strong className="font-semibold text-foreground">{task.title}</strong>
-        ?{" "}
+        <strong className="font-semibold text-foreground">{task.title}</strong>?
         This permanently deletes the task and all its progress history
         (sessions, counts, and related logs). This action cannot be undone.
       </p>

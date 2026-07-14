@@ -193,7 +193,7 @@ const SecuritySettings = () => {
               (!passwordValues.password && !passwordValues.confirmPassword)
             }
             size="sm"
-            className="flex-1 bg-muted hover:bg-border sm:flex-none"
+            className="flex-1 border-overlay-field-border sm:flex-none"
           >
             Cancel
           </Button>
@@ -253,7 +253,6 @@ const SecuritySettings = () => {
               variant="outline"
               onClick={() => handleDeleteDialogOpenChange(false)}
               disabled={isDeleteLoading}
-              size="sm"
             >
               Cancel
             </Button>
@@ -264,7 +263,6 @@ const SecuritySettings = () => {
               loading={isDeleteLoading}
               disabled={!canDeleteAccount}
               onClick={handleDeleteAccount}
-              size="sm"
             >
               Delete Account
             </Button>

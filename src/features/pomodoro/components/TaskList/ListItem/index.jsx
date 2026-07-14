@@ -7,9 +7,9 @@ import { cn } from "@/shared/lib/utils";
 import { getTaskSessionSummary } from "../utils";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-border hover:bg-muted";
+  "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-overlay-field-border hover:bg-muted";
 const activeClass = "border-l-2 border-l-primary rounded-l-none";
-const completedClass = "border-border opacity-55 hover:opacity-75";
+const completedClass = "border-overlay-field-border opacity-55 hover:opacity-75";
 
 const TaskItem = ({
   task,
