@@ -68,6 +68,7 @@
   --color-destructive-soft-foreground: var(--destructive-soft-fg);
 
   --color-border: var(--border);
+  --color-selection: var(--selection);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-control-inactive: var(--control-inactive);
@@ -101,14 +102,14 @@
  * ============================================ */
 :root {
   --background: var(--neutral-50);
-  --foreground: var(--neutral-950);
+  --foreground: var(--neutral-900);
 
-  --card-bg: var(--neutral-100);
-  --card-fg: var(--neutral-950);
+  --card-bg: var(--white);
+  --card-fg: var(--neutral-900);
   --card-border: var(--neutral-300);
 
   --primary: var(--amber-400);
-  --primary-fg: var(--neutral-950);
+  --primary-fg: var(--neutral-900);
   --primary-subtle-fg: color-mix(
     in srgb,
     var(--primary-fg) 55%,
@@ -134,8 +135,8 @@
   --sidebar-account-hover-bg: var(--neutral-200);
 
   --muted: var(--neutral-100);
-  --muted-fg: var(--neutral-500);
-  --subtle-fg: var(--neutral-400);
+  --muted-fg: color-mix(in srgb, var(--neutral-900) 60%, transparent);
+  --subtle-fg: var(--neutral-500);
 
   --popover: var(--neutral-100);
   --popover-fg: var(--neutral-950);
@@ -163,7 +164,8 @@
   --destructive-soft: var(--red-50);
   --destructive-soft-fg: var(--red-700);
 
-  --border: var(--neutral-300);
+  --border: color-mix(in srgb, var(--neutral-900) 15%, transparent);
+  --selection: color-mix(in srgb, var(--neutral-900) 5%, transparent);
   --input: var(--neutral-100);
   --ring: var(--amber-500);
   --control-inactive: var(--neutral-300);
@@ -205,9 +207,9 @@
   --background: var(--neutral-950);
   --foreground: var(--neutral-200);
 
-  --card-bg: color-mix(in oklab, var(--neutral-900) 55%, var(--neutral-950));
-  --card-fg: var(--neutral-200);
-  --card-border: var(--neutral-900);
+  --card-bg: var(--color-stone-900);
+  --card-fg: var(--neutral-100);
+  --card-border: var(--color-stone-800);
 
   --primary: var(--amber-400);
   --primary-fg: var(--neutral-950);
@@ -282,6 +284,7 @@
   --destructive-soft-fg: var(--red-300);
 
   --border: var(--neutral-900);
+  --selection: var(--neutral-900);
   --input: color-mix(in oklab, var(--neutral-900) 60%, var(--neutral-950));
   --ring: var(--amber-400);
   --control-inactive: color-mix(

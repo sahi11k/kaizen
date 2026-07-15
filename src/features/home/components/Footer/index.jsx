@@ -7,9 +7,9 @@ import { ThemeToggle } from "@/features/theme";
 
 const FooterMain = () => {
   return (
-    <footer className="pt-24">
-      <div className="flex flex-col mx-auto">
-        <div className="flex flex-col items-center text-center gap-6 pb-16 md:pb-20">
+    <footer className="pt-16 xl:pt-24">
+      <div className="flex flex-col">
+        <div className="max-w-7xl mx-auto w-full flex flex-col items-center text-center gap-6 pb-16 xl:pb-24 px-6 xl:px-0">
           <h1 className="heading-1">
             Start small,
             <br />
@@ -25,8 +25,8 @@ const FooterMain = () => {
           </Link>
         </div>
         <div className="border-t border-border/50">
-          <div className="flex gap-4 flex-col md:flex-row justify-between items-center py-6 w-full max-w-7xl mx-auto">
-            <div className="flex items-center gap-6 text-text-muted">
+          <div className="flex gap-4 flex-col md:flex-row justify-between items-center py-4 px-6 xl:px-0 w-full xl:max-w-7xl mx-auto">
+            <div className="flex items-center gap-8 md:gap-6 text-subtle-foreground">
               {FOOTER_LINKS.map(({ label, href, Icon }) => (
                 <FooterLink key={label} href={href}>
                   <Icon />
@@ -35,7 +35,7 @@ const FooterMain = () => {
               <ThemeToggle
                 tooltipSide="top"
                 tooltipLevel="footer"
-                className="!w-5 !h-5 xl:!w-6 xl:!h-6 !p-0 text-muted-foreground hover:!text-foreground hover:!bg-transparent"
+                className="!w-5 !h-5 xl:!w-6 xl:!h-6 !p-0 text-subtle-foreground hover:!text-foreground hover:!bg-transparent"
               />
             </div>
             <div className="heading-6 tracking-[4px] !text-lg !text-subtle-foreground">
@@ -54,7 +54,7 @@ const FooterLink = ({ href, children }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-5 h-5 xl:w-6 xl:h-6 text-muted-foreground hover:text-foreground transition-colors"
+      className="w-5 h-5 xl:w-6 xl:h-6 text-subtle-foreground hover:text-foreground transition-colors"
     >
       {children}
     </a>

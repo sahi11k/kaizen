@@ -16,7 +16,7 @@ const About = () => {
         </h2>
       }
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {ABOUT_CARDS.map((card, index) => (
           <Reveal key={card.key} delay={index * 100}>
             <AboutCard index={index} {...card} />
@@ -31,7 +31,7 @@ const AboutCard = ({ title, headline, description, preview, index }) => {
   const number = String(index + 1).padStart(2, "0");
 
   return (
-    <div className="flex flex-col gap-6 rounded-lg border border-border bg-card p-6 md:p-8 md:min-h-[22rem]">
+    <div className="flex flex-col gap-6 rounded-lg border border-card-border bg-card p-6 md:p-8 min-h-[22rem] h-full">
       <span className="text-label !text-primary">
         <span className="font-mono">{number}</span> — {title}
       </span>
@@ -51,7 +51,9 @@ const AboutCardPreview = ({ preview }) => {
         <p className="font-sans text-sm md:text-base text-foreground leading-relaxed">
           &quot;{preview.text}&quot;
         </p>
-        <span className="text-label">{preview.meta}</span>
+        <span className="text-label !text-[11px] md:!text-xs">
+          {preview.meta}
+        </span>
       </div>
     );
   }
@@ -59,11 +61,14 @@ const AboutCardPreview = ({ preview }) => {
   return (
     <div className="mt-auto flex divide-x divide-border/50 rounded-lg border border-border/50 bg-background overflow-hidden">
       {preview.items.map((item) => (
-        <div key={item.label} className="flex-1 flex flex-col gap-1 px-4 py-3">
-          <span className="font-mono text-xl md:text-2xl text-foreground">
-            {item.value}
+        <div
+          key={item.label}
+          className="flex-1 flex flex-col gap-1 px-2 md:px-4 py-3"
+        >
+          <span className="!font-mono heading-6">{item.value}</span>
+          <span className="text-label !text-[11px] md:!text-xs">
+            {item.label}
           </span>
-          <span className="text-label">{item.label}</span>
         </div>
       ))}
     </div>

@@ -6,7 +6,7 @@ const Section = ({ id, eyebrow, title, children, className }) => {
     <div
       id={id}
       className={cn(
-        "max-w-7xl mx-auto flex flex-col gap-12 lg:gap-16 py-24",
+        "max-w-7xl mx-auto flex flex-col gap-12 lg:gap-16 py-16 xl:py-24",
         className,
       )}
     >

@@ -9,7 +9,7 @@ import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
 const Home = () => {
   useDocumentTitle(BROWSER_TAB_TITLES.HOME);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col px-6 xl:px-0">
       <Banner />
       <Separator className="max-w-6xl" />
       <About />

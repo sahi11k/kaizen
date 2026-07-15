@@ -8,7 +8,7 @@ import dashboardDark from "@/assets/images/dashboard-dark.png";
 const Banner = () => {
   return (
     <div className="w-full max-w-7xl mx-auto h-screen flex items-center justify-center">
-      <div className="flex h-[70%] gap-16 items-center justify-center">
+      <div className="flex h-[70%] gap-16 items-center justify-start xl:justify-center w-full">
         <div className="flex-2 flex flex-col gap-6">
           <Reveal delay={0}>
             <div className="flex flex-col gap-6">
@@ -17,9 +17,9 @@ const Banner = () => {
                 Personal Productivity
               </span>
               <h1 className="heading-1">
-                One place to <br /> focus, <br />
+                One place to <br className="hidden lg:block" /> focus, <br />
                 <span className="italic text-primary">
-                  reflect, and <br /> grow
+                  reflect and <br className="hidden lg:block" /> grow
                 </span>
               </h1>
             </div>
@@ -33,7 +33,7 @@ const Banner = () => {
           </Reveal>
 
           <Reveal delay={200}>
-            <div className="flex items-center gap-6 mt-2">
+            <div className="flex items-center gap-3 lg:gap-6 mt-2">
               <Link to={DEFAULT_NAV_ROUTE}>
                 <Button className="shadow-none">Get started</Button>
               </Link>
@@ -45,13 +45,13 @@ const Banner = () => {
             </div>
           </Reveal>
         </div>
-        <div className="flex-3">
+        <div className="hidden lg:block flex-3">
           <Reveal delay={150} className="relative">
             <div
               aria-hidden="true"
               className="absolute -inset-x-4 -inset-y-6 -z-10 rounded-full bg-primary/5 blur-[80px]"
             />
-            <div className="rounded-lg border border-border overflow-hidden shadow-sm p-4 pb-6 bg-background">
+            <div className="rounded-lg border border-border overflow-hidden  p-4 pb-6 bg-background">
               <img
                 src={dashboardLight}
                 alt="Kaizen dashboard"

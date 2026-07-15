@@ -11,11 +11,13 @@ const Philosophy = () => {
         <h2 className="heading-3">
           Built around
           <br />
-          <span className="italic text-muted-foreground">continuous improvement</span>
+          <span className="italic text-muted-foreground">
+            continuous improvement
+          </span>
         </h2>
       }
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 rounded-lg border border-border divide-y divide-x divide-border overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-3 rounded-lg border border-border md:divide-x divide-y md:divide-y-0 divide-border overflow-hidden">
         {PHILOSOPHY_ITEMS.map((item, index) => (
           <Reveal
             key={item.key}
