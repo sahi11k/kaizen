@@ -283,7 +283,7 @@
   --destructive-soft: var(--red-900);
   --destructive-soft-fg: var(--red-300);
 
-  --border: var(--neutral-900);
+  --border: var(--color-stone-800);
   --selection: var(--neutral-900);
   --input: color-mix(in oklab, var(--neutral-900) 60%, var(--neutral-950));
   --ring: var(--amber-400);
