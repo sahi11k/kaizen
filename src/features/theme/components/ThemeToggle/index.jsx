@@ -7,7 +7,12 @@ import useThemeStore from "@/features/theme/store";
 import { THEME, THEME_TOOLTIP_TEXT } from "@/features/theme/constants";
 import "./theme-toggle.css";
 
-const ThemeToggle = ({ tooltipSide = "bottom", tooltipLevel, className }) => {
+const ThemeToggle = ({
+  tooltipSide = "bottom",
+  tooltipLevel,
+  className,
+  strokeWidth,
+}) => {
   const { theme, toggleTheme } = useThemeStore();
 
   return (
@@ -22,9 +27,9 @@ const ThemeToggle = ({ tooltipSide = "bottom", tooltipLevel, className }) => {
         variant="icon"
         icon={
           theme === THEME.LIGHT ? (
-            <Sun className="animate-spin-once" />
+            <Sun className="animate-spin-once size-full" strokeWidth={strokeWidth} />
           ) : (
-            <Moon className="animate-spin-once" />
+            <Moon className="animate-spin-once size-full" strokeWidth={strokeWidth} />
           )
         }
         className={cn("w-12 !h-12", className)}

@@ -25,17 +25,18 @@ const FooterMain = () => {
           </Link>
         </div>
         <div className="border-t border-border/50">
-          <div className="flex gap-6 flex-col md:flex-row justify-between items-center p-6 xl:px-0 w-full xl:max-w-7xl mx-auto">
-            <div className="flex items-center gap-8 md:gap-6 text-subtle-foreground">
+          <div className="flex gap-4 flex-col md:flex-row justify-between items-center px-6 py-6 xl:px-0 w-full xl:max-w-7xl mx-auto">
+            <div className="flex items-center gap-4 md:gap-6 !text-subtle-foreground">
               {FOOTER_LINKS.map(({ label, href, Icon }) => (
                 <FooterLink key={label} href={href}>
-                  <Icon />
+                  <Icon className="w-5 h-5" strokeWidth={1} />
                 </FooterLink>
               ))}
               <ThemeToggle
                 tooltipSide="top"
                 tooltipLevel="footer"
-                className="!w-5 !h-5 xl:!w-6 xl:!h-6 !p-0 text-subtle-foreground hover:!text-foreground hover:!bg-transparent"
+                strokeWidth={1}
+                className="!w-5 !h-5 !p-0 text-subtle-foreground hover:!text-foreground hover:!bg-transparent"
               />
             </div>
             <div className="heading-6 tracking-[4px] !text-lg !text-subtle-foreground">
@@ -54,7 +55,7 @@ const FooterLink = ({ href, children }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-5 h-5 xl:w-6 xl:h-6 text-subtle-foreground hover:text-foreground transition-colors"
+      className="text-subtle-foreground hover:text-foreground transition-colors"
     >
       {children}
     </a>

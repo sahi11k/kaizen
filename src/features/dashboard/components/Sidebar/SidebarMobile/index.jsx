@@ -38,7 +38,7 @@ const SidebarMobile = () => {
           <DrawerTrigger asChild>
             <Button
               variant="icon"
-              className="flex md:hidden w-12 !h-12"
+              className="flex md:hidden !p-0"
               icon={<Menu className="size-6" />}
             />
           </DrawerTrigger>
