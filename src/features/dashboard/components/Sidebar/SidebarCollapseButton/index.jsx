@@ -11,7 +11,7 @@ const SidebarCollapseButton = ({ isCollapsed, onToggle, className }) => {
       <Button
         variant="icon"
         className={cn(
-          "pomodoro-control-button !h-8 !w-8 rounded-lg !bg-transparent",
+          "pomodoro-control-button !h-8 !w-8 rounded-lg !bg-transparent !text-sidebar-muted-foreground",
           className,
         )}
         aria-label={toggleLabel}

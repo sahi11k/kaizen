@@ -25,7 +25,7 @@ const FooterMain = () => {
           </Link>
         </div>
         <div className="border-t border-border/50">
-          <div className="flex gap-4 flex-col md:flex-row justify-between items-center py-4 px-6 xl:px-0 w-full xl:max-w-7xl mx-auto">
+          <div className="flex gap-6 flex-col md:flex-row justify-between items-center p-6 xl:px-0 w-full xl:max-w-7xl mx-auto">
             <div className="flex items-center gap-8 md:gap-6 text-subtle-foreground">
               {FOOTER_LINKS.map(({ label, href, Icon }) => (
                 <FooterLink key={label} href={href}>
@@ -39,7 +39,7 @@ const FooterMain = () => {
               />
             </div>
             <div className="heading-6 tracking-[4px] !text-lg !text-subtle-foreground">
-              KAIZEN
+              KAIZEN &copy; {new Date().getUTCFullYear()}
             </div>
           </div>
         </div>

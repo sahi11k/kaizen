@@ -4,14 +4,10 @@ import AccountDropdown from "../AccountDropdown";
 
 const DashboardHeader = () => {
   return (
-    <>
-      <div className="fixed top-4 left-4 z-[var(--z-header)] xl:hidden">
-        <SidebarMobile />
-      </div>
-      <div className="fixed top-6 right-6 z-[var(--z-header)] xl:hidden">
-        <AccountDropdown />
-      </div>
-    </>
+    <div className="flex md:hidden items-center justify-between px-4 h-16 shrink-0 bg-background border-b border-border/50 z-[var(--z-header)]">
+      <SidebarMobile />
+      <AccountDropdown avatarClassName="size-9" />
+    </div>
   );
 };
 

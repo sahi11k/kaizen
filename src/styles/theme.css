@@ -126,13 +126,17 @@
   --sidebar: var(--neutral-100);
   --sidebar-border: var(--neutral-300);
   --sidebar-fg: var(--neutral-950);
-  --sidebar-muted-fg: var(--neutral-500);
-  --sidebar-hover-bg: var(--neutral-200);
-  --sidebar-hover-fg: var(--neutral-950);
-  --sidebar-active-bg: var(--amber-50);
+  --sidebar-muted-fg: var(--neutral-600);
+  --sidebar-hover-bg: var(--neutral-300);
+  --sidebar-hover-fg: var(--neutral-900);
+  --sidebar-active-bg: color-mix(
+    in oklab,
+    var(--amber-400) 15%,
+    var(--neutral-100)
+  );
   --sidebar-active-fg: var(--amber-700);
   --sidebar-control-fg: var(--neutral-400);
-  --sidebar-account-hover-bg: var(--neutral-200);
+  --sidebar-account-hover-bg: var(--neutral-300);
 
   --muted: var(--neutral-100);
   --muted-fg: color-mix(in srgb, var(--neutral-900) 60%, transparent);
@@ -205,7 +209,7 @@
  * ============================================ */
 .dark {
   --background: var(--neutral-950);
-  --foreground: var(--neutral-200);
+  --foreground: var(--neutral-100);
 
   --card-bg: var(--color-stone-900);
   --card-fg: var(--neutral-100);
@@ -283,7 +287,7 @@
   --destructive-soft: var(--red-900);
   --destructive-soft-fg: var(--red-300);
 
-  --border: var(--color-stone-800);
+  --border: color-mix(in oklab, var(--color-stone-800) 80%, transparent);
   --selection: var(--neutral-900);
   --input: color-mix(in oklab, var(--neutral-900) 60%, var(--neutral-950));
   --ring: var(--amber-400);

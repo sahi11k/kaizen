@@ -7,7 +7,13 @@ const SidebarContent = ({ setOpen, isMobile = false, isCollapsed = false }) => {
   return (
     <>
       <div className="h-16 flex justify-between items-center">
-        <Logo showText={!isCollapsed} className="-ml-1" link="/" />
+        <Logo
+          showText={!isCollapsed}
+          className="-ml-1"
+          link="/"
+          iconClassName="!w-7 !h-7"
+          textClassName="!text-2xl"
+        />
       </div>
       <ul className="flex-1 flex flex-col space-y-1 overflow-y-auto no-scrollbar -mx-2 cursor-pointer">
         {SIDEBAR_LINKS.map((link) => (

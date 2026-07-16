@@ -15,7 +15,7 @@ const SidebarMobile = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
 
     const handler = (e) => {
       if (e.matches) {
@@ -38,7 +38,7 @@ const SidebarMobile = () => {
           <DrawerTrigger asChild>
             <Button
               variant="icon"
-              className="flex xl:hidden w-12 !h-12"
+              className="flex md:hidden w-12 !h-12"
               icon={<Menu className="size-6" />}
             />
           </DrawerTrigger>
@@ -52,7 +52,7 @@ const SidebarMobile = () => {
         <DrawerClose className="absolute top-2 right-4" asChild>
           <Button
             variant="icon"
-            className="-mr-2 w-12 !h-12 text-sidebar-control hover:bg-sidebar-hover hover:text-sidebar-hover-foreground"
+            className="-mr-2 w-12 !h-12 text-sidebar-muted-foreground hover:bg-sidebar-hover hover:text-sidebar-hover-foreground"
           >
             <PanelLeftClose />
           </Button>

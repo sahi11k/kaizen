@@ -50,13 +50,18 @@ const Logo = ({
   showText = true,
   link = false,
   iconClassName = "",
+  textClassName = "",
 }) => {
   const content = (
     <Button variant="link" className={cn(logoVariants({ size }), className)}>
       <span className={cn(iconVariants({ size }), iconClassName)}>
         <LogoIcon className="!w-full !h-full fill-current" />
       </span>
-      {showText && <span className={cn(textVariants({ size }))}>Kaizen</span>}
+      {showText && (
+        <span className={cn(textVariants({ size }), textClassName)}>
+          Kaizen
+        </span>
+      )}
     </Button>
   );
 
