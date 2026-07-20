@@ -72,6 +72,7 @@ const FocusTrendChart = () => {
     readCssColor("--color-muted-foreground") || "#6b7280";
   const subtleForegroundColor =
     readCssColor("--color-subtle-foreground") || mutedForegroundColor;
+  const borderColor = readCssColor("--color-border") || mutedColor;
 
   const chartData = {
     labels: trendData.map((d) => d.label),
@@ -159,12 +160,12 @@ const FocusTrendChart = () => {
     },
     scales: {
       x: {
-        grid: { color: mutedColor },
+        grid: { color: borderColor },
         ticks: { color: mutedForegroundColor, font: { size: 12 } },
       },
       y: {
         beginAtZero: true,
-        grid: { color: mutedColor },
+        grid: { color: borderColor },
         ticks: { color: mutedForegroundColor, font: { size: 12 } },
         title: {
           display: true,
@@ -186,17 +187,20 @@ const FocusTrendChart = () => {
   return (
     <Card
       title="Focus & Sessions Trend"
-      className="h-full !pb-2"
-      contentClassName="flex h-full flex-col"
+      className="h-full py-3 md:py-4 xl:py-6"
+      contentClassName="flex h-full flex-col px-3 md:px-4 xl:px-6"
+      headerClassName="px-3 md:px-4 xl:px-6"
     >
       {hasActivity ? (
-        <div className="relative flex-1 min-h-0 h-full w-full">
-          <Chart
-            key={theme}
-            type="bar"
-            data={chartData}
-            options={chartOptions}
-          />
+        <div className="relative flex-1 min-h-0 h-full w-full overflow-x-auto">
+          <div className="relative h-full min-w-[28rem]">
+            <Chart
+              key={theme}
+              type="bar"
+              data={chartData}
+              options={chartOptions}
+            />
+          </div>
         </div>
       ) : (
         <div className="flex flex-1 items-center justify-center">

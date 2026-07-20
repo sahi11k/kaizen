@@ -49,7 +49,7 @@
 }
 
 .text-label {
-  @apply font-sans text-xs uppercase tracking-widest text-subtle-foreground font-normal;
+  @apply font-sans text-[10px] md:text-xs uppercase tracking-widest text-subtle-foreground font-normal;
 }
 
 .text-link {

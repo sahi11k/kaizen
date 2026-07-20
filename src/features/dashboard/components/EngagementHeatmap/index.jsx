@@ -9,17 +9,16 @@ import { getDayKeys } from "../../utils/dateRange";
 import { buildDayMap, heatmapLevel } from "../../utils/heatmap";
 
 const HeatmapCell = ({ level }) => {
-  const bg = level === "active" ? "bg-primary" : "bg-muted";
+  const bg = level === "active" ? "bg-primary" : "bg-background";
 
-  return <div className={`h-8 rounded-md ${bg}`} />;
+  return <div className={`h-8 min-h-8 min-w-8 rounded-md ${bg}`} />;
 };
 
 const HeatmapRow = ({ label, tooltip, levels }) => (
   <div
-    className="grid gap-2 items-center"
-    style={{ gridTemplateColumns: "68px repeat(7, 1fr)" }}
+    className="grid gap-2 items-center grid-cols-[minmax(64px,auto)_repeat(7,minmax(2rem,1fr))]"
   >
-    <span className="body-base !text-xs pr-1.5" title={tooltip}>
+    <span className="body-base !text-xs pr-0.5 md:pr-1.5" title={tooltip}>
       {label}
     </span>
     {levels.map((lvl, i) => (
@@ -82,37 +81,46 @@ const EngagementHeatmap = () => {
   return (
     <Card
       title="7-Day Engagement"
-      className="h-full !pb-4"
-      contentClassName="flex h-full flex-col"
+      className="h-full py-3 md:py-4 xl:py-6"
+      contentClassName="flex h-full flex-col px-3 md:px-4 xl:px-6"
+      headerClassName="px-3 md:px-4 xl:px-6"
     >
       {hasActivity ? (
         <>
-          <div className="flex flex-1 flex-col justify-center gap-2">
-            <div
-              className="grid gap-2 items-center"
-              style={{ gridTemplateColumns: "68px repeat(7, 1fr)" }}
-            >
-              <div />
-              {dayLabels.map((d, i) => (
-                <div key={i} className="body-description text-center !text-muted-foreground !text-xs">
-                  {d}
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-1 flex-col justify-center gap-2 overflow-x-auto pt-2 pb-4">
+            <div className="flex flex-col gap-2 min-w-fit">
+              <div className="grid gap-2 items-center grid-cols-[minmax(64px,auto)_repeat(7,minmax(2rem,1fr))]">
+                <span className="body-base !text-xs pr-0.5 md:pr-1.5 invisible">
+                  Journal
+                </span>
+                {dayLabels.map((d, i) => (
+                  <div
+                    key={i}
+                    className="body-description text-center !text-muted-foreground !text-xs"
+                  >
+                    {d}
+                  </div>
+                ))}
+              </div>
 
-            <HeatmapRow
-              label="Pomo."
-              tooltip="Complete Pomodoro & Tasks"
-              levels={pomodoroTaskLevels}
-            />
-            <HeatmapRow label="Journal" levels={journalLevels} />
-            <HeatmapRow label="Reading" levels={Array(7).fill("none")} />
+              <HeatmapRow
+                label="Pomo."
+                tooltip="Complete Pomodoro & Tasks"
+                levels={pomodoroTaskLevels}
+              />
+              <HeatmapRow label="Journal" levels={journalLevels} />
+              <HeatmapRow label="Reading" levels={Array(7).fill("none")} />
+            </div>
           </div>
 
           <div className="flex items-center gap-3.5 pt-4 border-t border-border">
             <span className="text-label text-subtle-foreground">Activity</span>
             {[
-              { className: "bg-muted border border-border", label: "none" },
+              {
+                className:
+                  "bg-muted dark:bg-[color-mix(in_oklab,var(--card-bg)_65%,white)] border border-border",
+                label: "none",
+              },
               {
                 className: "bg-primary border border-primary",
                 label: "active",

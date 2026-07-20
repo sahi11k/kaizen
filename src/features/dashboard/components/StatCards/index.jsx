@@ -28,7 +28,7 @@ const StatCard = ({
   const isZeroValue = value === 0 || value === "0";
 
   return (
-    <Card className="" contentClassName="">
+    <Card className="py-3 md:py-4 xl:py-6" contentClassName="px-3 md:px-4 xl:px-6">
       <p className="text-label mb-4">{label}</p>
       <div className="flex items-baseline gap-1.5 mb-2">
         <h3
@@ -121,7 +121,7 @@ const StatCards = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-5 xl:gap-6 [&>*]:h-40">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 xl:gap-6 [&>*]:min-h-[7.5rem]">
         {Array.from({ length: 4 }).map((_, index) => (
           <Skeleton key={index} className="h-full w-full" />
         ))}
@@ -130,7 +130,7 @@ const StatCards = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-5 xl:gap-6 [&>*]:h-40">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 xl:gap-6 [&>*]:min-h-[7.5rem]">
       <StatCard
         label="Sessions Completed"
         value={thisWeekSessions.length}

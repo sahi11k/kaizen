@@ -66,11 +66,12 @@ function Card({
   contentClassName,
   footerClassName,
   titleClassName,
+  headerClassName,
 }) {
   return (
     <BaseCard className={className}>
       {title && (
-        <CardHeader>
+        <CardHeader className={headerClassName}>
           <CardTitle className={titleClassName}>{title}</CardTitle>
         </CardHeader>
       )}

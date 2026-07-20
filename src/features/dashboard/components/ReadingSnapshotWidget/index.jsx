@@ -71,7 +71,10 @@ const ReadingSnapshotWidget = () => {
   }
 
   return (
-    <Card className="h-full" contentClassName="flex h-full flex-col">
+    <Card
+      className="h-full py-3 md:py-4 xl:py-6"
+      contentClassName="flex h-full flex-col px-3 md:px-4 xl:px-6"
+    >
       <p className="text-label mb-5">
         Reading Snapshot
       </p>
