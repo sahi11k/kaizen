@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 const AuthLayout = () => {
   return (
     <main className="h-full w-full flex">
-      <div className="bg-primary flex-7 items-center justify-center hidden lg:flex">
+      <div className="bg-primary flex-6 items-center justify-center hidden lg:flex">
         <div className="text-primary-foreground items-start flex flex-col">
           <span className="heading-0 mb-10">改 善</span>
           <span className="heading-4 !text-primary-foreground">Kaizen</span>

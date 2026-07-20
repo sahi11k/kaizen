@@ -24,7 +24,7 @@ const GoogleSignInButton = () => {
       loading={loading}
       icon={<GoogleIcon />}
       onClick={handleClick}
-      className="w-full h-12 bg-white bg-card"
+      className="w-full h-12 bg-foreground/5"
     >
       Continue with Google
     </Button>
