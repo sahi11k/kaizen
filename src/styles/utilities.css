@@ -40,7 +40,7 @@
   @apply font-serif text-lg md:text-xl xl:text-2xl font-medium leading-normal;
 }
 
-.body-base {
+@utility body-base {
   @apply font-sans text-sm md:text-base leading-relaxed text-muted-foreground;
 }
 
@@ -93,7 +93,7 @@
 }
 
 .form-label {
-  @apply font-sans text-base font-medium text-muted-foreground;
+  @apply body-base font-medium text-muted-foreground;
 }
 
 /* Scrollbar theming */

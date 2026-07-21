@@ -159,7 +159,7 @@ const SecuritySettings = () => {
               placeholder="Enter new password"
               autoComplete="new-password"
               aria-invalid={!!passwordError}
-              className="w-full"
+              className="w-full bg-background"
             />
             {passwordError && (
               <span className="form-error">{passwordError}</span>
@@ -176,14 +176,14 @@ const SecuritySettings = () => {
               placeholder="Confirm new password"
               autoComplete="new-password"
               aria-invalid={!!confirmPasswordError}
-              className="w-full"
+              className="w-full bg-background"
             />
             {confirmPasswordError && (
               <span className="form-error">{confirmPasswordError}</span>
             )}
           </label>
         </div>
-        <div className="mt-6 flex gap-3 sm:justify-end">
+        <div className="mt-6 flex gap-3 justify-end">
           <Button
             type="button"
             variant="outline"
@@ -193,7 +193,7 @@ const SecuritySettings = () => {
               (!passwordValues.password && !passwordValues.confirmPassword)
             }
             size="sm"
-            className="flex-1 border-overlay-field-border sm:flex-none"
+            className="flex-none border-overlay-field-border"
           >
             Cancel
           </Button>
@@ -202,7 +202,7 @@ const SecuritySettings = () => {
             loading={isPasswordLoading}
             disabled={!canUpdatePassword}
             size="sm"
-            className="flex-1 sm:flex-none"
+            className="flex-none"
           >
             Update
           </Button>
@@ -243,7 +243,7 @@ const SecuritySettings = () => {
       <ResponsiveDialog
         open={isDeleteDialogOpen}
         onOpenChange={handleDeleteDialogOpenChange}
-        title="Delete account"
+        title="Delete Account"
         description="This permanently deletes your account data and cannot be recovered."
         className="!text-left"
         footer={
@@ -276,6 +276,7 @@ const SecuritySettings = () => {
             onChange={(e) => setDeleteConfirmValue(e.target.value)}
             placeholder={DELETE_CONFIRM_TEXT}
             autoComplete="off"
+            className="!bg-background"
           />
         </label>
       </ResponsiveDialog>

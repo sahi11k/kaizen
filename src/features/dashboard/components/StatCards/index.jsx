@@ -123,7 +123,10 @@ const StatCards = () => {
     return (
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 xl:gap-6 [&>*]:min-h-[7.5rem]">
         {Array.from({ length: 4 }).map((_, index) => (
-          <Skeleton key={index} className="h-full w-full" />
+          <Skeleton
+            key={index}
+            className="h-full w-full py-3 md:py-4 xl:py-6 px-3 md:px-4 xl:px-6"
+          />
         ))}
       </div>
     );

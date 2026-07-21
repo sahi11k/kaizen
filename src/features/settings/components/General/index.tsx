@@ -172,9 +172,9 @@ export const GeneralSettings = () => {
               aria-label="Upload profile photo"
               onClick={handleAvatarButtonClick}
               disabled={isAvatarLoading}
-              className="group relative size-24 shrink-0 rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed"
+              className="group relative size-16 shrink-0 rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed sm:size-24"
             >
-              <Avatar className="size-24 border border-border">
+              <Avatar className="size-16 border border-border sm:size-24">
                 <AvatarImage src={formValues.avatarUrl} alt={displayName} />
                 <AvatarFallback className="bg-secondary text-2xl font-semibold uppercase text-secondary-foreground">
                   {avatarFallback}
@@ -217,7 +217,7 @@ export const GeneralSettings = () => {
               placeholder="Your name"
               autoComplete="name"
               aria-invalid={!!displayNameError}
-              className="w-full"
+              className="w-full bg-background"
             />
             {displayNameError && (
               <span className="form-error">{displayNameError}</span>
@@ -229,7 +229,7 @@ export const GeneralSettings = () => {
               type="email"
               name="email"
               value={formValues.email}
-              className="mt-1"
+              className="mt-1 bg-background"
               disabled
             />
           </label>
@@ -261,14 +261,14 @@ export const GeneralSettings = () => {
         />
       </section>
 
-      <div className="flex gap-3 sm:justify-end">
+      <div className="flex gap-3 justify-end">
         <Button
           type="button"
           variant="outline"
           onClick={handleFormCancel}
           disabled={isProfileLoading || !isDirty}
           size="sm"
-          className="flex-1 sm:flex-none"
+          className="flex-none"
         >
           Cancel
         </Button>
@@ -277,7 +277,7 @@ export const GeneralSettings = () => {
           loading={isProfileLoading}
           disabled={!isDirty || !!displayNameError}
           size="sm"
-          className="flex-1 sm:flex-none"
+          className="flex-none"
         >
           Save
         </Button>

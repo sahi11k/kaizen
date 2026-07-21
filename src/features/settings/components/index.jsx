@@ -33,7 +33,7 @@ const Settings = () => {
   const [currentTab, setCurrentTab] = useState(TABS[0].key);
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full max-w-[1800px] mx-auto px-6">
       <PageHeader
         title="Settings"
         subtitle="Manage your account and preferences."
@@ -45,10 +45,10 @@ const Settings = () => {
       >
         <TabsList
           aria-label="Settings sections"
-          className="border border-border"
+          className="sticky top-[6.5rem] md:top-[7rem] xl:top-[7.5rem] z-20 bg-background border-b border-border"
         >
           {TABS.map(({ key, label }) => (
-            <TabsTrigger key={key} value={key}>
+            <TabsTrigger key={key} value={key} className="!p-[1px] mr-6">
               {label}
             </TabsTrigger>
           ))}

@@ -182,14 +182,14 @@ const PomodoroSettings = () => {
         </div>
       </section>
 
-      <div className="flex gap-3 sm:justify-end">
+      <div className="flex gap-3 justify-end">
         <Button
           type="button"
           variant="outline"
           onClick={handleFormCancel}
           disabled={isPending || !isDirty}
           size="sm"
-          className="flex-1 sm:flex-none"
+          className="flex-none"
         >
           Cancel
         </Button>
@@ -198,7 +198,7 @@ const PomodoroSettings = () => {
           loading={isPending}
           disabled={!isDirty || hasErrors}
           size="sm"
-          className="flex-1 sm:flex-none"
+          className="flex-none"
         >
           Save
         </Button>
@@ -219,6 +219,7 @@ const NumberField = ({ label, value, min, max, unit, error, onChange }) => {
         step={1}
         aria-invalid={!!error}
         onChange={(e) => onChange(e.target.value)}
+        className="bg-background"
       />
       <span className="body-description !text-xs">
         Max {max} {unit}

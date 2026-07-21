@@ -26,7 +26,9 @@ const LatestReflectionWidget = () => {
     : null;
 
   if (isLoading) {
-    return <Skeleton className="h-full w-full" />;
+    return (
+      <Skeleton className="h-full w-full py-3 md:py-4 xl:py-6 px-3 md:px-4 xl:px-6" />
+    );
   }
 
   return (

@@ -154,9 +154,9 @@
   --tab-trigger-hover: var(--neutral-200);
   --tab-trigger-hover-fg: var(--neutral-950);
   --tab-trigger-active: transparent;
-  --tab-trigger-active-fg: var(--amber-600);
+  --tab-trigger-active-fg: var(--primary);
   --tab-trigger-border: transparent;
-  --tab-trigger-active-underline: var(--amber-600);
+  --tab-trigger-active-underline: var(--primary);
   --tab-trigger-active-underline-width: 2px;
   --tab-trigger-active-underline-offset: 1px;
 
@@ -273,9 +273,9 @@
   --tab-trigger-hover: var(--neutral-900);
   --tab-trigger-hover-fg: var(--neutral-200);
   --tab-trigger-active: transparent;
-  --tab-trigger-active-fg: var(--amber-400);
+  --tab-trigger-active-fg: var(--primary);
   --tab-trigger-border: transparent;
-  --tab-trigger-active-underline: var(--amber-400);
+  --tab-trigger-active-underline: var(--primary);
   --tab-trigger-active-underline-width: 2px;
   --tab-trigger-active-underline-offset: 1px;
 
