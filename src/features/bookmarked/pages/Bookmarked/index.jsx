@@ -62,7 +62,7 @@ export default function Bookmarked() {
   };
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col">
+    <div className="mx-auto flex min-h-full w-full max-w-[1800px] flex-col px-6 xl:px-12">
       <PageHeader
         title="Bookmarked"
         subtitle="Books, articles, and links worth your time."

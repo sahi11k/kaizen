@@ -33,7 +33,7 @@ const Settings = () => {
   const [currentTab, setCurrentTab] = useState(TABS[0].key);
 
   return (
-    <div className="w-full max-w-[1800px] mx-auto px-6">
+    <div className="w-full max-w-[1800px] mx-auto px-6 xl:px-12">
       <PageHeader
         title="Settings"
         subtitle="Manage your account and preferences."

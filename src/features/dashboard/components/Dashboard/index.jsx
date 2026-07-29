@@ -10,7 +10,7 @@ import ReadingSnapshotWidget from "../ReadingSnapshotWidget";
 
 const DashboardOverview = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground px-6 pb-6 max-w-[1800px] mx-auto">
+    <div className="min-h-screen bg-background text-foreground px-6 xl:px-12 pb-6 max-w-[1800px] mx-auto">
       <DashboardGreetingHeader />
       <div className="space-y-6">
         <NewUserBanner />

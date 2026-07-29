@@ -21,7 +21,7 @@ function TypeIcon({ type, status }) {
   const active = status === "reading";
   const Icon = type === "book" ? BookOpen : Link2;
   return (
-    <div className="flex items-center justify-center w-8 h-8 rounded-lg border border-border bg-muted shrink-0">
+    <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-lg border border-border bg-muted shrink-0">
       <Icon
         className={cn(
           "w-4 h-4",

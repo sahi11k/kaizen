@@ -19,7 +19,7 @@ const PageHeader = ({
 }: PageHeaderProps): React.ReactElement => {
   return (
     <div className={cn("sticky top-0 z-30 bg-background py-6", className)}>
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-start justify-between gap-6">
         <div>
           <h1 className={cn("heading-4", titleClassName)}>{title}</h1>
           {subtitle && <div className="body-base !text-sm">{subtitle}</div>}
