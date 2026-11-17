@@ -28,7 +28,7 @@ Sentry.init({
     }),
   ],
   tracesSampleRate: 0.1,
-  tracePropagationTargets: ["gokaizen.app", /^https:\/\/gokaizen\.app/],
+  tracePropagationTargets: ["getkaizen.vercel.app", /^https:\/\/getkaizen\.vercel\.app/],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
 });

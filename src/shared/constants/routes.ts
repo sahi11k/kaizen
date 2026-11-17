@@ -2,7 +2,7 @@ export const DEFAULT_NAV_ROUTE = "/dashboard";
 export const APP_URL =
   import.meta.env.MODE === "development"
     ? "http://localhost:3000/"
-    : "https://www.gokaizen.app/";
+    : "https://getkaizen.vercel.app/";
 
 export const BROWSER_TAB_TITLES = {
   POMODORO: "Pomodoro",
