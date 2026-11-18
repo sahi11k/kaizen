@@ -33,18 +33,6 @@ export const MAC_SYMBOLS = {
   capslock: "⇪"
 }
 
-export const SR_ONLY = {
-  position: "absolute",
-  width: "1px",
-  height: "1px",
-  padding: 0,
-  margin: "-1px",
-  overflow: "hidden",
-  clip: "rect(0, 0, 0, 0)",
-  whiteSpace: "nowrap",
-  borderWidth: 0
-}
-
 export function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -230,8 +218,6 @@ export function findNodePosition(props) {
     let foundNode = null
 
     editor.state.doc.descendants((currentNode, pos) => {
-      // TODO: Needed?
-      // if (currentNode.type && currentNode.type.name === node!.type.name) {
       if (currentNode === node) {
         foundPos = pos
         foundNode = currentNode
@@ -393,7 +379,6 @@ export function createImageUploadHandler(journalId, userId) {
 }
 
 const ATTR_WHITESPACE =
-  // eslint-disable-next-line no-control-regex
   /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g
 
 export function isAllowedUri(
@@ -424,7 +409,7 @@ export function isAllowedUri(
     })
   }
 
-  return (!uri || uri.replace(ATTR_WHITESPACE, "").match(new RegExp(// eslint-disable-next-line no-useless-escape
+  return (!uri || uri.replace(ATTR_WHITESPACE, "").match(new RegExp(
   `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.\-]+(?:[^a-z+.\-:]|$))`, "i")));
 }
 
@@ -482,47 +467,6 @@ export function updateNodesAttr(tr, targets, attrName, next) {
   }
 
   return changed
-}
-
-/**
- * Selects the entire content of the current block node if the selection is empty.
- * If the selection is not empty, it does nothing.
- * @param editor The Tiptap editor instance
- */
-export function selectCurrentBlockContent(editor) {
-  const { selection, doc } = editor.state
-
-  if (!selection.empty) return
-
-  const $pos = selection.$from
-  let blockNode = null
-  let blockPos = -1
-
-  for (let depth = $pos.depth; depth >= 0; depth--) {
-    const node = $pos.node(depth)
-    const pos = $pos.start(depth)
-
-    if (node.isBlock && node.textContent.trim()) {
-      blockNode = node
-      blockPos = pos
-      break
-    }
-  }
-
-  if (blockNode && blockPos >= 0) {
-    const from = blockPos
-    const to = blockPos + blockNode.nodeSize - 2 // -2 to exclude the closing tag
-
-    if (from < to) {
-      const $from = doc.resolve(from)
-      const $to = doc.resolve(to)
-      const newSelection = TextSelection.between($from, $to, 1)
-
-      if (newSelection && !selection.eq(newSelection)) {
-        editor.view.dispatch(editor.state.tr.setSelection(newSelection))
-      }
-    }
-  }
 }
 
 /**

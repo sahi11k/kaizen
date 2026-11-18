@@ -12,7 +12,7 @@ const TimerActionGroup = ({
 }: TimerActionGroupProps): React.ReactNode => (
   <div
     className={cn(
-      "flex shrink-0 items-center justify-center gap-4 lg:gap-6",
+      "flex shrink-0 items-center justify-center gap-3 sm:gap-4 lg:gap-6",
       className,
     )}
   >

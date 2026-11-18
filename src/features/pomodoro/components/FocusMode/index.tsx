@@ -71,7 +71,7 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
         onClick={handleExit}
         variant="icon"
         icon={<X className="size-6" />}
-        className="pomodoro-control-button absolute top-6 right-6"
+        className="pomodoro-action-button absolute top-6 right-6"
         aria-label="Exit Focus Mode"
       />
 

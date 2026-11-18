@@ -9,7 +9,7 @@ const JournalEditor = ({ journal, onNewJournalSaved }) => {
     useJournalPersistence(journal, { onNewJournalSaved });
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full max-w-[1800px] mx-auto px-6 xl:px-12">
       <JournalEditorHeader journal={journal} {...headerProps} />
       <TipTapEditor
         key={journal.id}

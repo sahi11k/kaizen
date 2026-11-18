@@ -24,7 +24,7 @@ export const TASK_LIST_EMPTY_STATES = {
 } as const;
 
 export const TASK_LIST_CLASSES = {
-  list: "m-2 flex flex-col gap-3",
+  list: "mx-2 mb-3 mt-1 flex flex-col gap-3 md:mb-4 xl:mb-6",
   skeletonRow:
     "flex items-center gap-4 rounded-lg border border-border bg-muted/40 px-3 py-3",
   skeletonBlock: "bg-muted-foreground/20",

@@ -21,8 +21,6 @@ export const AUTO_SAVE_STATUS = {
   ERROR: "error",
 };
 
-export const JOURNAL_CONTENT_TRUNCATION_LENGTH = 180;
-
 export const JOURNAL_LIST_PAGE_SIZE = 10;
 
 /** Server default when `title` is empty; treat as blank in the editor title field. */

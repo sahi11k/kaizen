@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
 import { Link } from "react-router";
-import { ExternalLink } from "lucide-react";
 import { useAuthStore } from "@/features/auth";
 import { useBookmarkedQuery } from "@/features/bookmarked";
 import { Card, Skeleton } from "@/shared/ui";
@@ -105,13 +104,14 @@ const ReadingSnapshotWidget = () => {
                     href={highlightItem.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 truncate underline hover:text-primary"
+                    className="truncate underline !text-primary"
                   >
-                    <span className="truncate">{highlightItem.title}</span>
-                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                    {highlightItem.title}
                   </a>
                 ) : (
-                  <span className="truncate">{highlightItem.title}</span>
+                  <span className="truncate !text-primary">
+                    {highlightItem.title}
+                  </span>
                 )}
                 {highlightItem.days !== null && (
                   <span className="font-sans text-xs text-subtle-foreground shrink-0">

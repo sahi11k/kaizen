@@ -17,9 +17,9 @@ const TimerTabs = ({
     onValueChange={onTabChange}
     className="flex min-h-0 flex-1 flex-col"
   >
-    <TabsList className="h-14 !w-full shrink-0 border-b border-overlay-field-border">
+    <TabsList className="h-12 sm:h-14 !w-full shrink-0 border-b border-overlay-field-border">
       {POMODORO_TABS.map((tab) => (
-        <TabsTrigger key={tab.key} value={tab.key} className="cursor-pointer">
+        <TabsTrigger key={tab.key} value={tab.key} className="cursor-pointer !text-sm sm:!text-base">
           {tab.label}
         </TabsTrigger>
       ))}
@@ -29,7 +29,7 @@ const TimerTabs = ({
       <TabsContent
         key={tab.key}
         value={tab.key}
-        className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 md:gap-6 xl:gap-8"
+        className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 py-6 sm:py-8 md:gap-6 lg:py-0 xl:gap-8"
       >
         <TimerDisplay
           timerValue={timerValue}

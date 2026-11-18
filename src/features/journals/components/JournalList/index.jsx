@@ -2,10 +2,9 @@ import React from "react";
 import JournalListItem from "./ListItem";
 import JournalListSkeleton from "./JournalListSkeleton";
 import useJournalList from "@/features/journals/hooks/useJournalList";
-import { SquarePen } from "lucide-react";
+import { Plus } from "lucide-react";
 import {
   Button,
-  FloatingButton,
   EmptyState,
   EmptyStateAction,
   PageHeader,
@@ -15,7 +14,7 @@ const JournalList = ({
   showHeader,
   headerTitle = "Journals",
   headerButtonLabel = "New",
-  headerButtonIcon = <SquarePen className="size-4" />,
+  headerButtonIcon = <Plus className="size-4" />,
 }) => {
   const {
     isLoading,
@@ -50,7 +49,6 @@ const JournalList = ({
             <Button
               icon={headerButtonIcon}
               onClick={newJournal}
-              className="hidden sm:inline-flex"
               size="sm"
             >
               {headerButtonLabel}
@@ -66,8 +64,9 @@ const JournalList = ({
           title="No entries"
           description="Your journal is empty. Start writing when you're ready."
           action={
-            <EmptyStateAction onClick={newJournal}>
-              New Journal
+            <EmptyStateAction onClick={newJournal} className="gap-1.5">
+              <Plus className="size-4" />
+              New
             </EmptyStateAction>
           }
           className="flex-1 flex items-center justify-center"
@@ -77,12 +76,12 @@ const JournalList = ({
       {!isEmpty && (
         <div className="flex flex-col gap-6 pb-6">
           {sections.map(({ key, label, content }) => (
-            <ul key={key} className="flex flex-col gap-3" role="listbox">
-              <h4 className="sticky top-[7.5rem] z-20 bg-background text-label py-2">
+            <section key={key} aria-label={label}>
+              <h4 className="sticky top-[6.5rem] max-[425px]:top-[8rem] md:top-[7rem] xl:top-[7.5rem] z-20 bg-background text-label !text-primary py-2 mb-1">
                 {label}
               </h4>
-              {content}
-            </ul>
+              <ul className="flex flex-col gap-3">{content}</ul>
+            </section>
           ))}
           {hasNextPage && (
             <div className="text-center">
@@ -97,13 +96,6 @@ const JournalList = ({
           )}
         </div>
       )}
-
-      <FloatingButton
-        onClick={newJournal}
-        icon={<SquarePen className="size-4" color="currentColor" />}
-        className="md:hidden"
-        label="New"
-      />
     </>
   );
 };

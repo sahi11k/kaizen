@@ -62,6 +62,10 @@
   @apply h-12 w-12 bg-muted text-muted-foreground hover:bg-muted hover:text-foreground;
 }
 
+.pomodoro-action-button {
+  @apply h-12 w-12 bg-overlay-hover text-muted-foreground hover:bg-overlay-hover hover:text-foreground;
+}
+
 .pomodoro-control-button-hidden {
   @apply hidden sm:inline-flex;
 }

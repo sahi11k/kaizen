@@ -45,6 +45,7 @@ const TaskForm = ({
             autoFocus
             value={formValues.title}
             onChange={(e) => handleChange("title", e.target.value)}
+            className="!bg-background"
           />
         </div>
 
@@ -59,6 +60,7 @@ const TaskForm = ({
             value={formValues.totalSessions}
             min={MIN_SESSIONS}
             onChange={(e) => handleChange("totalSessions", e.target.value)}
+            className="!bg-background"
           />
         </div>
 
@@ -71,7 +73,7 @@ const TaskForm = ({
             placeholder="Write more details about the task..."
             value={formValues.description}
             onChange={(e) => handleChange("description", e.target.value)}
-            className="max-h-80"
+            className="max-h-80 !bg-background"
           ></Textarea>
         </div>
       </form>

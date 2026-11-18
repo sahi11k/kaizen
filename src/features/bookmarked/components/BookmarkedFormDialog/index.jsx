@@ -126,6 +126,7 @@ export default function BookmarkedFormDialog({
           value={form.title}
           onChange={set("title")}
           required
+          className="!bg-background"
         />
 
         <Input
@@ -133,6 +134,7 @@ export default function BookmarkedFormDialog({
           value={form.url}
           onChange={set("url")}
           type="url"
+          className="!bg-background"
         />
 
         {form.type === "book" && (
@@ -140,6 +142,7 @@ export default function BookmarkedFormDialog({
             placeholder="Author"
             value={form.author}
             onChange={set("author")}
+            className="!bg-background"
           />
         )}
 
@@ -148,12 +151,14 @@ export default function BookmarkedFormDialog({
           value={form.notes}
           onChange={set("notes")}
           rows={3}
+          className="!bg-background"
         />
 
         <Input
           placeholder="Tags (comma-separated)"
           value={form.tags}
           onChange={set("tags")}
+          className="!bg-background"
         />
 
         <Select
@@ -161,6 +166,7 @@ export default function BookmarkedFormDialog({
           onChange={set("status")}
           options={STATUS_OPTIONS}
           placeholder="Status"
+          className="!bg-background"
         />
       </form>
     </ResponsiveDialog>

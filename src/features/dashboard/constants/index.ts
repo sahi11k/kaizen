@@ -6,11 +6,6 @@ import BookmarkOutline from "@/assets/icons/bookmark-outline.svg?react";
 import BookmarkFilled from "@/assets/icons/bookmark-filled.svg?react";
 import GridOutline from "@/assets/icons/grid-outline.svg?react";
 import GridFilled from "@/assets/icons/grid-filled.svg?react";
-export const TCP_CHART = {
-  RING_WIDTH_PX: 16,
-  SIZE_MOBILE: 216,
-  SIZE_DESKTOP: 280,
-} as const;
 
 export const SIDEBAR_LINKS = [
   {

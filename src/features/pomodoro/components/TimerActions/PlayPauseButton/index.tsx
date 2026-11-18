@@ -15,7 +15,7 @@ const PlayPauseButton = ({
   timerStarted,
   onStart,
   onStop,
-  className = "h-16 w-16 sm:w-32 text-base",
+  className = "!h-14 !w-14 !px-0 !text-base sm:!w-28",
   showLabel = true,
 }: PlayPauseButtonProps): React.ReactNode => (
   <Button

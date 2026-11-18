@@ -19,6 +19,7 @@ export function MobileMainToolbar({
       {!isJournal && <Spacer />}
 
       <ToolbarMainGroups
+        isJournal={isJournal}
         highlightSlot={
           <ColorHighlightPopoverButton onClick={onHighlighterClick} />
         }

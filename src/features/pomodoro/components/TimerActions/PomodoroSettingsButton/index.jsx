@@ -203,7 +203,7 @@ const PomodoroSettingsButton = () => {
         <span className="inline-flex">
           <Button
             icon={<Settings />}
-            className="pomodoro-control-button"
+            className="pomodoro-action-button !size-11 sm:!size-12"
             variant="icon"
             aria-label="Pomodoro Settings"
             disabled={timerStarted}

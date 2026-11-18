@@ -11,6 +11,7 @@ export function DesktopMainToolbar({ showThemeToggle, isJournal }) {
   return (
     <>
       <ToolbarMainGroups
+        isJournal={isJournal}
         highlightSlot={<ColorHighlightPopover />}
         linkSlot={<LinkPopover />}
       />

@@ -49,7 +49,7 @@ const SessionBadge = ({
         {isPomodoro ? (
           <>
             {sessionProgress && (
-              <span className={cn("text-label shrink-0", textClassName)}>
+              <span className={cn("text-label shrink-0 sm:!text-xs", textClassName)}>
                 {sessionProgress.isExtraSession
                   ? `Extra session ${sessionProgress.nextSession}`
                   : `Session ${sessionProgress.currentSession} of ${sessionProgress.totalSessions}`}
@@ -57,7 +57,7 @@ const SessionBadge = ({
             )}
             <span
               className={cn(
-                "whitespace-nowrap overflow-hidden text-ellipsis text-xs",
+                "whitespace-nowrap overflow-hidden text-ellipsis text-[10px] sm:text-xs",
                 textClassName,
               )}
             >

@@ -11,14 +11,20 @@ const TaskListHeader = ({
   onFilterChange,
   onAddTask,
 }) => (
-  <div className="mt-4 hidden items-center justify-between px-4 pb-2 md:flex xl:mt-6 xl:px-6 xl:pb-4">
+  <div className="flex items-center justify-between px-4 pb-2 pt-3 md:pt-4 xl:px-6 xl:pt-6">
     <span className="heading-6">{title}</span>
     <div className="flex items-center gap-2">
       <TaskFilterControl
         selectedFilter={selectedFilter}
         onFilterChange={onFilterChange}
+        className="!size-8 sm:!size-9 lg:!size-10"
       />
-      <Button icon={<Plus className="size-4" />} size="sm" onClick={onAddTask}>
+      <Button
+        icon={<Plus className="size-4" />}
+        size="sm"
+        className="!h-8 sm:!h-9"
+        onClick={onAddTask}
+      >
         New
       </Button>
     </div>

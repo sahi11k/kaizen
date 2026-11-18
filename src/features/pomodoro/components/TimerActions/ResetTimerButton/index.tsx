@@ -16,7 +16,7 @@ const ResetTimer = ({
     <Button
       onClick={onClick}
       icon={<TimerResetIcon />}
-      className="pomodoro-control-button"
+      className="pomodoro-action-button !size-11 sm:!size-12"
       variant="icon"
       aria-label="Reset Timer"
     />

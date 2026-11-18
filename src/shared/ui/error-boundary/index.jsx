@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouteError } from "react-router";
 import * as Sentry from "@sentry/react";
+import { RotateCw } from "lucide-react";
 import { EmptyState, EmptyStateAction } from "@/shared/ui";
 
 const reportError = (error, errorInfo) => {
@@ -29,7 +30,11 @@ const ErrorFallback = () => {
         title="Something went wrong"
         description="Try refreshing the page. If it keeps happening, the issue is on our end."
         action={
-          <EmptyStateAction onClick={() => window.location.reload()}>
+          <EmptyStateAction
+            onClick={() => window.location.reload()}
+            className="gap-2"
+          >
+            <RotateCw size={14} aria-hidden="true" />
             Refresh
           </EmptyStateAction>
         }

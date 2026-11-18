@@ -1,13 +1,19 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
 import { Plus } from "lucide-react";
 
 import TaskForm from "@/features/pomodoro/components/TaskForm";
 import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
 import useTaskList from "@/features/pomodoro/hooks/useTaskList";
-import { EmptyState, EmptyStateAction, FloatingButton } from "@/shared/ui";
+import { EmptyState, EmptyStateAction } from "@/shared/ui";
 
 import TaskDeleteDialog from "./TaskDeleteDialog";
-import TaskFilterControl from "./TaskFilterControl";
 import TaskListHeader from "./TaskListHeader";
 import TaskListSkeleton from "./TaskListSkeleton";
 import TaskSection from "./TaskSection";
@@ -53,6 +59,23 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
 
   const isPendingFilter = selectedFilter === TASK_FILTERS.PENDING;
 
+  // When a task is added (new tasks are ranked last), scroll the list to the bottom
+  // so the new task is visible. Skips the first load and any non-add change.
+  const listRef = useRef(null);
+  const prevTaskCount = useRef(null);
+  useEffect(() => {
+    if (isLoading) return;
+    const count = tasks.length;
+    const prev = prevTaskCount.current;
+    prevTaskCount.current = count;
+    if (prev === null || count <= prev) return;
+    const frame = requestAnimationFrame(() => {
+      const el = listRef.current;
+      if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [isLoading, tasks.length]);
+
   const openTaskForm = useCallback(() => {
     setShowModal(true);
   }, [setShowModal]);
@@ -68,7 +91,7 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
         />
       )}
 
-      <div className="h-full min-h-0">
+      <div className="flex min-h-0 flex-1 flex-col">
         {isLoading && isEmpty && <TaskListSkeleton />}
 
         {isEmpty && !isLoading && (
@@ -76,21 +99,13 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
             title="No tasks"
             description="Add something you want to get done."
             action={
-              <EmptyStateAction onClick={openTaskForm}>
-                Add Task
+              <EmptyStateAction onClick={openTaskForm} className="gap-1.5">
+                <Plus className="size-4" />
+                New
               </EmptyStateAction>
             }
             className="flex items-center justify-center"
           />
-        )}
-
-        {!isEmpty && (
-          <div className="flex justify-end px-3 pb-2 pt-2 md:hidden">
-            <TaskFilterControl
-              selectedFilter={selectedFilter}
-              onFilterChange={setSelectedFilter}
-            />
-          </div>
         )}
 
         {!isEmpty &&
@@ -105,7 +120,7 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
           )}
 
         {!isEmpty && filteredTasks.length > 0 && (
-          <div className="h-full min-h-0 overflow-y-auto">
+          <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto">
             <TaskSection
               tasks={filteredTasks}
               sortable={isPendingFilter}
@@ -119,13 +134,6 @@ const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
           </div>
         )}
       </div>
-
-      <FloatingButton
-        onClick={openTaskForm}
-        className="md:hidden"
-        icon={<Plus className="size-4" />}
-        label="New"
-      />
 
       <TaskForm
         setFormValues={setFormValues}

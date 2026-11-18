@@ -24,7 +24,7 @@ const TimerControlsFocusMode = ({
       onClick={handleExit}
       variant="icon"
       icon={<Minimize />}
-      className="pomodoro-control-button"
+      className="pomodoro-action-button"
       aria-label="Minimize"
     />
     <PlayPauseButton

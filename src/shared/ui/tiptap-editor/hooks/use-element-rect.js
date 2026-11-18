@@ -126,10 +126,3 @@ export function useBodyRect(options = {}) {
     element: isClientSide() ? document.body : null,
   });
 }
-
-/**
- * Convenience hook for tracking a ref element's rect
- */
-export function useRefRect(ref, options = {}) {
-  return useElementRect({ ...options, element: ref });
-}

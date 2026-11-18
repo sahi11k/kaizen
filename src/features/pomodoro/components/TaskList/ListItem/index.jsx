@@ -7,7 +7,7 @@ import { cn } from "@/shared/lib/utils";
 import { getTaskSessionSummary } from "../utils";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-overlay-field-border hover:bg-muted";
+  "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-overlay-field-border hover:bg-overlay-hover";
 const activeClass = "border-l-2 border-l-primary rounded-l-none";
 const completedClass = "border-overlay-field-border opacity-55 hover:opacity-75";
 
@@ -79,18 +79,18 @@ const TaskItem = ({
       <div className="flex flex-col flex-1 w-0">
         <div
           className={cn(
-            "body-base !text-foreground truncate",
+            "body-base !text-sm sm:!text-base !text-foreground truncate",
             task.completed && "line-through",
           )}
         >
           {task.title}
         </div>
-        <div className="body-description">
+        <div className="body-description !text-xs sm:!text-sm">
           Sessions: <span>{sessionSummary}</span>
         </div>
       </div>
       <MoreOptions
-        triggerClassName="!p-0 w-0 overflow-hidden group-hover:w-auto data-[state=open]:w-auto hover:bg-transparent"
+        triggerClassName="shrink-0 hover:bg-transparent md:!p-0 md:w-0 md:overflow-hidden md:group-hover:w-auto md:data-[state=open]:w-auto"
         contentClassName="border-border"
         align="end"
         items={[

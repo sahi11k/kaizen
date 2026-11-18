@@ -16,7 +16,52 @@ import { UndoRedoButton } from "@/shared/ui/tiptap-editor/tiptap-ui/undo-redo-bu
  * `highlightSlot`/`linkSlot` are injected so each variant can render its
  * own highlight/link control (popover on desktop, button on mobile).
  */
-export function ToolbarMainGroups({ highlightSlot, linkSlot }) {
+export function ToolbarMainGroups({ highlightSlot, linkSlot, isJournal }) {
+  if (isJournal) {
+    // Journal: most-used actions first (the phone toolbar is a swipeable row).
+    return (
+      <>
+        <ToolbarGroup>
+          <HeadingDropdownMenu modal={false} levels={[1, 2, 3, 4]} />
+          <ListDropdownMenu
+            modal={false}
+            types={["bulletList", "orderedList", "taskList"]}
+          />
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <MarkButton type="bold" />
+          <MarkButton type="italic" />
+          {linkSlot}
+          {highlightSlot}
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <UndoRedoButton action="undo" />
+          <UndoRedoButton action="redo" />
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <MarkButton type="underline" />
+          <MarkButton type="strike" />
+          <MarkButton type="code" />
+          <BlockquoteButton />
+          <CodeBlockButton />
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <ImageUploadButton text="Add" />
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <TextAlignButton align="left" />
+          <TextAlignButton align="center" />
+          <TextAlignButton align="right" />
+          <TextAlignButton align="justify" />
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <MarkButton type="superscript" />
+          <MarkButton type="subscript" />
+        </ToolbarGroup>
+      </>
+    );
+  }
+
   return (
     <>
       <ToolbarGroup>

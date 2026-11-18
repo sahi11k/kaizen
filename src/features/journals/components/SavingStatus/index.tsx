@@ -18,29 +18,29 @@ type SavingStatusProps = {
 const STATUS_UI: Partial<
   Record<
     AutoSaveStatusValue,
-    { icon: ReactNode; getText: (updatedAt?: string) => string | null }
+    {
+      icon: ReactNode;
+      getText: (updatedAt?: string) => string | null;
+      getShortText?: (updatedAt?: string) => string | null;
+    }
   >
 > = {
   [AUTO_SAVE_STATUS.ERROR]: {
-    icon: (
-      <CloudAlertIcon className="size-4 text-muted-foreground cursor-pointer" />
-    ),
+    icon: <CloudAlertIcon className="size-4 text-muted-foreground" />,
     getText: () => "Failed to save",
   },
   [AUTO_SAVE_STATUS.SAVING]: {
-    icon: (
-      <RefreshCcw className="size-4 text-muted-foreground cursor-pointer animate-spin" />
-    ),
+    icon: <RefreshCcw className="size-4 text-muted-foreground animate-spin" />,
     getText: () => "Saving",
   },
   [AUTO_SAVE_STATUS.SAVED]: {
-    icon: (
-      <CloudCheck className="size-4 text-muted-foreground cursor-pointer" />
-    ),
+    icon: <CloudCheck className="size-4 text-muted-foreground" />,
     getText: (updatedAt) =>
       updatedAt
         ? `Last saved at ${dayjs(updatedAt).format("MMM D, YYYY h:mm A")}`
         : null,
+    getShortText: (updatedAt) =>
+      updatedAt ? `Saved ${dayjs(updatedAt).format("h:mm A")}` : null,
   },
 };
 
@@ -50,16 +50,18 @@ const SavingStatus = ({ status, updatedAt }: SavingStatusProps) => {
 
   const text = config.getText(updatedAt);
   if (text == null) return null;
+  const shortText = config.getShortText?.(updatedAt) ?? text;
 
   return (
     <div
       className={cn(
-        "flex self-start md:self-center items-center gap-2",
+        "flex min-w-0 items-center gap-2",
         JOURNAL_META_ROW_TEXT_CLASS,
       )}
     >
       {config.icon}
-      <span>{text}</span>
+      <span className="sm:hidden">{shortText}</span>
+      <span className="hidden sm:inline">{text}</span>
     </div>
   );
 };

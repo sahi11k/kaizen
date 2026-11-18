@@ -2,7 +2,7 @@ import TaskList from "@/features/pomodoro/components/TaskList";
 import TimerContainer from "@/features/pomodoro/components/TimerContainer";
 
 const layoutClass =
-  "hidden h-full min-h-0 w-full max-w-[1800px] grid-cols-[minmax(0,1fr)_22rem] gap-5 overflow-hidden p-5 md:mx-auto md:grid xl:grid-cols-[minmax(0,1fr)_26rem] xl:gap-6 xl:p-6";
+  "hidden min-h-0 flex-1 grid-cols-[minmax(0,1fr)_22rem] gap-6 overflow-hidden pb-6 lg:grid xl:grid-cols-[minmax(0,1fr)_26rem]";
 
 const PomodoroDesktop = () => {
   return (

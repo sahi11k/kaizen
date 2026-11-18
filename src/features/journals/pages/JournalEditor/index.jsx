@@ -55,11 +55,12 @@ const JournalEditorPage = () => {
   if (detailNotFound) {
     return (
       <EmptyState
+        code="404"
         title="Journal not found"
         description="This journal may have been deleted or is no longer available."
         action={
           <EmptyStateAction to={JOURNALS_ROUTE}>
-            ← Back to journals
+            Back to journals
           </EmptyStateAction>
         }
         className="flex justify-center items-center h-full"

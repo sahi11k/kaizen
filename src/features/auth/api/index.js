@@ -117,20 +117,6 @@ export async function signOut() {
   return res;
 }
 
-export async function getUserSession() {
-  let res = await supabase.auth.getSession();
-  const status = res.error ? 400 : 200;
-  res = parseApiResponse({
-    response: {
-      ...res,
-      status,
-    },
-    errorMessage: res.error?.message,
-    successMessage: null,
-  });
-  return res;
-}
-
 export async function resetPassword(payload) {
   let res = await supabase.auth.resetPasswordForEmail(payload.email, {
     redirectTo: `${APP_URL}auth/update-password`,

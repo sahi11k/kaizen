@@ -17,7 +17,7 @@ const PipButton = (): React.ReactNode => (
     <Button
       onClick={openPipWindow}
       icon={<PictureInPicture2 />}
-      className="pomodoro-control-button pomodoro-control-button-hidden"
+      className="pomodoro-action-button !size-11 sm:!size-12 pomodoro-control-button-hidden"
       variant="icon"
       aria-label="Floating Timer"
       disabled={!supported}

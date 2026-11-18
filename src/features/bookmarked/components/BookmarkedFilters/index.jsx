@@ -41,7 +41,7 @@ export default function BookmarkedFilters({
   ];
 
   return (
-    <div className="sticky top-[6.25rem] md:top-[7.5rem] z-30 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5 flex flex-wrap items-center gap-2 relative">
+    <div className="sticky top-[6.5rem] max-[425px]:top-[8rem] md:top-[7rem] xl:top-[7.5rem] z-30 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5 flex flex-wrap items-center gap-2 relative">
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -58,7 +58,7 @@ export default function BookmarkedFilters({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="start" className="w-64 flex flex-col gap-4">
+        <PopoverContent align="start" className="w-[min(16rem,calc(100vw-3rem))] flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <p className="text-label text-muted-foreground">Type</p>
             <div className="flex flex-wrap gap-2">

@@ -15,7 +15,7 @@ const STATUS_LABEL = {
 };
 
 const base =
-  "surface-card group relative flex items-center gap-3 px-3.5 py-3 rounded-lg transition-colors hover:bg-muted";
+  "surface-card group relative flex items-center gap-3 px-3 py-3 sm:px-4 sm:py-3.5 xl:px-5 xl:py-4 rounded-lg transition-colors hover:bg-muted";
 
 function TypeIcon({ type, status }) {
   const active = status === "reading";
@@ -91,7 +91,7 @@ export default function BookmarkedItem({ item, userId, onEdit }) {
 
       <Pill
         className={cn(
-          "relative z-10",
+          "relative z-10 shrink-0",
           updateMutation.isPending && "opacity-50 pointer-events-none",
         )}
         label={STATUS_LABEL[item.status]}
@@ -100,7 +100,7 @@ export default function BookmarkedItem({ item, userId, onEdit }) {
       />
 
       <MoreOptions
-        triggerClassName="relative z-10 !p-0 w-0 overflow-hidden group-hover:w-auto data-[state=open]:w-auto hover:bg-transparent"
+        triggerClassName="relative z-10 shrink-0 hover:bg-transparent lg:!p-0 lg:w-0 lg:overflow-hidden lg:group-hover:w-auto lg:data-[state=open]:w-auto"
         contentClassName="border-border"
         align="end"
         items={[

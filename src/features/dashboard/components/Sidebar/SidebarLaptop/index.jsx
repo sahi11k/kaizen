@@ -84,7 +84,7 @@ const SidebarLaptop = () => {
 
       <aside
         className={cn(
-          "fixed top-0 left-0 z-[var(--z-sidebar)] hidden h-screen flex-col space-y-6 overflow-hidden border-r-[0.5px] border-sidebar-border bg-sidebar px-6 pt-3 font-sans text-sidebar-foreground transition-all duration-300 ease-in-out md:flex md:pt-5",
+          "fixed top-0 left-0 z-[var(--z-sidebar)] hidden h-screen flex-col space-y-6 overflow-hidden border-r-[0.5px] border-sidebar-border bg-background px-6 pt-3 font-sans text-sidebar-foreground transition-all duration-300 ease-in-out md:flex md:pt-5",
           isCollapsed ? "w-18" : "w-64",
         )}
       >

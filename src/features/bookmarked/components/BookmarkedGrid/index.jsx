@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { EmptyState, EmptyStateAction, EmptyFiltered } from "@/shared/ui";
 import BookmarkedItem from "@/features/bookmarked/components/BookmarkedItem";
 import GridSkeleton from "@/features/bookmarked/components/GridSkeleton";
@@ -27,7 +28,10 @@ export default function BookmarkedGrid({
         description="Add books or articles you want to read."
         action={
           onAdd && (
-            <EmptyStateAction onClick={onAdd}>Add Bookmark</EmptyStateAction>
+            <EmptyStateAction onClick={onAdd} className="gap-1.5">
+              <Plus className="size-4" />
+              Add
+            </EmptyStateAction>
           )
         }
       />
@@ -40,21 +44,21 @@ export default function BookmarkedGrid({
         const group = items.filter((item) => item.status === status);
         if (!group.length) return null;
         return (
-          <ul key={status} className="flex flex-col gap-3" role="listbox">
-            <h4 className="sticky top-[10.5rem] z-20 bg-background text-label py-2">
+          <section key={status} aria-label={label}>
+            <h4 className="sticky top-[9.25rem] max-[425px]:top-[10.75rem] md:top-[10rem] xl:top-[10.5rem] z-20 bg-background text-label !text-primary py-2 mb-1">
               {label}
             </h4>
-            {group.map((item) => (
-              <>
+            <ul className="flex flex-col gap-3">
+              {group.map((item) => (
                 <BookmarkedItem
                   key={item.id}
                   item={item}
                   userId={userId}
                   onEdit={onEdit}
                 />
-              </>
-            ))}
-          </ul>
+              ))}
+            </ul>
+          </section>
         );
       })}
     </div>
