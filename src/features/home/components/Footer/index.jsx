@@ -3,38 +3,45 @@ import { FOOTER_LINKS } from "@/features/home/constants";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
 import { Link } from "react-router";
 import { Button } from "@/shared/ui";
+import { ThemeToggle } from "@/features/theme";
 
 const FooterMain = () => {
   return (
-    <footer className="px-6 pt-16  md:pt-24 ">
-      <div className="flex flex-col xl:max-w-7xl mx-auto">
-        <div className="flex flex-col items-center text-center gap-6 pb-16 md:pb-20">
-          <h2 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight">
-            Ready to level up?
-          </h2>
-          <p className="text-muted-foreground text-base md:text-lg max-w-md">
-            Build better habits, stay focused, and reflect on your growth — all
-            in one place.
+    <footer className="pt-16 xl:pt-24">
+      <div className="flex flex-col">
+        <div className="max-w-7xl mx-auto w-full flex flex-col items-center text-center gap-6 pb-16 xl:pb-24 px-6 xl:px-0">
+          <h1 className="heading-1">
+            Start small,
+            <br />
+            <span className="italic text-primary"> Stay consistent</span>
+          </h1>
+          <p className="text-muted-foreground text-base max-w-md">
+            That&apos;s all Kaizen asks.
           </p>
           <Link to={DEFAULT_NAV_ROUTE}>
-            <Button
-              variant="default"
-              className="shadow-none mt-2 px-8 h-12 text-base"
-            >
+            <Button variant="default" className="shadow-none mt-2">
               Get Started
             </Button>
           </Link>
         </div>
-        <div className="flex gap-4 flex-col md:flex-row justify-between items-center border-t border-border py-6 w-full">
-          <div className="flex gap-6 text-text-muted">
-            {FOOTER_LINKS.map(({ label, href, Icon }) => (
-              <FooterLink key={label} href={href}>
-                <Icon />
-              </FooterLink>
-            ))}
-          </div>
-          <div className="body-description text-center">
-            &copy; {new Date().getFullYear()} Kaizen, All Rights Reserved.
+        <div className="border-t border-border/50">
+          <div className="flex gap-6 md:gap-4 flex-col md:flex-row justify-between items-center px-6 py-6 xl:px-0 w-full xl:max-w-7xl mx-auto">
+            <div className="flex items-center gap-4 md:gap-6 !text-subtle-foreground">
+              {FOOTER_LINKS.map(({ label, href, Icon }) => (
+                <FooterLink key={label} href={href}>
+                  <Icon className="w-5 h-5" strokeWidth={1} />
+                </FooterLink>
+              ))}
+              <ThemeToggle
+                tooltipSide="top"
+                tooltipLevel="footer"
+                strokeWidth={1}
+                className="!w-5 !h-5 !p-0 text-subtle-foreground hover:!text-foreground hover:!bg-transparent"
+              />
+            </div>
+            <div className="heading-6 tracking-[2px] !text-sm md:tracking-[4px] md:!text-lg !text-subtle-foreground">
+              KAIZEN &copy; {new Date().getUTCFullYear()}
+            </div>
           </div>
         </div>
       </div>
@@ -48,7 +55,7 @@ const FooterLink = ({ href, children }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-5 h-5 xl:w-6 xl:h-6 text-muted-foreground hover:text-foreground transition-colors"
+      className="text-subtle-foreground hover:text-foreground transition-colors"
     >
       {children}
     </a>

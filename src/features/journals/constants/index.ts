@@ -1,9 +1,9 @@
 export const JOURNAL_DATE_FORMAT = "YYYY-MM-DD";
 export const DATEPICKER_DATE_FORMAT = "dddd, MMMM D, YYYY";
 
-/** Date row + save status: same font size on mobile and md+ (overrides DatePicker Button defaults). */
+/** Date row + save status: matches PageHeader subtitle styling (body-base !text-sm). */
 export const JOURNAL_META_ROW_TEXT_CLASS =
-  "text-xs md:text-sm font-medium leading-snug text-muted-foreground";
+  "body-base !text-sm";
 
 export const DEFAULT_JOURNAL_STATE = {
   content: "",
@@ -21,7 +21,7 @@ export const AUTO_SAVE_STATUS = {
   ERROR: "error",
 };
 
-export const JOURNAL_CONTENT_TRUNCATION_LENGTH = 180;
+export const JOURNAL_LIST_PAGE_SIZE = 10;
 
 /** Server default when `title` is empty; treat as blank in the editor title field. */
 export const JOURNAL_DEFAULT_BACKEND_TITLE = "Untitled Journal";

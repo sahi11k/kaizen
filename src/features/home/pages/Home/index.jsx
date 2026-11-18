@@ -1,18 +1,21 @@
 import React from "react";
 import Banner from "@/features/home/components/Banner";
 import About from "@/features/home/components/About";
-import Quote from "@/features/home/components/Quote";
+import Philosophy from "@/features/home/components/Philosophy";
+import { Separator } from "@/shared/ui";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
 
 const Home = () => {
   useDocumentTitle(BROWSER_TAB_TITLES.HOME);
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col px-6 xl:px-0">
       <Banner />
+      <Separator className="max-w-6xl" />
       <About />
-      <Quote />
-      {/* <Testamonials /> */}
+      <Separator className="max-w-6xl" />
+      <Philosophy />
+      <Separator className="max-w-6xl" />
     </div>
   );
 };

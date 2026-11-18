@@ -1,7 +1,8 @@
 import React from "react";
 import { useRouteError } from "react-router";
 import * as Sentry from "@sentry/react";
-import ErrorBoundaryIllustration from "@/assets/illustrations/errorBoundary.svg?react";
+import { RotateCw } from "lucide-react";
+import { EmptyState, EmptyStateAction } from "@/shared/ui";
 
 const reportError = (error, errorInfo) => {
   if (error) {
@@ -24,20 +25,21 @@ const reportError = (error, errorInfo) => {
 const ErrorFallback = () => {
   return (
     <main className="min-h-screen w-full bg-background text-foreground">
-      <div className="flex min-h-screen w-full items-center justify-center px-5 py-10">
-        <div className="flex w-full max-w-3xl flex-col items-center justify-center gap-6">
-          <div className="w-96 max-w-full md:w-[38rem]">
-            <ErrorBoundaryIllustration />
-          </div>
-
-          <div className="flex flex-col items-center justify-center">
-            <h2 className="heading-2 text-center">Something went wrong</h2>
-            <p className="body-description max-w-lg text-center">
-              Refresh this tab, or try again later if the issue continues.
-            </p>
-          </div>
-        </div>
-      </div>
+      <EmptyState
+        code="500"
+        title="Something went wrong"
+        description="Try refreshing the page. If it keeps happening, the issue is on our end."
+        action={
+          <EmptyStateAction
+            onClick={() => window.location.reload()}
+            className="gap-2"
+          >
+            <RotateCw size={14} aria-hidden="true" />
+            Refresh
+          </EmptyStateAction>
+        }
+        className="flex items-center justify-center"
+      />
     </main>
   );
 };

@@ -22,8 +22,8 @@ const iconVariants = cva("text-primary", {
   variants: {
     size: {
       sm: "w-4 h-4 md:w-5 md:h-5 xl:w-6 xl:h-6",
-      md: "w-6 h-6 md:w-7 md:h-7 xl:w-8 xl:h-8",
-      lg: "w-8 h-8 md:w-9 xl:w-10",
+      md: "w-5 h-5 md:w-6 md:h-6 xl:w-7 xl:h-7",
+      lg: "w-7 h-7 md:w-8 xl:w-9",
     },
   },
   defaultVariants: {
@@ -31,12 +31,12 @@ const iconVariants = cva("text-primary", {
   },
 });
 
-const textVariants = cva("text-foreground font-semibold leading-none", {
+const textVariants = cva("heading-6 text-primary uppercase tracking-[4px]", {
   variants: {
     size: {
-      sm: "text-sm md:text-base xl:text-lg",
-      md: "text-lg lg:text-xl xl:text-2xl",
-      lg: "text-2xl xl:text-3xl",
+      sm: "",
+      md: "",
+      lg: "",
     },
   },
   defaultVariants: {
@@ -50,13 +50,18 @@ const Logo = ({
   showText = true,
   link = false,
   iconClassName = "",
+  textClassName = "",
 }) => {
   const content = (
     <Button variant="link" className={cn(logoVariants({ size }), className)}>
       <span className={cn(iconVariants({ size }), iconClassName)}>
         <LogoIcon className="!w-full !h-full fill-current" />
       </span>
-      {showText && <span className={cn(textVariants({ size }))}>Kaizen</span>}
+      {showText && (
+        <span className={cn(textVariants({ size }), textClassName)}>
+          Kaizen
+        </span>
+      )}
     </Button>
   );
 

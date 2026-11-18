@@ -1,34 +1,70 @@
 import React from "react";
 import { Link } from "react-router";
-import { Button } from "@/shared/ui";
+import { Button, Reveal } from "@/shared/ui";
 import { DEFAULT_NAV_ROUTE } from "@/shared/constants";
-import BannerIllustration from "@/assets/illustrations/banner.svg?react";
+import dashboardLight from "@/assets/images/dashboard-light.png";
+import dashboardDark from "@/assets/images/dashboard-dark.png";
 
 const Banner = () => {
   return (
-    <div className="flex flex-col-reverse lg:flex-row items-center justify-center max-w-8xl mx-auto gap-4 lg:gap-12 xl:gap-24  px-6 lg:px-8 xl:px-16 lg:py-32">
-      <div className="flex-1 flex flex-col justify-center gap-6 lg:gap-12">
-        <h1 className="heading-1 text-center lg:text-left">
-          Your journey to <br className="hidden lg:block" />
-          <span className="text-primary/50 dark:text-primary/90">
-            self-mastery
-          </span>
-          <br />
-          starts here
-        </h1>
-        <p className="body-base md:max-w-2xl  text-center lg:text-left">
-          Transform your life one small step at a time. Build better habits,
-          track your progress, and unlock your full potential through proven
-          productivity techniques.
-        </p>
-        <Link to={DEFAULT_NAV_ROUTE} className="mx-auto lg:mx-0 lg:-mt-3">
-          <Button className="shadow-none" size="lg">
-            Start Your Journey
-          </Button>
-        </Link>
-      </div>
-      <div className="h-60 w-60 md:h-80 md:w-80 lg:h-110 lg:w-110 xl:h-130 xl:w-130 dark:opacity-85">
-        <BannerIllustration />
+    <div className="w-full max-w-7xl mx-auto h-screen flex items-center justify-center">
+      <div className="flex h-[70%] gap-16 items-center justify-start xl:justify-center w-full">
+        <div className="flex-2 flex flex-col gap-6">
+          <Reveal delay={0}>
+            <div className="flex flex-col gap-6">
+              <span className="text-label inline-flex w-fit items-center gap-2 rounded-lg border border-border px-4 py-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                Personal Productivity
+              </span>
+              <h1 className="heading-1">
+                One place to <br className="hidden lg:block" /> focus, <br />
+                <span className="italic text-primary">
+                  reflect and <br className="hidden lg:block" /> grow
+                </span>
+              </h1>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <p className="body-base max-w-xl text-muted-foreground">
+              Kaizen ties together your focus sessions, journal, reading list,
+              and task tracking into a single quiet view — so you can see how
+              your time is actually being spent.
+            </p>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <div className="flex items-center gap-3 lg:gap-6 mt-2">
+              <Link to={DEFAULT_NAV_ROUTE}>
+                <Button className="shadow-none">Get started</Button>
+              </Link>
+              <a href="#about">
+                <Button variant="outline" className="shadow-none">
+                  See what&apos;s inside
+                </Button>
+              </a>
+            </div>
+          </Reveal>
+        </div>
+        <div className="hidden lg:block flex-3">
+          <Reveal delay={150} className="relative">
+            <div
+              aria-hidden="true"
+              className="absolute -inset-x-4 -inset-y-6 -z-10 rounded-full bg-primary/5 blur-[80px]"
+            />
+            <div className="rounded-lg border border-border overflow-hidden  p-4 pb-6 bg-background">
+              <img
+                src={dashboardLight}
+                alt="Kaizen dashboard"
+                className="block dark:hidden w-full h-auto"
+              />
+              <img
+                src={dashboardDark}
+                alt="Kaizen dashboard"
+                className="hidden dark:block w-full h-auto"
+              />
+            </div>
+          </Reveal>
+        </div>
       </div>
     </div>
   );

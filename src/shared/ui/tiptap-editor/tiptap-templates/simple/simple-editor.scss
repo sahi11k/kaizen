@@ -6,7 +6,6 @@
   --tt-toolbar-height: 44px;
   --tt-theme-text: var(--foreground);
   color: var(--foreground);
-  font-family: var(--font-sans), "Manrope", system-ui, sans-serif;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -14,86 +13,111 @@
   max-width: 100%;
   min-height: 0;
   min-width: 0;
-  padding-inline: 2rem;
   overflow-x: hidden;
-  overflow-y: visible;
 }
 
-.tiptap.ProseMirror {
-  font-family: inherit;
-}
-
-/* Journal: toolbar controls flush left, full border (demo template keeps centered flex spacers). */
+/* Journal: toolbar sticks under the header on every device, sidebar-colored, wraps onto extra lines (never scrolls sideways). */
 .simple-editor-wrapper--journal {
-  gap: 0.5rem;
   flex: 0 0 auto;
+  padding-inline: 0;
+  overflow: visible;
+  --tt-toolbar-bg-color: var(--sidebar);
+  --tt-toolbar-border-color: var(--sidebar-border);
+  /* Matches the sticky journal header height (title size steps up at md/xl). */
+  --journal-toolbar-sticky-top: 7rem;
+
+  @media (min-width: 768px) {
+    --journal-toolbar-sticky-top: 7.5rem;
+  }
+
+  @media (min-width: 1280px) {
+    --journal-toolbar-sticky-top: 8rem;
+  }
+
+  .simple-editor-journal-toolbar-shell {
+    position: sticky;
+    top: var(--journal-toolbar-sticky-top, 7rem);
+    /* Below the sticky journal header (z-30) so content/toolbar slide under it. */
+    z-index: 20;
+    background: var(--background);
+    padding-bottom: 6px;
+    /* Span the page gutters (JournalEditor container is px-6 / xl:px-12) so the shell's background
+       hides content such as a selected image outline that scrolls behind the toolbar. */
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+    width: auto;
+
+    @media (min-width: 1280px) {
+      margin-inline: -3rem;
+      padding-inline: 3rem;
+    }
+  }
 
   .tiptap-toolbar[data-variant="fixed"] {
-    align-self: flex-start;
-    width: auto;
+    position: relative;
+    top: auto;
+    z-index: 1;
+    align-self: stretch;
+    width: 100%;
     max-width: 100%;
-    justify-content: flex-start;
+    height: auto;
     box-sizing: border-box;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem 0;
+    overflow: visible;
+    background: var(--tt-toolbar-bg-color);
     border: 1px solid var(--tt-toolbar-border-color);
     border-radius: var(--tt-radius-md, 0.5rem);
-    margin-block: 0.25rem;
   }
 
-  /* Tablet/desktop: keep title, status, and toolbar fixed while only the document body scrolls. */
-  @media (min-width: 768px) {
-    flex: 1 1 auto;
-    padding-inline: 0;
-    overflow: hidden;
-
-    .tiptap-toolbar[data-variant="fixed"] {
-      position: relative;
-      top: auto;
-      z-index: 9;
-      flex: 0 0 auto;
-      margin-inline: 2rem;
-      max-width: calc(100% - 4rem);
-    }
-
-    .simple-editor-content {
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-    }
+  /* Flatten groups so every button flows as one wrapping list: even gaps, rows line up. */
+  .tiptap-toolbar-group {
+    display: contents;
   }
 
-  /* Floating toolbar: anchor above bottom tab bar while JournalsMobile tab layout is active (max-width matches Tailwind md / useIsMobile). */
+  /* Hover like the sidebar items: muted by default, sidebar hover bg + hover foreground on hover.
+     Tiptap defines these variables on `.tiptap-button[data-style]` and `.dark .tiptap-button[...]`,
+     so this selector needs higher specificity to win in both themes. */
+  .tiptap-toolbar .tiptap-button,
+  .tiptap-toolbar .tiptap-button[data-style] {
+    --tt-button-default-bg-color: transparent;
+    --tt-button-default-text-color: var(--sidebar-muted-fg);
+    --tt-button-default-icon-color: var(--sidebar-muted-fg);
+    --tt-button-default-icon-sub-color: var(--sidebar-muted-fg);
+    --tt-button-default-dropdown-arrows-color: var(--sidebar-muted-fg);
+    --tt-button-hover-bg-color: var(--sidebar-hover-bg);
+    --tt-button-hover-text-color: var(--sidebar-hover-fg);
+    --tt-button-hover-icon-color: var(--sidebar-hover-fg);
+    --tt-button-hover-icon-sub-color: var(--sidebar-hover-fg);
+    --tt-button-hover-dropdown-arrows-color: var(--sidebar-hover-fg);
+  }
+
+  .tiptap-separator {
+    display: none;
+  }
+
+  /* Phones: one swipeable row (~44px) so the pinned toolbar leaves room to write; the last icon is
+     cut off at the edge as a hint to swipe. Tablet/laptop keep the wrapped layout. */
   @media (max-width: 767px) {
-    position: relative;
-
-    /* Tabs (4rem) + extra gap so the bar sits a bit higher. Keep tab height in sync with MobileTabLayout TabsList h-16. */
-    --tt-mobile-tab-clearance: calc(4rem + 0.75rem);
-    /* Equal horizontal inset from the journal column edges (narrower bar). */
-    --tt-journal-toolbar-inline: 0.75rem;
-
     .tiptap-toolbar[data-variant="fixed"] {
-      /* Fixed + bottom is set in JS; reset sticky top so the bar is not stretched top→bottom. */
-      top: auto;
-      left: var(--tt-journal-toolbar-inline);
-      right: var(--tt-journal-toolbar-inline);
-      width: auto;
-      min-width: 0;
-      max-width: none;
-      border: 1px solid var(--tt-toolbar-border-color);
-    }
-  }
-}
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      padding: 0.25rem 0.5rem;
+      gap: 0.25rem;
 
-@media (min-width: 1024px) {
-  .simple-editor-wrapper {
-    padding-inline: 4rem;
-  }
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
-  .simple-editor-wrapper--journal {
-    padding-inline: 0;
-
-    .tiptap-toolbar[data-variant="fixed"] {
-      margin-inline: 4rem;
-      max-width: calc(100% - 8rem);
+      .tiptap-button {
+        flex: 0 0 auto;
+      }
     }
   }
 }
@@ -104,49 +128,41 @@
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-height: auto;
 }
 
 .simple-editor-content .tiptap.ProseMirror.simple-editor {
   flex: 1 0 auto;
-  /* No extra horizontal inset — parent already uses px-6 lg:px-12 */
-  padding: 1.5rem 0 30vh;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-@media screen and (max-width: 480px) {
-  .simple-editor-content .tiptap.ProseMirror.simple-editor {
-    padding: 1rem 0 30vh;
-  }
-}
-
-/* Journal: tighter vertical rhythm; keep in sync with JournalEditor header `pb-[calc(...)]`. */
+/* Journal: tighter vertical rhythm; extra bottom space so the caret is never stuck at the screen edge. */
 .simple-editor-wrapper--journal
   .simple-editor-content
   .tiptap.ProseMirror.simple-editor {
-  padding: 0.625rem 0 30vh;
-}
+  padding: 0.25rem 0 30dvh;
+  min-height: 50dvh;
 
-@media (min-width: 768px) {
-  .simple-editor-wrapper--journal
-    .simple-editor-content
-    .tiptap.ProseMirror.simple-editor {
-    padding-inline: 2rem;
+  > * {
+    max-width: 100%;
   }
-}
 
-@media (min-width: 1024px) {
-  .simple-editor-wrapper--journal
-    .simple-editor-content
-    .tiptap.ProseMirror.simple-editor {
-    padding-inline: 4rem;
+  pre {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
-}
 
-@media screen and (max-width: 480px) {
-  .simple-editor-wrapper--journal
-    .simple-editor-content
-    .tiptap.ProseMirror.simple-editor {
-    padding: 0.625rem 0 30vh;
+  code {
+    white-space: break-spaces;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }

@@ -1,12 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { X, Minimize } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { X } from "lucide-react";
 import { usePomodoroTimer } from "@/features/pomodoro/hooks";
 import { Button } from "@/shared/ui";
-import {
-  ResetTimerButton,
-  PlayPauseButton,
-} from "@/features/pomodoro/components/TimerControls";
 import SessionBadge from "@/features/pomodoro/components/SessionBadge";
+import TimerProgressBar from "@/features/pomodoro/components/TimerProgressBar";
+import TimerControlsFocusMode from "@/features/pomodoro/components/TimerActions/TimerControlsFocusMode";
 
 interface FocusModeProps {
   onExit: () => void;
@@ -64,66 +62,42 @@ const FocusMode = ({ onExit }: FocusModeProps) => {
     }
   };
 
-  const progressPercent =
-    duration > 0 ? ((duration - timerValue) / duration) * 100 : 0;
-
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[var(--z-modal)] bg-background flex flex-col items-center justify-center select-none gap-20 px-8"
+      className="fixed inset-0 z-[var(--z-modal)] bg-card flex flex-col items-center justify-center select-none gap-20 px-8"
     >
       <Button
         onClick={handleExit}
         variant="icon"
         icon={<X className="size-6" />}
-        className="absolute top-6 right-6"
+        className="pomodoro-action-button absolute top-6 right-6"
         aria-label="Exit Focus Mode"
       />
 
-      <div className="flex flex-col items-center gap-16 w-full max-w-2xl">
+      <div className="flex flex-col items-center gap-16 w-xl">
         <SessionBadge
           isPomodoro={isPomodoro}
           currentTask={timerTask}
-          className="w-full text-xl"
+          className="w-full max-w-xl"
+          textClassName="!text-sm"
         />
 
-        <span className="text-[clamp(6rem,20vw,14rem)] font-semibold tabular-nums tracking-tight leading-none">
+        <div className="heading-xl !font-mono tracking-tight flex items-center justify-center">
           {minutes}
-          <span className="mx-2">:</span>
+          <span className="-mt-6">:</span>
           {seconds}
-        </span>
-
-        <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
-          <div
-            style={{
-              width: `${progressPercent}%`,
-              backgroundColor: isPomodoro
-                ? "var(--primary)"
-                : "var(--break-filled)",
-            }}
-            className="h-full rounded-full transition-[width] duration-500 ease-linear"
-          />
         </div>
-      </div>
 
-      <div className="flex items-center gap-6">
-        <Button
-          onClick={handleExit}
-          variant="icon"
-          icon={<Minimize />}
-          className="rounded-full w-12 !h-12"
-          aria-label="Minimize"
-        />
-        <PlayPauseButton
-          timerStarted={timerStarted}
-          onStart={handleToggle}
-          onStop={handleToggle}
-        />
-        <ResetTimerButton
-          onClick={() => resetTimer(duration)}
-          showTooltip={false}
-        />
+        <TimerProgressBar timerValue={timerValue} duration={duration} />
       </div>
+      <TimerControlsFocusMode
+        timerStarted={timerStarted}
+        handleExit={handleExit}
+        handleToggle={handleToggle}
+        resetTimer={resetTimer}
+        duration={duration}
+      />
     </div>
   );
 };

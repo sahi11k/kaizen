@@ -60,22 +60,6 @@ export function plainTextFromTipTapDoc(doc) {
   return parts.join(" ").replace(/\s+/g, " ").trim();
 }
 
-/**
- * If a legacy DB `title` exists, prepend it as an H1 so it lives only in `content` after save.
- */
-export function mergeLegacyTitleIntoDoc(title, doc) {
-  if (!isDoc(doc)) return doc;
-  const trimmed = title != null ? String(title).trim() : "";
-  if (!trimmed) return doc;
-  const heading = {
-    type: "heading",
-    attrs: { level: 1 },
-    content: [{ type: "text", text: trimmed }],
-  };
-  const existing = Array.isArray(doc.content) ? [...doc.content] : [];
-  return { ...doc, content: [heading, ...existing] };
-}
-
 function emptyParagraphNode() {
   return { type: "paragraph", content: [] };
 }
@@ -110,32 +94,6 @@ export function stripLeadingJournalTitle(doc) {
     return { ...doc, content: rest };
   }
   return doc;
-}
-
-/**
- * Persisted journal doc: optional day title as first H1 + editor body nodes.
- * @param {string} title
- * @param {object} bodyDoc TipTap JSON doc (body only)
- */
-export function buildJournalDocWithTitle(title, bodyDoc) {
-  const trimmed = title != null ? String(title).trim() : "";
-  const bodyNodes =
-    isDoc(bodyDoc) && Array.isArray(bodyDoc.content) ? bodyDoc.content : [];
-  const h1 =
-    trimmed.length > 0
-      ? [
-          {
-            type: "heading",
-            attrs: { level: 1 },
-            content: [{ type: "text", text: trimmed }],
-          },
-        ]
-      : [];
-  const merged = [...h1, ...bodyNodes];
-  if (merged.length === 0) {
-    return { type: "doc", content: [emptyParagraphNode()] };
-  }
-  return { type: "doc", content: merged };
 }
 
 /**

@@ -32,7 +32,12 @@ export function canExecuteUndoRedoAction(editor, action) {
   if (!editor || !editor.isEditable) return false
   if (isNodeTypeSelected(editor, ["image"])) return false
 
-  return action === "undo" ? editor.can().undo() : editor.can().redo();
+  try {
+    return action === "undo" ? editor.can().undo() : editor.can().redo();
+  } catch (error) {
+    console.error(`Failed to check ${action} availability:`, error)
+    return false
+  }
 }
 
 /**
@@ -42,8 +47,13 @@ export function executeUndoRedoAction(editor, action) {
   if (!editor || !editor.isEditable) return false
   if (!canExecuteUndoRedoAction(editor, action)) return false
 
-  const chain = editor.chain().focus()
-  return action === "undo" ? chain.undo().run() : chain.redo().run();
+  try {
+    const chain = editor.chain().focus()
+    return action === "undo" ? chain.undo().run() : chain.redo().run();
+  } catch (error) {
+    console.error(`Failed to execute ${action}:`, error)
+    return false
+  }
 }
 
 /**

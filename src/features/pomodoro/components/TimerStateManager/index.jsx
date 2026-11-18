@@ -2,7 +2,10 @@ import {
   useDurationSync,
   useTimerDocumentTitle,
   useTimerCompletion,
+  useTimerSound,
 } from "@/features/pomodoro/hooks";
+import { useTimerStore } from "@/features/pomodoro/store";
+import { useEffect, useRef } from "react";
 
 /**
  * Headless component that manages timer side effects globally:
@@ -17,6 +20,19 @@ const TimerStateManager = () => {
   useDurationSync();
   useTimerDocumentTitle();
   useTimerCompletion();
+
+  const timerStarted = useTimerStore((state) => state.timerStarted);
+  const previousTimerStarted = useRef(timerStarted);
+  const { play } = useTimerSound();
+
+  useEffect(() => {
+    if (timerStarted && !previousTimerStarted.current) {
+      play("timerStart");
+    }
+
+    previousTimerStarted.current = timerStarted;
+  }, [timerStarted, play]);
+
   return null;
 };
 

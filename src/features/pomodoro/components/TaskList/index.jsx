@@ -1,27 +1,36 @@
-import React from "react";
-import TaskItem from "./ListItem";
-import TaskForm from "@/features/pomodoro/components/TaskForm";
-import SortableContainer from "./SortableContainer";
-import { deepCopy } from "@/shared/lib/utils";
-import useTaskList from "@/features/pomodoro/hooks/useTaskList";
-import {
-  FloatingButton,
-  ListHeader,
-  SectionedList,
-  EmptyState,
-  Skeleton,
-} from "@/shared/ui";
-import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
-import { FolderOpen, Plus } from "lucide-react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
-const TaskList = ({ onItemClick, showHeader }) => {
+import { Plus } from "lucide-react";
+
+import TaskForm from "@/features/pomodoro/components/TaskForm";
+import TimerWarningDialog from "@/features/pomodoro/components/TimerWarningDialog";
+import useTaskList from "@/features/pomodoro/hooks/useTaskList";
+import { EmptyState, EmptyStateAction } from "@/shared/ui";
+
+import TaskDeleteDialog from "./TaskDeleteDialog";
+import TaskListHeader from "./TaskListHeader";
+import TaskListSkeleton from "./TaskListSkeleton";
+import TaskSection from "./TaskSection";
+import {
+  DEFAULT_TASK_FILTER,
+  TASK_FILTERS,
+  TASK_LIST_EMPTY_STATES,
+} from "./constants";
+import { getFilteredTasks } from "./utils";
+
+const TaskList = ({ onItemClick, showHeader, headerTitle = "Tasks" }) => {
+  const [selectedFilter, setSelectedFilter] = useState(DEFAULT_TASK_FILTER);
   const {
-    tasks,
     isLoading,
     isEmpty,
+    tasks,
     currentTask,
-    pendingTasks,
-    completedTasks,
     showModal,
     setShowModal,
     formValues,
@@ -37,109 +46,94 @@ const TaskList = ({ onItemClick, showHeader }) => {
     pendingTask,
     confirmTaskSwitch,
     cancelTaskSwitch,
+    taskToDelete,
+    confirmTaskDelete,
+    cancelTaskDelete,
+    isDeletingTask,
   } = useTaskList({ onItemClick });
 
-  const renderTaskItem = (task) => (
-    <TaskItem
-      key={task.id}
-      task={task}
-      isActive={currentTask?.id === task.id}
-      onEdit={(e) => {
-        e.stopPropagation();
-        taskEditHandler(task);
-      }}
-      onRemove={(e) => {
-        e.stopPropagation();
-        taskRemoveHandler(task.id);
-      }}
-      onComplete={(e) => {
-        e.stopPropagation();
-        taskCompleteHandler(task.id);
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
-        handleTaskClick(task);
-      }}
-      showModal={showModal}
-    />
+  const filteredTasks = useMemo(
+    () => getFilteredTasks(tasks, selectedFilter),
+    [selectedFilter, tasks],
   );
 
-  const sections = [
-    ...(tasks.length > 0
-      ? [
-          {
-            key: "pending",
-            label: `Pending (${pendingTasks.length})`,
-            content:
-              pendingTasks.length === 0 ? (
-                <li className="list-none text-muted-foreground text-sm px-2 py-2">
-                  All tasks completed. Nice work!
-                </li>
-              ) : (
-                <SortableContainer
-                  tasks={deepCopy(pendingTasks)}
-                  onDragEnd={taskDragHandler}
-                  currentTask={currentTask}
-                >
-                  {pendingTasks.map(renderTaskItem)}
-                </SortableContainer>
-              ),
-          },
-        ]
-      : []),
-    ...(completedTasks.length > 0
-      ? [
-          {
-            key: "completed",
-            label: `Completed (${completedTasks.length})`,
-            content: completedTasks.map(renderTaskItem),
-          },
-        ]
-      : []),
-  ];
+  const isPendingFilter = selectedFilter === TASK_FILTERS.PENDING;
+
+  // When a task is added (new tasks are ranked last), scroll the list to the bottom
+  // so the new task is visible. Skips the first load and any non-add change.
+  const listRef = useRef(null);
+  const prevTaskCount = useRef(null);
+  useEffect(() => {
+    if (isLoading) return;
+    const count = tasks.length;
+    const prev = prevTaskCount.current;
+    prevTaskCount.current = count;
+    if (prev === null || count <= prev) return;
+    const frame = requestAnimationFrame(() => {
+      const el = listRef.current;
+      if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [isLoading, tasks.length]);
+
+  const openTaskForm = useCallback(() => {
+    setShowModal(true);
+  }, [setShowModal]);
 
   return (
     <>
       {showHeader && (
-        <ListHeader
-          title="Tasks"
-          buttonProps={{
-            label: "Task",
-            icon: <Plus className="size-4" />,
-            tooltip: "Add task",
-            onClick: () => setShowModal(true),
-          }}
+        <TaskListHeader
+          title={headerTitle}
+          selectedFilter={selectedFilter}
+          onFilterChange={setSelectedFilter}
+          onAddTask={openTaskForm}
         />
       )}
-      <div className="h-full overflow-y-auto">
-        {isLoading && isEmpty && (
-          <div className="m-2">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton
-                key={index}
-                className="h-16 w-full bg-card mb-2 rounded-lg"
-              />
-            ))}
-          </div>
-        )}
+
+      <div className="flex min-h-0 flex-1 flex-col">
+        {isLoading && isEmpty && <TaskListSkeleton />}
 
         {isEmpty && !isLoading && (
           <EmptyState
-            icon={<FolderOpen className="size-8" />}
-            title="No Tasks"
-            description="Add a task to get started."
+            title="No tasks"
+            description="Add something you want to get done."
+            action={
+              <EmptyStateAction onClick={openTaskForm} className="gap-1.5">
+                <Plus className="size-4" />
+                New
+              </EmptyStateAction>
+            }
+            className="flex items-center justify-center"
           />
         )}
 
-        {!isEmpty && <SectionedList sections={sections} />}
-      </div>
+        {!isEmpty &&
+          filteredTasks.length === 0 &&
+          !isLoading &&
+          TASK_LIST_EMPTY_STATES[selectedFilter] && (
+            <EmptyState
+              title={TASK_LIST_EMPTY_STATES[selectedFilter].title}
+              description={TASK_LIST_EMPTY_STATES[selectedFilter].description}
+              className="flex items-center justify-center"
+            />
+          )}
 
-      <FloatingButton
-        onClick={() => setShowModal(true)}
-        className="md:hidden"
-        icon={<Plus className="size-4" />}
-        label="Task"
-      />
+        {!isEmpty && filteredTasks.length > 0 && (
+          <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto">
+            <TaskSection
+              tasks={filteredTasks}
+              sortable={isPendingFilter}
+              currentTask={currentTask}
+              onDragEnd={taskDragHandler}
+              onTaskClick={handleTaskClick}
+              onTaskEdit={taskEditHandler}
+              onTaskRemove={taskRemoveHandler}
+              onTaskComplete={taskCompleteHandler}
+            />
+          </div>
+        )}
+      </div>
 
       <TaskForm
         setFormValues={setFormValues}
@@ -155,6 +149,13 @@ const TaskList = ({ onItemClick, showHeader }) => {
         open={!!pendingTask}
         onConfirm={confirmTaskSwitch}
         onCancel={cancelTaskSwitch}
+      />
+
+      <TaskDeleteDialog
+        task={taskToDelete}
+        isDeleting={isDeletingTask}
+        onCancel={cancelTaskDelete}
+        onConfirm={confirmTaskDelete}
       />
     </>
   );

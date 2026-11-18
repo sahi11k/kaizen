@@ -29,7 +29,7 @@ const TaskForm = ({
             Cancel
           </Button>
           <Button type="submit" onClick={onSave}>
-            Save Changes
+            Save
           </Button>
         </>
       }
@@ -45,14 +45,12 @@ const TaskForm = ({
             autoFocus
             value={formValues.title}
             onChange={(e) => handleChange("title", e.target.value)}
+            className="!bg-background"
           />
         </div>
 
         <div className="flex items-center gap-4" data-field="total-sessions">
-          <label
-            htmlFor="total-sessions"
-            className="text-description text-sm w-full pl-2"
-          >
+          <label htmlFor="total-sessions" className="form-label w-full pl-2">
             Session Goal
           </label>
           <Input
@@ -62,6 +60,7 @@ const TaskForm = ({
             value={formValues.totalSessions}
             min={MIN_SESSIONS}
             onChange={(e) => handleChange("totalSessions", e.target.value)}
+            className="!bg-background"
           />
         </div>
 
@@ -74,7 +73,7 @@ const TaskForm = ({
             placeholder="Write more details about the task..."
             value={formValues.description}
             onChange={(e) => handleChange("description", e.target.value)}
-            className="max-h-80"
+            className="max-h-80 !bg-background"
           ></Textarea>
         </div>
       </form>

@@ -45,14 +45,26 @@ export const useUpdateTaskMutation = () => {
   return useMutation({
     mutationFn: ({ payload, userId }: UpdateTaskMutationPayload) =>
       updateTask(payload, userId),
-    onSuccess: (data: Task[], variables) => {
+    onMutate: async (variables) => {
+      const key = queryKeys.tasks.all(variables.userId);
+      await queryClient.cancelQueries({ queryKey: key });
+      const previous = queryClient.getQueryData<Task[]>(key);
+      queryClient.setQueryData<Task[]>(key, (old) =>
+        upsertById(old, variables.payload),
+      );
+      return { previous, key };
+    },
+    onSuccess: (data: Task[], variables, context) => {
       const updatedTask = data?.[0];
       if (!updatedTask) return;
-
-      queryClient.setQueryData<Task[]>(
-        queryKeys.tasks.all(variables.userId),
-        (old) => upsertById(old, updatedTask),
+      queryClient.setQueryData<Task[]>(context.key, (old) =>
+        upsertById(old, updatedTask),
       );
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.previous !== undefined) {
+        queryClient.setQueryData(context.key, context.previous);
+      }
     },
   });
 };
@@ -63,11 +75,26 @@ export const useDeleteTaskMutation = () => {
   return useMutation({
     mutationFn: ({ taskId, userId }: DeleteTaskMutationPayload) =>
       deleteTask(taskId, userId),
-    onSuccess: (_res, variables) => {
+    onSuccess: async (_res, variables) => {
       queryClient.setQueryData<Task[]>(
         queryKeys.tasks.all(variables.userId),
         (old) => deleteById(old ?? [], variables.taskId),
       );
+
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.taskSessions.all(variables.userId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.taskSessions.ranges(variables.userId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.taskSessions.totalDuration(variables.userId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.taskSessions.totalCount(variables.userId),
+        }),
+      ]);
     },
   });
 };
@@ -181,6 +208,10 @@ export const useRecordPomodoroCompletionMutation = () => {
         queryKeys.taskSessions.totalDuration(userId),
         (old) => (old ?? 0) + durationMinutes,
       );
+
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.taskSessions.ranges(userId),
+      });
     },
   });
 };

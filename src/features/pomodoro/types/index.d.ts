@@ -43,11 +43,6 @@ type SortTasksMutationPayload = {
   userId?: string;
 };
 
-type AddTaskSessionMutationPayload = {
-  payload: Record<string, unknown>;
-  userId?: string;
-};
-
 type RecordPomodoroCompletionPayload = {
   task: Task | null;
   userId: string;

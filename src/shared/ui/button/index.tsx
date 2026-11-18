@@ -12,14 +12,14 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20",
+          "bg-destructive text-white shadow-xs hover:bg-destructive-hover focus-visible:ring-destructive-soft",
         outline:
-          "border border-border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+          "border border-border bg-transparent shadow-xs hover:bg-muted hover:text-muted-foreground",
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-muted hover:text-muted-foreground",
         link: "text-link underline-offset-2 !p-0 h-auto",
-        icon: "text-muted-foreground hover:bg-muted hover:text-primary !px-2",
+        icon: "text-muted-foreground hover:bg-muted hover:text-foreground !px-2",
       },
       size: {
         default:
@@ -51,6 +51,8 @@ const ShadButton = React.forwardRef<HTMLButtonElement, ShadButtonProps>(
     return (
       <Comp
         ref={ref}
+        data-slot="button"
+        data-variant={variant}
         className={cn(buttonVariants({ variant, size }), className)}
         {...rest}
       >

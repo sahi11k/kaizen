@@ -117,20 +117,6 @@ export async function signOut() {
   return res;
 }
 
-export async function getUserSession() {
-  let res = await supabase.auth.getSession();
-  const status = res.error ? 400 : 200;
-  res = parseApiResponse({
-    response: {
-      ...res,
-      status,
-    },
-    errorMessage: res.error?.message,
-    successMessage: null,
-  });
-  return res;
-}
-
 export async function resetPassword(payload) {
   let res = await supabase.auth.resetPasswordForEmail(payload.email, {
     redirectTo: `${APP_URL}auth/update-password`,
@@ -149,19 +135,18 @@ export async function resetPassword(payload) {
 }
 
 export async function updatePassword(payload) {
-  let res = await supabase.auth.updateUser({
+  const authRes = await supabase.auth.updateUser({
     password: payload.password,
   });
-  const status = res.error ? 400 : 200;
-  res = parseApiResponse({
+  const status = authRes.error ? 400 : 200;
+  return parseApiResponse({
     response: {
-      ...res,
+      ...authRes,
       status,
     },
-    errorMessage: res.error?.message,
+    errorMessage: authRes.error?.message,
     successMessage: "Password updated successfully",
   });
-  return res;
 }
 
 export async function updateUserMetadata(payload) {

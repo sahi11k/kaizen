@@ -1,26 +1,31 @@
 import React from "react";
 import JournalListItem from "./ListItem";
+import JournalListSkeleton from "./JournalListSkeleton";
 import useJournalList from "@/features/journals/hooks/useJournalList";
-import { FileText, SquarePen } from "lucide-react";
+import { Plus } from "lucide-react";
 import {
-  FloatingButton,
-  ListHeader,
-  SectionedList,
+  Button,
   EmptyState,
-  Skeleton,
+  EmptyStateAction,
+  PageHeader,
 } from "@/shared/ui";
 
-const JournalList = ({ onItemClick, showHeader }) => {
+const JournalList = ({
+  showHeader,
+  headerTitle = "Journals",
+  headerButtonLabel = "New",
+  headerButtonIcon = <Plus className="size-4" />,
+}) => {
   const {
     isLoading,
+    isFetchingNextPage,
+    hasNextPage,
     isEmpty,
-    currentJournal,
     grouped,
-    handleJournalClick,
-    removeJournal,
-    editJournal,
+    fetchNextPage,
     newJournal,
-  } = useJournalList({ onItemClick });
+    removeJournal,
+  } = useJournalList();
 
   const sections = grouped.map(({ key, label, items }) => ({
     key,
@@ -29,19 +34,7 @@ const JournalList = ({ onItemClick, showHeader }) => {
       <JournalListItem
         key={journal.id}
         journal={journal}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleJournalClick(journal);
-        }}
-        isActive={currentJournal?.id === journal.id}
-        onRemove={(e) => {
-          e.stopPropagation();
-          removeJournal(journal.id);
-        }}
-        onEdit={(e) => {
-          e.stopPropagation();
-          editJournal(journal);
-        }}
+        onDelete={removeJournal}
       />
     )),
   }));
@@ -49,45 +42,60 @@ const JournalList = ({ onItemClick, showHeader }) => {
   return (
     <>
       {showHeader && (
-        <ListHeader
-          title="Journals"
-          buttonProps={{
-            label: "New",
-            icon: <SquarePen className="size-4" />,
-            tooltip: "New Journal",
-            onClick: newJournal,
-          }}
+        <PageHeader
+          title={headerTitle}
+          subtitle="Browse and continue your reflections."
+          action={
+            <Button
+              icon={headerButtonIcon}
+              onClick={newJournal}
+              size="sm"
+            >
+              {headerButtonLabel}
+            </Button>
+          }
         />
       )}
-      <div className="h-full overflow-y-auto">
-        {isLoading && isEmpty && (
-          <div className="m-2">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton
-                key={index}
-                className="h-16 w-full bg-card mb-2 rounded-lg"
-              />
-            ))}
-          </div>
-        )}
 
-        {isEmpty && !isLoading && (
-          <EmptyState
-            icon={<FileText className="size-8" />}
-            title="No Journals"
-            description="Write a journal to get started."
-          />
-        )}
+      {isLoading && isEmpty && <JournalListSkeleton />}
 
-        {!isEmpty && <SectionedList sections={sections} />}
-      </div>
+      {isEmpty && !isLoading && (
+        <EmptyState
+          title="No entries"
+          description="Your journal is empty. Start writing when you're ready."
+          action={
+            <EmptyStateAction onClick={newJournal} className="gap-1.5">
+              <Plus className="size-4" />
+              New
+            </EmptyStateAction>
+          }
+          className="flex-1 flex items-center justify-center"
+        />
+      )}
 
-      <FloatingButton
-        onClick={newJournal}
-        icon={<SquarePen className="size-4" color="currentColor" />}
-        className="md:hidden"
-        label="New"
-      />
+      {!isEmpty && (
+        <div className="flex flex-col gap-6 pb-6">
+          {sections.map(({ key, label, content }) => (
+            <section key={key} aria-label={label}>
+              <h4 className="sticky top-[6.5rem] max-[425px]:top-[8rem] md:top-[7rem] xl:top-[7.5rem] z-20 bg-background text-label !text-primary py-2 mb-1">
+                {label}
+              </h4>
+              <ul className="flex flex-col gap-3">{content}</ul>
+            </section>
+          ))}
+          {hasNextPage && (
+            <div className="text-center">
+              <Button
+                variant="secondary"
+                loading={isFetchingNextPage}
+                onClick={() => fetchNextPage()}
+              >
+                Load more
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

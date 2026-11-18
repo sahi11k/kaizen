@@ -1,7 +1,7 @@
 import { cn } from "@/shared/lib/utils";
 
 interface EmptyStateProps {
-  icon?: React.ReactNode;
+  code?: string;
   title: string;
   description?: string;
   action?: React.ReactNode;
@@ -9,28 +9,25 @@ interface EmptyStateProps {
 }
 
 const EmptyState = ({
-  icon,
+  code,
   title,
   description,
   action,
   className,
 }: EmptyStateProps): React.ReactElement => {
   return (
-    <div
-      className={cn(
-        "flex justify-center items-center h-full w-full",
-        className,
-      )}
-    >
-      <div className="flex flex-col items-center gap-4 text-muted-foreground">
-        {icon && <div>{icon}</div>}
-        <div className="flex flex-col items-center">
-          <h3 className="heading-3">{title}</h3>
-          {description && (
-            <p className="body-description text-center">{description}</p>
-          )}
+    <div className={cn("w-full h-full", className)}>
+      <div className="flex flex-col items-center text-center gap-6 max-w-500">
+        {code && (
+          <h1 className="heading-0 !text-subtle-foreground/25 !font-sans !font-normal tracking-tight select-none">
+            {code}
+          </h1>
+        )}
+        <div className="flex flex-col gap-2">
+          <h2 className="heading-4 !font-normal">{title}</h2>
+          {description && <p className="body-base">{description}</p>}
         </div>
-        {action}
+        {action && <div>{action}</div>}
       </div>
     </div>
   );

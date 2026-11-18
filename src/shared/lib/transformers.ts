@@ -11,7 +11,7 @@ export const transformKeys = <T extends Record<string, unknown>>(
   Object.entries(mapping).forEach(([oldKey, newKey]) => {
     if (oldKey in transformed) {
       transformed[newKey] = transformed[oldKey];
-      delete transformed[oldKey];
+      if (oldKey !== newKey) delete transformed[oldKey];
     }
   });
 

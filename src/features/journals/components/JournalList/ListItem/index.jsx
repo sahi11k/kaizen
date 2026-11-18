@@ -1,76 +1,60 @@
 import React from "react";
-import { getDayOfMonth, getDayOfWeek } from "@/shared/lib/date";
+import { Link } from "react-router";
+import { Trash2, Dot } from "lucide-react";
+import { formatDate } from "@/shared/lib/date";
 import { JOURNAL_DEFAULT_BACKEND_TITLE } from "@/features/journals/constants";
 import { getJournalPlainText } from "@/features/journals/utils";
-import { MoreOptions } from "@/shared/ui";
-import { cn } from "@/shared/lib/utils";
+import { Button } from "@/shared/ui";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer px-3 py-2 rounded-lg transition-colors bg-background";
-const hover = "hover:bg-muted";
-const activeClass =
-  "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground";
+  "surface-card relative group rounded-lg transition-colors hover:bg-muted";
+const linkBase =
+  "block min-w-0 rounded-lg px-3 py-3 pr-12 md:px-4 md:py-4 md:pr-14 xl:px-6 xl:py-6 xl:pr-16";
+const TITLE_SNIPPET_LENGTH = 60;
 
-const JournalListItem = ({ journal, onClick, isActive, onRemove, onEdit }) => {
-  const { title, date, content } = journal;
+const JournalListItem = ({ journal, onDelete }) => {
+  const { id, title, date, content, wordCount } = journal;
   const preview = getJournalPlainText(content);
   const legacyTitle = title?.trim?.() ? String(title).trim() : "";
   const displayTitle =
     legacyTitle && legacyTitle !== JOURNAL_DEFAULT_BACKEND_TITLE
       ? legacyTitle
       : "";
-  const primaryLine = displayTitle || JOURNAL_DEFAULT_BACKEND_TITLE;
+  const titleFromContent = preview
+    ? preview.slice(0, TITLE_SNIPPET_LENGTH).trim() +
+      (preview.length > TITLE_SNIPPET_LENGTH ? "…" : "")
+    : "";
+  const primaryLine =
+    displayTitle || titleFromContent || JOURNAL_DEFAULT_BACKEND_TITLE;
+  const wordCountValue = Number(wordCount) || 0;
+  const wordsLabel = `${wordCountValue} ${wordCountValue === 1 ? "word" : "words"}`;
 
-  const onKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === " " || e.code === "Space") {
-      e.preventDefault();
-      onClick?.(e);
-    }
+  const handleDelete = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onDelete?.(id);
   };
 
   return (
-    <li
-      className={cn(base, hover, { [activeClass]: isActive })}
-      onClick={onClick}
-      onKeyDown={onKeyDown}
-      role="option"
-      aria-selected={isActive}
-      tabIndex={0}
-    >
-      <div className="flex flex-col gap-1 xl:gap-0.5 items-center shrink-0">
-        <span className="text-lg xl:text-xl leading-tight">
-          {getDayOfMonth(date)}
-        </span>
-        <span className="text-xs font-medium uppercase tracking-wide">
-          {getDayOfWeek(date)}
-        </span>
-      </div>
-      <div className="flex-1 w-0 flex flex-col">
-        <div className="text-base font-semibold truncate">{primaryLine}</div>
+    <li className={base}>
+      <Link to={`/dashboard/journals/${id}`} className={linkBase}>
+        <div className="mb-2 flex items-center gap-1">
+          <span className="text-label">{formatDate(date, "ddd, MMM D")}</span>
+          <Dot className="-mx-1 size-4 text-label" aria-hidden />
+          <span className="body-description !text-xs">{wordsLabel}</span>
+        </div>
+        <h6 className="truncate">{primaryLine}</h6>
         {preview ? (
-          <div
-            className={cn(
-              "text-[13px] tracking-wide line-clamp-1",
-              !isActive && "text-muted-foreground",
-            )}
-          >
-            {preview}
-          </div>
+          <p className="body-base !text-sm mt-1 line-clamp-2">{preview}</p>
         ) : null}
-      </div>
-
-      <MoreOptions
-        triggerClassName="!p-0 w-0 overflow-hidden group-hover:w-auto data-[state=open]:w-auto hover:bg-transparent"
-        contentClassName="border-border"
-        align="end"
-        items={[
-          { label: "Edit", onClick: onEdit },
-          {
-            label: "Delete",
-            onClick: onRemove,
-            className: "hover:!bg-destructive/10 !text-destructive",
-          },
-        ]}
+      </Link>
+      <Button
+        variant="icon"
+        size="sm"
+        className="absolute right-2 top-2 md:right-3 md:top-3 xl:right-4 xl:top-4 transition-opacity hover:text-destructive lg:opacity-0 lg:group-hover:opacity-100 focus-visible:opacity-100"
+        icon={<Trash2 className="size-4" />}
+        onClick={handleDelete}
+        aria-label="Delete journal"
       />
     </li>
   );

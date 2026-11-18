@@ -1,12 +1,4 @@
 {
-  "tailwindCSS.includeLanguages": {},
-  "tailwindCSS.emmetCompletions": false,
-  "css.validate": true,
-  "css.completion.completePropertyWithSemicolon": true,
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact"
-  },
-  "typescript.preferences.includePackageJsonAutoImports": "off",
-  "typescript.suggest.autoImports": true,
-  "css.completion.triggerPropertyValueCompletion": true
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import {
   DndContext,
@@ -20,11 +20,10 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import TaskItem from "@/features/pomodoro/components/TaskList/ListItem";
-import { CREATE } from "@/shared/constants";
 
 const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
   const [activeTask, setActiveTask] = useState(null);
-  const items = tasks.map((task) => task.id);
+  const items = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -66,11 +65,10 @@ const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
         {activeTask ? (
           <TaskItem
             task={activeTask}
-            onComplete={DUMMY_FN}
-            onEdit={DUMMY_FN}
-            onRemove={DUMMY_FN}
+            onComplete={noop}
+            onEdit={noop}
+            onRemove={noop}
             isActive={currentTask?.id === activeTask?.id}
-            mode={CREATE}
           />
         ) : null}
       </DragOverlay>
@@ -78,6 +76,6 @@ const SortableContainer = ({ tasks, children, onDragEnd, currentTask }) => {
   );
 };
 
-const DUMMY_FN = () => {};
+const noop = () => {};
 
 export default SortableContainer;

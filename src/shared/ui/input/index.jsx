@@ -4,7 +4,7 @@ import { cn } from "@/shared/lib/utils";
 import { Eye, EyeOff, Minus, Plus } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 
-function Input({ className, type, ...props }) {
+function Input({ className = "", type = "text", ...props }) {
   const isPassword = type === "password";
   const isNumber = type === "number";
 
@@ -21,7 +21,7 @@ function Input({ className, type, ...props }) {
       type={type}
       data-slot="input"
       className={cn(
-        "text-foreground placeholder:text-muted-foreground selection:bg-border selection:text-foreground border-border flex h-10 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-sm transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 xl:text-base xl:h-11 xl:px-4 xl:py-2 file:text-foreground",
+        "text-foreground placeholder:text-subtle-foreground selection:bg-selection selection:text-foreground border-border flex h-10 w-full min-w-0 rounded-lg border bg-transparent px-3 py-1 text-sm transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 xl:text-base xl:h-11 xl:px-4 xl:py-2 file:text-foreground",
         "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
         className,
@@ -31,7 +31,7 @@ function Input({ className, type, ...props }) {
   );
 }
 
-const Password = ({ className, ...props }) => {
+const Password = ({ className = "", ...props }) => {
   const [show, setShow] = React.useState(false);
   return (
     <div className="relative">
@@ -39,7 +39,7 @@ const Password = ({ className, ...props }) => {
         type={show ? "text" : "password"}
         data-slot="input"
         className={cn(
-          "text-foreground placeholder:text-muted-foreground selection:bg-border selection:text-foreground border-border flex h-10 w-full min-w-0 rounded-md border bg-transparent px-3 pr-9 py-1 text-sm transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 xl:text-base xl:h-11 xl:px-4 xl:pr-12 xl:py-2 file:text-foreground",
+          "text-foreground placeholder:text-subtle-foreground selection:bg-selection selection:text-foreground border-border flex h-10 w-full min-w-0 rounded-lg border bg-transparent px-3 pr-9 py-1 text-sm transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 xl:text-base xl:h-11 xl:px-4 xl:pr-12 xl:py-2 file:text-foreground",
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
           className,
@@ -60,7 +60,7 @@ const Password = ({ className, ...props }) => {
 };
 
 const InputNumber = ({
-  className,
+  className = "",
   onChange,
   min,
   max,
@@ -70,7 +70,9 @@ const InputNumber = ({
   ...rest
 }) => {
   const handleChange = (e) => {
-    const numValue = parseInt(e.target.value, 10);
+    const rawValue = e.target.value;
+    const numValue = rawValue === "" ? "" : Number(rawValue);
+
     onChange({
       target: {
         name,
@@ -80,16 +82,40 @@ const InputNumber = ({
   };
 
   const handleIncrement = () => {
-    if (max === undefined || value < max) {
-      onChange({ target: { name, value: value + step } });
+    const numericValue = Number(value);
+    const currentValue = Number.isFinite(numericValue) ? numericValue : 0;
+    const stepValue = Number(step);
+    const maxValue = max === undefined ? undefined : Number(max);
+    const nextValue = currentValue + stepValue;
+
+    if (maxValue === undefined || nextValue <= maxValue) {
+      onChange({ target: { name, value: nextValue } });
     }
   };
 
   const handleDecrement = () => {
-    if (min === undefined || value > min) {
-      onChange({ target: { name, value: value - step } });
+    const numericValue = Number(value);
+    const currentValue = Number.isFinite(numericValue) ? numericValue : 0;
+    const stepValue = Number(step);
+    const minValue = min === undefined ? undefined : Number(min);
+    const nextValue = currentValue - stepValue;
+
+    if (minValue === undefined || nextValue >= minValue) {
+      onChange({ target: { name, value: nextValue } });
     }
   };
+
+  const numericValue = Number(value);
+  const minValue = min === undefined ? undefined : Number(min);
+  const maxValue = max === undefined ? undefined : Number(max);
+  const canDecrement =
+    value !== "" &&
+    Number.isFinite(numericValue) &&
+    (minValue === undefined || numericValue > minValue);
+  const canIncrement =
+    value !== "" &&
+    Number.isFinite(numericValue) &&
+    (maxValue === undefined || numericValue < maxValue);
 
   return (
     <div className="relative">
@@ -97,7 +123,7 @@ const InputNumber = ({
         type="number"
         data-slot="input"
         className={cn(
-          "text-foreground placeholder:text-muted-foreground selection:bg-border selection:text-foreground border-border flex h-10 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 pr-16 text-sm transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 xl:text-base xl:h-11 xl:px-4 xl:py-2 xl:pr-20",
+          "text-foreground placeholder:text-subtle-foreground selection:bg-selection selection:text-foreground border-border flex h-10 w-full min-w-0 rounded-lg border bg-transparent px-3 py-1 pr-16 text-sm transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 xl:text-base xl:h-11 xl:px-4 xl:py-2 xl:pr-20",
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
           "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]",
@@ -107,14 +133,14 @@ const InputNumber = ({
         onChange={handleChange}
         {...rest}
       />
-      <div className="absolute top-0 bottom-0 right-0 flex my-auto">
+      <div className="absolute inset-y-px right-px flex my-auto">
         <Button
           type="button"
           aria-label="Decrement"
           onClick={handleDecrement}
-          disabled={min !== undefined && value <= min}
+          disabled={!canDecrement}
           variant="icon"
-          className="w-9 border border-border rounded-none disabled:opacity-50 disabled:bg-accent !h-full"
+          className="w-9 min-w-8 min-h-8 rounded-none border border-border border-y-0 !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
         >
           <Minus />
         </Button>
@@ -122,9 +148,9 @@ const InputNumber = ({
           type="button"
           aria-label="Increment"
           onClick={handleIncrement}
-          disabled={max !== undefined && value >= max}
+          disabled={!canIncrement}
           variant="icon"
-          className="w-9 border border-border rounded-l-none border-l-0 rounded-r-md disabled:opacity-50 disabled:bg-accent !h-full"
+          className="w-9 min-w-8 min-h-8 rounded-l-none rounded-r-md border border-y-0 border-l-0 border-border !bg-transparent !text-foreground hover:!bg-dropdown-hover hover:!text-foreground disabled:opacity-50 disabled:!bg-control-inactive !h-full"
         >
           <Plus />
         </Button>

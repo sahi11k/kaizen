@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./colors.css";
+@import "./variables.css";
+@import "./theme.css";
+@import "./utilities.css";
 
 :root {
   overflow-wrap: break-word;
@@ -9,9 +13,70 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@import "./variables.css";
-@import "./theme.css";
-@import "./utilities.css";
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Overlay-scoped field theming: modal/popover surfaces can tune form affordances
+   without changing page-level field tokens. */
+:is(
+    [data-slot="dialog-content"],
+    [data-slot="drawer-content"],
+    [data-slot="popover-content"]
+  )
+  :is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"]) {
+  --border: var(--overlay-field-border);
+  --input: var(--overlay-field-bg);
+  --ring: var(--overlay-field-ring);
+  --foreground: var(--overlay-field-fg);
+  --muted-fg: var(--overlay-field-placeholder);
+  color: var(--overlay-field-fg);
+  border-color: var(--overlay-field-border);
+  background-color: transparent;
+}
+
+:is(
+    [data-slot="dialog-content"],
+    [data-slot="drawer-content"],
+    [data-slot="popover-content"]
+  )
+  :is(
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"]
+  ):focus-visible {
+  border-color: var(--overlay-field-ring);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--overlay-field-ring) 45%, transparent);
+}
+
+:is(
+    [data-slot="dialog-content"],
+    [data-slot="drawer-content"],
+    [data-slot="popover-content"]
+  )
+  :is([data-slot="input"], [data-slot="textarea"])::placeholder {
+  color: var(--overlay-field-placeholder);
+}
+
+:is(
+    [data-slot="dialog-content"],
+    [data-slot="drawer-content"],
+    [data-slot="popover-content"]
+  )
+  [data-slot="button"][data-variant="outline"] {
+  border-color: var(--overlay-field-border);
+}
 
 /* iOS Safari: ensure at least 16px font-size on form controls to prevent zoom */
 @supports (-webkit-touch-callout: none) and (not (hover: hover)) and

@@ -18,32 +18,48 @@ const DatePicker = ({
   defaultDate,
   onDateChange,
   triggerClassName,
+  iconClassName,
   popoverClassName,
   format = "LL",
   showIcon = true,
-  tooltip,
+  tooltip = null,
   tooltipContentClassName,
+  tooltipAlign = "center",
+  tooltipSide = "top",
   side = "bottom",
   align = "center",
+  portalled = true,
 }) => {
   const [date, setDate] = useState(new Date());
+  const [month, setMonth] = useState(new Date());
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (defaultDate) {
-      setDate(new Date(defaultDate));
+      const nextDate = new Date(defaultDate);
+      setDate(nextDate);
+      setMonth(nextDate);
     }
   }, [defaultDate]);
 
   const handleDateChange = (newDate) => {
-    setDate(newDate || new Date());
+    const nextDate = newDate || new Date();
+    setDate(nextDate);
+    setMonth(nextDate);
     if (onDateChange) {
-      onDateChange(newDate || new Date());
+      onDateChange(nextDate);
     }
+    if (newDate) setIsOpen(false);
   };
 
   return (
-    <Popover>
-      <Tooltip content={tooltip} contentClassName={tooltipContentClassName}>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Tooltip
+        content={tooltip}
+        contentClassName={tooltipContentClassName}
+        align={tooltipAlign}
+        side={tooltipSide}
+      >
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -53,7 +69,9 @@ const DatePicker = ({
               triggerClassName
             )}
           >
-            {showIcon && <CalendarIcon />}
+            {showIcon && (
+              <CalendarIcon className={cn("size-4 shrink-0", iconClassName)} />
+            )}
             {date ? formatDate(date, format) : <span>Pick a date</span>}
           </Button>
         </PopoverTrigger>
@@ -62,8 +80,15 @@ const DatePicker = ({
         className={cn("w-auto p-0", popoverClassName)}
         side={side}
         align={align}
+        portalled={portalled}
       >
-        <Calendar mode="single" selected={date} onSelect={handleDateChange} />
+        <Calendar
+          mode="single"
+          selected={date}
+          month={month}
+          onMonthChange={setMonth}
+          onSelect={handleDateChange}
+        />
       </PopoverContent>
     </Popover>
   );

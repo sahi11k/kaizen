@@ -45,15 +45,6 @@ export const getSortedJournals = (journals = []) => {
   });
 };
 
-export const getTotalWordsWritten = (journals = []) => {
-  if (journals.length === 0) return 0;
-  const totalWords = journals.reduce((acc, j) => {
-    const words = j.wordCount || 0;
-    return acc + words;
-  }, 0);
-  return totalWords;
-};
-
 export const getJournalStreak = (sortedJournals = []) => {
   if (!sortedJournals.length) return 0;
 
@@ -87,17 +78,6 @@ export const getJournalStreak = (sortedJournals = []) => {
   }
 
   return streak;
-};
-
-export const getSelfReflectionDate = (dateInput) => {
-  if (!dateInput) return "NA";
-  const inputDay = dayjs(dateInput).startOf("day");
-  const today = dayjs().startOf("day");
-  const diff = today.diff(inputDay, "day");
-
-  if (diff === 0) return "Today";
-  if (diff === 1) return "Yesterday";
-  return inputDay.format("ddd, D MMM");
 };
 
 /**

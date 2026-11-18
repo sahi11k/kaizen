@@ -1,13 +1,15 @@
 import { getFormattedTime } from "@/features/pomodoro/utils";
 import { TIMER_CONSTANTS } from "@/features/pomodoro/constants";
 import SessionBadge from "@/features/pomodoro/components/SessionBadge";
-import React, { ReactNode } from "react";
+import TimerProgressBar from "@/features/pomodoro/components/TimerProgressBar";
+import { ReactNode } from "react";
 
 const { POMODORO_TAB } = TIMER_CONSTANTS;
 
 interface CurrentTask {
   completedSessions: number;
   title: string;
+  totalSessions: number;
 }
 
 interface TimerDisplayProps {
@@ -26,29 +28,18 @@ const TimerDisplay = ({
   const { minutes, seconds } = getFormattedTime(timerValue);
 
   return (
-    <div className="w-full max-w-120 flex flex-col items-center gap-2">
+    <div className="w-full max-w-md flex flex-col items-center gap-y-6 sm:gap-y-8 lg:gap-y-12">
       <SessionBadge
         isPomodoro={currentTab === POMODORO_TAB}
         currentTask={currentTask}
-        className="w-full"
+        className="w-full max-w-md"
       />
-      <div className="flex items-center justify-center text-[clamp(100px,16vw,160px)] font-semibold">
+      <div className="heading-0 !text-[80px] sm:!text-[104px] lg:!text-[150px] !font-mono tracking-tight flex items-center justify-center">
         {minutes}
-        <span className="mx-1 -mt-2">:</span>
+        <span className="-mt-3 sm:-mt-4 lg:-mt-6">:</span>
         {seconds}
       </div>
-      <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
-        <div
-          style={{
-            width: `${duration > 0 ? ((duration - timerValue) / duration) * 100 : 0}%`,
-            backgroundColor:
-              currentTab === POMODORO_TAB
-                ? "var(--primary)"
-                : "var(--break-filled)",
-          }}
-          className="h-full rounded-full transition-[width] duration-500 ease-linear"
-        />
-      </div>
+      <TimerProgressBar timerValue={timerValue} duration={duration} />
     </div>
   );
 };

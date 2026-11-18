@@ -31,7 +31,7 @@ function ResponsiveDialog({
   description,
   children,
   footer,
-  showCloseButton = true,
+  showCloseButton = false,
   className,
   contentClassName,
 }: ResponsiveDialogProps): React.ReactElement {

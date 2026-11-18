@@ -4,13 +4,12 @@ import { CSS } from "@dnd-kit/utilities";
 import { Button, Tooltip, MoreOptions } from "@/shared/ui";
 import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
+import { getTaskSessionSummary } from "../utils";
 
 const base =
-  "group flex items-center gap-4 cursor-pointer px-3 py-2 rounded-lg transition-colors bg-background";
-const hover = "hover:bg-muted";
-const activeClass =
-  "bg-primary-container text-primary-container-foreground hover:bg-primary-container hover:text-primary-container-foreground";
-const completedClass = "text-muted-foreground opacity-50";
+  "group flex items-center gap-4 cursor-pointer px-3 py-3 rounded-lg transition-colors border border-overlay-field-border hover:bg-overlay-hover";
+const activeClass = "border-l-2 border-l-primary rounded-l-none";
+const completedClass = "border-overlay-field-border opacity-55 hover:opacity-75";
 
 const TaskItem = ({
   task,
@@ -19,6 +18,7 @@ const TaskItem = ({
   onComplete,
   onClick,
   isActive,
+  isSortable = true,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id });
@@ -29,7 +29,7 @@ const TaskItem = ({
   };
 
   const getTaskClass = () => {
-    return cn(base, hover, {
+    return cn(base, {
       [activeClass]: isActive,
       [completedClass]: task.completed && !isActive,
     });
@@ -45,6 +45,7 @@ const TaskItem = ({
   const completeTooltip = task.completed
     ? "Mark as incomplete"
     : "Mark as complete";
+  const sessionSummary = getTaskSessionSummary(task);
 
   return (
     <li
@@ -56,8 +57,8 @@ const TaskItem = ({
       role="option"
       aria-selected={isActive}
       tabIndex={0}
-      {...attributes}
-      {...listeners}
+      {...(isSortable ? attributes : {})}
+      {...(isSortable ? listeners : {})}
     >
       <div className="flex items-center gap-1 shrink-0">
         <Tooltip content={completeTooltip}>
@@ -65,9 +66,10 @@ const TaskItem = ({
             onClick={onComplete}
             variant="icon"
             icon={<CheckCircle2 className="size-5" color="currentColor" />}
-            className={`!p-0 hover:bg-transparent ${
-              isActive && "text-primary-container-foreground"
-            }`}
+            className={cn(
+              "!p-0 hover:bg-transparent !h-8",
+              task.completed && "text-primary hover:text-primary",
+            )}
             aria-label={completeTooltip}
             aria-pressed={task.completed}
           />
@@ -77,25 +79,18 @@ const TaskItem = ({
       <div className="flex flex-col flex-1 w-0">
         <div
           className={cn(
-            "text-base font-semibold truncate",
+            "body-base !text-sm sm:!text-base !text-foreground truncate",
             task.completed && "line-through",
           )}
         >
           {task.title}
         </div>
-        <div
-          className={cn(
-            "text-[13px] tracking-wide",
-            !isActive && "text-muted-foreground",
-          )}
-        >
-          {task.completed
-            ? "Done"
-            : `Sessions : ${task.completedSessions}/${task.totalSessions}`}
+        <div className="body-description !text-xs sm:!text-sm">
+          Sessions: <span>{sessionSummary}</span>
         </div>
       </div>
       <MoreOptions
-        triggerClassName="!p-0 w-0 overflow-hidden group-hover:w-auto data-[state=open]:w-auto hover:bg-transparent"
+        triggerClassName="shrink-0 hover:bg-transparent md:!p-0 md:w-0 md:overflow-hidden md:group-hover:w-auto md:data-[state=open]:w-auto"
         contentClassName="border-border"
         align="end"
         items={[

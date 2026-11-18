@@ -1,35 +1,73 @@
+/* Selection */
+
+::selection {
+  background-color: var(--selection);
+}
+
 /* Typography */
 
+.heading-xl {
+  /** Used for very large headings **/
+  @apply font-serif text-[150px] md:text-[170px] xl:text-[200px] font-bold leading-none;
+}
+
+.heading-0 {
+  /** Used for very large headings **/
+  @apply font-serif text-[100px] md:text-[120px] xl:text-[150px] font-bold leading-none;
+}
+
 .heading-1 {
-  @apply text-3xl lg:text-5xl xl:text-6xl font-semibold leading-tight;
+  @apply font-serif text-5xl md:text-6xl xl:text-7xl font-medium leading-none;
 }
 
 .heading-2 {
-  @apply text-2xl md:text-3xl xl:text-4xl font-semibold leading-snug;
+  @apply font-serif text-4xl md:text-5xl xl:text-6xl font-medium leading-none;
 }
 
 .heading-3 {
-  @apply text-lg xl:text-xl font-semibold leading-snug;
+  @apply font-serif text-3xl md:text-4xl xl:text-5xl font-medium leading-none;
 }
 
-.body-base {
-  @apply text-base xl:text-lg leading-relaxed tracking-wide;
+.heading-4 {
+  @apply font-serif text-2xl md:text-3xl xl:text-4xl font-medium leading-snug;
+}
+
+.heading-5 {
+  @apply font-serif text-xl md:text-2xl xl:text-3xl font-medium leading-snug;
+}
+
+.heading-6 {
+  @apply font-serif text-lg md:text-xl xl:text-2xl font-medium leading-normal;
+}
+
+@utility body-base {
+  @apply font-sans text-sm md:text-base leading-relaxed text-muted-foreground;
 }
 
 .body-description {
-  @apply text-sm md:text-base text-muted-foreground leading-relaxed tracking-wide;
+  @apply font-sans text-xs md:text-sm leading-relaxed text-subtle-foreground;
 }
 
-.text-caption {
-  @apply text-xs uppercase tracking-wide text-muted-foreground;
-}
-
-.text-number {
-  @apply text-2xl font-bold font-mono;
+.text-label {
+  @apply font-sans text-[10px] md:text-xs uppercase tracking-widest text-subtle-foreground font-normal;
 }
 
 .text-link {
-  @apply text-sm font-medium text-primary hover:underline dark:text-secondary;
+  @apply font-sans text-sm font-medium text-primary hover:underline;
+}
+
+/* Pomodoro controls */
+
+.pomodoro-control-button {
+  @apply h-12 w-12 bg-muted text-muted-foreground hover:bg-muted hover:text-foreground;
+}
+
+.pomodoro-action-button {
+  @apply h-12 w-12 bg-overlay-hover text-muted-foreground hover:bg-overlay-hover hover:text-foreground;
+}
+
+.pomodoro-control-button-hidden {
+  @apply hidden sm:inline-flex;
 }
 
 /* Layout */
@@ -38,27 +76,28 @@
   @apply gap-6 md:gap-8 xl:gap-10;
 }
 
+@layer components {
+  .surface-card {
+    background: var(--card-bg);
+    color: var(--card-fg);
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+
+  .dark .surface-card {
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+}
+
 /* Forms */
 
 .form-error {
   @apply text-sm text-destructive leading-snug;
 }
 
-/* Animation — theme toggle icon */
-
-@keyframes spin-once {
-  from {
-    transform: rotate(-90deg) scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: rotate(0deg) scale(1);
-    opacity: 1;
-  }
-}
-
-.animate-spin-once {
-  animation: spin-once 0.5s ease-out;
+.form-label {
+  @apply body-base font-medium text-muted-foreground;
 }
 
 /* Scrollbar theming */

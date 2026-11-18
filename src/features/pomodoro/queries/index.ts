@@ -1,7 +1,6 @@
 import {
   fetchTasks,
   getLastWeekTaskSessions,
-  getTotalSessionDuration,
 } from "@/features/pomodoro/apis";
 import { queryKeys } from "@/shared/constants";
 import { useQuery } from "@tanstack/react-query";
@@ -11,14 +10,6 @@ export const useTasksQuery = (userId?: string) => {
   return useQuery({
     queryKey: queryKeys.tasks.all(userId),
     queryFn: () => fetchTasks(userId),
-    enabled: !!userId,
-  });
-};
-
-export const useTotalSessionDurationQuery = (userId?: string) => {
-  return useQuery({
-    queryKey: queryKeys.taskSessions.totalDuration(userId),
-    queryFn: () => getTotalSessionDuration(userId),
     enabled: !!userId,
   });
 };

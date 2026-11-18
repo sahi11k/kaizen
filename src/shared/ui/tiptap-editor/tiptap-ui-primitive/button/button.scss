@@ -256,7 +256,12 @@
     }
 
     &:hover {
-      background-color: var(--tt-button-active-hover-bg-color);
+      background-color: var(--tt-button-active-bg-color);
+      color: var(--tt-button-active-text-color);
+
+      .tiptap-button-icon {
+        color: var(--tt-button-active-icon-color);
+      }
     }
 
     /* Emphasized */

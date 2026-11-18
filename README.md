@@ -1,13 +1,12 @@
 # Kaizen - Personal Growth & Productivity App
 
-A personal growth and productivity web app built with React, Supabase, and Tailwind CSS. Kaizen combines a Pomodoro timer, journaling, and a dashboard to help you build better habits and track your progress.
+A personal growth and productivity web app built with React, Supabase, and Tailwind CSS. Kaizen combines a Pomodoro timer, journaling, and a dashboard to help you stay focused and track your progress.
 
 ## Features
 
 - **Pomodoro Timer** - 25-minute focus sessions with short/long breaks, task management, session tracking, and Picture-in-Picture mode
 - **Journals** - Create, edit, and manage journal entries to reflect on your day
 - **Dashboard** - Overview widgets including total hours, task list, progress chart, and task completion percentage
-- **Analytics** - Coming soon
 - **Auth** - Email signup, login, OTP verification, and password reset via Supabase Auth
 - **Settings** - Account and profile management
 - **Theme** - Light and dark mode toggle
@@ -79,7 +78,6 @@ src/
 │   ├── journals/     # Journal entries
 │   ├── dashboard/    # Overview widgets
 │   ├── settings/     # User settings
-│   ├── analytics/    # Analytics (placeholder)
 │   ├── home/         # Landing page
 │   └── theme/        # Light/dark mode
 ├── shared/           # Shared UI components, utils, constants
