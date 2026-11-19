@@ -18,13 +18,20 @@ const PageHeader = ({
   children,
 }: PageHeaderProps): React.ReactElement => {
   return (
-    <div className={cn("sticky top-0 z-30 bg-background py-6", className)}>
-      <div className="flex items-start justify-between gap-6">
+    <div
+      className={cn(
+        "sticky top-0 z-30 bg-background h-25 sm:h-30 flex items-center",
+        className,
+      )}
+    >
+      <div className="flex w-full items-start justify-between gap-6">
         <div>
           <h1 className={cn("heading-4", titleClassName)}>{title}</h1>
           {subtitle && <div className="body-base !text-sm">{subtitle}</div>}
         </div>
-        {action && <div className="shrink-0">{action}</div>}
+        {action && (
+          <div className="shrink-0">{action}</div>
+        )}
       </div>
       {children}
     </div>

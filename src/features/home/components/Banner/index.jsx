@@ -7,7 +7,7 @@ import dashboardDark from "@/assets/images/dashboard-dark.png";
 
 const Banner = () => {
   return (
-    <div className="w-full max-w-7xl mx-auto h-screen flex items-center justify-center">
+    <div className="w-full max-w-7xl mx-auto h-dvh flex items-center justify-center">
       <div className="flex h-[70%] gap-16 items-center justify-start xl:justify-center w-full">
         <div className="flex-2 flex flex-col gap-6">
           <Reveal delay={0}>

@@ -31,7 +31,7 @@ const AboutCard = ({ title, headline, description, preview, index }) => {
   const number = String(index + 1).padStart(2, "0");
 
   return (
-    <div className="flex flex-col gap-6 rounded-lg border border-card-border bg-card p-6 md:p-8 min-h-[22rem] h-full">
+    <div className="flex flex-col gap-6 rounded-lg border border-card-border bg-card p-6 md:p-8 min-h-[22rem] md:h-[25rem]">
       <span className="text-label !text-primary">
         <span className="font-mono">{number}</span> — {title}
       </span>

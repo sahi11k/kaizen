@@ -41,11 +41,11 @@ const Settings = () => {
       <Tabs
         value={currentTab}
         onValueChange={setCurrentTab}
-        className="flex flex-col gap-6 pb-6"
+        className="flex flex-col pb-6"
       >
         <TabsList
           aria-label="Settings sections"
-          className="sticky top-[6.5rem] md:top-[7rem] xl:top-[7.5rem] z-20 bg-background border-b border-border"
+          className="sticky top-25 sm:top-30 z-20 bg-background"
         >
           {TABS.map(({ key, label }) => (
             <TabsTrigger key={key} value={key} className="!p-[1px] mr-6">
@@ -54,7 +54,7 @@ const Settings = () => {
           ))}
         </TabsList>
         {TABS.map(({ key, content }) => (
-          <TabsContent key={key} value={key} className="flex-1">
+          <TabsContent key={key} value={key} className="flex-1 mt-6">
             {content}
           </TabsContent>
         ))}

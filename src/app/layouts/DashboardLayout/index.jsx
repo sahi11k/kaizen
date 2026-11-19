@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 
 const DashboardLayout = () => {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-dvh overflow-hidden">
       <SidebarLaptop />
       <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <DashboardHeader />

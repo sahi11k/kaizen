@@ -41,7 +41,7 @@ export default function BookmarkedFilters({
   ];
 
   return (
-    <div className="sticky top-[6.5rem] max-[425px]:top-[8rem] md:top-[7rem] xl:top-[7.5rem] z-30 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5 flex flex-wrap items-center gap-2 relative">
+    <div className="sticky top-25 sm:top-30 z-30 bg-background pb-3 before:absolute before:inset-x-0 before:bottom-full before:h-3 before:bg-background md:before:h-5 flex flex-wrap items-center gap-2 relative">
       <Popover>
         <PopoverTrigger asChild>
           <Button

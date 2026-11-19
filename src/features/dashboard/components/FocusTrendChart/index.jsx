@@ -137,7 +137,7 @@ const FocusTrendChart = () => {
       },
       tooltip: {
         mode: "index",
-        intersect: false,
+        intersect: true,
         usePointStyle: true,
         boxWidth: 10,
         boxHeight: 10,
@@ -160,7 +160,7 @@ const FocusTrendChart = () => {
     },
     interaction: {
       mode: "index",
-      intersect: false,
+      intersect: true,
     },
     scales: {
       x: {
