@@ -1,8 +1,8 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button, Tooltip, MoreOptions } from "@/shared/ui";
-import { CheckCircle2 } from "lucide-react";
+import { MoreOptions } from "@/shared/ui";
+import { GripVertical } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { getTaskSessionSummary } from "../utils";
 
@@ -20,7 +20,7 @@ const TaskItem = ({
   isActive,
   isSortable = true,
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition } =
     useSortable({ id: task.id });
 
   const style = {
@@ -42,9 +42,7 @@ const TaskItem = ({
     }
   };
 
-  const completeTooltip = task.completed
-    ? "Mark as incomplete"
-    : "Mark as complete";
+  const completeTooltip = task.completed ? "Mark undone" : "Mark done";
   const sessionSummary = getTaskSessionSummary(task);
 
   return (
@@ -58,22 +56,18 @@ const TaskItem = ({
       aria-selected={isActive}
       tabIndex={0}
       {...(isSortable ? attributes : {})}
-      {...(isSortable ? listeners : {})}
     >
       <div className="flex items-center gap-1 shrink-0">
-        <Tooltip content={completeTooltip}>
-          <Button
-            onClick={onComplete}
-            variant="icon"
-            icon={<CheckCircle2 className="size-5" color="currentColor" />}
-            className={cn(
-              "!p-0 hover:bg-transparent !h-8",
-              task.completed && "text-primary hover:text-primary",
-            )}
-            aria-label={completeTooltip}
-            aria-pressed={task.completed}
-          />
-        </Tooltip>
+        {isSortable && (
+          <span
+            ref={setActivatorNodeRef}
+            {...listeners}
+            className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none"
+            aria-label="Drag to reorder"
+          >
+            <GripVertical className="size-5" />
+          </span>
+        )}
       </div>
 
       <div className="flex flex-col flex-1 w-0">
@@ -94,6 +88,10 @@ const TaskItem = ({
         contentClassName="border-border"
         align="end"
         items={[
+          {
+            label: completeTooltip,
+            onClick: (e) => { e.stopPropagation(); onComplete(e); },
+          },
           { label: "Edit", onClick: onEdit },
           {
             label: "Delete",

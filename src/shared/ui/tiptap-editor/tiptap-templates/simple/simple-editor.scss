@@ -23,15 +23,11 @@
   overflow: visible;
   --tt-toolbar-bg-color: var(--sidebar);
   --tt-toolbar-border-color: var(--sidebar-border);
-  /* Matches the sticky journal header height (title size steps up at md/xl). */
-  --journal-toolbar-sticky-top: 7rem;
+  /* Matches the sticky journal header height: h-25 (100px) mobile, h-30 (120px) sm+. */
+  --journal-toolbar-sticky-top: 100px;
 
-  @media (min-width: 768px) {
-    --journal-toolbar-sticky-top: 7.5rem;
-  }
-
-  @media (min-width: 1280px) {
-    --journal-toolbar-sticky-top: 8rem;
+  @media (min-width: 640px) {
+    --journal-toolbar-sticky-top: 120px;
   }
 
   .simple-editor-journal-toolbar-shell {

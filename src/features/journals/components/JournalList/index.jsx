@@ -77,7 +77,7 @@ const JournalList = ({
         <div className="flex flex-col gap-6 pb-6">
           {sections.map(({ key, label, content }) => (
             <section key={key} aria-label={label}>
-              <h4 className="sticky top-[6.5rem] max-[425px]:top-[8rem] md:top-[7rem] xl:top-[7.5rem] z-20 bg-background text-label !text-primary py-2 mb-1">
+              <h4 className="sticky top-25 sm:top-30 z-20 bg-background text-label !text-primary py-2 mb-1">
                 {label}
               </h4>
               <ul className="flex flex-col gap-3">{content}</ul>

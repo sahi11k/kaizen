@@ -17,7 +17,7 @@ const EmptyState = ({
 }: EmptyStateProps): React.ReactElement => {
   return (
     <div className={cn("w-full h-full", className)}>
-      <div className="flex flex-col items-center text-center gap-6 max-w-500">
+      <div className="flex flex-col items-center text-center gap-6 max-w-500 p-6">
         {code && (
           <h1 className="heading-0 !text-subtle-foreground/25 !font-sans !font-normal tracking-tight select-none">
             {code}

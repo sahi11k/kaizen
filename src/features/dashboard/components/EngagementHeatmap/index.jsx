@@ -15,9 +15,7 @@ const HeatmapCell = ({ level }) => {
 };
 
 const HeatmapRow = ({ label, tooltip, levels }) => (
-  <div
-    className="grid gap-2 items-center grid-cols-[minmax(64px,auto)_repeat(7,minmax(2rem,1fr))]"
-  >
+  <div className="grid gap-2 items-center grid-cols-[minmax(56px,auto)_repeat(7,minmax(2rem,1fr))]">
     <span className="body-base !text-xs pr-0.5 md:pr-1.5" title={tooltip}>
       {label}
     </span>
@@ -91,7 +89,7 @@ const EngagementHeatmap = () => {
         <>
           <div className="flex flex-1 flex-col justify-center gap-2 overflow-x-auto pt-2 pb-4">
             <div className="flex flex-col gap-2 min-w-fit">
-              <div className="grid gap-2 items-center grid-cols-[minmax(64px,auto)_repeat(7,minmax(2rem,1fr))]">
+              <div className="grid gap-2 items-center grid-cols-[minmax(56px,auto)_repeat(7,minmax(2rem,1fr))]">
                 <span className="body-base !text-xs pr-0.5 md:pr-1.5 invisible">
                   Journal
                 </span>

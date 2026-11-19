@@ -45,7 +45,7 @@ export default function BookmarkedGrid({
         if (!group.length) return null;
         return (
           <section key={status} aria-label={label}>
-            <h4 className="sticky top-[9.25rem] max-[425px]:top-[10.75rem] md:top-[10rem] xl:top-[10.5rem] z-20 bg-background text-label !text-primary py-2 mb-1">
+            <h4 className="sticky top-36 sm:top-41 md:top-42 z-20 bg-background text-label !text-primary py-2 mb-1">
               {label}
             </h4>
             <ul className="flex flex-col gap-3">

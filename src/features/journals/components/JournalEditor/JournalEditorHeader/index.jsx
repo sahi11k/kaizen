@@ -22,7 +22,7 @@ const JournalEditorHeader = ({
 }) => {
   const isMobile = useIsMobile();
   return (
-    <div className="sticky top-0 z-30 -mx-6 bg-background px-6 py-6 xl:-mx-12 xl:px-12">
+    <div className="sticky top-0 z-30 -mx-6 bg-background px-6 h-25 sm:h-30 flex flex-col justify-center xl:-mx-12 xl:px-12">
       <div className="flex items-center gap-3 sm:gap-4">
         <div className="shrink-0">
           <BackButton

@@ -2,7 +2,7 @@ import { Logo } from "@/shared/ui";
 
 const AuthFormContainer = ({ headerText, children }) => {
   return (
-    <div className="flex items-center justify-center min-h-screen sm:p-6">
+    <div className="flex items-center justify-center min-h-dvh sm:p-6">
       <div className="gap-6 flex flex-col flex-1 max-w-md sm:px-4 sm:py-6">
         <div className="flex justify-center items-center flex-col gap-2 xl:gap-4">
           <Logo

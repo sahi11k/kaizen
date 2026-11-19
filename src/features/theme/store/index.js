@@ -4,7 +4,7 @@ import { THEME, THEME_STORAGE_KEY } from "@/features/theme/constants";
 const getInitialTheme = () => {
   const stored = localStorage.getItem(THEME_STORAGE_KEY);
   if (stored === THEME.DARK || stored === THEME.LIGHT) return stored;
-  return THEME.LIGHT;
+  return THEME.DARK;
 };
 
 const applyTheme = (theme) => {
