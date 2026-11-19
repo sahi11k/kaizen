@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import React, { useCallback, useEffect, useRef } from "react";
+import { useParams } from "react-router";
 import JournalEditor from "@/features/journals/components/JournalEditor";
 import { BROWSER_TAB_TITLES } from "@/shared/constants";
 import useDocumentTitle from "@/shared/hooks/useDocumentTitle";
@@ -17,8 +17,6 @@ const JournalEditorPage = () => {
   const { journalId } = useParams();
   const isNew = !journalId;
 
-  const navigate = useNavigate();
-
   const { user } = useAuthStore();
   const { data: matchingJournal, isLoading } = useJournalByIdQuery(
     journalId,
@@ -26,6 +24,7 @@ const JournalEditorPage = () => {
     !isNew,
   );
   const { unsavedJournal, setUnsavedJournal } = useJournalsStore();
+  const savedJournalRef = useRef(null);
 
   useEffect(() => {
     if (!isNew || unsavedJournal) return;
@@ -38,13 +37,22 @@ const JournalEditorPage = () => {
 
   const handleNewJournalSaved = useCallback(
     (savedJournal) => {
-      setUnsavedJournal(null);
-      navigate(`${JOURNALS_ROUTE}/${savedJournal.id}`, { replace: true });
+      savedJournalRef.current = savedJournal;
+      window.history.replaceState(null, '', `${JOURNALS_ROUTE}/${savedJournal.id}`);
     },
-    [navigate, setUnsavedJournal],
+    [],
   );
 
-  const activeJournal = isNew ? unsavedJournal : matchingJournal;
+  // Once saved, clean up unsavedJournal on unmount so it doesn't persist stale state
+  useEffect(() => {
+    return () => {
+      if (savedJournalRef.current) {
+        setUnsavedJournal(null);
+      }
+    };
+  }, [setUnsavedJournal]);
+
+  const activeJournal = isNew ? (unsavedJournal ?? savedJournalRef.current) : matchingJournal;
 
   if ((!isNew && isLoading) || (isNew && !activeJournal)) {
     return <JournalEditorSkeleton />;
